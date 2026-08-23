@@ -1,0 +1,260 @@
+%!TEX root = ./../../thesis-trier.tex
+
+\IN{sparse language}
+\IN{exponential growth language}
+
+A language $L \subseteq \Sigma^*$ is \emph{sparse} (resp.~has \emph{exponential growth})
+if $|L \cap \Sigma^{\le n}|$ is bounded by a polynomial in~$n$ (resp.~there exists a real number $c > 1$ such that $|L \cap \Sigma^{\le n}| \ge c^n$ for infinitely many~$n$).\footnote{$|L \cap \Sigma^{\le n}|$ is bounded by a polynomial in~$n$ (resp.~has exponential growth)	if and only if $|L \cap \Sigma^n|$ is bounded by a polynomial in~$n$ (resp.~has exponential growth). So, we can equivalently use $|L \cap \Sigma^n|$ in both definitions.}
+
+\begin{example}
+	\label{ex:only_one_letter_infinitely}
+	\begin{enumerate}
+	\item The code $ab^*$ is sparse whereas the code $c\{a,b\}^*c$
+	has exponential growth.
+	
+	\item \label{ex:only_one_letter_infinitely:2} Let $L \subseteq u^*$ with $u \in \Sigma^*$.
+	Then we have $L \cap \Sigma^{\le n} \subseteq \{\varepsilon, u, \ldots, u^n\}$.
+	Thus $|L \cap \Sigma^{\le n}| \le n + 1$,
+	and so $L$ is sparse.
+	
+	\item  \label{ex:only_one_letter_infinitely:3}	Let $L \subseteq \Sigma^*$ and $a \in \Sigma$. If there
+	exists $N \ge 0$ such that
+	$w \in L$
+	implies $|w|_b \le N$
+	for all $b \in \Sigma \setminus\{a\}$,
+	then the language $L$ is a sparse language.
+	
+	\item \label{ex:only_one_letter_infinitely:4} Let $u,v \in \Sigma^*$ and $L \subseteq \Sigma^*$.
+	Then $L$ is sparse (resp.~has exponential growth) if and only if $uLv$
+	is sparse (resp.~has exponential growth) since 
+	$|uLv \cap \Sigma^n| = |L \cap \Sigma^{n - |u| - |v|}|$ for $n \ge |u| + |v|$. (in fact,
+	the map $w \mapsto uwv$ is a bijection between $\Sigma^*$ and $u\Sigma^*v$.)
+	\end{enumerate}
+\end{example}
+
+Next, generalizing \crefitem{ex:only_one_letter_infinitely}{ex:only_one_letter_infinitely:2}, we show that every bounded language is sparse, a proof is also given in \cite[Prop.~1]{DBLP:journals/tcs/Raz97}.
+
+\begin{proposition}[{\cite[Prop.~1]{DBLP:journals/tcs/Raz97}}] \label{constr_sync:prop:sparse}
+	A bounded language is sparse.
+\end{proposition}
+\begin{proof}
+	Let $L \subseteq u_1^* \cdots u_k^*$ for $u_1, \ldots, u_k\in \Sigma^*$.
+	Then $L \cap \Sigma^{\le n}$
+	is contained in $\{ u_1^{i_1} \cdots u_k^{i_k} \mid i_1 |u_1| + \cdots + i_k |u_k| \le n \}$,
+	which is contained
+	in the set $\{ u_1^{i_1} \cdots u_k^{i_k} \mid i_1 |u_1| + \cdots + i_k |u_k| \land \forall j \in \{1,\ldots,k\} \colon 0 \le i_j \le n  \}$ of size at most $(n+1)^k$.
+\end{proof}
+
+Next, we give some examples of sparse languages that are not bounded.
+
+\begin{example} \label{syncmax:growth:ex:sparse-not-bounded}
+	\begin{enumerate}
+		\item Let $L = \{ (a^n b^n)^n \mid n \ge 1 \}$.
+		This language is sparse since
+		\[
+		L \cap \Sigma^i = 
+		\begin{cases}
+			\{ (a^n b^n)^n \} & \text{if $i = 2n^2$ for some $n \ge 1$,} \\
+			\emptyset         & \text{otherwise.}  	
+		\end{cases}
+		\]
+		Assume~$L$ is bounded.
+		We have $\rho( (a^n b^n)^n ) = 2n - 1$
+		and thus~$L$ is not letter-bounded by \cref{constr_sync:prop:letter_bounded_iff_equal_letter_runs_bounded}.
+		By \cref{syncmax:lem:non-letter-bounded}
+		there exists $u$ with $|u|_a > 0$ and $|u|_b > 0$
+		such that $\Sigma^* u^i \Sigma^* \cap L \ne \emptyset$ 
+		for infinitely many~$i$.
+		Without loss of generality, we have $ab^ma \in \factor{uu}$
+		for some $m \ge 0$.
+	    Let $vu^iw \in L$ for $i \ge 2$ and $v,w \in \Sigma^*$;
+	    and then $\Sigma^* u^j \Sigma^* \cap L \ne \emptyset$
+	    for $j \ge |vu^iw| + 1$.
+	    Thus~$L$ contains two distinct words with the factor $ab^ma$,
+	    but this contradicts the definition of~$L$
+	    since $(a^m b^m)^m$ is the only word with this factor.
+		
+		\item Let $u_n = b a^{i_1} b a^{i_2} \cdots b a^{i_n}b$
+		for some strictly increasing sequence $1 \le i_1 < i_2 < \cdots$.
+		Set $L = \{ u_1, u_2, \ldots\}$.
+		Then $L$ contains at most one word of each length
+		since the lengths of the $u_n$ strictly increase.
+		Thus $L$ is sparse.
+		Assume $L$ is bounded. Since $\rho(u_n) = 2n$, $L$ is not letter-bounded.
+		By \cref{syncmax:lem:non-letter-bounded}
+		there exists $u$ with $|u|_a > 0$ and $|u|_b > 0$
+		such that $\Sigma^* u^i \Sigma^* \cap L \ne \emptyset$ 
+		for infinitely many~$i$.
+		No word in~$L$ contains the factor $bb$.
+		Thus a factor of the form $ba^jb$ for some $j \ge 0$ appears
+		at least twice in $uuu$.
+		We have $\Sigma^* uuu \Sigma^* \cap L \ne \emptyset$.
+		However each factor of the form $ba^jb$ for some $j \ge 1$
+		appears at most once in each word from~$L$,
+		so this is not possible.
+		
+		\item \label{syncmax:growth:ex:sparse-not-bounded:3} (Pin~\cite[Sect.~XII.4.2]{Pin2022}) Consider
+		a bijection $f \colon \{a,b\}^* \to \mathbb N_0$
+		such that $f(u) \ge |u|$ for all $u \in \{a,b\}^*$.
+		One can construct such a bijection by letting $f(u)$
+		be the position of~$u$ in the shortlex order: $\varepsilon$, $a$, $b$, $aa$, $ab$, $ba$, $bb$, $aaa$, $aab$, $aba$, $\ldots$. Now, let
+		\[
+		 L = \{ u c^{f(u) - |u|} \mid u \in \{a,b\}^*\}.
+		\]
+		Then for $n \ge 0$ 
+		we have $L \cap \Sigma^n = \{ uc^{f(u) - |u|} \}$
+		for the unique $u \in \{a,b\}^*$
+		with $f(u) = n$ and thus~$L$ is sparse.		
+		If $L \subseteq u_1^* \cdots u_k^*$,
+		then $\pref{L} \subseteq \bigcup_{i=1}^{k} \bigcup_{v \in \pref{u_i}} u_1^* \cdots u_{i-1}^* u_i^* v$;
+		and thus the set of prefixes of~$L$ is also bounded if~$L$ is bounded.
+		However, $\{a,b\}^* \subseteq \pref{L}$
+		and this language has exponential growth.
+		So~$\pref{L}$ has exponential growth
+		and thus cannot be bounded by \cref{constr_sync:prop:sparse},
+		which implies that~$L$ is not bounded.
+	\end{enumerate}	
+\end{example}
+
+Next, in \cref{constrsync:thm:reg-sparse-or-exp},
+we show that a regular language is either bounded, and thus sparse,
+or has exponential growth. But first, in \cref{constr_sync:cor:code_growth_of_star},
+we give a sufficient condition for exponential growth. 
+
+\begin{proposition} \label{constr_sync:cor:code_growth_of_star}
+	Let $L \subseteq \Sigma^*$ be a language
+	containing two words $u,v \in L$
+	that are not powers of a common word
+	and such that $\{u,v\}^* \subseteq L$.
+	Then~$L$ has exponential growth.	
+\end{proposition}
+\begin{proof}
+	By \cref{constr_sync:lem:two-words-code}, $C = \{u,v\}$
+	is a code.
+	By Proposition~\ref{constr_sync:prop:coding_morphisms} 
+	there exists a coding morphism $\varphi \colon \Gamma^* \to \Sigma^*$
+	such that $\varphi(\Gamma^*) = C^*$.
+	We can suppose $\Gamma = \{a,b\}$ where $a \ne b$.	
+	Since~$\varphi$ is injective, we have 
+	$|\applyfunc{\{a,b\}^i}{\varphi}| = 2^i$
+	for all $i \ge 0$.
+	As $\varphi(\{a,b\}^{\lfloor n / m \rfloor}) \subseteq C^* \cap \Sigma^{\le n}$ 
+	for
+	$m = \max\{ |\applyfunc{a}{\varphi}|, |\applyfunc{b}{\varphi}| \}$
+	and $n \ge 0$, $C^*$ has exponential growth.
+	Since~$C^* \subseteq L$, also $L$ has exponential growth.
+\end{proof}
+
+As \crefitem{syncmax:growth:ex:sparse-not-bounded}{syncmax:growth:ex:sparse-not-bounded:3}
+shows, $\{u,v\}^* \subseteq \factor{L}$ for a code $\{u,v\}$ does not imply exponential growth.
+However, it implies that~$L$ cannot be bounded, as stated in~\cite[Lem.~5.3]{Ginsburg1964BOUNDEDAL}. 
+
+\begin{corollary} \label{constrsync:thm:monoid-sparseregular-or-exp}
+	A monoid language $L \subseteq \Sigma^*$ is either
+	a regular subset of $u^*$ for some $u \in \Sigma^*$ or has exponential growth.
+\end{corollary}
+\begin{proof}
+	First, suppose $L \subseteq u^*$ for some $u \in \Sigma^*$.
+	Then, $L$ is regular by \cref{constrsync:thm:sparsemonoid-regular}.
+	Otherwise, by~\cref{constrsync:prop:slender},
+	there exist $v,w \in L$
+	such that $\{v,w\} \not\subseteq u^*$ for each $u \in \Sigma^*$.
+	Since~$L$ is a monoid, we have $\{v,w\}^* \subseteq L$.
+	By \cref{constr_sync:cor:code_growth_of_star}, $L$ has exponential growth.	
+\end{proof}
+
+By \cref{constr_sync:lem:two-words-code,constrsync:thm:monoid-sparseregular-or-exp} a code 
+either contains at most one word or its Kleene star has exponential growth.
+
+\begin{theorem} \label{constrsync:thm:reg-sparse-or-exp}
+	A regular language is either bounded or has exponential growth.
+\end{theorem}
+\begin{proof}	
+	Let $L \subseteq \Sigma^*$ be regular and $\automat{A}{Q}{\Sigma}{\delta}{q_0}{F}$
+	be a trim PDFA accepting~$L$.
+	As a shorthand, for $q \in Q$, set $L_{q} = L(\mathcal A_{q, \{q\}})$.
+	By \cref{constr_sync:thm:regular_prefix_codes_and_automata}
+	these are monoid languages.	
+	Suppose $L_q$ has exponential growth for some $q \in Q$.
+	Since~$\mathcal A$ is trim, we have $\delta(q_0, u) = q$
+	and $\delta(q, v) \in F$ for some $u,v \in \Sigma^*$.
+	This yields $u L_q v \subseteq L$.
+	By \crefitem{ex:only_one_letter_infinitely}{ex:only_one_letter_infinitely:4}
+	the language $u L_q v$ has exponential growth.
+	Thus, also $L$ has exponential growth.
+	Otherwise, 
+	by \cref{constrsync:thm:monoid-sparseregular-or-exp} 
+	for each $q \in Q$ we have $L_q \subseteq v_q^*$
+	for some $v_q \in \Sigma^*$.
+	Let 
+	\[
+	E = \{ u_1 \cdots u_m \in L \mid u_1,\ldots,u_m \in \Sigma \land 
+	\delta(q_0, u_1 \cdots u_i) \notin \{q_0, \delta(q_0, u_1), \ldots, \delta(q_0, u_1 \cdots u_{i-1}) \}
+	\}.
+	\]
+	The words in~$E$ are precisely those
+	words $u \in L$
+	for which there do not exist $u_1, u_2, u_3 \in \Sigma^*$
+	with $u = u_1 u_2 u_3$, $|u_2| > 0$, and $\mu(p_0, u_1) = \mu(p_0, u_1 u_2)$.
+	Each word in~$E$ has length at most~$|Q|$ and so~$E$ is finite. 
+	We have\footnote{Note that $\delta(q_0, u_1\cdots u_m) \in F$ in \cref{constrsync:eqn:reg-sparse-or-exp}
+		since~$E \subseteq L$.}
+	\begin{equation}\label{constrsync:eqn:reg-sparse-or-exp}
+		L = \bigcup_{u_1 \cdots u_m \in E} L_{q_0} u_1 L_{\delta(q_0, u_1)} u_2
+		\cdots u_m L_{\delta(q_0, u_1\cdots u_m)}.
+	\end{equation}
+	Thus $L$ is contained in a finite union	of languages of the form 
+	$v_{q_0}^* u_1 v_{q_1}^* u_2 \cdots u_m v_{q_m}^*$
+	for $u_1 \cdots u_m \in E$ and $q_i = \delta(q_0, u_1\cdots u_i)$ 
+	and so $L$ is bounded.\footnote{\Cref{constrsync:eqn:reg-sparse-or-exp} can also be used
+	to prove ``$\ref{constr_sync:prop:letterboundedreg:item:PDFA} \Rightarrow~\ref{constr_sync:prop:letterboundedreg:item:letterbounded}$''
+	in \cref{constr_sync:prop:letterboundedreg} since
+	with the assumption that, for each $q \in Q$, we have $L_q \subseteq a^*$ for some $a \in \Sigma^*$
+	we can then show $\rho(u) \le \max\{ \rho(v) \mid v \in E \} + 2|Q|$
+	for $u \in L$.} 
+	%Thus we obtain $L \subseteq \bigcup_{u_1 \cdots u_m \in E} v_{q_0}^* u_1 v_{\delta(q_0, u_1)}^* u_2 \cdots u_m v_{\delta(q_0, u_1\cdots u_m)}^*$ and so~$L$ is bounded.
+\end{proof}
+
+\begin{corollary} \label{constr_sync:thm:cf_bounded_equals_sparse}
+	A regular language is bounded if and only if it is sparse.
+\end{corollary} 
+\begin{proof}
+	By \cref{constr_sync:prop:sparse}, every bounded language is sparse. Conversely, a sparse regular language cannot have exponential growth and is therefore bounded by \cref{constrsync:thm:reg-sparse-or-exp}.	
+\end{proof}
+
+The following corollary collects some conditions characterizing languages
+in $u^*$ that follow from previous results.
+
+\begin{corollary}
+	\label{constr_sync:cor:kleene_star_growth}
+	Let $L \subseteq \Sigma^*$. Then the following are equivalent.	
+\end{corollary}
+\begin{enumerate}	
+	\item \label{constrsync:cor:kleenestar:item:Lustar} $L \subseteq u^*$ for some $u \in \Sigma^*$.	
+	
+	\item \label{constrsync:cor:kleenestar:item:Lstarustar} $L^* \subseteq u^*$ for some $u \in \Sigma^*$.
+	
+	\item \label{constrsync:cor:kleenestar:item:regular} $L^* = u^n(u^d)^* \cup F$ for some $u \in \Sigma^*$, $n \ge 0$, $d \ge 0$ and finite $F \subseteq \{ u \}^{< n}$.\footnote{Note that in case $L = \{\varepsilon\}$ we 
+		have $d = 0$ where the first three equivalences hold for any $u \in \Sigma^*$.}
+	
+	\item \label{constrsync:cor:kleenestar:item:sparse} $L^*$ is sparse.
+	
+	\item \label{constrsync:cor:kleenestar:item:notexponential} $L^*$ has not exponential growth.
+	
+	\item \label{constrsync:cor:kleenestar:item:vu} For all $u,v \in L$ there exists $w \in \Sigma^*$ 
+	such that $\{u, v\} \subseteq w^*$.
+\end{enumerate}
+\begin{proof}
+$\ref{constrsync:cor:kleenestar:item:Lustar}\Rightarrow\ref{constrsync:cor:kleenestar:item:Lstarustar}$: This follows since $L^* \subseteq (u^*)^* = u^*$ by \crefitem{prelim:langeqn}{prelim:langeqn:Kleenestar-idemp}.
+
+$\ref{constrsync:cor:kleenestar:item:Lstarustar}\Rightarrow\ref{constrsync:cor:kleenestar:item:regular}$: This follows from \cref{constrsync:thm:sparsemonoid-regular} since $L^*$ is a monoid language.
+
+$\ref{constrsync:cor:kleenestar:item:regular}\Rightarrow\ref{constrsync:cor:kleenestar:item:sparse}$: In this case, $L^* \subseteq u^*$ and so it is sparse by \cref{constr_sync:prop:sparse}.
+
+$\ref{constrsync:cor:kleenestar:item:sparse}\Rightarrow\ref{constrsync:cor:kleenestar:item:notexponential}$: This is clear.
+
+$\ref{constrsync:cor:kleenestar:item:notexponential}\Rightarrow\ref{constrsync:cor:kleenestar:item:vu}$: Since $L^*$ is a monoid language, if it does not has exponential growth,
+then $L^* \subseteq u^*$ for some $u \in \Sigma^*$ by \cref{constrsync:thm:monoid-sparseregular-or-exp}.
+
+$\ref{constrsync:cor:kleenestar:item:vu}\Rightarrow\ref{constrsync:cor:kleenestar:item:Lustar}$: This follows from \cref{constrsync:prop:slender}.
+\end{proof}

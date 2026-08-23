@@ -1,0 +1,713 @@
+
+%\section[Congruences, Graphs, Reachability \& Distinguishability]{Relating Congruences, Orbital Graphs, Subset Reachability and Distinguishability}
+
+
+%\subsection{Sufficient Conditions} % for Complete Reachability and Sync-Maximality}
+
+%\subsection{Permutation Groups, Graphs and \texorpdfstring{$G$}{G}-congruences} %%and Block Systems} %statt block system congruences
+
+%\subsection{Permutation Groups, Graphs and Congruences} 
+
+
+\todo{das als eigene section und als untersection davon primitive gruppe? dann subclasses ganz am schluss}
+
+\todo{auch im wesentlichen von mir, und jordan verallgemeinert.}
+
+\todo{diese jordan satz verallgemeinerung diskutieren.}
+
+The main result of this section is Theorem~\ref{sync_max:thm:no_congruence_equivalences}
+stating various equivalences relating  the property 
+that two points cannot
+be congruent for a non-trivial $G$-congruence in a given permutation group $G$
+(or that they are never both contained in a non-trivial block)
+to complete reachability, distinguishability
+of subsets and generating sets for the full symmetric group.\todo{oder detecting if a symmetric group, wie in isaacs
+paper über generating sets beschrieben.}
+
+\todo{begriff orbits nutzen und definieren?}
+
+
+
+
+\begin{toappendix}
+Before stating the main result, the section begins with two lemmata giving sufficient
+conditions for complete reachablity and distinguishability of subsets. The proofs
+rely heavily on constructing graphs on which a given permutation group acts as
+an automorphism group.
+
+
+
+
+
+
+
+% pivotal results? crucial results
+
+\todo{https://link.springer.com/content/pdf/10.1007/s10801-016-0703-9.pdf
+lineare schranke für konstant abbildungen.}
+
+\todo{im lemma definition versteckt}
+
+\todo{circular simple idempotent binär klassifzieren, äquiavlenz kürzetses syncwort auch, aber folgt auch durch einfache transformation
+auf Cerny automaten}
+
+\todo{semigroup statt monoid}
+\begin{lemma}
+\label{sync_max:lem:sufficient_compl_reach}
+Let $M \le \mathcal T_n$ be a transformation semigroup. \todo{erwähnen compl reachable semigroup ist monoid}
+Consider the directed graph $\Gamma_{\text{SI}}(M)$ with vertex set $[n]$ \todo{im text davor definieren.}
+and edge set
+\[ 
+\{ (a,b) \mid a \ne b \text{ and there exists a simple idempotent in $M$ mapping $a$ to $b$ } \}.
+\]
+If the graph is strongly connected, then $M$
+is completely reachable
+and every two distinct $2$-sets are distinguishable.
+\end{lemma}
+\begin{proof}
+The defined graph is a subgraph of $\Gamma_1(M)$.
+Hence if it is strongly connected, complete reachability
+is implied with Proposition~\ref{todo}. 
+Now, the graph has the following property:
+if there exists a path $x_1, x_2, \ldots, x_n$
+in the graph then the mapping that results by composing the simple idempotents
+that induce the edges along the path maps $[n]$ to $[n] \setminus \{x_1, x_2, \ldots, x_{n-1}\}$.\todo{beweis}
+Let $\{a,b\}, \{c,d\}$ be two distinct $2$-sets
+and consider a shortest path $x_1, x_2, \cdots, x_n$
+with $x_1 = a$ and $x_n = b$.
+As we have choosen a shortest path, it contains no loops
+and so $|\{x_1, x_2, \ldots, x_n\}| = n$.
+Then the corresponding element maps $\{a,b\}$ to $\{b\}$.\todo{genauer:
+	$[n]$ auf $[n] \setminus \{ a, x_2, \ldots, x_{n-1} \}$
+	damit folgt nicht $\{a,b\}$ auf $\{b\}$
+	eher mit $\{x_1, \ldots,x_n\}$ auf $\{x_n\}$ (gleich da rest self-loops hier),
+	vgl. blatt 9.7 (1) bleistiftskizze
+}
+If $\{c,d\} \cap \{x_1, x_2, \ldots, x_n\} = \emptyset$,
+then $\{c,d\}$ is mapped to $\{c,d\}$.
+If there exists $i \in \{1,\ldots,n\}$
+such that $c = x_i$ but $d \notin \{x_1, x_2, \ldots, x_n\}$,
+then $\{c,d\}$ gets mapped to $\{b,d\}$, similarly
+if $d = x_i$ and $c \notin \{x_1, x_2, \ldots, x_n\}$.
+If there exists $1 \le i < j \le n$
+such that $x_i = c$ and $x_j = d$ (or vice versa), \todo{nochmal genauer hinschreiben.}
+then the mapping composed from
+the path $x_i, x_{i+1}, \ldots, x_j$ maps $\{c,d\}$ to $\{d\}$
+but as $\{a,b\}\cap \{x_i,x_{i+1},\ldots,x_j\} = \emptyset$
+maps $\{a,b\}$ to itself.
+\end{proof}
+\end{toappendix}
+
+\todo{group of units "controls" some properties}
+
+\todo{mit kernel von $f$ ausdrücken, gemeinsame verfeinerung von knogruenz auf $G$
+und dem kernel, falls das nur equality dann die bedingungen erfüllt?}
+
+
+
+\begin{comment} 
+\begin{lemma}
+\label{sync_max:lem:no_congruence_ab}
+Let $f : [n] \to [n]$ be a function of defect one %rank $n - 1$
+and $a,b \in [n]$ be distinct such that $\applyfunc{a}{f} = \applyfunc{b}{f}$.
+% muss nicht transitiv sein, da sonst ja eine g-kongruenz bewahrt
+Let $G \le S_n$ be a permutation group
+admitting no non-trivial $G$-congruence for which $a$ and $b$ 
+are congruent (or equivalently no non-trivial block containing $a$ and $b$) and such that there exists $g \in G$
+with $\applyfunc{a}{g} = b$.
+Then
+\begin{enumerate}
+	\item the transformation monoid $\langle G \cup \{f\} \rangle$ is completely reachable,
+	
+	\todo{sagen distinghished, und nur distinct hier gesagt!}
+	\item for any two distinct $2$-sets $\{a,b\}, \{c,d\}$ there exists a transformation
+	in $\langle G \cup \{f\} \rangle$
+	mapping precisely one to a singleton set but not the other.
+	
+\end{enumerate}
+\end{lemma}
+\begin{proof} \todo[inline]{annahme $f(b) = b$ noch weglassen, da man potenz so wählen kann , dass auf $b$ landet. braucht nur, dass bild permutiert. wenn 
+	
+	$f(a) = f(b) = c$ und $f^n(c) = b$ (da permutiert und $b$ sei im bild),
+	dann $f^{n+1}(a) = f^{n+1}(b) = f^n(c) = b$ 
+	
+	und wenn bild auf identität, dann nur $f^i(a) = f^i(c) = c$.
+	(hier $i = n + 1$ möglich)
+}
+By Lemma~\ref{sync_words:lem:idempotent} we can assume $f$ is a simple idempotent mapping.\todo{oder idempotent of defect one immer sagen?}
+Set $M = \langle G \cup \{f\}\rangle_M$.
+The mapping $f$ induces the edge $(a,b)$ in $I(M)$.
+By Equation~\ref{rank-defect-inqeuliaty} we can deduce that $G$ is precisely the group of units of $M$.
+As $G$ is a subgroup of the automorphism group of $I(M)$ (Proposition~\ref{sync_max:prop:G_automorhism_on_graphs})
+the connected components (without taking the direction of the edges into account)
+of $I(M)$ form congruence classes for $G$.
+As $(a,b)$ is an edge in $I(M)$,
+both are contained in the same connected component.
+Then by assumption all elements must be congruent, i.e., $I(M)$ must be connected.
+With Lemma~\ref{sync_max:lem:ab_non_congruent_then_two_orbits}
+and as there exists an element mapping $a$ to $b$,
+the group $G$ is transitive.
+Hence $I(M)$ is a vertex-transitive graph.
+By Theorem~\ref{todo} this implies that $I(M)$ is strongly connected.
+Then the claim follows with Theorem~\ref{sync_max:thm:IS_SCC}.
+\end{proof}
+\end{comment}
+
+
+\todo{wie verhält sich permutation wenn mit zyklus über alle elemente verknüpft, bilder dazu, nutzen
+in circular chapter, und für transposition}
+
+\todo{colon nutzen.}
+
+\todo{die fussnote über $n > 2$ hier dran. und das lemma im einführungstext erwähnen.}
+
+\todo{btw das für "nur $a,b$" point stabilizer nicht maximal ist klar,
+da transitiv gleich operation auf punktstabs und
+ja durchaus blöcke erlaubt, und die entsprechen halt obergruppen und denn 
+nebenklassen in der obergruppe. wäre ja auch komisch wenn alle punktstabs, da transitiv
+als konjugierte von einem, maximal, weil dann wäre es transitiv.
+
+das vielleicht noch schreiben im primitiv teil?
+
+damit auch nennung dieses begründen.
+
+
+beispielgruppe
+
+C4, dann 1 und 2 nie kongruent, punktstab von 1, identität, nicht maximal
+}
+
+\begin{comment}
+\todo[inline]{FAALSSSSSCCHCCCCCC}
+\begin{lemma}
+\label{sync_max:lem:ab_non_congruent_then_transitive}
+Let $G \le \mathcal S_n$ with $n > 2$ and $a,b \in [n]$ be distinct.
+If there does not exist a non-trivial block containing $a$
+and $b$, then $G$ acts transitively on $[n]$.
+\end{lemma}
+\begin{proof}
+Suppose $G$ does not act transitively.
+Set $\Gamma_a = \{ \applyfunc{a}{g} \mid g \in G \}$
+and $\Gamma_b = \{ \applyfunc{b}{g} \mid g \in G \}$.
+If $\Gamma_a \cap \Gamma_b = \emptyset$, 
+then $\{ a \} \cup \Gamma_b$ is a non-trivial block
+containing~$a$ and~$b$. \todo{genauer?}
+Otherwise, if $\Gamma_a = \Gamma_b$, then, as $G$ 
+is not transitive by assumption, $[n]\setminus \Gamma_a \ne \emptyset$ 
+and $\Gamma_a$ is a non-trivial block containing $a$ and $b$.
+
+\todo[inline]{
+	
+	Scheint falsch, $\Gamma_b \cup \{a^g\}$ ist doch möglich mit $a^g \ne a$,
+	aber $\Gamma_a \cup \Gamma_b$ ist ein Block, also alles.
+	Damit ist jedes Element entweder  im Orbit von $a$
+	oder $b$!!!
+}
+\end{proof}
+\end{comment} 
+
+
+
+
+
+
+\todo{etwas mehr zu $n \ge 5$ sagen. eigentlich nur wegen der vorletzten bedingung mit den
+disjunkten mengen, ein remark welche äquvilenzen auch für klienere n gelten.}
+
+\todo{subset fragen, aus neumann/morgenstern und literatur dazu angeben.}
+
+
+\todo{fussnote erzeuger monoid oder semigroup egal bei gruppen} 
+
+
+\todo[inline]{
+
+Siehe DLT submission, dort für SI-automaten gezeigt (mit beliebig vielen simple idempotents) wenn G transitiv.
+
+Allgemeines prinzip dahinter in perm.-gruppensprache:
+a1,b1, …, ak,bk, wenn alle kongruent/dann universelle kongruenz, also alle kongruent (ist hinter der aussage für SI-automaten).	
+}
+
+
+\begin{theorem} \todo{transitive brauche ich nicht, und kleine fälle $n \ge 4$, gibt es da sonderfälle?}
+\label{sync_max:thm:no_congruence_equivalences} \todo{ja okay, aber warum $n \in \{3,4\}$ ausgeschlossen?} 
+Let $G \le_G \mathcal S_n$ with\footnote{For $n \le 2$ there cannot exist a non-trivial
+congruence on $[n]$ and some equivalences fail to hold true.}
+$n \ge 5$ \todo{wenn nicht transitiv, fall $a$ und $b$ in verschiedenen bahnen vno $G$.
+aber das widerspricht nicht der aussage!
+
+zwei primzyklen, $f$ einen auf den anderen. dann nicht completely reachable da nicht SCC,
+und nicht sync-max!
+aber in dem fall volle kongreunz auf einen und triviale auf anderen!
+}
+and $a,b \in [n]$ be distinct. Suppose there exists $h \in G$ such that $\applyfunc{a}{h} = b$.
+Then the following are equivalent:
+
+\todo{einige der vorderen äquiavlenzen brauche dieses $g$ nicht, dass auch erwähnen in satz danach.}
+
+\begin{enumerate}[label=(\arabic*)]
+
+
+
+
+%\item For every transformation semigroup homomorphism $\varphi : [n] \to [m]$
+% we have $\applyfunc{a}{\varphi} \ne \applyfunc{b}{\varphi}$.
+
+\item \label{sync_max:thm:ab_completely_reachable} For every [idempotent] $f \colon [n] \to [n]$ of defect one with $f(a) = f(b)$,
+the transformation semigroup $\langle G \cup \{f\} \rangle_S$ is completely reachable.
+
+\item \label{sync_max:thm:ab_subset-pair} For every [idempotent] $f \colon [n] \to [n]$ of defect one with $f(a) = f(b)$,
+the transformation semigroup $\langle G \cup \{f\} \rangle_S$ is completely distinguishable.
+
+
+\item \label{sync_max:thm:ab_subsets_different_cardinality} For every [idempotent] $f\colon [n] \to [n]$ of defect one with $f(a) = f(b)$
+and distinct non-singleton subsets $A, B \subseteq [n]$ 
+there exists $t \in \langle G \cup \{f\} \rangle_S$
+with $|\applyfunc{A}{t}| \ne |\applyfunc{B}{t}|$. 
+
+
+
+
+\todo{transformation statt function sagen}
+
+\item \label{sync_max:thm:ab_distinguishes_2_sets} For every [idempotent] $f\colon [n]\to [n]$ of defect one with $f(a) = f(b)$,
+in the transformation semigroup $\langle G \cup \{f\} \rangle_S$
+pairs of distinct $2$-sets are distinguishable.
+
+%\item \label{sync_max:thm:ab_distinguishes_all_subsets} For every [idempotent] $f\colon [n] \to [n]$ of defect one with $f(a) = f(b)$,
+% the transformation monoid $\langle G \cup \{f\} \rangle$ distinguishes %all non-empty and 
+% non-singleton
+% subsets.\todo{die ganzen anderen, disjunkte mengen etc?}
+
+\item \label{sync_max:thm:ab_distinguishes_disjoint_2_sets} For every [idempotent] $f\colon  [n] \to [n]$ of defect one with $f(a) = f(b)$,
+in the transformation semigroup $\langle G \cup \{f\} \rangle_S$ 
+pairs of disjoint $2$-sets are distinguishable.
+
+
+\todo{erzeugte halbgruppe oder monoid?}
+
+\item \label{sync_max:thm:2-hom} For every [idempotent] $f\colon [n] \to [n]$ of defect one with $f(a) = f(b)$
+and for every $c,d \in [n]$ there exists $t \in \langle G \cup \{f\} \rangle_S$ 
+such that $\applyfunc{\{c,d\}}{t} = \{a,b\}$. \todo{auch für completely subset-pair wenn erzeugermenge mit genau einer nicht-permuation.}  
+
+
+\todo{ \item There exists a function $f : [n] \to [n]$ of defect one with $f(a) = f(b)$
+	
+	Existenzaussagen!
+}
+
+\todo{usw für alle bedingungen. mit der bedingung kann man beliebige funktion
+	nehmen und testen bzw dann auch für alle nicht der fall
+	
+	klar, gibt nur zwei simple idempotente, und ziel sit egal
+	
+	
+	Damit folgt einfacher Algrithmus wenn nur permutation und genau eine vom defekt one.
+	halt orbital von (a b) ausrechnen und gucken ob connected. wenn nicht connected da für alle-aussage.
+	
+	
+	der algorithmus vielleicht effizienter?
+	
+	
+	Let $f$ be given. $G \cup \{f\}$ compleltey reachable iff orbital von a und b connected in $G$.
+	wenn orbital connected, dann compl reachalbe, da für alle funktionen
+	wenn compl reachable mit f, dann existiert eine funktion (exist aussage), also connected
+	
+	existiert aussage auch klar, da konkrete funktion eigentlich irrelevant und nur die punkte a und b
+	entscheidend
+	
+	
+	
+	für existenzaussage beweis: gleich, aber in der konstruktion der funktion, nimm simple idempotetn
+	aus $f$ und nutze, dass $G$ auf kongruenz als äquiavlenz operirt, also ist auch beliebige funktion
+	äquivalenz-treu auf kongruenz; nie das potenzieren von $fg$ macht dieses argument kaputt, also fordern
+	äquivalenz-treue funktion
+	
+	-> also Existenz-Verstärkung nur für simple idempotent (oder äquiavlenz-treue bzgl g-congruence, aber das als
+	bemerkung); neue abbildung kann ja auch auf orbital operieren; aber beachte man kann annehmen, dass
+	er bild permutiert, weil dieses g dahinterscahlten, dann äquivalenzt-treu genau dann wenn ausgangsabbildung
+	dies war, konjugation mit defekt one abbildung? beie "fasern" betrachten und neues tupel hinzufügen.
+}
+
+\item \label{sync_max:thm:ab_constant_map} For every [idempotent] $f\colon [n] \to [n]$ of defect one with $f(a) = f(b)$,
+the transformation semigroup $\langle G \cup \{f\} \rangle_S$ contains a constant map.
+
+
+
+\todo{maximal subgroup definieren.}
+
+
+\todo{definition point stabilizer nur im theorem machen und vorne wegnehmen.}
+
+% ne, das gilt wohl nicht.
+%\item \label{sync_max:thm:point_stabs} The point stabilizer subgroups $G_a$ and $G_b$ are maximal subgroups in $G$.
+
+
+\todo{is synchronizing, ne den begriff nicht verwenden, da irreführend
+	mit synchroniing group.}
+
+\end{enumerate}
+
+\end{theorem}
+\begin{proof} First, we show the equivalences $\ref{sync_max:thm:ab_no_nontrivial_congruence} 
+\Leftrightarrow
+\ref{sync_max:thm:ab_blocks} 
+\Leftrightarrow 
+\ref{sync_max:thm:undirected_orbital}
+\Leftrightarrow
+\ref{sync_max:thm:ab_orbitals} 
+\Leftrightarrow 
+\ref{sync_max:thm:partition}$.
+Then we show the following implications.
+
+\begin{center} 
+% https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZABgBoBGAXVJADcBDAGwFcYkQAzLjkAX1PSZc+QigBMFanSat23bnwEgM2PASIBmUsSkMWbRJ3k9+g1SM2kxumQaMLeUmFADm8IqA4AnCAFskZCA4EEjkppw+-ojkNMFIYuHefqGxIYgajrxAA
+\begin{tikzcd}[arrows=Rightarrow]
+	&                                           \ref{sync_max:thm:ab_subset-pair} \arrow[r] & \ref{sync_max:thm:ab_subsets_different_cardinality} \arrow[r] & \ref{sync_max:thm:ab_distinguishes_2_sets} \arrow[r] & \ref{sync_max:thm:ab_distinguishes_disjoint_2_sets} \arrow[r] 
+	& \ref{sync_max:thm:2-hom}  \arrow[rd] &  \\
+	\ref{sync_max:thm:ab_orbitals} \arrow[ur] \arrow[rrr] & & & \ref{sync_max:thm:ab_completely_reachable} \arrow[rrr] & & &  \ref{sync_max:thm:ab_constant_map} \arrow[r] & \ref{sync_max:thm:ab_no_nontrivial_congruence}  
+\end{tikzcd}
+\end{center}
+
+\todo{in diskussion erwähnen egienschaft strongly factorizable semigroup}
+
+\todo{satz sollte auch für $n = 4$ gelten? und wenn keine disjunkten $2$-sets gilt es auch?}
+
+
+\todo{mit dem lemma primitive dann transitive falls mehr als zwei punkt, nimm drei $Gamma_a \cup \Gamma_b = \Gamma_a \cup \Gamma_c = \Gamma_b \cup \Gamma_c$ implies alle gelich $[n]$}
+
+
+
+\todo{anderes argument
+	% im primitiven fall
+	% folge g_1(a) \in B und g_2(b) in A, dann nochmal anwenden g_2 usw
+	% b durch g_1g_2 ... immer in A irgendwann identität, dann wäre b \in A, transitiv nutzen b auf a, muss a nach B da primitiv
+	
+	nicht primitiv, jeweils urbild unter g1 g2 usw
+	
+	amit aus 1 und 2.
+}
+
+\todo{äquivalent oder congruenct sagen?}
+
+\todo{sagen hier unterscheidung monoid/semigroup nicht whcihtig, da immer monoid}
+
+\todo{index $S$ oder $M$ dranschreiben bzw. sagen on purpose weggelassen.}
+
+
+\begin{comment} 
+% mit den funktionensätzen zeigen? als eine simple idempotent gleich
+% direkt mit graph und connected-lemma
+%
+% f überall durch transposition ersetzen, dann hat man praktisch stehts zwei mengen A, B, A währe bild in G \cup f, B ausgeschlossen
+
+\todo{$f$ statt $f_i$!}
+Set $t = (a ~ b)$.
+Let $S_0 = \applyfunc{[n]}{(g_0 f_1 g_1 \cdots g_{n-1}f_n g_n)}$ % schreibe h = g_0 f_1 ... 
+and \todo{$g_n$ zuerst,linksaction}
+\[ % es muss |S_0| = |S_1| = ... usw sein
+S_i = \begin{cases}
+	\applyfunc{( S_{i-1} \setminus \{b\} ) \cup \{a\}}{g_i^{-1}} & \text{if } a \in \applyfunc{[n]}{(g_i f_i g_{i+1} \cdots g_{n-1} f_n g_n)} \\ % \{a,b\} \subseteq \applyfunc{[n]}{(g_i f_i g_{i+1} \cdots g_{n-1} f_n g_n)} \\
+	\applyfunc{S_{i-1}}{g_i^{-1}} & \text{if } a \notin \applyfunc{[n]}{(g_i f_i g_{i+1} \cdots g_{n-1} f_n g_n)}
+\end{cases}
+\]
+We claim that for each $i \in \{1,\ldots,n\}$ % oder allgemeiner für alle i <= j?
+we have $S_0 = \applyfunc{S_i}{(g_0 t g_1 \cdots g_{i-1} t g_i)}$.
+
+Suppose $S_0 = \applyfunc{S_i}{(g_0 t g_1 \cdots g_i t)}$. If 
+$a \in \applyfunc{[n]}{(g_{i+1} f_{i+1} g_{i+2} \cdots g_{n-1} f_n g_n)}$,
+then $S_{i+1} = ( S_i \setminus \{b\} ) \cup \{a\}$.
+
+
+\todo{schreibe die verkettung direkt rein, ohne applyfunc, damit ist das makro ja sinnnlos, oder ein makro concat}
+
+%% wie vorher
+
+
+
+
+
+% h_i definieren, mit h_0 = identität
+Suppose $S_0 = \applyfunc{S_i}{(g_0 t g_1 \cdots g_{i})}$.
+Set $T_i = \applyfunc{[n]}{(g_{i+1} \cdots g_{n-1} f_n g_n)}$.
+If $a \in T_i$, then $S_{i+1} = (\applyfunc{S_i}{g_i^{-1}} \setminus \{g_i^{-1}(b)\}) \cup \{g_i^{-1}(a)\}$.
+So
+\[
+\applyfunc{S_{i+1}}{(g_0 t g_1 \cdots g_{i-1}tg_i)}
+= \applyfunc{( S_i \setminus \{b\} ) \cup \{a\}}{(g_0 t g_1 \cdots g_{i-1}t)}
+= \applyfunc{ S_i \cup \{b\} }{(g_0 t g_1 \cdots g_{i-1})}
+\]
+
+
+
+
+
+Set $T_i = (g_i f g_{i+1} \cdots g_{n-1} f g_n)([n])$
+and $S_0 = g_0^{-1}(T_0)$ and, for $i > 0$,
+\[ % t( .. ) hier doch überflüssig?
+S_i = \begin{cases}
+	t(g_{i-1}^{-1}(S_{i-1}))                               & \text{if } \{a,b\} \cap T_i   = \emptyset \\ 
+	(g_{i-1}^{-1}(S_{i-1}) \setminus \{b\} ) \cup \{a\} & \text{if } \{a,b\} \cap T_i \ne \emptyset.
+\end{cases}
+\]
+We claim that $T_0 = (g_0 t g_1 \cdots g_{i-1} t g_{i} t)(S_i)$. For $i = 0$
+this is clear. So assume $0 < i < n$. 
+If $\{a,b\} \cap T_{i+1} = \emptyset$, then
+\[
+(g_0 t g_i \cdots g_{i-1} t g_i t )(S_{i+1})
+= (g_0 t g_i \cdots g_{i-1} t g_i)(S_{i})
+\]
+\end{comment}
+\end{proof}
+
+
+\todo{
+kongruenezn bei cirular mit untergruppen entsprechnung?
+}
+
+
+\todo[inline]{
+
+dixon mortimer aufgabe
+
+Delta definiere simple idempotent, mit fall im finite, erzeuge idempotente alpha auf beta 
+
+
+anders folgern: gibt produkt simple idempotent mit bild teilmenge die alpa enthält, aber nicht beta
+
+
+oder teilmengen separierungseigenschaft
+
+----
+
+f rk n - 1
+
+
+zwei idempotent mappings daraus, wenn die beiden elemente in keiner kongruenz, dann sync-max & completely reachable (da auch SCC, weil gruppe transitiv) 
+
+muss nichtmal idempotent herstellen, nur das ziel von dem einen
+
+
+geht doch bei beliebigem f und operation durch konjugation (im prinzip gleichen functionalgraph!)
+
+
+
+für das schließen enifach kante mit ursprung exluced, ziele irgendwas im bild, dann kann man auch entlang so schließen.
+
+- aber exluded element wird u.U. bewegt, also kann man nicht entlang des pfades so schließen
+
+
+wirklich nur "simple idempotent" graph
+}
+
+\todo{kann man auch immer aussuchen, welches 2-set auf einerset? diskutieren -> ne, dann 2-homogen, remark,
+und beispiel primitive aber nicht 2-hom gruppe C_p nennen.}
+
+\todo{distinguishability 
+impliziert höchstens 2 orbits.
+
+ne, auch transitiv, als remark?
+
+}
+
+\todo{pair kreterium, schreiben alle $2$-sets statt pairs.}
+
+
+
+\todo[inline]{
+Dieser Remark bezog sich noch auf älteren Beweis vor dem 27.11. Ist der Kommentar noch gültig?
+\begin{remark}
+That Condition~\ref{sync_max:thm:ab_distinguishes_2_sets}
+implies Condition~\ref{sync_max:thm:ab_constant_map}
+can be shown
+similarly
+as the implication ``$\ref{sync_max:thm:ab_distinguishes_disjoint_2_sets} \Rightarrow \ref{sync_max:thm:ab_constant_map}$''
+was shown but without using Theorem~\ref{thm:separating_neumann}
+in the following way.
+First, note that  Condition~\ref{sync_max:thm:ab_distinguishes_2_sets}
+implies transitivity.
+For assume we have a non-trivial orbit $\Gamma$. 
+\todo{orbit definieren}
+Let $s \in [n] \setminus \Gamma$ and $t,r \in \Gamma$ with $t \ne r$. \todo{oder aus dem aneren zwei, einer muss ja zwei enthalten.}
+Then we can distinguish \todo{genauer}
+$\{s,t\}$ and $\{s, r\}$.
+But one of those subset can only be mapped to $\{a,b\}$
+if $a \in \Gamma$ or $b \in \Gamma$, but $\{a,b\} \not\subseteq \Gamma$, \todo{anders schreibe, schnitt kardinalittät eins.}
+as the other element
+is from a different orbit. \todo{genauer}
+However, then take three elements from $\Gamma$
+or from $[n] \setminus \Gamma$, which is possible as $n \ge 5$,
+and for two distinct $2$-sets. Then neither of these can be mapped ot $\{a,b\}$.
+
+Now let $\{s,t\} \subseteq [n]$
+be any $2$-set. As $G$
+is transitive, \todo{dafür brauche ich nichtmal transitiv, nur jeder orbit mindens drei elemente.}
+there exists $g \in G$
+with $\applyfunc{\{s,t\}}{g} \ne \{s,t\}$.
+Now, distinguish both sets and proceed as
+in the proof 
+``$\ref{sync_max:thm:ab_distinguishes_disjoint_2_sets} \Rightarrow \ref{sync_max:thm:ab_constant_map}$''
+above.
+\end{remark}
+}
+
+
+\todo[inline]{
+
+Noch ein paar Bemerkungen (27.11.2022)
+
+
+
+
+1) Statt Für-Alle-f-Aussagen, gelten auch Exists-f-Aussagen?
+
+exists f so dass ... statt für alle
+
+f idempotent annehmen mit $f^g$ (also als produkt von konjugieten) 
+formel. dann kongruenzklasse um a,b die existiert, dann für die nicht sync-bar, also keine konstante map.
+damit folgt, wenn es $f$ gibt, so dass erzeugte Halbgruppe konstante Abbildung, dann $a$ und $b$ nie kongruent?
+
+
+
+2) (so in LATA-paper neue version)
+f(0) = f(1) = 1
+pqr kongruenz auf eine feste zahl 1 (kürzestes erzeuger oder transitiv); oder einfach äquivalent, wenn auf einen mapbar mit anderem draußen
+-> damit transformation 2-hom; dann anderer beweis jordan (idemp durch transposition tauschen)
+(transitivität der pqr-kongruenz auch mit A.t singleton und ein q.t \not A.t?)
+p ~ q <=> forall r \notin {p,q} exists p.f = q.f und r.f != p.f
+
+neuer beweis jordan, zyklus mit nerode-kongruenz, zyklus schrittweise erweitern, damit einen großen zyklus (aus hamilton-pfad)
+-> orbital graph hat hamilton pfad, induktiv bauen: auf teilmenge $A$ gibt es ihn, dann auch pfad der rausgeht; ne, der kann aber irgendwo mitten in bestehenden pfad starten
+
+
+oder irgendeine kongruenz definieren, so dass man alle mengen unterscheiden kann. also dass man auf graphentheoretische argumente verzichten kann.
+
+und so, dass entscheidungsverfahren rausnehmbar begründbar.
+
+
+
+3) 
+\ref{sync_max:thm:partition} mit nerode und transitiv wie in rystsov-paper dass graph core? remark mit alternativen beweisen
+
+
+4) 
+2-set distinguishable => sync mit den small Satz~\ref{sync_max:prop:2-sets-dist-SCC-implies-sync} 
+und da transitiv (alternativer beweis, remark)
+
+5) 
+p,q,r bedingung, kongruenz definieren? Festem r definieren p ~ q 
+bemerkung für alternativen beweis
+
+6) bedingung |t(S)| != |t(T)| (different cardinality), immer ein idempotent 
+gilt immer, wenn erzeugermenge mit nur einem simple idempotent? da dann kürestes produkt wählen.
+also in dem fall dass zu completely subset-pair distinguishable äquivalent?
+
+}
+
+\todo{prim group distniguishes pairs(!) schreiben
+oder 2-sets pairwise istinguishable
+}
+
+
+
+
+
+\todo[inline]{
+
+diese sclussweise in dem folgenden todo-teil zeigt doch, dass
+$\langle G \cup f \rangle$ $2$-homogen operiert, und das characterisiert
+primitivität (bzw a und b nicht kongruent). ist doch ein nettes ergebnis.
+damit auch, dass man stets von zwei $2$-sets sich aussuchen kann, welches
+auf singleton (da sogar auf den 2-er sets injektiv operiert, mit anderen ergebnissen).
+
+weiterhin folgt damit einfach jordan, wenn man f durch transposition austauscht.
+
+{s,t}, {p,q} eins auf singelton, also auf {a,b} mit g.
+sei dies ${s,t}$, dann betzarchte ${p,q}^g$ und ${p,q}$,
+davon eins auf ${a,b}$, damit in gleicher bahn wie {s,t}
+
+}
+
+\begin{toappendix}
+
+\todo[inline]{
+
+neuer beweis jordan:
+
+transposition (1 2) dazu.
+dann 2 2-er set bahnen (mit funktion f(1) = f(2) dazu, oder graph argument direkt und pfad entspricht
+mapping von 2-set auf 2-set).
+dann andere transpsition dazu die aus beiden tauscht, um 2-er bahnen zu einer 2-er bahn zu machen.
+aber ist nicht mehr mit der ausgangstransposition!
+
+{a,s} {b,s} einer auf {a,b}, dann aber auch anderer, da transpostiion die tauscht.
+
+
+also wenn in anderer bahn, dann kein a oder b drin
+{s,t} auf {p,q} in einem trennenden paar, wo anderes in {a,b}-bahn (also {x,y},{s,t} und {x,y} auf {a,b})
+dann aber betrachte diese beiden, dann davon einer auf {a,b}, also in der bahn, und damit der andere
+-> damit 2-hom.
+
+kann man damit auch 3-hom zeigen?
+}
+
+
+\todo{das folgende besser einordnen, noch jordan damit beweisen
+
+primitive genau dann wenn höchstens zwei $2$-sets orbits.}
+
+\begin{theorem} %gliech auf {a,b}
+$G$
+is $2$-homogenous if and only if for any distinct $2$-sets $\{s,t\}, \{p, r\}$
+there exists one mapping $\{s,t\}$ to a singleton.
+\end{theorem}
+\begin{proof}
+This is equivalent to mapping $\{s,t\}$ to $\{a,b\}$, as $\{s,t\}$
+was arbitrary, we have only one orbit on the $2$-sets.
+
+FALSCH, kann ja $f$ mit benutzen. (aber gegen transpostiion austauschen für jordan)
+\end{proof} 
+
+\begin{theorem}
+$a$ und $b$ never congruent  iff we have at most two orbits on the $2$-sets.
+\end{theorem}
+\begin{proof}
+one orbit klar, da dann $2$-homogenous.
+
+gibt es mehr als zwei orbits, so nimm zwei $2$-sets aus orbits
+die nicht zu $\{a,b\}$ gehören
+
+
+direkt, mit kongruenzen?
+
+$C_4$ hat auch zwei $2$-set bahnen?
+
+ne, hab wohl übersehen dass man $f$ ja auch "dazwischen" benutzen darf,
+aber kann man gegen transposition austauschen, dann beweis für jordan.
+\end{proof}
+
+\todo[inline]{
+prmitiiv, höchstens zwei 2-er set bahnen?
+
+wenn mehr, dann die zwei aus denen nicht zu {a,b} wären nicht unterschiedbar!
+
+
+äquivalent primitiv genau dann wenn höchstens zwei 2-er set-bahnen für alle a,b?
+(ist aussage über orbital graphen)
+
+
+---
+damit jordan neu, transpisiton elment zwischen den 2-er bahnen -> 2-hom -> damit jede transposition auf jede andere.
+
+
+2-hom {1,2,3...,n}
+mit < (n+1 n+2) >
+dort kann man alle trennen, und nicht transitiv
+
+{1,n+1}, {2,n+2} nicht
+
+außer für f(1) = f(n+1)
+
+dann die in 1,2,3,4 nicht
+}
+\end{toappendix}

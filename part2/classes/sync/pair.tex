@@ -1,0 +1,122 @@
+%!TEX root = ../../../thesis-trier.tex
+
+The pair criterion (\cref{prelim:thm:pair_sync_condition}), due to \v{C}ern\'y~\cite[Thm.~2]{Cer64},
+states that an automaton is synchronizing if and only if all pairs of states can be mapped to a single state.
+Here, we deduce this important criterion from \THM~\ref{prelim:thm:sync_trap_state} and the observation, stated next,
+that the pair automaton from \cref{sec:pair_aut}
+is an automaton with a trap state having the same set of synchronizing states.
+
+\begin{proposition}[{Rystsov~\cite[Prop.~5.2]{Rystsov97}}]
+	\label{prelim:subclasses:sync:Aiffpairaut}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$.
+	Then we have $\Syn(\mathcal A) = \Syn\left(\mathcal A^{\le 2} / {\sim_F}\right)$ where $F = \{\{q\} \mid q \in Q\}$.
+	So, $\mathcal A$ is synchronizing if and only if its pair automaton 
+	$\mathcal A^{\le 2} / {\sim_F}$
+	is synchronizing.
+\end{proposition}
+\begin{proof}
+	Suppose $u \in \Syn(\mathcal A)$. Then $\applytrans{\delta}{Q}{u} = \{q\}$ for some $q \in Q$.
+	Hence $\applytrans{\delta}{\{p_1, p_2\}}{u} = \{q\}$
+    for all $p_1, p_2 \in Q$.
+	So, $u$ maps all states of $\mathcal A^{\le 2}$
+	into $F$, giving $u \in \Syn\left(\mathcal A^{\le 2} / {\sim_F}\right)$.	
+	
+	Conversely, let $u \in \Syn\left(\mathcal A^{\le 2} / {\sim_F}\right)$.
+	Pick some $q \in Q$.
+	Consider a state $p \in Q$.
+	Since~$F$ is a trap state, it must be the unique synchronizing state
+	and so $\delta_{\le 2}(\{p,q\}, u) \in F$.
+	Thus~$\delta(p, u) = \delta(q, u)$
+	and since~$p$ was chosen arbitrarily,
+	we find $\delta(Q, u) = \{\delta(q, u)\}$
+	and so~$u$ synchronizes~$\mathcal A$.
+\end{proof}
+
+We remark that it also easily follows that $\Syn(\mathcal A^{\le 2}) = \Syn(\mathcal A)$.
+
+\begin{remark}
+ Since the pair automaton has $\binom{n}{2} + 1$ states,
+ by \cref{prelim:subclasses:sync:Aiffpairaut},
+ the length of a shortest synchronizing words is quadratically bounded
+ in the number of states if and only if 
+ it is linearly bounded in the number of states of the pair automaton.	
+\end{remark}
+
+The pair automaton has $F$ as a trap state. By \cref{prelim:subclasses:sync:Aiffpairaut} and 
+by applying the quantifier-swapping for trap-state synchronizing automata stated
+in \cref{prelim:thm:sync_trap_state} \ref{prelim:subclasses:thm:trap:item:unique-max} and~\ref{prelim:subclasses:thm:trap:item:bound} 
+to $\mathcal A^{\le 2} / {\sim_F}$, we obtain the pair criterion, firstly stated by {\v{C}ern\'y~\cite[Thm.~2]{Cer64}}.
+
+\IN{pair criterion}
+\begin{theorem}[Pair Criterion, {\v{C}ern\'y~\cite[Thm.~2]{Cer64}}]
+	\label{prelim:thm:pair_sync_condition}
+	An automaton $\semiautomat{A}{Q}{\Sigma}{\delta}$  with non-empty~$Q$
+	is synchronizing if and only if for all pairs of states $p, q \in Q$
+	there exists $u \in \Sigma^*$
+	such that $\applytrans{\delta}{p}{u} = \applytrans{\delta}{q}{u}$. 
+\end{theorem}
+\begin{proof}
+	By \cref{prelim:subclasses:sync:Aiffpairaut} 
+	we have $\Syn(\mathcal A) \ne \emptyset$
+	if and only if 
+	$\Syn\left(\mathcal A^{\le 2} / {\sim_F}\right) \ne \emptyset$ where $F = \{\{q\} \mid q \in Q\}$.
+	The pair automaton $\mathcal A^{\le 2} / {\sim_F}$
+	has $F$ as a trap state.
+	So, by \crefitem{prelim:thm:sync_trap_state}{prelim:subclasses:thm:trap:item:unique-max},
+	we have
+	$\Syn\left(\mathcal A^{\le 2} / {\sim_F}\right) \ne \emptyset$
+	if and only if the trap state is reachable from every other state, i.e.,
+	for $p, q\in Q$ there exists $u \in \Sigma^*$
+	such that $\delta(\{p,q\}, u) \in F$, or equivalently
+	$\delta(p, u) = \delta(q, u)$.	
+\end{proof}
+
+\begin{remark}
+	In the language of transformation semigroup as discussed in \cref{prelim:remarks_trans_semigrp_semiautomata}, 
+	the pair criterion states that a transformation semigroup $S$ on a finite set
+	contains a constant map if and only if every two points can be mapped
+	to a common point by some transformation from~$S$.
+	The pair automaton has a trap state, but note that in general,
+	we have a quadratic lower bound for trap-state automata, see \cref{prelim:fig:trap_state_tight}.	
+\end{remark}
+
+The following equivalences follow readily from \cref{prelim:thm:pair_sync_condition}.
+
+\begin{corollary}
+ Let $\semiautomat{A}{Q}{\Sigma}{\delta}$.
+ Then the following are equivalent.
+ \begin{enumerate}
+ \item $\mathcal A$ is synchronizing.
+ 
+ \item $\mathcal A \times \mathcal A$ is synchronizing.
+ 
+ \item $\mathcal A^{\le 2}$ is synchronizing.
+ 
+ \item $\mathcal A^{\le 2} / {\sim_F}$ with $F = \{\{q\} \mid q \in Q\}$ is synchronizing.
+ 
+ \item $( \mathcal A \times \mathcal A ) / {\sim_D}$ with $D = \{(q,q) \mid q \in Q\}$ is synchronizing.
+ \end{enumerate} 	
+\end{corollary}
+
+\IN{stability relation} \label{def:stability}
+The pair criterion can be expressed in the following form using
+the \emph{stability relation} $\sim_s$ introduced in~\cite{DBLP:journals/ijfcs/CulikKK02,DBLP:journals/jucs/Kari02}
+where we set for $p,q \in Q$
+\[
+p \sim_s q \Leftrightarrow \forall u \in \Sigma^* \  \exists v \in \Sigma^* \colon \applytrans{\delta}{p}{uv} = \applytrans{\delta}{q}{uv},
+\]
+This is in fact a $\TS{\mathcal A}$-congruence.
+
+\begin{corollary}[{Kari~\cite{DBLP:journals/jucs/Kari02,DBLP:journals/ijfcs/CulikKK02}}] \label{prelim:cor:stability-sync}
+	An automaton $\semiautomat{A}{Q}{\Sigma}{\delta}$ with $Q \ne \emptyset$
+	is synchronizing if and only if 
+	the stability relation $\sim_s$ equals the universal relation.
+\end{corollary}
+
+Later, we will also use a transformation semigroup variant of this relation.
+In this case, for a transformation semigroup $S$ on a domain~$X$
+and $a,b \in X$ we set $a \sim_s b$
+if and only if for all $t \in S$ there exists $h \in S$ such that $h(t(a)) = h(t(b))$.
+Then~$S$ contains a constant transformation if and only if $\sim_s$ equals
+the universal relation (see also \cref{prelim:remarks_trans_semigrp_semiautomata} for a discussion
+of the relation of transformation semigroups and automata).

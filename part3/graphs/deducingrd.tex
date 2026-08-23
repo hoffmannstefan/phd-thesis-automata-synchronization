@@ -1,0 +1,295 @@
+%!TEX root = ../../springer-mono-format/book.tex
+%!TEX root = ../../thesis-trier.tex
+
+
+ere, in \cref{sync_max:thm:IS_SCC} (resp.~\cref{sync_max:thm:IS_SCC})
+we show that strong connectivity (resp.~strong $\frac{3}{2}$-connectivity)
+of $I(S)$ implies complete reachability and distinguishability
+of pairs of $2$-sets (resp.~complete distinguishability) in a transformation semigroup $S$.
+Furthermore, we conclude in \cref{thm:primitive} that strong connectivity
+implies absence of any non-trivial congruence,
+which gives minimality in terms of automata as stated in \cref{cor:primitive}.
+
+\begin{theorem}
+	\label{sync_max:thm:IS_SCC}
+	Let $M \le_M \mathcal T_n$ be a transformation monoid. If $I(M)$ is strongly connected, then
+	$M$ is completely reachable and 
+	every $2$-set $\{a,b\}$ is distinguishable
+	from every $B \subseteq [n]$
+	with $\{a,b\} \not\subseteq B$.	
+%	two subsets $A, B \subseteq [n]$ 
+%    with $|A|, |B| \ge 2$ and $A \not\subseteq B$ and $B \not\subseteq A$
+%    are distinguishable. 
+    In particular, two distinct $2$-subsets in $[n]$ are distinguishable.   
+\end{theorem}
+\begin{proof}
+    Suppose $I(M)$ is strongly connected.
+	Let $\mathcal A$ be an automaton with $\TM{\mathcal A} = M$
+	constructed as in \cref{prelim:remarks_trans_semigrp_semiautomata}
+	by selecting a generating set of~$M$ as a set of letters.
+	Then, as $\Gamma_1(\mathcal A) = \Gamma_1(M)$ and $I(M)$ is a subgraph of $\Gamma_1(M)$ by \cref{sync_max:prop:IS_in_Gamma1} , 
+	by \cref{sync_max:thm:char_compl_reach}, $M$ is completely reachable.
+		
+    Next, we can assume $|B| \ge 2$
+    and, without loss of generality, suppose $a \notin B$.
+	Let $x_0, x_1, x_2, \ldots, x_k$ be a shortest path in $I(M)$
+	with $x_0 = a$ and $x_k = b$.
+	By definition, there exist simple idempotent mappings $t_i \in M$
+	with $\applyfunc{x_{i-1}}{t_i} = x_i$ for $i \in \{1,\ldots,k\}$.
+% nach def von path alle verschieden
+%	As the path is shortest possible, it contains no loops 
+%	and so $|\{x_0, x_1, \ldots, x_k\}| = k + 1$.
+	We distinguish two cases.
+	
+	\begin{enumerate}
+	\item $B \not\subseteq \{x_0, x_1, \ldots, x_k\}$.
+		
+		Let $b_1, b_2 \in B$ be distinct with $b_1 \notin \{x_0, x_1, \ldots, x_k\}$
+		and $t = \concat{t_1}{\concat{\cdots t_2}{t_k}}$.
+		By \cref{prelim:eqn:concat-SI}
+		we find $\applyfunc{\{a,b\}}{t} = \{b\}$
+		and \[
+		\applyfunc{\{b_1, b_2\}}{t} = \begin{cases}
+			\{b_1, b\}   & \mbox{if } b_2 \in    \{x_0,x_1, \ldots, x_k\}, \\
+			\{b_1, b_2\} & \mbox{if } b_2 \notin \{x_0,x_1, \ldots, x_k\}.
+		\end{cases}
+	    \]
+		
+	\item $B \subseteq \{x_0, x_1, \ldots, x_k\}$. 
+		
+		As $x_0 \notin B$,
+		we have $B \subseteq \{x_1, \ldots, x_k\}$.
+		Set $\overline t = \concat{t_2}{\concat{\cdots t_{3}}{t_k}}$.
+		By \cref{prelim:eqn:concat-SI} we find
+		$\applyfunc{B}{\overline t} = \{x_k\}$
+		and $\{x_0, x_k\}  = \applyfunc{\{x_0, x_k\}}{\overline t}$ where $\{x_0, x_k\} = \{a,b\}$.
+	\end{enumerate}
+    In both cases, there exists a transformation distinguishing $\{a,b\}$ from $B$.
+\end{proof}
+
+\begin{remark} 
+	To deduce complete reachability in \cref{sync_max:thm:IS_SCC}
+	we must start from a transformation monoid and not merely from a transformation semigroup
+	since otherwise the whole domain might not be reachable.
+	For example, consider the semigroup of all transformations of defect at least one on the set~$[n]$.
+	In this semigroup $[n]$ is not reachable,
+	but since it contains all simple idempotents, $I(S)$
+	equals the digraph where all pairs of vertices are connected by an edge 
+	(but which implies that every proper and non-empty set is reachable).
+\end{remark}
+
+\begin{example}
+	Let $t_i : [3] \to [3]$ be three distinct constant transformations
+	with $t_i(0) = t_i(1) = t_i(2) = i$
+	tor $i \in [3]$. The set $S = \{ t_1, t_2, t_3 \}$ forms a transformation semigroup.
+	The digraph on~$[3]$ obtained by connecting point $a$ to $b$
+	if and only if there exists an idempotent mapping $a$ to $b$
+	is strongly $\frac{3}{2}$-connected.
+	However, no pair of distinct non-empty and non-singleton 
+	subsets of states is distinguishable 
+	in  $S$ and $S$ is not completely reachable.
+	In this sense, restricting ourselves to simple idempotents in the definition of $I(S)$
+	is necessary.			
+\end{example}
+
+\Cref{sync_max:thm:IS_SCC} with \cref{sync_max:thm:lower_bound_SynA}
+and the fact that $I(\mathcal A)$
+is a subgraph of $I(\TM{\mathcal A})$ for SI-automata $\mathcal A$
+yields the following corollary.
+
+\begin{corollary}
+\label{cor:IA_SCC_implies_CR}
+	Let $\mathcal A$ be an $n$-state automaton.
+	If $I(\TM{\mathcal A})$ (or $I(\mathcal A)$ if $\mathcal A$ is an SI-automaton) is strongly connected,
+	then $\mathcal A$ is completely reachable and a minimal automaton
+	for $\Syn(\mathcal A)$ has at least $\binom{n}{2} + 1$ states.
+\end{corollary}
+
+\begin{example}
+Consider the strongly connected SI-automaton from \cref{sync_max:fig:SCC_not_sufficient}. 
+Here, $G(\mathcal A) = I(\mathcal A) = I(\TM{\mathcal A})$.
+So $I(\mathcal A)$ is strongly connected, but $\mathcal A$
+is not completely distinguishable.		
+\end{example}
+
+Next, we state a sufficient condition for complete reachability
+and complete distinguishability.
+
+
+\begin{theorem}
+	\label{sync_max:thm:IS_32SCC}
+	Let $M \le_S \mathcal T_n$ be a transformation monoid. If $I(M)$ is strongly~$\frac{3}{2}$-connected and $n \ge 3$,
+	then $M$ is completely reachable and completely distinguishable.
+\end{theorem} 
+\begin{proof}
+	As strong $\frac{3}{2}$-connectivity implies strong connectivity,
+	by \cref{sync_max:thm:IS_SCC}
+	complete reachability follows.
+	Next, let $A \subseteq [n]$ be a set containing
+	two distinct states $p, q \in A$
+	and $r \in [n] \setminus A$.
+	By assumption there exists a path $q_0, q_1, \ldots, q_m$
+	in $I(M)$ such that $r \notin \{q_0, q_1, \ldots, q_m\}$
+	and $\{q_0, q_m\} = \{p,q\}$.
+	Without loss of generality,
+	suppose $q_0 = p$ and $q_m = q$.
+	By the definition of $I(M)$ there exist
+	simple idempotents $t_i \colon [n]\to [n]$
+	for each $i \in \{1,\ldots,m\}$
+	such that $\applyfunc{q_{i-1}}{t_i} = q_i$.
+	Set $t = \concat{t_1}{\concat{\cdots t_2}{t_k}}$.  
+	By \cref{prelim:eqn:concat-SI}
+	we find $\applyfunc{\{p,q\}}{t} = \{q\}$, $\applyfunc{A}{t} \subseteq A$,
+	and $\applyfunc{r}{t} = r$.
+	Hence $|\applyfunc{A}{t}| < |A|$
+	and $\applyfunc{r}{t} \notin \applyfunc{A}{t}$.
+	From~\crefitem{sync_max:thm:char_distinguishable}{dist:item:compress}
+	it follows that~$M$ is completely distinguishable.	
+	\begin{comment}
+		Now, assume $|S| + |T| > 4$. % two dsitnct
+		Without loss of generality, there exists $a \in S \setminus T$. \todo{menge $X$ statt $[n]$?}
+		Furthermore, let $b,c,d \in [n] \setminus \{a\}$ be three pairwise distinct elements such that
+		$\{a,b\} \subseteq S$
+		and $\{c,d\} \subseteq T$.
+		
+		If $I(S)$ is strongly $\frac{3}{2}$-connected,
+		then there exists
+		a path from $c$ to $d$ or from $d$ to $c$
+		such that $a$ does not occur along the path.
+		Without loss of generality, suppose $x_0, x_1, \ldots, x_k$ is a path in $I(S)$
+		with $x_0 = c$, $x_k = d$ and $a \notin \{x_0, x_1, \ldots, x_k\}$.	
+		Furthermore, by deleting any loops along
+		the path, we can assume the elements $x_0, x_1, \ldots, x_k$ are pairwise distinct.
+		Set $f = \concat{f_1}{\concat{\cdots f_2}{f_k}}$.
+		%Then $|\applyfunc{\{c,d\}}{f}| = 1$.
+		With Lemma~\ref{sync_max:lem:concat_SI}
+		we deduce $\applyfunc{T}{f} = T \setminus \{x_0, x_1, \ldots, x_{k-1}\}$
+		and $\applyfunc{S}{f} = S \setminus \{x_0, x_1, \ldots, x_{k-1}\}$.
+		As $|\applyfunc{T}{f}| < |T|$
+		we have $|\applyfunc{S}{f}| + |\applyfunc{T}{f}| < |S| + |T|$.
+		Furthermore, we have $a \in \applyfunc{S}{f}$ as $a \notin \{x_0, \ldots, x_k\}$
+		and $a \notin \applyfunc{T}{f}$.
+		So $\applyfunc{S}{f} \ne \applyfunc{T}{f}$.
+		
+		Lastly, note that if $b \notin \{x_0, x_1, \ldots, x_k\}$,
+		then $\{a,b\} \subseteq \applyfunc{S}{f}$.
+		If  $b \in \{x_0, x_1, \ldots, x_k\}$,
+		then $\applyfunc{b}{f} = d$
+		and so $\{a,b\} \subseteq \applyfunc{S}{f}$. \todo{{a,d} drin?}
+		Hence $3 \le |\applyfunc{S}{f}| + |\applyfunc{T}{f}|$.
+		As $I(S)$ is completely reachable, it contains a constant mapping.
+		So, we conclude that $I(S)$ has the DCSP property.
+		
+		
+		Combining the DCSP property with the property that all pairs of $2$-sets
+		are distinguishable, with Proposition~\ref{todo}
+		we deduce that all pairs of non-singleton and non-empty subsets 
+		of states are distinguishable in $I(S)$.	
+	\end{comment}
+\end{proof}
+
+However, strong $\frac{3}{2}$-connectivity of $I(M)$ is not a necessary
+condition for complete distinguishability, as shown by the next example.
+
+\begin{example} \label{sync_max:ex:not-strongly-32-but-compl-dist}
+	Consider the SI-automaton $\semiautomat{A}{\{1,2,3,4\}}{\Sigma}{\delta}$
+	without permutational letters with automaton graph
+	given in \cref{sync_max:fig:not-strongly-32-but-compl-dist}.
+	This automaton graph 
+	equals $I(\TS{\mathcal A})$,
+	and it is not strongly $\frac{3}{2}$-connected
+	since the state~$2$ is part of every path between $3$
+	and any other state.
+	However, the automaton is completely distinguishable.
+	To see this, first, suppose $q \in A \setminus B$ for two non-empty and non-singleton subsets of states $A,B$
+	for some state $q \ne 2$.
+	Let~$u$ be a concatenation of the letters $a_{p,2}$
+	with $p \in \{1,4,3\} \setminus \{q\}$
+	in any order.
+	Then $\delta(B, u) = \{2\}$
+	and $\delta(A, u) = \{q,2\}$.
+	Next, we have $A = \delta(Q, a_{4,1}) = Q \setminus \{4\}$
+	and $B = \delta(Q \setminus \{2\}, a_{4,1}) = Q \setminus \{2,4\}$,
+	and since the latter sets are distinguishable
+	as shown before, we obtain
+	that also $Q$ and $Q \setminus \{2\}$
+	are distinguishable.
+	
+	\begin{figure}[ht]
+		\centering
+		\begin{tikzpicture}[node distance = 2.8em and 8em]
+			\node[state] (1) {$1$};
+			\node[state, right = of 1] (2) {$2$};
+			\node[state, right = of 2] (3) {$3$};
+			\node[state, above = of 2] (4) {$4$};
+			
+			\path[->] (1) edge [bend left=12,above] node {$a_{1,2}$} (2)
+			(2) edge [bend left=12,above] node {$a_{2,3}$} (3)
+			(3) edge [bend left=12,below] node {$a_{3,2}$} (2)
+			(2) edge [bend left=12,below] node {$a_{2,1}$} (1);
+			
+			\path[->] (2) edge [bend left,left] node {$a_{2,4}$} (4)
+			(4) edge [bend left,right] node {$a_{4,2}$} (2)
+			(4) edge [bend right,above] node {$a_{4,1}$} (1);
+		\end{tikzpicture}
+		\caption[Pairs of $2$-sets distinguishable but not completely distinguishable]{A strongly connected and completely distinguishable SI-automaton $\mathcal A$ (self-loops omitted) where $I(\TS{\mathcal A})$ 
+			is not strongly $\frac{3}{2}$-connected. See \cref{sync_max:ex:not-strongly-32-but-compl-dist}.}	
+		\label{sync_max:fig:not-strongly-32-but-compl-dist}
+	\end{figure}
+\end{example}
+
+Note that for $n \le 2$ every strongly connected graph is $\frac{3}{2}$-connected
+and every transformation semigroup 
+on $[n]$ is completely distinguishable (but possibly not completely reachable).
+
+\begin{example}
+	Strong $\frac{3}{2}$-connectivity of the $\Gamma_1$-graph
+	is not sufficient for complete distinguishability.
+	For example, consider the SI-automaton 
+	from \cref{sync_max:fig:SCC_not_sufficient},
+	in its $\Gamma_1$-graph all pairs of states
+	are connected by an edge by \cref{sync_max:prop:Gamma1alledges}.
+	So, it is  strongly $\frac{3}{2}$-connected.
+	However, the automaton is not completely distinguishable.
+\end{example}
+
+Next, we show that strong connectivity of $I(S)$ also implies
+that $S$ admits no non-trivial $S$-congruences.
+
+\begin{theorem}\label{thm:primitive}
+	Let $S \le_S \mathcal T_n$ be a transformation semigroup. If $I(S)$ is strongly connected,
+	then $S$ admits no non-trivial $S$-congruence on $[n]$.
+\end{theorem}
+\begin{proof}
+	Suppose $\sim$ is a non-trivial $S$-congruence on $[n]$.
+	Pick some congruence class $A \subseteq [n]$, for which $A \ne [n]$,
+	with $|A| \ge 2$. 
+	As $I(S)$ is strongly connected, by \LEM~\ref{prelim:lem:partition_SCC}, there exists an edge $(p, q)$ in~$I(S)$
+	with $p \in A$ and $q \notin A$. 
+	So, we find a simple idempotent $t \in S$
+	with $\applyfunc{p}{t} = q$.
+	Let $r \in A \setminus \{p\}$.
+	Then $r \sim p$ but $r = \applyfunc{r}{t} \not\sim \applyfunc{p}{t}$,
+	contradicting the assumption that $\sim$
+	is an $S$-congruence. So there exists no non-trivial $S$-congruence on~$[n]$.    
+\end{proof}
+
+From~\cref{thm:primitive} with~\cref{prelim:thm:char_minaut}
+we get the following corollary.
+
+\begin{corollary}\label{cor:primitive}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$.
+	If $I(\TS{\mathcal A})$ is strongly connected,
+	then $\mathcal A_{q, F}$ is minimal for any $q \in Q$
+	and non-empty and proper $F \subseteq Q$.
+\end{corollary}
+\begin{proof}
+	First, if $I(\TS{\mathcal A})$ is strongly connected, 
+	then $\mathcal A$ is completely reachable
+	by~\cref{cor:IA_SCC_implies_CR} and so also strongly connected.
+	Hence, $\mathcal A_{q,F}$ is accessible for any $q \in Q$
+	and proper and non-empty $F \subseteq Q$.
+	By~\cref{thm:primitive} 
+	it admits no $\TS{\mathcal A}$-congruence
+	so~\crefitem{prelim:thm:char_minaut}{thm:minaut:item:congruence} yields	that $\mathcal A_{q, F}$ is minimal.	
+\end{proof}

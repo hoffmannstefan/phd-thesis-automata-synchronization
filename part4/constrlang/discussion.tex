@@ -1,0 +1,245 @@
+%!TEX root = ./../../thesis-trier.tex
+
+\paragraph{Sparse Languages.} 
+Hoffmann~\cite{DBLP:conf/ictcs/Hoffman20} (inspired 
+by a result from~\cite[Thm.~19]{FernauGHHVW19}) 
+called a PDFA $\automat{B}{P}{\Sigma}{\mu}{p_0}{F}$  \emph{polycyclic} \IN{polycyclic PDFA}
+if, for each $p \in P$, we have
+$L(\mathcal B_{p,\{p\}}) \subseteq u_p^*$ for some $u_p \in \Sigma^*$,
+and proved the following:
+\begin{enumerate}
+\item constraint languages accepted by polycyclic automata give
+ constrained problems in \NP\ (generalizing a statement from~\cite[Thm. 19]{FernauGHHVW19}),
+  		
+\item polycyclic automata are equivalently characterized by the property
+ that every strongly connected components forms a single cycle,
+\item languages accepted by polycyclic PDFAs are closed for union, concatenation
+ and quotients,
+ 
+ \IN{nondeterministic automata}
+\item nondeterministic automata\footnote{See~\cite{HopUll79} for a definition of nondeterministic automata.} 
+ with the same definitional condition accept the same class of languages.
+\end{enumerate}
+Gawrychowski et al.~\cite[Lem.~2]{DBLP:journals/ijfcs/GawrychowskiKRS10} 
+proved that nondeterministic automata fulfilling
+the definition condition for polycyclic automata
+accept precisely the sparse regular languages.\footnote{The paper by Gawrychowski et al.~\cite{DBLP:journals/ijfcs/GawrychowskiKRS10} 
+appeared earlier than~\cite{DBLP:conf/ictcs/Hoffman20},
+but the author of~\cite{DBLP:conf/ictcs/Hoffman20} was unaware of the connection to sparse languages
+when writing his paper.}  
+So, polycyclic automata characterize sparse regular languages (this also follows
+from our method of proof used for \cref{constrsync:thm:reg-sparse-or-exp}). 
+The characterization of sparse languages
+by PDFAs whose strongly connected components form single cycles
+was stated by Pin in~\cite[Sec.~XII.4.2]{Pin2022} in terms of forbidden patterns. It also appears
+in~\cite[Lem.~5.4]{DBLP:conf/stacs/GanardiHKLM18}.
+
+Also an \NP-hardness condition was given in~\cite[Prop.~8]{DBLP:conf/ictcs/Hoffman20}
+that was generalized in \cref{constrsync:thm:NP-hardness}. With this condition it is easy
+to find languages accepted by polycyclic constraint PDFAs that give \NP-hard
+constrained synchronization problems.
+
+Hoffmann~\cite{DBLP:conf/fct/Hoffmann21} gave a classification for letter-bounded constraint languages
+into \NP-complete and polynomial-time solvable constrained problems.
+The classification of the present work is a refinement.
+Also, the method of proof is different from~\cite{DBLP:conf/fct/Hoffmann21} (for the interested reader 
+the original proofs are contained in the arXiv version to which a link is provided in the bibliographic entry~\cite{DBLP:conf/fct/Hoffmann21}, but actually the present
+proofs are much more concise). 
+A classification for all sparse languages is an \emph{open problem}.
+\begin{center}
+	\fbox{ \begin{minipage}{30em}
+			Open Problem: Classify the computational complexity of \constrsync{L}
+			for sparse regular languages $L \subseteq \Sigma^*$.
+		\end{minipage}
+	}
+\end{center}
+
+\paragraph{Monoid Languages and Strongly Connected Constraint Automata.} 
+The following results carry over from the unconstrained setting to monoid constraint languages: the pair condition (\cref{constr_sync:thm:pair_condition}); a cubic bound on the length of the shortest synchronizing words in the constraint language (\cref{constr_sync:prop:pair_bound}); a polynomial-time algorithm for computing a synchronizing word of at most cubic length (\cref{constr_sync:thm:monoid_compute_sync_word}); and membership in \NL\ (\cref{thm:reg_monoid}).
+No condition is known to identify \NL-hardness for either monoid languages or strongly connected constraint PDFAs; we therefore pose this as an \emph{open problem}.
+
+\begin{center}
+	\fbox{ \begin{minipage}{30em}
+			Open Problem: Identify the \NL-hard constrained synchronization problem instances 
+			for constraint languages that are monoids
+			or are given by a strongly connected constraint automaton.
+			Furthermore, does a monoid contraint language of exponential growth
+			gives an \NL-hard constrained problems?
+		\end{minipage}
+	}
+\end{center}
+
+\IN{returning automaton}
+An automaton $\automat{B}{P}{\Sigma}{\mu}{p_0}{F}$ is \emph{returning} if for every state $p \in P$ 
+there exists $u \in \Sigma^*$ such that $\applytrans{\mu}{p}{u} = p_0$.
+For returning automata $\mathcal B$, in~\cite[Lem. 16 \& Thm.~17]{FernauGHHVW19} the pair condition (\cref{constr_sync:thm:pair_condition})
+was established and polynomial-time solvability of $\constrsync{L(\mathcal B)}$ derived.
+An accessible automaton
+is returning if and only if it is strongly connected. Hence this result is
+covered by \cref{constrsync:cor:SCC} of the present work.
+In fact, it shows that this is a consequence of the fact that $\constrsync{L}$
+is in \NL\ for regular languages $L$ that are monoids.
+
+The languages $(a+b)^*$ and $c(a+b)^*$ from Theorem~\ref{constr_sync:thm:introductory_examples} 
+show that concatenating constraint languages might 
+increase the computational complexity of the constrained synchronization problem 
+w.r.t.~the resulting language
+considerably. 
+\Cref{constr_sync:subsec:concat} gave conditions for which the complexity never drops when concatenating languages,
+which we used to transfer hardness results from known languages. 
+On the other hand, the UVW-Condition (Corollary~\ref{constr_sync:cor:UVW}) 
+involved the concatenation of three languages 
+and yielded constrained problems in \NL.
+For example, it implies that $\constrsync{\Sigma^*L}$ 
+is in \NL\ for any regular language $L \subseteq \Sigma^*$,
+or more generally $\constrsync{IL}$ for any regular ideal $I \subseteq \Sigma^*$ and regular $L \subseteq \Sigma^*$.
+A weaker form was stated in~\cite[Thm.~4.1]{DBLP:conf/cocoon/Hoffmann21}, only giving
+containment in \PTIME and stating the result for 
+PDFAs whose initial state equals their unique final state, a subclass of regular languages that are monoids (see \cref{constr_sync:thm:regular_prefix_codes_and_automata}).
+
+
+\paragraph{Small Constraint Automata.} Fernau et al.~\cite{FernauGHHVW19}
+gave the following classification for small constraint automata with up 
+to two states over an at most ternary alphabet.
+
+\begin{theorem}[Fernau et al.~\cite{FernauGHHVW19}]
+	\label{thm:classification_MFCS_paper}
+	Let $\mathcal B = (\Sigma, P, \mu, p_0, F)$
+	be a PDFA.
+	If $|P|\le 1$ or $|P| = 2$ and $|\Sigma|\le 2$, then $\constrsync{L(\mathcal B)} \in \PTIME$.
+	For $|P| = 2$ with $|\Sigma| = 3$, up to symmetry by renaming of the letters,
+	$\constrsync{L(\mathcal B)}$ % $L\mbox{\normalfont \textsc{-Constr-Sync}}$, $L(\mathcal B)\textsc{-Constr-Sync}$
+	is $\PSPACE$-complete precisely in the following cases for $L(\mathcal B)$:
+	\[ 
+	\begin{array}{llll}
+		a(b+c)^*        & (a+b+c)(a+b)^*  & (a+b)(a+c)^* & (a+b)^*c \\
+		(a+b)^*ca^*     & (a+b)^*c(a+b)^* & (a+b)^*cc^*  & a^*b(a+c)^* \\
+		a^*(b+c)(a+b)^* & a^*b(b+c)^*     & (a+b)^*c(b+c)^* & a^*(b+c)(b+c)^*
+	\end{array}
+	\]
+	and polynomial time solvable in all other cases.
+\end{theorem}
+
+Theorem~\ref{thm:two-state-classification} extended this result in the $2$-state case 
+to arbitrary alphabets and refined the complexity of the polynomial time cases into the three classes~$\AC^0$,
+$\LOGSPACE$-complete, and \NL-complete for non-strongly connected constraint PDFAs. 
+The extension to arbitrary alphabets for $2$-state constraint PDFAs was
+first given in~\cite{DBLP:conf/cocoon/Hoffmann21} (by only distinguishing between \PSPACE-completeness
+and~\PTIME). The classification presented here was given in~\cite{HoffmannCocoonExtended},
+the extended journal version of~\cite{DBLP:conf/cocoon/Hoffmann21}. 
+In~\cite{FernauGHHVW19} the following two 
+constrained problems and their complexities given by $3$-state binary PDFAs were presented: \constrsync{ab^*a} (\NP-complete)
+and \constrsync{b(aa+ba)^*} (\PSPACE-complete). 
+So, the smallest automata giving \NP-complete problems have three states and are over a binary alphabet. 
+We completed the picture by giving
+computational complexities for all $3$-state binary PDFAs (up to renaming of symbols and states).
+We gave a full classification for non-strongly-connected PDFAs
+into problems that are in $\AC^0$, \LOGSPACE-, \NL-, \NP-, or \PSPACE-complete.
+This classification was also given in~\cite{HoffmannCocoonExtended}.
+As a special case of the open problem posed for strongly connected automata
+before, we also do not know when the problem
+for $3$-state strongly connected binary automata %or strongly connected $2$-state automata 
+is \NL-hard.
+
+\begin{center}
+	\fbox{ \begin{minipage}{30em}
+			Open Problem (special case of the open problem for general strongly connected automata): 
+			Identify the \NL-hard constrained synchronization problem instances 
+			for $3$-state strongly connected binary constraint PDFAs.
+	%		and $2$-state strongly connected constraint PDFAs.
+		\end{minipage}
+	}
+\end{center}
+
+\paragraph{Commutative Languages.} A coarser classification
+for commutative regular constraint languages
+distinguishing between \PSPACE-complete, \NP-complete
+or polynomial-time solvable constrained problems
+was given in~~\cite{DBLP:journals/tcs/Hoffmann21}.
+Here, the classification was refined
+by  subdividing the case
+when the constrained problem is in \PTIME into the complexities \NL-complete, \LOGSPACE-complete
+and containment in~$\AC^0$.
+Furthermore, using the 
+general results from \cref{constr_sync:chap:gen_results}
+and the cropped Parikh map, the proof was much simplified
+and shortened. This simplified proof was also presented in~\cite{HoffmannCocoonExtended}.
+
+\paragraph{Deciding the Complexity.} It is readily seen that 
+the classification results for letter-bounded and commutative constraint
+languages can be used to decide in polynomial time the computational complexity
+of $\constrsync{L}$ when $L \subseteq \Sigma^*$ is given as input (for example, via accepting PDFAs). 
+
+\begin{theorem}
+	Let $\mathcal B$ be a PDFA.
+	\begin{enumerate}
+		\item If $L(\mathcal B)$ is letter-bounded, then we can decide in polynomial time the complexity of \constrsync{L(\mathcal B)},
+		i.e., whether it is in $\AC^0$, \LOGSPACE-complete or \NP-complete.
+		
+		\item If $L(\mathcal B)$ is commutative, then we can decide  in polynomial time the complexity of \constrsync{L(\mathcal B)}, i.e.,
+		whether it is in $\AC^0$, \LOGSPACE-complete, \NL-complete, \NP-complete or \PSPACE-complete.
+	\end{enumerate}	
+\end{theorem} 
+
+Also, for small constraint automata, the complexity up to the fidelity as stated
+in the present work can be decided in polynomial time by trimming and comparing
+an input PDFA with finitely many alternatives.
+
+\paragraph{A Conjecture for the General Case.} In~\cite[Conclusions and Prospects]{FernauGHHVW19} 
+it was asked whether there exist constrained problems complete
+for levels in the polynomial time hierarchy other than \NP\ or \PSPACE.
+However, we do not believe so and in light of the present results
+we formulate the following conjecture.
+
+\begin{center}
+	\fbox{ \begin{minipage}{30em}
+			Conjecture: For every $L \subseteq \Sigma^*$ the problem \constrsync{L} 
+			is either in~$\AC^0$ or complete for one of the following classes: \LOGSPACE, \NL, \NP, \PSPACE. 
+		\end{minipage}
+	}
+\end{center}
+
+In~\cite[Sec.~6]{DBLP:conf/cocoon/Hoffmann21} it was also suspected that only
+constrained problems in \PTIME, or complete for \PSPACE\  or \NP\  are possible.
+
+Since every alphabet can be encoded by a solid code over a binary alphabet (as, for example, those given
+in \cref{constrsync:ex:binarysolidcode}) which preserves the complexity
+by \cref{thm:constr_sync_hom_strongly_self_sync},
+confirmation of the conjecture for binary automata implies it for all automata.
+
+In~\cite[Rem.~30]{FernauGHHVW19} it was remarked that the following construction
+from \cite[pp. 220-221]{DBLP:journals/mst/Berlinkov14}
+can be used to lift hardness results: 
+for $\semiautomat{A}{Q}{\{a_1, \ldots, a_k\}}{\delta}$
+let $\semiautomat{A}{Q \times \{1,\ldots,k\}}{\{a,b\}}{\delta'}$
+with $\delta'((q, i), a) = (q, \min\{i+1,k\})$
+and $\delta'((q, i), b) = (\delta(q, a_i), 1)$.
+Set $\varphi(a_i) = a^{i - 1}b$ for $i \in \{1,\ldots,k\}$.
+Then $u_1 \cdots u_m$ with $u_1, \ldots, u_n \in \{a_1, \ldots, a_k\}$
+synchronizes $\mathcal A$ if and only if $b\varphi(u_1) \cdots \varphi(u_m)$
+synchronizes $\mathcal A'$. However, since the letter~$b$ has to be read
+first this must be allowed by the binary constrained language
+restricting the constrained synchronization problem for~$\mathcal A'$ to obtain a reduction.
+
+\paragraph{Road-Coloring and Generalizations.} 
+Checking, for a given automaton and word, whether the word synchronizes the automaton
+is \LOGSPACE-complete by \cref{prelim:prop:finite_list_sync_word-hardness}.
+In~\cite{DBLP:journals/jcss/VorelR19} the authors classified the computational complexity of the so-called \emph{road-coloring variant of synchronization}: 
+given a digraph of constant outdegree and a word $w$, whether the digraph
+admits a labeling of its edges with letters such that a synchronizing automaton with synchronizing
+word~$w$ results. Depending on the class of admissible input words, the problem
+is either polynomial-time solvable or \NP-complete.
+Now this suggests the following generalization of $\constrsync{L}$: for a fixed constraint language,
+given a digraph of constant outdegree, does it admit a labeling of its edges such
+that a synchronizing automaton results having a synchronizing word in the constraint language.
+%Note that here, as in $\constrsync{L}$, we have fixed the constraint language.
+In~\cite{DBLP:journals/jcss/VorelR19} it has been proved that this problem is \NP-complete
+even for the constraint language $\{abb\}$.
+When we admit the constraint language to be part of the input,
+for $L = \Sigma^n$, where~$n$ is an input parameter, this problem has been investigated
+in~\cite{ROMAN2015383,DBLP:journals/ipl/Roman11}. The generalization
+for arbitrary languages as input has been mentioned 
+in~\cite{DBLP:journals/ipl/Roman11,DBLP:journals/jcss/VorelR19}.
+Other generalizations where the constraint language is part of the input and belongs
+to some class of admissible constraint languages for our constrained problem or the road-coloring
+variant are conceivable, but we have not pursued to investigate these variants here.

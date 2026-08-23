@@ -1,0 +1,941 @@
+
+
+
+\todo{neu mit SCC-NEA, ne geht nicht, in diskussion, ab links, aa rechts und sonst b, oben in zwei zustände aufsplitten,
+nea idea nicht überträgbar von kommutativen}
+
+
+
+\todo{erwähnen, dass ich diese konstruktion noch nie gesehen, und deswegen keine referenz...
+in diskussion?}
+
+\subsubsection{The State Merging NFA}
+
+\todo{wird nur hier gebraucht, also nur hier einführen.}
+
+% wenn von DFA, dann NFA immer complete, hiwneisen (allgemein completeness übertragen)
+
+\todo{auch die konstruktion für kommtuative automateon so handhaben, da
+dort kongruenz.}
+
+\todo{diese sichtweise passt in das kongruenzenthema, deswegen auch reachablity
+nicht wie rystsov definiert, für die story, irgendwo erwähnen.}
+
+Let $\sim$ be an equivalence relation (induced by any partitioning) on $Q$.
+If it is a $\mathcal T_{\mathcal A}$-congruence, then we can construct
+the factor automaton and obtain a complete and deterministic automaton.
+It turns out that this operation can be performed even if $\sim$
+is merely an equivalence relation, but we no longer obtain a deterministic and complete
+automaton but an NFA. Formally, $\mathcal A / {\sim}$ \todo{schlau, gleiche notation zu verwenden?}
+has as state set the equivalence classes with transition function
+$\delta_{\sim} \colon Q / {\sim} \times \Sigma \to \mathcal P(Q / {\sim})$ given by
+\todo{notation transition?}
+\[
+ \applytrans{\delta_{\sim}}{[q]_{\sim}}{x} 
+ = \{ [p]_{\sim} \mid p \in \applytrans{\delta}{[q]_{\sim}}{x}\}, 
+\]
+i.e., if $q \sim q'$, then 
+we have a transition labeled by $x$ from $[q]_{\sim}$
+to $[\applytrans{\delta}{q}{x}]_{\sim}$
+and to $[\applytrans{\delta}{q}{x}]_{\sim}$ in $\mathcal A/{\sim}$.
+Note that $\mathcal A /{\sim}$ is a complete NFA (in fact, this construction
+can be extended to work for an arbitrary NFA and then preserves completeness,
+but as we do not need this generality here, we only apply it to 
+deterministic and complete automata).
+
+The next implication follows readily: For every $p, q \in Q$ and $u \in \Sigma^*$ \todo{oder $[\delta] \in \delta()..$
+schreiben? aber dann sieht man nicht so leicht, dass nur eine richtung...}
+\begin{equation}
+\label{constr_sync:eqn:general_factor_transition}
+ \delta(p, u) = q \quad\Rightarrow\quad 
+ [q]_{\sim} \in \delta_{\sim}([p]_{\sim}, u).
+\end{equation}
+
+\todo{referenzen:
+%https://en.wikipedia.org/wiki/Edge_contraction
+%https://mathworld.wolfram.com/VertexContraction.html
+oder das in diskussion?
+nicht edge constraction, da keien edge existieren muss.
+
+% in lernagorithmen schonmal gesehen?
+%https://www.google.com/search?q=%22state+merging+automaton%22&rlz=1C1GCEU_deDE823DE823&oq=%22state+merging+automaton%22&aqs=chrome..69i57j0i546.6249j1j7&sourceid=chrome&ie=UTF-8
+
+% https://www.google.com/search?q=state+merging+automata+lerning&rlz=1C1GCEU_deDE823DE823&oq=state+merging+automata+lerning&aqs=chrome..69i57j33i10i160l2.4073j1j7&sourceid=chrome&ie=UTF-8
+% https://www.researchgate.net/figure/State-merging-approach-for-learning-automata_fig2_288137011
+}
+We note in passing that the operation corresponds to (repeated) vertex contraction(s)
+in the sense of graph theory on the automaton graph while retaining
+the labels and not removing  edges, i.e., retaining parallel edges
+and self-loops (however, naming it contraction NFA sounds unnatural to us, as in automata theory the term state merging is mostly used in relation to minimization algorithms where
+as an equivalence relation the Nerode right-congruence is used).\todo{die nicht definiert, oder nur in diskussion weier oben.}
+
+%
+%The construction can also be formalized by interpreting
+%by setting 
+% closure algorithm auf power automaton und transpose der durch umkehren
+% der transitionen entsteht
+% interpreation transition von NFA direkt auf potenzautomaten
+% 
+% und schrittweises verschmezeln von zwei zuständen {p,q}
+% defineiren delta({p,q}, x) = menge mit ggfs {p,q}
+%
+% das in definition\textbf{}
+
+See Figure~\ref{constr_sync:fig:merging_NFA} for an example.
+
+\begin{figure}[ht]
+    \centering
+    %\begin{minipage}{0.4\textwidth}
+    \begin{tikzpicture}
+    \node[state] (1) {$1$};
+    \node[state, right = of 1] (2) {$2$};
+    \node[state, right = of 2] (3) {$3$};
+    \path[->] (1) edge [bend left] node {$b$} (2);
+    \path[->] (2) edge [bend left] node {$b$} (1)
+              (3) edge [loop above] node {$a, b$} (3);
+    \path[->] (1) edge [loop above] node {$a$} (1);
+    \path[->] (2) edge node {$a$} (3);
+    \end{tikzpicture}\hspace{8em}
+    %\end{minipage} \hfill
+    %\begin{minipage}{0.4\textwidth}
+    \begin{tikzpicture}
+    \node[state] (1) {$\{1,2\}$};
+    \node[state, right = of 1] (2) {$\{3\}$};
+    \path[->] (1) edge [loop above] node {$a,b$} (1)
+              (1) edge [above] node {$a$} (2)
+              (2) edge [loop above] node {$a,b$} (2);
+    \end{tikzpicture}
+    %\end{minipage} 
+    \caption{On the right is the merging NFA for the partitioning of the states
+    $\{\{1,2\}, \{3\}\}$ of the automaton on the left.
+    }
+    \label{constr_sync:fig:merging_NFA}
+\end{figure}
+
+\begin{proposition}
+\label{constr_sync:prop:D1-directing-implies-sync}
+ Let $\mathcal A$ be a deterministic and complete automaton with a trap state $t \in Q$.
+ If $\mathcal A_{\text{COND}}$ has a $D_1$-directing word $u$,
+ then $u$ is a synchronizing word for $\mathcal A$.
+\end{proposition}
+\begin{proof}
+ We must have $\applytrans{\delta_{\text{COND}}}{[q]_{\simeq}}{u} = \{ [t]_{\simeq} \}$
+ for all $q \in Q$.\todo{genauer}
+ Let $q \in Q$.
+ %Then there exists % das auch zeigen
+ %$s \simeq q$ such that $\applytrans{\delta}{s}{u} = t$.
+ Consider the state $\applytrans{\delta}{q}{u}$.
+ By Equation~\eqref{oben},
+ we have $[\applytrans{\delta}{q}{u}]_{\simeq} \in \applytrans{\delta_{\text{COND}}}{[q]_{\simeq}}{u} = \{ \{t\}\}$.
+ This implies $\applytrans{\delta}{q}{u} = t$.
+\end{proof}
+
+Figure~\ref{constr_sync:fig:merging_NFA} shows that the converse of the statement
+from Proposition~\ref{previous} does not hold true, as the automaton on the left
+has the synchronizing word $aba$, but its condensation NFA on the right 
+has no $D_1$-directing word.
+% aber D3-directing hat es, erwähnen?
+
+
+\todo{solvable synchronizuing iff trap state der von allen erreichbar ist?}
+
+\todo{erwähnen, For deterministic automata a synchronizing word is the same as a $D_1$-directing word}
+
+
+\subsubsection{The Condensation NFA}
+
+
+\emph{Restricted} (or \emph{self-loop-determistic}) partially ordered NFA (rpoNFA)
+were introduced by Masopust, Kr{\"{o}}tzsch \& Thomazo~\cite{DBLP:journals/iandc/KrotzschMT17}
+(see also~\cite{DBLP:journals/lmcs/MasopustK21}). They are defined by the forbidden
+pattern depicted in Figure~\ref{constr_sync:fig:rpoNFA}. Formally, a partialy ordered NFA $\semiautomat{A}{Q}{\Sigma}{\delta}$
+is a rpoNFA if, for all $q \in Q$ and $x \in \Sigma$, $q \in \applytrans{\delta}{q}{x}$
+implies $\applytrans{\delta}{q}{x} = \{q\}$. Expressed in terms of
+the reachability relation the condensation NFA is an rpoNFA \todo{acuh allgemein wenn man von NFA started, vielleich es doch so definieren vom start?} 
+if and only if $\applytrans{\delta}{q}{x} \not\simeq q$ for $q \in Q$,
+then $\applytrans{\delta}{p}{x} \not\simeq q$ for all $p \in Q$ with $p \simeq q$ (or, either of the following two equivalent conditions: (1) $\applytrans{\delta}{[q]_{\simeq}}{x} \cap [q]_{\simeq} \ne \emptyset$
+implies $\applytrans{\delta}{[q]_{\simeq}}{x} \subseteq [q]_{\simeq}$,
+(2) $\applytrans{\delta}{[q]_{\simeq}}{x} \cap [p]_{\simeq}$ for some $p \not\simeq q$
+implies $\applytrans{\delta}{[q]_{\simeq}}{x} \cap [q]_{\simeq} = \emptyset$).
+
+
+\todo{zustände verkleinern im bild.}
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+    \node[state] (1) {};
+    \node[state, right = of 1] (2) {};
+    \path[->] (1) edge [loop above] node {$a$} (1)
+              (1) edge [above] node {$a$} (2);
+    \end{tikzpicture}
+    \caption{The forbidden pattern in rpoNFAs.}
+    \label{constr_sync:fig:rpoNFA}
+\end{figure}
+
+
+Next, we show that for automata whose condensation NFA is an rpoNFA,
+the converse of Proposition~\ref{constr_sync:prop:D1-directing-implies-sync} holds true.
+
+
+
+
+
+
+\begin{comment}
+
+\begin{proposition}
+ Suppose $\mathcal A$ has a trap state $t\in Q$. % brauche hier nichtmal dass trap state hat?
+ Let $S \subseteq Q$ be an upper set and suppose for every $q \in Q$,
+ if $\applytrans{\delta}{q}{x} \not\simeq q$,
+ then $\applytrans{\delta}{p}{p} \not\simeq q$ \todo{masopust-kratsch eigenschaft für diesen speziellen NFA}
+ for every $p \in Q$ with $p \simeq q$.
+ Then if $\mathcal A /{\sim_S}$ is sychronizing
+ and the condensation NFA of $\mathcal A_{|S}$
+ has a $D_1$-directing word, then the condensation NFA of $\mathcal A$
+ has a $D_1$-directing word.
+\end{proposition}
+\begin{proof}
+ By assumption there exists $u \in \Sigma^*$
+ such that $\applytrans{\delta}{q}{u} \subseteq S$
+ for all $q \in Q$.
+ %By Equation~\eqref{oben} this implies 
+ 
+ 
+ % Die Gleichung, die ich hier benutzten möchte gilt nicht! (im Text bemerken?)
+ % (sie gilt aber für einzelne zeichen, sonst muss man wörter dazwischenpacken um sich in SCCs zu bewegen)
+ %
+ % auf beispiel oben
+ % [1]aba = {[1], [2]}
+ % delta(Q,aba) = {3}, aber 1aba != 3
+ %
+ % 1aba = 1 geht nicht, existiert also nicht so ein paar wie behauptet!
+ Let $[p]_{\simeq} \in \applytrans{\delta_{\text{COND}}}{[q]_{\simeq}}{u}$.
+ Then there \todo{genauer}
+ exist $\overline q \simeq q$ and 
+ $\overline p \simeq p$
+ such that $\applytrans{\delta}{\overline q}{u} = \overline p$.
+ We have $\overline p \in S$.
+ So that $[p]_{\simeq} \subseteq S$ as it is an upper set.
+ Furthermore, for each $s \in S$
+ there exists $v \in \Sigma^*$
+ such that $\applytrans{\delta_{\text{COND}}}{[s]_{\simeq}}{v} = \{ [t]_{\simeq} \}$.
+ The latter implies $\applytrans{\delta_{\text{COND}}}{[s]_{\simeq}}{uv} = \{ [t]_{\simeq} \}$
+ for each $s \in S$.
+\end{proof}
+\end{comment} 
+
+\todo{topological ordering/sorting definieren}
+
+\todo{nach vorne verlegen.}
+\begin{lemma}
+\label{prelim:lem:sync_und_trap_state}
+ If $\semiautomat{A}{Q}{\Sigma}{\delta}$
+ has a trap state $t \in Q$ and is synchronizing,
+ then the set of synchronizing states is $\{t\}$
+ (the maximal strongly connected component in the induced partial order).\todo{sprechweise induced partial order einführen.}
+\end{lemma}
+
+\todo{hier muss man genau unterscheiden welchen automateontyp man betrachtet}
+
+\begin{lemma}
+\label{constr_sync:lem:rpoNFA_path-faithfulness}
+ Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be a DFA.
+ Suppose $\applytrans{\delta}{[q]_{\simeq}}{u} = \{ p \}$. % weil keine zustände in wzischen-SCC's eingeführt,
+ % wo es loops kann C_1 -> C_2 -> {p}, C_2 noch loopzustände, beispiel dazu
+ Then $\applytrans{\delta_{\text{COND}}}{[q]_{\simeq}}{u} = \{ [p]_{\simeq} \}$.
+\end{lemma}
+\begin{proof}\todo{index simeq dranschreiben}
+ For $x \in \Sigma$ the property is clear.\todo{definition transition genauer, gilt für beliebig condNFAs}
+ Consider $u = xv$ and set $T = \applytrans{\delta_{\text{COND}}}{[q]}{x} = $ \todo{wie oben def}
+ % v = eps, also für eps als IA
+ Inductively, for each $[r] \in T$
+ %
+ % r nehmen, muss aber nicht auf p landen! also kann man IV nicht anwenden,
+ % aber für sync-wort gilt es ja!
+ 
+ 
+\end{proof}
+
+
+\todo{anderes argument: wenn $u$ D3-directing in rpoNFA mit sink state,
+dann $u^i$ für ein $i$ $D1$-directing. male dreieck, wenn $q$
+in $t$ und $p$ endet, von $p$ auf $t$, betrachte $uu$.}
+
+
+
+\todo{mal DFA, mal complete and det. automat -> vereinheitlichen, PDFA, NFA}
+\begin{proposition}
+ Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be a DFA having a trap state $t \in Q$
+ and whose condensation NFA is a rpoNFA.
+ If $u \in \Sigma^*$ is a synchronizing word for $\mathcal A$,
+ then $u$ is a $D_1$-directing word in the condensation NFA.
+\end{proposition}
+\begin{proof}
+ Let $[q_1], \ldots, [q_m]$ be a topological ordering.
+ Define upper sets $S_i = [q_i] \cup \ldots \cup [q_m]$.
+ We show inductively (over $i$) that if $\mathcal A_{|S_i}$
+ has a synchronizing word $v$, then $v$ is $D_1$-directing in its condensation NFA.
+ 
+ 
+ By Lemma~\ref{prelim:lem:sync_und_trap_state}, 
+ we have $S_m = \{t\}$.
+ If $i = m$, then $\mathcal A_{|S_m}$ is an automaton with a single state,
+ it equals its condensation NFA and $\Sigma^*$ is the set of synchronizing
+ words as well as the set of $D_1$-directing words.
+ So the statement is true.
+ 
+ 
+ 
+ Suppose $1 \le i < m$ and $u$ synchronizes $\mathcal A_{|S_i}$.
+ Then we can write $u = vxw$ with $x \in \Sigma$ and $v,w \in \Sigma^*$
+ such that $\applytrans{\delta_{|S_i}}{[q_i]_{\simeq}}{vx} \cap S_{i+1} \ne \emptyset$
+ and $\applytrans{\delta_{|S_i}}{[q_i]_{\simeq}}{vx} \cap S_{i+1} = \emptyset$.
+ As the condensation NFA is a rpoNFA, 
+ if $\applytrans{\delta_{|S_i}}{[q_i]_{\simeq}}{vx} \cap S_{i+1} \ne \emptyset$,
+ then $\applytrans{\delta_{|S_i}}{[q_i]_{\simeq}}{vx} \subseteq S_{i+1}$.
+ The word $vxw$ synchronizes $\mathcal A_{|S_{i+1}}$.
+ Inductively, we find that it is a $D_1$-directing word 
+ for the condensation NFA of $\mathcal A_{|S_{i+1}}$.
+ This yields $\applytrans{\delta_{|S_{i+1}}}{}{}$
+ 
+ 
+ 
+ So, $\applytrans{\delta_{|S_i}}{}{}$
+ 
+ 
+ 
+ Then it also synchronizes $\mathcal A_{|S_{i+1}}$.
+ By induction hypothesis, the condensation NFA of $\mathcal A_{|S_{i+1}}$
+ has a $D_1$-directing word $u \in \Sigma^*$.
+ There  \todo{genauer}
+ exists $x \in \Sigma$ such that $\applytrans{\delta}{q}{x} \in S_{i+1}$ %masopust-kratsch eigenschaft & sync
+ for each $q \in Q$ with $q \simeq q_i$.
+ By the defining equation of the transition \todo{auf gleichung verweise.}
+ we have $\applytrans{\delta_{\text{COND}}}{[q_i]_{\simeq}}{x} \subseteq \{ [s]_{\simeq} \mid s \in S_{i+1} \}$.
+ As $\applytrans{\delta_{\text{COND}}}{[s]_{\simeq}}{u} = \{ [t]_{\simeq} \}$
+ and $\applytrans{\delta_{\text{COND}}}{[s]_{\simeq}}{xu} = \{ [t]_{\simeq} \}$, \todo{genauer}
+ it follows that $xu$ is $D_1$ directing for the condensation NFA of $\mathcal A_{|S_i}$
+ (which is the condensation NFA of $\mathcal A_{|S_{i+1}}$
+ with the additional state $[q_i]_{\simeq}$ and appropriate transitions).
+\end{proof}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\todo{semi-DFA nicht extra sagen. das auch noch an anfang irgendwo}
+
+
+\begin{comment} 
+A DFA $\semiautomat{A}{Q}{\Sigma}{\delta}$ % t trap state, s sync state
+is \emph{residual synchronizing} if it is synchronizing
+and for every synchronizing word $u \in \Sigma^*$ with $\applytrans{\delta}{Q}{u} = \{s\}$,
+if $u = vw$ with $v,w \in \Sigma^*$
+and $\applytrans{\delta}{q}{v} \simeq p$ for $p, q \in Q$,
+then $\applytrans{\delta}{p}{w} = s$. 
+\todo{siehe kommentar im quelltext
+% ein wort ist residual-sync, wenn es dies erfüllt, 
+% gibt stets residual-sync wörter durch lange genugt machen (u^{|Q|}), definition ist, dass es alle sind.
+% damit constraint residual synchronization problem auf NFA reduzierbar
+%
+% kürzestes residual-sync wort?
+%
+% wenn Syn(A) unter u^{-1}L abgeschlossen, dann residual-sync automat.
+%
+% sinnvolle beispiele für residual-sync automaten? für SCC heisst es, jedes suffix ist sync, und
+% das gilt natürlich nicht, also eher für pto automaten interessant
+%
+% kommutative automaten sind residual-sync?
+}
+\end{comment}
+
+A DFA $\semiautomat{A}{Q}{\Sigma}{\delta}$ % t trap state, s sync state
+is \emph{residual synchronizing} if it is synchronizing
+and for every synchronizing word $u \in \Sigma^*$ with $\applytrans{\delta}{Q}{u} = \{s\}$,
+if $u = vw$ with $v,w \in \Sigma^*$
+and $q \not\simeq \applytrans{\delta}{q}{v}$ for $p, q \in Q$,
+then $\applytrans{\delta}{p}{w} = s$. % also wenn praktsich in größerer SCC-komponente landet
+%
+% ne, macht keinen sinn.
+% will dass alle SCCs hinter dem von delta(q,v) in top sort von w gesynct werden.
+%
+% oder brauche ich nicht sowas wie, dass w konfluent ist für die, die auseinandergehen?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\subsubsection{Synchronizing Words with Respect to a Constraint Language}
+
+If the partitioning is given by the equivalence relation $\simeq$
+induced by the reachability order (see Section~\ref{reachability}),
+then we call the merging NFA the \emph{condensation NFA}, denoted by 
+$\semiautomat{A_{\text{COND}}}{Q/{\simeq}}{\Sigma}{\delta_{\text{COND}}}$.
+It corresponds to collapsing, or merging, the strongly connected\todo{refernzen?}
+components of the automaton (this operation is called condensation
+in graph theory, and the condensation NFA corresponds to the condensation
+of the automaton graph).
+
+\begin{proposition} \todo{nicht unbedingt solvable! diskutieren, auch mit pspace konstruktionen vergleichen die ja auch trap states haben}
+ Let $\mathcal A$ be a complete and deterministic automaton with a trap state $t \in Q$ and $u \in \Sigma^*$.
+ The word $u$ synchronizes $\mathcal A$
+ if and only if it is $D_1$-directing in $\mathcal A_{\text{COND}}$.
+\end{proposition}
+\begin{proof}
+ The trap state must be the synchronizing state in $\mathcal A$.
+ Let $u$ be a synchronizing word for $\mathcal A$.
+ Then $\applytrans{\delta}{Q}{u} = \{t\}$ and 
+ the defining equation of the transition function \todo{mit nummer zitieren}
+ gives, for each $q \in Q$,
+ \[ 
+  \applytrans{\delta_{\text{COND}}}{[q]_{\simeq}}{u}
+  = \{ [p]_{\simeq} \mid p \in \applytrans{\delta}{[q]_{\simeq}}{u} \} 
+  = \{ [p]_{\simeq} \mid p \in \{ t \} \}
+  = \{ [t]_{\simeq} \}.
+ \]
+ So the word is $D_1$-directing for $\mathcal A_{\text{COND}}$.
+ \todo{das ist falsch, da man in jedem schritt eine art closure operation ausführen muss!
+ obiges beispiel zeigt es!}
+ 
+ Conversely, suppose $u$ is a $D_1$-directing word for $\mathcal A_{\text{COND}}$.
+ 
+ % ne, im Beispiel ab Gegenbeispiel!!!!
+ 
+\end{proof}
+
+
+
+
+\todo{ganz zu anfang let $A = $ schreiben, in dieser section}
+
+\todo{mit rystsov definitionen vergleichen. auch recahblity order und folgerungen damit; aber hier kongruenzperspektive}
+The automaton $\mathcal A$ is called \emph{solvable}, if
+there exists a topological sorting 
+\[ 
+[q_1]_{\simeq}, [q_2]_{\simeq},
+\ldots, [q_m]_{\simeq}
+\] such that $\mathcal A_{|S_m}$
+is commutative and for all $i \in \{1,\ldots,m-1\}$
+the Rees factor automata $( \mathcal A_{|S_i} ) / {\sim_{S_{i+1}}}$
+are commutative,
+where $S_i = [q_i]_{\simeq} \cup [q_{i+1}]_{\simeq} \cup \ldots \cup [q_m]_{\simeq}$ 
+(note that these are upper sets).
+Actually, if the condition holds true for some topological ordering,
+then it holds true for all topological sortings, as
+the factor automata arise out of the strongly connected components
+and an additional trap state.\todo{genauer? jordan-hölder in rystsov erwähnen?}
+
+\todo{den struktursatz auch nochmal hinschreiben? permutation reset automata, und im Pol(GComm)?
+verweis auf Schur lemma}
+
+A synchronizing word for $\mathcal A$ synchronizes $\mathcal A_{|S_m}$ as well.
+As it is commutative, by Fact~\ref{comm_sync_state_is_trap_state}
+and as it is strongly connected, we conclude $S_m = \{q_m\}$
+and $q_m$ is a trap state.
+
+\begin{lemma}
+\label{constr_sync:lem:solvable_sync_trap_state}
+ If $\mathcal A$ is solvable and synchronizing, then the synchronizing
+ state is a unique trap state.
+\end{lemma}
+
+Let $q \in S_i$ and $x \in \Sigma$. If $\applytrans{\delta}{q}{x} \sim q$,
+then $\applytrans{\delta}{p}{x} \sim q$ for all $p \in S_i$. \todo{so oben auch formulieren?}
+This follows \todo{die facts dazu ziteiren?}
+as in a commutative automaton every letter either permutes a strongly connected
+components or maps every state of a strongly connected component into states
+outside of this strongly connected component.
+
+\begin{lemma}
+ Let $\mathcal A$ be solvable, $q \in Q$ and $x \in \Sigma$.
+ If $\applytrans{\delta}{q}{x} \sim q$,
+ then $\applytrans{\delta}{p}{x} \sim q$
+ for all $p \in Q$ with $p \sim q$.
+ %$p, q \in Q$ and $p \sim q$,
+ %then for each $x \in \Sigma$
+ %we either have $\applytrans{\delta}{p}{x} \sim \applytrans{\delta}{q}{x}$
+ %for 
+\end{lemma}
+
+\todo{masopust, kratsch bild, pattern}
+
+\todo{$D_i$-directing einführen und diskutieren, dass nur D1 geht.}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\todo{entscheidungsverfahren für constr-sync nur diskutieren und
+auf paper verweisen.}
+
+\todo{- pto => monotonic aber nicht umgekehrt (aus sync-games paper beispiel)}
+
+\todo{auskommentierten teil später noch irgendwie einbauen.}
+\begin{comment} 
+
+Let $\mathcal A$ be an automaton. An upper set $S \subseteq Q$
+is \emph{maximal} if $S \ne Q$ and for every upper set $S \subseteq T \subseteq Q$
+we have $S = T$ or $T = Q$. %composition series defineren
+
+
+% composition series erwähnen und kommentieren entspricht top sort der SCC's
+
+% S maximal in T
+
+A \emph{composition series} is a sequence of upper
+set 
+\[
+ S_0 \subseteq 
+\]
+
+
+An automaton is solvable %mit composition series
+
+
+
+An automaton is solvable if for each $q \in Q$
+with $\Gamma = \{ x \in \Sigma \mid \applytrans{\delta}{q}{x} \cap [q]_{\sim} \ne \emptyset \}$
+the automaton $\mathcal A_{[q]_{\sim}, \Gamma}$
+is commutative. % äquiavlent permutation autoamta
+
+\todo{ 
+aber [q]_{\sim} kein upper set, aber defintiion geht für die gamma abgeschlossen; dafür müsste diese definition oben angepasst werden.
+
+und das geht dann auch nur für solvable, also eher schlecht damit zu definieren,
+oder das mit in defiition packen.
+
+}
+
+
+\begin{proposition}
+ The automaton $\mathcal A$ is solvable if and only if
+ %every composition factor is a permutation reset automaton.
+ for every upper set $S \subseteq Q$
+ and maximal upper set $T$ in $\mathcal A / {\sim_S}$
+ the Rees quotient for $T$ in $\mathcal A / {\sim_S}$ \todo{oder Rees factor?}
+ is a commutative permutation-reset automaton.
+\end{proposition}
+
+
+
+
+
+
+
+% wenn sync maximales SCC [q] = {q} irgendwo hinschreiben?
+
+
+
+
+% die amsopust-kratsch form wichtig für D_3
+% und übrigens keine undefinierten übergänge (also complete)
+
+\todo{auf relation in $\Sigma^*$ erweitern.}
+
+Clearly, as we are collapsing states, % mit funktion beschreiben
+\begin{equation}\label{constr_sync:eqn:cond_paths} 
+\applytrans{\delta}{s}{u} = t \Rightarrow ([s]_{\sim}, u, [t]_{\sim}) \in \delta_{\text{COND}}
+\end{equation}
+(this holds in general for collapsing, or merging,
+of states).\todo{genauer, induktion, mit ziwe zuständen starten.}
+ If there exists $([s]_{\sim}, u, [t]_{\sim}) \in \delta_{\text{COND}}$,
+ %
+ % ne, wenn man über collapsed geht nicht für alle
+ then there exists $\overline s \sim s$
+ and $\overline t \sim t$
+ such that $\applytrans{\delta}{\overline s}{u} = \overline t$. \todo{beweisen.}
+\end{comment}
+ 
+
+
+
+\todo{oder war $D_1$ alles in einen?}
+
+
+\begin{proposition} \todo{solvable DFA? / FA / auotmaton}
+ Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be solvable with synchronizing state $t \in Q$
+ and $u \in \Sigma^*$.
+ The word $u$ synchronizes~$\mathcal A$, i.e. $\applytrans{\delta}{Q}{u} = \{t\}$,
+ if and only if it is $D_1$-directing for the condensation NEA~$\mathcal A_{\text{COND}}$,
+ in which case $\applytrans{\delta_{\text{COND}}}{Q/{\simeq}}{u} = \{ [t]_{\simeq} \}$.
+\end{proposition}
+\begin{proof}
+ First, suppose $u$ synchronizes $\mathcal A$ with synchronizing state $q$.
+ By Equation~\eqref{constr_sync:eqn:cond_paths},
+ for every $s \in Q$
+ we have $([s]_{\sim}, u, [q]_{\sim}) \in \delta_{\text{COND}}$.
+ Now assume $([t]_{\sim}, u, [p]_{\sim}) \in \delta_{\text{COND}}$,
+ then with the above $[p]_{\sim} = [q]_{\sim}$. \todo{genauer}
+ 
+ \todo{sprechweise to the state}
+ Now, suppose $u$ is $D_1$-directing for $\mathcal A_{\text{COND}}$
+ to the state $[q]_{\sim}$. % ist letzter in A, also = {q}
+ 
+ 
+ Let $s \in Q$.
+ Then $([s]_{\sim}, u, [q]_{\sim}) \in \delta_{\text{COND}}$.
+ Then % obige erklärung
+ there exists $\overline s \sim s$
+ such that $\applytrans{\delta}{\overline s}{u} = q$. % hier = {q} genutzt! als lemma?
+ 
+ 
+ 
+ 
+ %
+ % induktion über topsort, und da entweder self-loop oder beide weiter
+ % geht es
+ 
+ 
+ Suppose $\applytrans{\delta}{s}{u} = p$,
+ then with Equation~\eqref{todo} \todo{genauer}
+ $p = q$. % da sync
+ 
+ %
+ % aber dann habe ich solvable gar nicht gebraucht!!!!!
+ %
+ % häöchstens in der eigenschaft dass defineirt, also complete!
+ %
+ % dann wären complete NEA ja immer in NP! also missing transition
+ % für pspace!
+ 
+ \todo{$\simeq$ nicht $\sim$!}
+ 
+ \todo{$q_m = t$}
+ \todo{vielleicht diese aussage als separates lemma?}
+ \todo{erwähnen daraus composition series durch vereinigungen qi bis qm?}
+ Let $[q_1]_{\sim}, [q_2]_{\sim}, \ldots, [q_m]_{\sim}$
+ be a topological sorting in the induced partial order of the reachability order. \todo{zeigen, dass es letzer zustand sein muss. und solvable dann trap state (gleich menge sync states singleton)}
+ We show by induction over $i \in \{1,\ldots,m\}$ the following:
+ \todo{einfacher formulieren $q = q_i$ setzen}
+ If $\applytrans{\delta_{\text{COND}}}{[q_i]_{\sim}}{w} = \{ [q_m]_{\sim} \}$ 
+ for some $i \in \{1,\ldots,m\}$ and $w \in \Sigma^*$,
+ then $\applytrans{\delta}{q}{w} = q_m$
+ for all $q \in Q$ with $q \sim q_i$.
+ If $q \sim q_m$, then $q = q_m$
+ and with Equation~\eqref{constr_sync:eqn:cond_paths} \todo{bzw, weil der trap state}
+ we find $\applytrans{\delta}{q}{w} = q_m$.
+ So, suppose $1 \le i < m$.
+ Then $w \ne \varepsilon$ and 
+ we can write $w = uxv$ with $u,v \in \Sigma^*$ and $x \in \Sigma$
+ such that $\applytrans{\delta}{q_i}{u} \sim q_i$
+ and $\applytrans{\delta}{q_i}{ux} \not\sim q_i$.
+ As $\mathcal A$ is solvable, if $q \sim q_i$ \todo{lemma zitieren?}
+ then $\applytrans{\delta}{q}{ux} \not\sim q_i$ as well.
+ Consider the state $s = \applytrans{\delta}{q}{uxv}$.
+ By Equation~\eqref{todo}, we have
+ \[
+  % [s]_{\simeq} \in \applytrans{\delta_{\text{COND}}}{[\applytrans{\delta}{q}{ux}]_{\simeq}}{v}.
+  [s]_{\simeq} \in \applytrans{\delta_{\text{COND}}}{[q]_{\simeq}}{w}. %[q] = [q_i]
+ \]
+ So $[s]_{\simeq} = [q_m]_{\simeq}$, as we only end up in $\{ [q_m]_{\simeq}\}$,
+ which gives $s = t$. % wieder nur completeness....
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Let $i < j \le m$ with $q_j \sim \applytrans{\delta}{q}{ux}$.
+ We have\todo{genauer?}
+ \[ 
+  \applytrans{\delta}{}{}
+ \] 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+  Let $q \in Q$
+ and suppose $q \sim q_i$ for some $i \in \{1,\ldots,m\}$. 
+ %We have $\applytrans{\delta}{[q]_{\sim}}{u} = \{ [q_m]_{\sim} \}$.
+ If $i = m$, then 
+ as $[q_m]_{\sim} = \{q_m\}$ we have $q = q_m$
+ and $\applytrans{\delta}{q_m}{u} = q_m$ follows.
+ Otherwise, suppose $1 \le i < m$.
+ \todo{die gleichung einmal am anfang hinschreiben.}
+ As $\applytrans{\delta_{\text{COND}}}{[q]_{\sim}}{u} = [q_m]_{\sim}$,
+ there exist $p \in Q$
+ with $q \sim p$ and $\applytrans{\delta}{p}{u} = q_m$.
+ We have $u \ne \varepsilon$ and can write $u = vxw$ with $v,w \in \Sigma^*$
+ and $x \in \Sigma$
+ such that $\applytrans{\delta}{p}{v} \sim p$
+ and $\applytrans{\delta}{p}{vx} \not\sim p$.
+ As $\mathcal A$ is solvable, \todo{genauer?}
+ this implies $\applytrans{\delta}{q}{vx} \not\sim p$.
+ We have \todo{diese gleichung oben erwähnen. und auch warum nur teilmengenbeziehung}
+ \[
+  [q_m]_{\sim} = \applytrans{\delta_{\text{COND}}}{[q]_{\sim}}{u}
+  \supseteq \applytrans{\delta_{\text{COND}}}{[\applytrans{\delta}{q}{vx}]_{\sim}}{w}
+ \]
+ and the latter set is non-empty as the automaton is complete.
+ So, as $[q_m]_{\sim} = \{q_m\}$ we have in fact equality in the above equation.
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+\end{proof}
+
+\todo{subset probleme und schranken nicht in diss, dafür originalarbieten,
+aber sonst besser in diss}
+
+
+
+% top sort, dann induktion q_i nach {q_{i+1}, ..., q_n
+
+\todo{in regulärer sprache!}
+
+
+
+ \todo{bei nea einführen sagen auf funktion nach postenzmenge, und kurz automateongraphen ansprechen.}
+ 
+ 
+\begin{proposition}
+ Let $\automat{B}{P}{\Sigma}{\mu}{p_0}{F}$
+ be a PDFA.
+ A partially ordered
+ $n$-state
+ $D_1$-directable NFA $\semiautomat{A}{Q}{\Sigma}{\delta}$ has a $D_1$-directing word 
+ in $L(\mathcal B)$ of length at most $(n - 1) \cdot |P|$. 
+ \todo{im text erwähnen easily seen to be sharp even for deterministic and complete,
+ folgerung damit auch synchronizing word vopn partially orderer DFA}
+\end{proposition}
+\begin{proof}
+ Let $Q = \{q_1, q_2, \ldots, q_n\}$
+ be a topological sorting of the states.\todo{genauer hinschreiben mit reachability was da heißt}
+\begin{comment} 
+ As we have a single state to which every other state is mapped\todo{englisch, is mapped to?}
+ to, this single state must be the last state~$q_n$ in the topological 
+ ordering. \todo{genauer?}
+ Now, let $i \in \{1,\ldots,n-1\}$
+ and consider $q_i \in Q$.
+ Then there must exist $x_i \in \Sigma$ and  $s \in \{q_{i+1}, \ldots, q_n\}$
+ such that $(q_i, x_i, s) \in \delta$, otherwise
+ this state cannot be mapped to $q_n$. \todo{da es nur vorwärts geht, genauer?}
+ For $x \in \Sigma$ and $t \in Q$
+ with $(q_i, s, t) \in \delta$
+ we have $t \in \{q_i, q_{i+1}, \ldots, q_n\}$
+ as $\mathcal A$ is partially ordered,
+ i.e., the letter either induces a self-loop or moves forward in the partial order.
+ So, for the word $u = x_1 x_2 \cdots x_n$
+ we \todo{nehme ich jetzt die relationenschreibweise oder funktion in potenzmenge?}
+ have $q_n \in \applytrans{\delta}{Q}{u}$.
+ 
+ 
+ % praktisch blockcode Sigma^{|P|}
+\end{comment}
+ Let $u \in L(\mathcal B)$ be a shortest $D_1$-directing word. 
+ Write $u = u_1 u_2 \cdots u_{n-1}$
+ where $u_i \in \Sigma^*$ for $i \in \{1,\ldots,n-1\}$
+ is shortest possible
+ such that $\applytrans{\delta}{q_i}{u_1 \cdots u_i} \subseteq \{q_{i+1}, \ldots, q_n\}$
+ (note that $u_i = \varepsilon$ is possible).
+ By choice, if $u_i\ne \varepsilon$,
+ we can write $u_i = v_i x_i$ with $x_i \in \Sigma$ and $v_i \in \Sigma^*$
+ such that $\applytrans{\delta}{q_i}{v_i} = \{q_i\}$ \todo{bemerken muss singleton sein wegen pto}
+ and $\applytrans{\delta}{q_i}{x_i} \subseteq \{q_{i+1}, \ldots, q_n\}$.
+ In this case, $\applytrans{\delta}{q_i}{v} = \{q_i\}$ \todo{prefix/suffix/factor/infix definiert?}
+ for each prefix $v$ of $u_1 \cdots u_{i-1}$.
+ Note that $\applytrans{\delta}{\{q_1, \ldots, q_i\}}{u_1 \cdots u_i}
+ \subseteq \{q_{i+1}, \ldots, q_n\}$ and as $u$
+ is $D_1$-directing this implies \todo{problematischer schritt, da oben nur teilmenge, also muss es
+ ja nicht alles synchronisieren. ist wie diese residual-eigenschaft}
+ \begin{equation}
+ \label{constr_sync:eqn:pto_NFA}
+     \applytrans{\delta}{\{q_{i+1}, \ldots, q_n\}}{u_{i+1} \cdots u_{n-1}}
+      = \{q_n\}.
+ \end{equation}
+ Assume $|v_i| \ge |P|$. Then $v_i$ induces a loop in $\mathcal B$
+ and we find a proper prefix $v_i' \in \Sigma^*$ with $|v_i'| < |v_i|$ 
+ and \todo{genauer?}
+ $\applytrans{\mu}{p_0}{u_1 \cdots u_{i-1} v_i} = \applytrans{\mu}{p_0}{u_1 \cdots u_{i-1} v_i'}$.
+ %As $\applytrans{\delta}{q_i}{v_i'} = \{q_i\}$
+ %and $\applytrans{\delta}{q_i}{x_i} \subseteq \{q_{i+1},\ldots,q_n\}$
+ We have $\applytrans{\delta}{q_i}{u_1 \cdots u_{i-1} v_i'x_i}
+ \subseteq \{ q_{i+1}, \ldots, q_n \}$.
+ Furthermore,
+ $u_1 \cdots u_{i-1} v_i' x_i u_{i+1} \cdots u_n \in L(\mathcal B)$
+ and with Equation~\eqref{constr_sync:eqn:pto_NFA},
+ \[
+ \applytrans{\delta}{\{q_1, \ldots, q_n\}}{u_1 \cdots u_{i-1} v_i' x_i u_{i+1} \cdots u_n}
+  = \applytrans{\delta}{\{q_{i+1},\ldots,q_n\}}{ u_{i+1} \cdots u_n }
+  = \{q_n\}
+ \]
+ so that this word is a shorter $D_3$-directing
+ word, which is excluded by assumption.
+ Hence $|u_i| \le |P|$ for all $ \in \{1,\ldots,n\}$.
+ This yields $|u| \le (n-1)\cdot |P|$.
+ % problem verändert teil dahinter/davor
+ % neues wort auch in L(B)
+%  ...
+%  such that %$\applytrans{\delta}{q_i}{u_i} \subseteq \{q_{i+1}, \ldots, q_n\}$
+%  $\applytrans{\delta}{q_i}{u_i u_{i+1} \cdots u_m} = \{q_n\}$.
+%  Note that this implies $\applytrans{\delta}{\{q_i, q_{i+1}, \ldots, q_n\}}{u_i u_{i+1} \cdots u_n} = \{q_n\}$ and that $u_i = \varepsilon$ is possible. \todo{genauer}
+ %
+ % letztens zeichen bewegt, und man kann kürzen und inducitkv annehmen alle danach <|P|
+ %
+ % wo ist oben das problem?
+ % 
+ % we show |u_i| < |P| induktively
+ %
+ % komplette wort u_1 .... v' .... u_m noch sync
+ % ne, ich nehme mir ja nur blöcke aus dem wort
+\end{proof}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% NEU
+
+
+
+\todo[inline]{
+
+Gleiche Problem wie vorher, dass kürzere $v_i'$ kann in $[q_i]$
+drin rumpermutieren. $x_i$ mappt zwar raus, aber das ergebnis muss von $u_{i+1} \cdots u_{m-1}$
+nicht mehr synchronisiert werden. (mit zyklenargument?)
+
+}
+\begin{proposition}
+ Let $\automat{B}{P}{\Sigma}{\mu}{p_0}{F}$
+ be a PDFA and $\semiautomat{A}{Q}{\Sigma}{\delta}$
+ a solvable automaton.
+ If $\mathcal A$ is synchronizing,
+ it has a synchronizing word of length at most $(n - 1)\cdot |P|$.
+\end{proposition}
+\begin{proof}
+ Let $[q_1]_{\simeq}, [q_2]_{\simeq}, \ldots, [q_m]_{\simeq}$
+ be a topological sorting of the strongly connected components.\todo{erwähnen induced order?}
+ Suppose $u \in L(\mathcal B)$ is a shortest synchronizing word for $\mathcal A$.
+ Write $u = u_1 u_2 \cdots u_{m-1}$ where $u_i \in \Sigma^*$ \todo{verträglichkeit der ordnung bzw, dass es nie zurückgeht erwähnen?}
+ for $i \in \{1,\ldots,m-1\}$ is shortest possible such that \todo{indiczes simeq setzen}
+ $\applytrans{\delta}{[q_i]}{u_1 \cdots u_i} 
+ \subseteq [q_{i+1}]_{\simeq} \cup \ldots \cup [q_m]_{\simeq}$
+ (note that $u_i = \varepsilon$ is possible).
+ If $u_i \ne \varepsilon$, then we
+ can write $u_i = v_i x_i$ for some $x_i \in \Sigma$
+ and $v_i \in \Sigma^*$.
+ Note that this implies 
+ $\applytrans{\delta}{[q_1] \cup \ldots \cup [q_i]}{u_1 \cdots u_i}
+ \subseteq [q_{i+1}]_{\simeq} \cup \ldots \cup [q_m]_{\simeq}$.
+ By choice, we have $\applytrans{\delta}{[q_i]}{v_i} \cap [q_i] \ne \emptyset$.
+%  However, with Lemma~\ref{immer-komplett-raus},
+%  this implies   \todo{genauer? sogar gleich da endlich, permutiert}
+% %  \[ \applytrans{\delta}{[q_i]}{v} \subseteq [q_i]
+% %  \]
+% %  for every prefix $v$ of $v_i$.
+ So $\applytrans{\delta}{[q_i]}{x_i} \not\subseteq [q_i]$, and with Lemma~\ref{todo}, 
+ \begin{equation}
+     \applytrans{\delta}{[q_i]}{x_i} \subseteq [q_{i+1}] \cup \ldots [q_m],
+ \end{equation}
+ i.e., all transition labeled with $x_i$ and starting at a state in $[q_i]$
+ point to states outside of $[q_i]$. %kann man auch schlussfolgern aus der Tatsache , das v_i [q_i] permutiert.
+ Assume $|v_i| \ge |P|$. Then $v_i$ induces a loop in $\mathcal B$
+ and we find a proper prefix $v_i' \in \Sigma^*$ with $|v_i'| < |v_i|$ 
+ and \todo{genauer?}
+ $\applytrans{\mu}{p_0}{u_1 \cdots u_{i-1} v_i} = \applytrans{\mu}{p_0}{u_1 \cdots u_{i-1} v_i'}$.
+ %As $\applytrans{\delta}{q_i}{v_i'} = \{q_i\}$
+ %and $\applytrans{\delta}{q_i}{x_i} \subseteq \{q_{i+1},\ldots,q_n\}$
+ So, $u_1 \cdots u_{i-1} v_i' x_i u_{i+1} \cdots u_n \in L(\mathcal B)$.
+ With Equation~\eqref{qivi_in_qi},
+ \begin{align*}
+   \applytrans{\delta}{Q}{u_1 \cdots u_{i-1} v_i' x_i u_{i+1} \cdots u_{m-1}} 
+    & \subseteq \applytrans{\delta}{[q_i] \cup \ldots \cup [q_m]}{v_i'x_i u_{i+1} \cdots u_{m-1}} \\
+    & \subseteq \applytrans{\delta}{[q_i] \cup \ldots \cup [q_m]}{x_i u_{i+1}\cdots u_{m-1}} \\
+    & \subseteq \applytrans{\delta}{[q_{i+1}] \cup \ldots \cup [q_m]}{u_{i+1}\ldots u_{m-1}}
+ \end{align*}
+ 
+ 
+ We have $\applytrans{\delta}{[q_i]}{u_1 \cdots u_{i-1} v_i'x_i}
+ \subseteq [q_{i+1}] \cup \ldots \cup [q_n]$.
+ Furthermore,
+ 
+ and \todo{auf obige gleichung verweisen?}
+ \begin{multline*}
+     \applytrans{\delta}{Q}{u_1 \cdots u_{i-1} v_i' x_i u_{i+1} \cdots u_{m-1}}
+    =  \applytrans{\delta}{[q_i] \cup \ldots \cup [q_m]}{v_i' x_i u_{i+1} \cdots u_{m-1}}
+ \end{multline*}
+ 
+ 
+ 
+ \[
+ \applytrans{\delta}{\{q_1, \ldots, q_n\}}{u_1 \cdots u_{i-1} v_i' x_i u_{i+1} \cdots u_n}
+  = \applytrans{\delta}{\{q_{i+1},\ldots,q_n\}}{ u_{i+1} \cdots u_n }
+  = \{q_n\}
+ \]
+ so that this word is a shorter $D_3$-directing
+ word, which is excluded by assumption.
+ Hence $|u_i| \le |P|$ for all $ \in \{1,\ldots,n\}$.
+ This yields $|u| \le (n-1)\cdot |P|$.
+ 
+ 
+ 
+\end{proof}

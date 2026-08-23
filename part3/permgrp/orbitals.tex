@@ -1,0 +1,156 @@
+%!TEX root = ./../../springer-mono-format/book.tex
+%!TEX root = ./../../thesis-trier.tex
+
+Here, we relate the notion of $\{a,b\}$-primitivity
+to undirected and directed orbital graphs, thereby 
+generalizing Higman's characterization of primitivity (\crefitem{sync_max:thm:prim_orbitals}{sync_max:thm:prim_char:higman-directed}).
+More specifically, in \cref{syncmax:prop:abprim_undirectedorbital} (resp.~\cref{sync_max:prop:stronglyabprim_orbitalSCC}),
+we prove that $\{a,b\}$-primitivity (resp.~strong $\{a,b\}$-primitivity)
+is equivalent to connectedness of the undirected orbital graph of $\{a,b\}$  (resp.~strong connectedness of the directed orbital graph of $(a,b)$).
+\Cref{sync_max:cor:stronglyabprim_AB}
+characterizes strong $\{a,b\}$-connectivity
+in terms of partitions of the domain into two sets.
+Lastly, in \cref{syncmax:prop:abprim_undirectedorbital_intransitive},
+we show that a group is $\{a,b\}$-primitive, but
+not strongly $\{a,b\}$-primitive,
+if and only if the orbits of $a$ and $b$
+are disjoint and partition the domain, in the undirected orbital graph of $\{a,b\}$ no edge is completely contained
+in one orbit, and in the directed orbital graph of $(a,b)$
+all edges start in the orbit of $a$ and end in the orbit of $b$.
+
+\begin{proposition}
+	\label{syncmax:prop:abprim_undirectedorbital}
+	Let $G \le_G \mathcal S_n$ and $a,b \in [n]$ be distinct.
+	Then $G$ is $\{a,b\}$-primitive if and only if 
+	the undirected orbital graph of $\{a,b\}$ is connected.
+\end{proposition}
+\begin{proof}	
+	Let $H$ be the undirected orbital graph of $\{a,b\}$.	
+	First, assume that $G$ is $\{a,b\}$-primitive.	
+	For $c,d \in [n]$, write $c \sim d$ 
+	if there exists a path from $c$ to $d$ in $H$.
+	Since~$G$ is a subgroup of the automorphism group of $H$, the relation~$\sim$ is a $G$-congruence.
+	So, the equivalence classes, i.e., the connected components
+	in this case, are blocks.		
+	As~$\{a,b\}$ is an edge in $H$ we have $a \sim b$.
+	Therefore, by $\{a,b\}$-primitivity,
+	all pairs of distinct points
+	are congruent, i.e., the connected component
+	containing~$a$ and~$b$ equals $[n]$. Thus, $H$ is connected.
+	Conversely, assume $H$ is connected.
+	Let $\Delta \subseteq [n]$ be a block with $\{a,b\} \subseteq \Delta$.
+	No edge can leave $\Delta$, i.e., no edge can have precisely one
+	endpoint in $\Delta$; for if $\{ \applyfunc{a}{g}, \applyfunc{b}{g} \}$ with $g \in G$
+	is an edge such that, without loss of generality, $\applyfunc{a}{g} \in \Delta$,
+	then, as $\Delta$ is a block containing~$a$ and~$b$, we have $\applyfunc{b}{g} \in \Delta$. 
+	Hence~$\Delta$ is a union of connected components of $H$. As $H$ is
+	connected, this implies~$\Delta = [n]$.
+\end{proof}
+
+\begin{proposition}
+	\label{sync_max:prop:stronglyabprim_orbitalSCC}
+	Let $G \le_G \mathcal S_n$ and $a,b \in [n]$ be distinct. 
+	Then $G$ is strongly $\{a,b\}$-primitive if and only
+	if the directed orbital graph of $(a,b)$
+	is strongly connected.		
+\end{proposition}
+\begin{proof}  
+	Let $H = ([n], E)$ be the directed orbital graph of $(a,b)$.
+	First, suppose~$G$ is strongly $\{a,b\}$-primitive.
+	As $G$ is $\{a,b\}$-primitive
+	the graph $H$ is weakly connected by \cref{syncmax:prop:abprim_undirectedorbital}.
+	Further, as $G$ is transitive, $H$
+	is vertex-transitive. By \cref{prelim:thm:vertex_transitive_finite_graph},
+	it follows that $H$ is strongly connected.
+	Conversely, suppose $H$	is strongly connected.
+	Then, as the undirected orbital graph of $\{a,b\}$
+	is connected,
+	$G$ is $\{a,b\}$-primitive by \cref{syncmax:prop:abprim_undirectedorbital}.
+	Further, every vertex of $H$ must have an outgoing edge.
+	Since we have $E \subseteq \Orbit{a}{G} \times \Orbit{b}{G}$,
+	an edge outgoing at~$b$ has the form $(g(a), g(b))$,
+	which gives $b = g(a)$.\footnote{Alternatively, 
+		we obtain transitivity of $G$
+		from \cref{prelim:lem:partition_SCC}
+		applied to $\Orbit{a}{G}$,
+		which yields  $g(b) \in \Orbit{a}{G}$
+		for some $g \in G$.}
+	So, $G$ is strongly $\{a,b\}$-primitive.		
+\end{proof}
+
+Combining \cref{sync_max:prop:stronglyabprim_orbitalSCC}
+with \cref{prelim:lem:partition_SCC} gives the next corollary.\footnote{A different
+	proof was given in~\cite[Prop.~2.2]{HoffmannLATAextended2}
+	by considering, for a subset~$A$ of the domain, the $G$-congruence
+	that relates~$x$ and~$y$ if and only if
+	\[
+	\forall g \in G \colon \applyfunc{x}{g} \in A \Leftrightarrow \applyfunc{y}{g} \in A.
+	\]
+}
+
+\begin{corollary}\label{sync_max:cor:stronglyabprim_AB}	
+	A group $G \le_G \mathcal S_n$ 
+	is strongly $\{a,b\}$-primitive for distinct $a,b \in [n]$ if and only if
+	for non-empty and disjoint
+	$A, B \subseteq [n]$ with $A \cup B = [n]$
+	we have $\applyfunc{a}{g} \in A$
+	and $\applyfunc{b}{g} \in B$
+	for some $g \in G$.
+\end{corollary}
+
+Finally, we investigate the orbital graphs of groups that are $\{a,b\}$-primitive but not strongly $\{a,b\}$-primitive.
+
+\IN{bipartite graph}
+\begin{proposition}
+	\label{syncmax:prop:abprim_undirectedorbital_intransitive}
+	Let $G \le_G \mathcal S_n$  be $\{a,b\}$-primitive for distinct $a,b \in [n]$.
+	Then~$G$ is intransitive if and only if
+	in the undirected orbital graph of $\{a,b\}$ (resp.~directed orbital graph of $(a,b)$)
+	the orbits $\Orbit{a}{G}$ and $\Orbit{b}{G}$ are disjoint
+	and partition $[n]$ such that there exists no edge with both 
+	endpoints in $\Orbit{a}{G}$
+	or both endpoints in $\Orbit{b}{G}$
+	(resp.~the starting vertex of each edge is in $\Orbit{a}{G}$ 
+	and its ending vertex is in $\Orbit{b}{G}$).\footnote{Undirected graphs with these properties are known as bipartite
+		graphs w.r.t.~bipartition $\Orbit{a}{G}$ and $\Orbit{b}{G}$.} 
+\end{proposition}
+\begin{proof}
+	By $\{a,b\}$-primitivity, from 
+	\cref{sync_max:prop:ab_non_congruent_then_two_orbits} 
+	we get $[n] = \Orbit{a}{G} \cup \Orbit{b}{G}$.
+	So, intransitivity 
+	is equivalent with $\Orbit{a}{G} \ne \Orbit{b}{G}$
+	and so the claim follows from \cref{prelim:lem:orbitals-distinct-orbits}.
+\end{proof}
+
+\begin{example}
+	The intransitive group from \cref{sync_max:ex:abprim_intransitive} 
+	is $\{0,4\}$-primitive.
+	Its undirected orbital graph for $\{0,4\}$
+	has the edge set $\{ \{ a,b \} \mid a \in \{0,1,2,3\}, b \in \{4,5,6,7\} \}$.		
+\end{example} 
+
+\begin{example}
+	Let $G = \langle g \rangle_G$ with $g = (0 ~ 1 ~ 2)(0' ~ 1' ~ 2' ~3')$.
+	This group is~$\{0,1'\}$-primitive.
+	For if $\Delta$ is a block with $0,1' \in \Delta$,
+	then since $0,0' \in g^3(\Delta)$, $0,3' \in g^6(\Delta)$,
+	and $0, 2' \in g^9(\Delta)$
+	we find $\{0',1',2',3'\} \subseteq \Delta$.
+	We have $g^i(\Delta) \cap \{0',1',2',4'\} \ne \emptyset$
+	for all $i \ge 0$, and thus $\Delta = \{0,1,2,0',1',2',3'\}$.
+	Now, the edges of the undirected orbital graph of $\{0,1'\}$
+	are
+	\begin{multline*}
+		\{ \{0,1'\}, \{1,2'\}, \{2,3'\},
+		\{0,0'\}, \{1,1'\}, \{2,2'\}, \\
+		\{0,3'\}, \{1,0'\}, \{2,1'\},
+		\{0,2'\}, \{1,3'\}, \{2,0'\} \}.
+	\end{multline*}
+\end{example}
+
+\begin{example}\label{sync_max:ex:abprim-no-constant0}
+	Consider the $\{0,2\}$-primitive group $G$ from \cref{sync_max:ex:abprim-no-constant}.
+	Its undirected orbital graph for $\{0,2\}$
+	has the edge set $\{ \{ a,b \} \mid a \in \{0,1\}, b \in \{2,3,4\} \}$.		
+\end{example}

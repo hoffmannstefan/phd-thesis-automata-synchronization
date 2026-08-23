@@ -1,0 +1,229 @@
+%!TEX root = ./../../springer-mono-format/book.tex
+%!TEX root = ./../../thesis-trier.tex
+
+\paragraph{Partial Functions.} 
+In principle, everything that can be formulated with partial functions
+can be recast using only (total) functions, and every PDFA
+can be converted into an automaton as defined before by adding a trap
+state at which all previously undefined transitions end. 
+The reader might therefore ask what is gained from this generalization. 
+In theoretical computer science, especially in computability theory (see~\cite{HopUll79,DBLP:books/daglib/0088160}), where a notion of effectiveness (or computability) is associated with functions via input-output machines, it is often natural to allow the ``result'' to be undefined. In this setting, a function may be undefined for inputs on which a machine is not required to produce a result, or on which it may fail to terminate by entering an infinite loop.
+In our context, we introduced PDFAs based on partial functions.  
+As we will also see in the next paragraph, it is convenient to specify specific instances of the constrained
+synchronization problem by PDFAs.
+
+\paragraph{Partial Automata.} We will not be concerned with (carefully or exactly)
+synchronizing PDFAs in this work. The reason for introducing partial automata
+is that they give a convenient specification for constraint languages.
+More specifically:
+\begin{enumerate}
+	\item If $\mathcal A$ is a complete automaton having only coaccessible states, 
+	then $\constrsync{L(\mathcal A)}$
+	is equivalent to~$\constrsync{\Sigma^*}$
+	see~\cref{constrsync:sec:constraut:unconstrained}, 
+	\crefitem{constrsync:cor:upperset}{constrsync:cor:upperset:item:complete}, and \cref{rem:PDFA-for-constraint} for details.
+	But non-coaccessible states can be discarded to give
+	a PDFA accepting the same language.
+    So, instead of carrying around these useless states it is more economical 
+	to use trim PDFAs, in particular in our discussions of small constraint automata later in \cref{constr_sync:sec:two-state,sec:constr_sync:three_states}. 
+	
+	\item There is some freedom on how to distribute the start state and the final states 
+	without altering the computational complexity of the corresponding constrained synchronization problem (see \cref{constr_sync:prop:final_states}). 
+	This might give rise to many different regular expressions 
+	for the resulting languages while the underlying automaton, apart from its start state and set of final states,
+	remains the same.
+	Because of this, we regard PDFAs as a better specification mechanism compared to regular expressions.
+\end{enumerate}
+
+The fact mentioned in \cref{constrsync:rem:alphabet}
+that we can ignore letters that are not used in any transitions up to $\AC^0$-reductions
+was stated \cite[Lem.~11]{FernauGHHVW19} for $\lelogm$-reductions.
+
+
+\IN{synchronizing prefix code}
+\paragraph{Codes and Overlap-Free Languages.}
+Codes, and a connection to synchronizing automata,
+appeared in our introductory
+example on error-prone communication from \cref{intro:sec:examples:communication}.
+In this example, a decoder modeled by a synchronizing automaton
+allows recovery from errors by sending a synchronizing word
+that realigns the decoder with the encoder.
+This connection to codes has been noted since the early days
+of synchronizing automata,
+for example, by Liu~\cite{Liu63} and Laemmel~\cite{Laemmel56,Laemmel63,Laemmel69};
+see also the surveys~\cite{KariVolkov2021,Volkov22},
+the textbook~\cite{DBLP:books/daglib/0025093} 
+or the theses~\cite{Biskup2008,DBLP:phd/hal/Ryzhikov20}.
+
+Without reference to automata or regular languages,
+Schützenberger~\cite{DBLP:journals/iandc/Schutzenberger67} called a prefix code $C \subseteq \Sigma^+$
+\emph{synchronizing} if there exists $u \in C^*$
+such that $\Sigma^* u \subseteq C^*$.\footnote{This definition implies 
+	maximality of the code~$C$ w.r.t.~set inclusion.
+	For consider $v \in \Sigma^*$.
+	By assumption, $vu \in C^*$.
+	Thus this word has a factorization
+	in words from~$C$, which excludes
+	that $C \cup \{v\}$ can be a code
+	since $u \in C^*$ implies that it also 
+	has a factorization in words from $C \cup \{v\}$.
+	For a more general definition of synchronization applying to a wider class of prefix codes (and even general codes), see~\cite{DBLP:books/daglib/0025093}.}
+Almost every prefix code that is maximal for set-inclusion
+is synchronizing~\cite{DBLP:journals/tit/FreilingJTZ03}. 
+
+We can obtain a decoding automaton for a regular prefix code $C$
+via the constructions outlined in
+\cref{syncmax:rem:root-tree-prefix-code,constr_sync:prop:aut_prefix_free_exact_sync,syncmax:rem:general-aut-prefix-code}.
+Each time the decoding automaton enters a final state, this indicates
+the detection of a code word in the input stream.
+According to \cref{constr_sync:prop:aut_prefix_free_exact_sync},
+this automaton admits exactly synchronizing words, and each such word
+can be extended to an exactly synchronizing word ending in the unique
+final state.
+In case the automaton is complete, each exactly synchronizing word
+is a synchronizing word in the usual sense as defined in \cref{part:intro},
+Moreover, those exactly synchronizing words ending in the final state
+are precisely the synchronizing words of~$C$.
+For example, consider the complete automaton obtained from
+\cref{intro:subfig:decoder}, whose start state and unique final state
+coincide at $q_{\varepsilon}$.
+The word $0110$, which synchronizes every state to $q_{\varepsilon}$,
+is also a synchronizing word of the code.
+Apart from the literature already mentioned above, for more information
+on the relation of codes to synchronizing automata,
+see also~\cite{BeaBerPer2011,DBLP:journals/tcs/CarpiD17,DBLP:conf/dlt/GusevP11,DBLP:phd/hal/Ryzhikov20}.
+
+Overlap-free languages were introduced in~\cite{DBLP:conf/cocoon/HanW06},
+but with a different definition
+by defining~$L \subseteq \Sigma^*$ overlap-free if for all distinct $u,v \in L$
+we have that $\pref{u} \cap \suff{v}$ and $\suff{u} \cap \pref{v}$
+both equal $\{\varepsilon\}$ and $\pref{u} \cap \suff{u} = \{\varepsilon, u\}$
+for all $u \in \Sigma^*$.\footnote{In fact, the original definition
+demands equality to the empty set of $\pref{u}\cap \suff{v}$, which does not seem to be the intended
+definition since the empty word is always a common prefix and suffix
+of any two words,  and also the condition
+$\pref{u}\cap \suff{u} = \{\varepsilon, u\}$ is missing that excludes a non-empty proper overlap
+of a word with itself only a condition on distinct words is imposed. See also the footnote in~\cite[p.~33]{DBLP:journals/tcs/JurgensenS21} which
+remarks on the problematic definition from~\cite{DBLP:conf/cocoon/HanW06}.}
+This implies overlap-freeness in our sense, but also that~$L$
+is a bifix code since if, without loss of generality,
+$v \in \pref{u}$ for distinct $u,v \in \Sigma^*$, then $v \in \pref{u} \cap \suff{v}$ since $v \in \suff{v}$.
+For example, $L = \{aba, b\}$ fulfills this definition of overlap-freeness,
+but $\{a,ab\}$, which is overlap-free according to our definition,
+is excluded with this definition. In terms of \cref{constrsync:def:codes}
+this wider definition corresponds to replacing the condition
+``$u \ne \varepsilon$ and $w \ne \varepsilon$'' from our definition
+by ``$u \ne \varepsilon$ or $w \ne \varepsilon$''. We have not seen
+this definition of overlap-freeness elsewhere and the one we adopted
+seems to be the standard definition used, for example, 
+also in~\cite{DBLP:journals/ijfcs/HanS11,DBLP:journals/iandc/Jurgensen08,DBLP:reference/hfl/JurgensenK97,DBLP:journals/tcs/JurgensenS21,DBLP:journals/jalc/KonstantinidisY10}.
+In fact, the authors of~\cite{DBLP:conf/cocoon/HanW06}, a conference contribution,
+later adopted the definition we gave here in their extended journal version~\cite{DBLP:journals/ijfcs/HanS11}
+of the conference contribution.
+
+As noted in \cref{constrsync:sec:codes:solid}, the characterization of solid codes
+from \crefitem{thm:solidcode}{thm:solidcode:2} appears to be new.
+
+We note that for codes that are regular languages, often interesting relations hold among the classes
+considered in the present work. For example, in~\cite{DBLP:journals/jalc/Konstantinidis20}
+it was proved that a regular bifix code is a finite union of regular infix codes.
+
+
+
+% dazu noch was sagen? auch noch zu solid codes mehr sagen?
+%\paragraph{The Levenshtein-Romanov Mapping.}
+
+
+%(in particular, we can regard $C$ as a set of abstract symbols and take $\Gamma = C$).
+\IN{free submonoid (of $\Sigma^*$)}
+\IN{defect theorem}
+\paragraph{Monoid Languages.} The free monoid $\Sigma^*$ has a central role in theoretical computer science
+as our primary means of representing and processing information. As $\Sigma^*$ is a monoid, languages
+that are submonoids of~$\Sigma^*$ form a natural object of study. A submonoid
+having a generating set $C$ that is a code is said to be a \emph{free \mbox{(sub-)}monoid} of $\Sigma^*$. 
+By \cref{constr_sync:prop:coding_morphisms} a bijection between some set $\Gamma$
+and~$C$ extends to a coding morphism.
+%\footnote{In particular,
+%	for $X = C$ we obtain an isomorphism between $C^*$ considered as 
+%	the set of finite sequences	and the monoid generated by $C$ in $\Sigma^*$, and it is isomorphic to 
+%	a free monoid over $X$ as defined in \SEC~\ref{sec:formal_language_theory}.}	 
+Conversely, the image of a coding morphism
+yields a submonoid generated by a code. So, free submonoids of $\Sigma^*$
+are precisely the images of coding morphisms, i.e., isomorphic
+images of free monoids over some set~$\Gamma$ as
+introduced in \cref{sec:formal_language_theory} as sets of finite sequences,
+which explains why we call them free monoids as well.
+The relevance of these submonoids lies in the transmission, translation and encoding of information w.r.t.~different representations.
+Every language over $\Sigma$
+is contained in a smallest free submonoid of $\Sigma^*$~\cite{lothaire_1997}.
+The \emph{defect theorem}~\cite[Thm. 1.2.5]{lothaire_1997}
+states that in case $L \subseteq \Sigma^*$ is a finite language that is not a code,
+there exists a finite code $C \subseteq \Sigma^+$
+with $|C| \le |L| - 1$ such that $L \subseteq C^*$.
+
+\IN{thin language}
+\IN{slender language}
+\IN{dense language}
+
+ 
+\paragraph{The Growth Of Languages and Bounded Languages.}
+
+Berman and Hartmanis~\cite{DBLP:journals/siamcomp/BermanH77}
+introduced the notion of sparse languages to study encodings of \NP-complete problems.
+They conjectured that, under the assumption $\PTIME \ne \NP$,
+sparse languages cannot encode \NP-complete problems with respect to $\lePm$-reductions.
+This conjecture was later proved by Mahaney~\cite{DBLP:journals/jcss/Mahaney82}
+(see also the survey~\cite{DBLP:conf/mfcs/HartmanisM80}).
+Surveys of sparse regular languages can be found
+in~\cite[Chap.~2, Sect.~3.5]{DBLP:reference/hfl/Yu97}
+and~\cite[Sect.~XII.4.2]{Pin2022}.
+
+P\u{a}un and Salomaa~\cite{DBLP:journals/dam/PaunS95}
+introduced \emph{thin} and \emph{slender}
+languages where $|L \cap \Sigma^n| \le 1$ and $|L \cap \Sigma^n| \le c$, respectively,
+for sufficiently large $n$.
+Slender context-free languages were investigated in~\cite{DBLP:journals/tcs/Ilie94,DBLP:journals/tcs/Raz97}.
+Bertoni et al.~\cite{DBLP:conf/stacs/BertoniGS87} investigated the computational complexity
+of the function $n \mapsto |L \cap \Sigma^n|$
+on context-free languages.
+D'Alessandro et al.~\cite{DBLP:journals/tcs/DAlessandroIV06} studied this function for sparse context-free languages.
+
+Ginsburg and Spanier~\cite{Ginsburg1964BOUNDEDAL}
+introduced bounded languages and investigated bounded context-free languages.
+They later studied bounded regular languages
+in~\cite{GinsburgSpanier66}.
+Several authors extended \cref{constrsync:thm:reg-sparse-or-exp}
+to context-free languages~\cite{DBLP:journals/jcss/BridsonG02,DBLP:conf/stacs/IbarraR86,DBLP:journals/tcs/Incitti01,DBLP:journals/eik/LatteuxT84,DBLP:journals/tcs/Raz97,Trofimov81}.
+Indexed languages do not satisfy this dichotomy: there
+exist indexed languages of intermediate growth~\cite{DBLP:journals/tcs/GrigorchukM99}.
+Ginsburg and Spanier~\cite[Thm.~5.2]{Ginsburg1964BOUNDEDAL}
+proved that boundedness is decidable for context-free languages.
+Consequently, the growth type of a context-free language is decidable.
+Gawrychowski et al.~\cite{DBLP:journals/ijfcs/GawrychowskiKRS10}
+gave a polynomial-time algorithm for deciding the growth type of a context-free language.
+
+Ilie et al.~\cite{DBLP:journals/ita/IlieRS00}
+characterized sparse context-free languages via special Dyck languages.
+Szilard et al.~\cite[Cor.~1]{DBLP:conf/mfcs/SzilardYZS92}
+characterized sparse regular languages by regular expressions of star-height one.
+Shur~\cite{DBLP:conf/csr/Shur08}
+related the growth of a regular language to structural properties of its accepting automata.
+
+A language $L \subseteq \Sigma^*$ is called \emph{dense}
+if $\Sigma^* w \Sigma^* \cap L \ne \emptyset$
+for every $w \in \Sigma^*$~\cite[Sect.~XII.4.1]{Pin2022}.
+Regular dense languages over alphabets of size at least two
+are never sparse~\cite[Cor.~4.28]{Pin2022}.
+
+Our terminology for letter-bounded languages is not standard.
+For example,~\cite{DBLP:journals/iandc/IbarraR16}
+uses the term letter-bounded for the strict variant in which all letters are distinct,
+whereas~\cite{DBLP:journals/tcs/CarpiDIM21}
+refers to this variant as distinct-letter-bounded.
+
+The function~$\rho$ via equal-letter runs occurs naturally in text compression
+algorithms, see~\cite{DBLP:conf/dlt/FrosiniMRRS22,Prezza16},
+and combinatorics on words~\cite{DBLP:journals/tcs/BiagiCLR25}
+since it is related to run-length encodings. In the theory of synchronizing automata,
+number of equal-letter runs in synchronizing words have also 
+been investigated in~\cite{DBLP:journals/jalc/DonZ19}.

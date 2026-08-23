@@ -1,0 +1,193 @@
+
+
+
+\newcounter{subautomata}
+\setcounter{subautomata}{0} 
+
+%\refstepcounter{subautomata}\label{subautomata:1} 
+
+\begin{table}%[t] %[htp]
+% \setlength{\tabcolsep}{5mm} % separator between columns
+%\def\arraystretch{1.25} % vertical stretch factor
+    \centering
+ 
+  %type oder name in 1. spalte?
+  
+ 
+\begin{tabular}{|>{\centering\arraybackslash}m{0.3cm}|c|>{\centering\arraybackslash}m{0.3cm}|c|>{\centering\arraybackslash}m{0.3cm}|c|>{\centering\arraybackslash}m{0.3cm}|c|>{\centering\arraybackslash}m{0.3cm}|c|>{\centering\arraybackslash}m{0.3cm}|c|}
+ \multicolumn{6}{c}{$|\Sigma_{2,2} + \Sigma_{2,3}| = 2$} & \multicolumn{6}{c}{$|\Sigma_{3,3}+\Sigma_{3,2}|=2$} \\ 
+ \multicolumn{6}{c}{\raisebox{-0.5ex}{\smash{$\overbrace{\makebox[14em]{}}_{}$}}} & \multicolumn{6}{c}{\raisebox{-0.5ex}{\smash{$\overbrace{\makebox[14em]{}}_{}$}}} \\ \hline
+ \refstepcounter{subautomata}\label{subautomata:1}\arabic{subautomata} & \scalebox{.7}{
+\begin{tikzpicture}[>=latex',shorten >=1pt,node distance=1.5cm,on grid,auto,baseline=0]
+ \tikzset{every state/.style={minimum size=1pt}}
+ 
+ \node[state] (1) {};
+ \node[state, accepting] (2) [right of=1] {};
+ 
+ \path[->] (1) edge [loop above] node {$a$} (1);
+ \path[->] (1) edge [bend left]  node {$b$} (2);
+ \path[->] (2) edge [bend left]  node {$b$} (1);
+\end{tikzpicture}} 
+
+
+ & \refstepcounter{subautomata}\label{subautomata:3}\arabic{subautomata} & \scalebox{.7}{
+\begin{tikzpicture}[>=latex',shorten >=1pt,node distance=1.5cm,on grid,auto,baseline=0]
+ \tikzset{every state/.style={minimum size=1pt}}
+ 
+ \node[state] (1) {};
+ \node[state, accepting] (2) [right of=1] {};
+ 
+ \path[->] (1) edge [loop above] node {$a$} (1);
+ \path[->] (1) edge [bend left]  node {$b$} (2);
+ \path[->] (2) edge [bend left]  node {$a$} (1);
+\end{tikzpicture}}
+
+& \refstepcounter{subautomata}\label{subautomata:5}\arabic{subautomata} & \scalebox{.7}{
+\begin{tikzpicture}[>=latex',shorten >=1pt,node distance=1.5cm,on grid,auto,baseline=0]
+ \tikzset{every state/.style={minimum size=1pt}}
+ 
+ \node[state] (1) {};
+ \node[state, accepting] (2) [right of=1] {};
+ 
+ \path[->] (1) edge [loop above] node {$b$} (1);
+ \path[->] (1) edge [bend left]  node {$a$} (2);
+ \path[->] (2) edge [bend left]  node {$b$} (1);
+\end{tikzpicture}} 
+
+ & \refstepcounter{subautomata}\label{subautomata:2}\arabic{subautomata} & 
+\scalebox{.7}{
+\begin{tikzpicture}[>=latex',shorten >=1pt,node distance=1.5cm,on grid,auto,baseline=0]
+ \tikzset{every state/.style={minimum size=1pt}}
+ 
+ \node[state] (1) {};
+ \node[state, accepting] (2) [right of=1] {};
+ 
+ \path[->] (2) edge [loop above] node {$a$} (2);
+ \path[->] (1) edge [bend left]  node {$a$} (2);
+ \path[->] (2) edge [bend left]  node {$b$} (1);
+\end{tikzpicture}} 
+
+ & \refstepcounter{subautomata}\label{subautomata:4}\arabic{subautomata} & 
+\scalebox{.7}{
+\begin{tikzpicture}[>=latex',shorten >=1pt,node distance=1.5cm,on grid,auto,baseline=0]
+ \tikzset{every state/.style={minimum size=1pt}}
+ 
+ \node[state] (1) {};
+ \node[state, accepting] (2) [right of=1] {};
+ 
+ \path[->] (2) edge [loop above] node {$b$} (2);
+ \path[->] (1) edge [bend left]  node {$a$} (2);
+ \path[->] (2) edge [bend left]  node {$a$} (1);
+\end{tikzpicture}} 
+
+
+
+ & \refstepcounter{subautomata}\label{subautomata:6}\arabic{subautomata} & 
+\scalebox{.7}{
+\begin{tikzpicture}[>=latex',shorten >=1pt,node distance=1.5cm,on grid,auto,baseline=0]
+ \tikzset{every state/.style={minimum size=1pt}}
+ 
+ \node[state] (1) {};
+ \node[state, accepting] (2) [right of=1] {};
+ 
+ \path[->] (2) edge [loop above] node {$a$} (2);
+ \path[->] (1) edge [bend left]  node {$b$} (2);
+ \path[->] (2) edge [bend left]  node {$b$} (1);
+\end{tikzpicture}} 
+
+\\ \hline
+
+ \refstepcounter{subautomata}\label{subautomata:7}\arabic{subautomata} & \scalebox{.7}{
+\begin{tikzpicture}[>=latex',shorten >=1pt,node distance=1.5cm,on grid,auto,baseline=0]
+ \tikzset{every state/.style={minimum size=1pt}}
+ 
+ \node[state] (1) {};
+ \node[state, accepting] (2) [right of=1] {};
+ 
+ \path[->] (1) edge [loop above] node {$b$} (1);
+ \path[->] (1) edge [bend left]  node {$a$} (2);
+ \path[->] (2) edge [bend left]  node {$a$} (1);
+\end{tikzpicture}} 
+
+
+
+& \refstepcounter{subautomata}\label{subautomata:9}\arabic{subautomata} & \scalebox{.7}{
+\begin{tikzpicture}[>=latex',shorten >=1pt,node distance=1.5cm,on grid,auto,baseline=0]
+ \tikzset{every state/.style={minimum size=1pt}}
+ 
+ \node[state] (1) {};
+ \node[state, accepting] (2) [right of=1] {};
+ 
+ \path[->] (1) edge [bend left]  node {$a,b$} (2);
+ \path[->] (2) edge [bend left]  node {$a$} (1);
+\end{tikzpicture}}
+
+
+& \refstepcounter{subautomata}\label{subautomata:11}\arabic{subautomata} & \scalebox{.7}{
+\begin{tikzpicture}[>=latex',shorten >=1pt,node distance=1.5cm,on grid,auto,baseline=0]
+ \tikzset{every state/.style={minimum size=1pt}}
+ 
+ \node[state] (1) {};
+ \node[state, accepting] (2) [right of=1] {};
+ 
+ \path[->] (1) edge [bend left]  node {$a,b$} (2);
+ \path[->] (2) edge [bend left]  node {$b$} (1);
+\end{tikzpicture}} 
+
+
+
+ & \refstepcounter{subautomata}\label{subautomata:8}\arabic{subautomata} & 
+\scalebox{.7}{
+\begin{tikzpicture}[>=latex',shorten >=1pt,node distance=1.5cm,on grid,auto,baseline=0]
+ \tikzset{every state/.style={minimum size=1pt}}
+ 
+ \node[state] (1) {};
+ \node[state, accepting] (2) [right of=1] {};
+ 
+ \path[->] (2) edge [loop above] node {$b$} (2);
+ \path[->] (1) edge [bend left]  node {$b$} (2);
+ \path[->] (2) edge [bend left]  node {$a$} (1);
+\end{tikzpicture}} 
+
+ & \refstepcounter{subautomata}\label{subautomata:10}\arabic{subautomata} & 
+\scalebox{.7}{
+\begin{tikzpicture}[>=latex',shorten >=1pt,node distance=1.5cm,on grid,auto,baseline=0]
+ \tikzset{every state/.style={minimum size=1pt}}
+ 
+ \node[state] (1) {};
+ \node[state, accepting] (2) [right of=1] {};
+ 
+ \path[->] (1) edge [bend left]  node {$a$} (2);
+ \path[->] (2) edge [bend left]  node {$a,b$} (1);
+\end{tikzpicture}} 
+
+
+ & \refstepcounter{subautomata}\label{subautomata:12}\arabic{subautomata} & 
+\scalebox{.7}{
+\begin{tikzpicture}[>=latex',shorten >=1pt,node distance=1.5cm,on grid,auto,baseline=0]
+ \tikzset{every state/.style={minimum size=1pt}}
+ 
+ \node[state] (1) {};
+ \node[state, accepting] (2) [right of=1] {};
+
+ \path[->] (1) edge [bend left]  node {$b$} (2);
+ \path[->] (2) edge [bend left]  node {$a,b$} (1);
+\end{tikzpicture}} \\ \hline
+
+\end{tabular}
+ \caption{Cases for a partial subautomaton between the states $\{2,3\}$
+  that is not complete. See the proof of Theorem~\ref{thm:simple_idempotents_binary_in_P}
+  for details.}
+%  \caption{\footnotesize The partial subautomata between the states $\{2,3\}$
+%  with precisely three defined transition
+%  that are combined with the automata templates from Table~\ref{tab:outer_automata_three_states}
+%  to form a three-state automaton. The cases are sorted such that in the first column, every case
+%  such that $|\Sigma_{2,2} \cup \Sigma_{2,3}| = 2$ holds is listed, and in the 
+%  last column every case such that $|\Sigma_{3,3} \cup \Sigma_{3,2}| = 2$,
+%  where state $2$ is the left state and state $3$ the right state, a naming
+%  derived from the way how these automata will be combined.
+%  Please see the proof of Theorem~\ref{thm:three_states}
+%  for explanation.}
+ \label{tab:inner_automata_three_states}
+  %\vspace{-8mm}
+\end{table}

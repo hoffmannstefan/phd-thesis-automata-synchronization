@@ -1,0 +1,675 @@
+%!TEX root = ./../../springer-mono-format/book.tex
+%!TEX root = ./../../thesis-trier.tex
+
+
+
+
+\clearpage
+
+\IN{idempotent transformation}
+We call $t \colon X \to X$ an \emph{idempotent (transformation)}
+if it is idempotent w.r.t.~functional composition, i.e., we have $t^2 = t$.
+For example, the idempotent transformations of defect one are precisely the
+simple idempotents introduced in \cref{subsec:tail}.
+
+First, in~\cref{prelim:prop:idempotent}, we list several equivalent conditions
+to idempotency, and \cref{prelim:cor:idempotent} collects some consequences.
+Then \cref{prelim:prop:compositionidempt} characterizes idempotency of the
+composition, and
+\cref{prelim:cor:compositionidempt-one,prelim:cor:comp-idempotents-idempotent,prelim:cor:comp-idempotents-idempotent2}
+give characterizations under additional assumptions on the idempotency of the
+given functions.
+\Cref{prelim:trans:idemp:prop:inv-dupl} gives a formula for the inverse image
+of the duplicate set of the composition involving at least one idempotent,
+stating that it equals a union of inverse images of the individual
+transformations.
+
+\begin{proposition}\label{prelim:prop:idempotent}
+	Let $t \colon X \to X$. Then the following are equivalent.
+	\begin{enumerate}
+		\item \label{prop:idemp:item:idemp} $t$ is idempotent.
+		
+		\item \label{prop:idemp:item:inv} $t(x) \in t^{-1}(t(x))$ for all $x \in X$.
+		
+		\item \label{prop:idemp:item:invy} $t^{-1}(y) \ne \emptyset$ implies $y \in t^{-1}(y)$ for $y \in X$.
+		
+		\item \label{prop:idemp:item:img} $t(X) \subseteq \fix{t}$.
+		
+		\item \label{prop:idemp:item:excl} $\move{t} \subseteq \excl{t}$.
+		
+		\item \label{prop:idemp:item:tmove}  $t(\move{t}) \subseteq \fix{t}$.
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+	The equivalences
+	$\ref{prop:idemp:item:idemp} \Leftrightarrow~\ref{prop:idemp:item:inv}
+	\Leftrightarrow~\ref{prop:idemp:item:invy}\Leftrightarrow~\ref{prop:idemp:item:img}$
+	follow readily.
+	
+	$\ref{prop:idemp:item:img} \Rightarrow~\ref{prop:idemp:item:excl}$:
+	This follows as $\move{t} = X \setminus \fix{t} \subseteq X \setminus t(X) = \excl{t}$.
+	
+	$\ref{prop:idemp:item:excl} \Rightarrow~\ref{prop:idemp:item:tmove}$:
+	Here $t(\move{t}) \subseteq t(X) = X \setminus \excl{t} \subseteq X \setminus \move{t} = \fix{t}$.
+	
+	$\ref{prop:idemp:item:tmove} \Rightarrow~\ref{prop:idemp:item:img}$:
+	As $t(\fix{t}) = \fix{t}$ and $t(\move{t}) \subseteq \fix{t}$, we find
+	$t(X) = t(\fix{t}) \cup t(\move{t}) \subseteq \fix{t}$.
+\end{proof}
+
+\begin{corollary} \label{prelim:cor:idempotent}
+	Suppose $t \colon X \to X$ is idempotent. Then we have the following:
+	\begin{enumerate}
+		\item \label{prelim:idemp:2} $t(X) = \fix{t}$,
+		
+		\item \label{prelim:idemp:3} $\move{t} = \excl{t}$,
+		
+		\item \label{prelim:idemp:1} $\dupl{t} = t(\move{t})$
+		(equivalently, $t(x) \notin \dupl{t}$ implies $t(x) = x$),
+		
+		\item \label{prelim:idemp:4b} $\dupl{t} = t(\dupl{t})$, i.e., $t$ fixes every element of $\dupl{t}$,
+		
+		\item \label{prelim:idemp:5} $t^{-1}(\dupl{t}) = \move{t} \uplus \dupl{t}$,
+		
+		\item \label{prelim:idemp:7} $t(A) \subseteq A$ for $A \subseteq X$ with $\dupl{t} \subseteq A$.
+	\end{enumerate}
+\end{corollary}
+\begin{proof}
+	\ref{prelim:idemp:2}: This follows from \cref{prop:idemp:item:img} of
+	\cref{prelim:prop:idempotent} and \cref{prelim:eqn:fiximage}.
+	
+	\ref{prelim:idemp:3}: This follows from \cref{prop:idemp:item:excl} of
+	\cref{prelim:prop:idempotent} and \cref{prelim:eqn:exclmove}.
+	
+	\ref{prelim:idemp:1}: By \cref{prop:idemp:item:tmove} of
+	\cref{prelim:prop:idempotent} and \cref{prelim:eqn:fixmovedupl} we have the
+	following inclusions, which give the claim:
+	\[
+	t(\move{t}) \subseteq \fix{t}\cap t(\move{t}) \subseteq \dupl{t} \subseteq t(\move{t}).
+	\]
+	
+	\ref{prelim:idemp:4b}: This follows as
+	$\dupl{t} \subseteq t(X) \subseteq \fix{t}$ by \cref{prop:idemp:item:img} of
+	\cref{prelim:prop:idempotent}.
+	
+	\ref{prelim:idemp:5}: By \cref{prelim:idemp:1} we have
+	$\move{t} \subseteq t^{-1}(\dupl{t})$, and $\dupl{t} \subseteq t^{-1}(\dupl{t})$
+	by \cref{prelim:idemp:4b}.
+	Conversely, let $x \in t^{-1}(\dupl{t})$ with $x \notin \move{t}$.
+	Then $x = t(x) \in \dupl{t}$.
+	The union is disjoint as $\dupl{t} \subseteq \fix{t}$.
+	
+	\ref{prelim:idemp:7}: For $x \in A$ we have $t(x) = x \in A$ or, by
+	\cref{prelim:idemp:1}, $t(x) \in \dupl{t} \subseteq A$.
+\end{proof}
+
+Next, we investigate when the composition of two transformations gives an
+idempotent transformation.
+
+\begin{proposition} \label{prelim:prop:compositionidempt}
+	Let $t, h \colon X \to X$. Then the following are equivalent.
+	\begin{enumerate}
+		\item \label{prelim:prop:compositionidempt:1} $\concat{t}{h}$ is idempotent.
+		
+		\item \label{prelim:prop:compositionidempt:3}
+		$\move{t} \cap h(t(X)) \subseteq \fix{\concat{t}{h}}$ and $\fix{t} \cap h(t(X)) \subseteq \fix{h}$.
+		
+		\item \label{prelim:prop:compositionidempt:2} $t(y) \in h^{-1}(y)$ for all $y \in h(t(X))$.
+		
+		\item \label{prelim:prop:compositionidempt:4} $h(\move{h} \cap t(X)) \subseteq \fix{\concat{t}{h}}$
+		and $\fix{h} \cap t(X) \subseteq \fix{\concat{t}{h}}$.
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+	$\ref{prelim:prop:compositionidempt:1} \Rightarrow \ref{prelim:prop:compositionidempt:3}$:
+	By \cref{prelim:prop:idempotent} we have
+	$h(t(X)) \subseteq \fix{\concat{t}{h}}$, which gives the first inclusion;
+	the second follows with \cref{prelim:trans:eqn:fix-comp}.
+	
+	$\ref{prelim:prop:compositionidempt:3} \Rightarrow \ref{prelim:prop:compositionidempt:2}$:
+	Let $y \in h(t(X))$.
+	If $y \in \move{t}$, then $h(t(y)) = y$ by the first assumption.
+	Otherwise $y \in \fix{t}$, so $h(y) = y$ by the second assumption and hence
+	$h(t(y)) = h(y) = y$.
+	
+	$\ref{prelim:prop:compositionidempt:2} \Rightarrow \ref{prelim:prop:compositionidempt:4}$:
+	Let $x \in X$. Applying \ref{prelim:prop:compositionidempt:2} to
+	$y = h(t(x))$ gives $h(t(x)) \in \fix{\concat{t}{h}}$, and applying it to
+	$y = t(x)$ in case $t(x) \in h(t(X))$ gives $t(x) \in \fix{\concat{t}{h}}$.
+	The first covers $h(\move{h} \cap t(X))$, the second $\fix{h} \cap t(X)$, as
+	$t(x) \in \fix{h}$ implies $t(x) = h(t(x)) \in h(t(X))$.
+	
+	$\ref{prelim:prop:compositionidempt:4} \Rightarrow \ref{prelim:prop:compositionidempt:1}$:
+	With $t(X) = ( \move{h} \cap t(X) ) \uplus ( \fix{h} \cap t(X) )$ we get
+	\[
+	h(t(X)) = h(\move{h} \cap t(X)) \cup ( \fix{h}\cap t(X) ) \subseteq \fix{\concat{t}{h}},
+	\]
+	so $\concat{t}{h}$ is idempotent by \cref{prelim:prop:idempotent}.
+\end{proof}
+
+\begin{corollary} \label{prelim:cor:compositionidempt-one}
+	\label{prelim:prop:compositionidempth} \label{prelim:prop:compositionidemptt}
+	Let $t, h \colon X \to X$.
+	\begin{enumerate}
+		\item \label{prelim:prop:compositionidempth:1} For idempotent~$h$,
+		$\concat{t}{h}$ is idempotent if and only if
+		$\move{t} \cap h(t(X)) \subseteq \fix{\concat{t}{h}}$.
+		
+		\item \label{prelim:prop:compositionidemptt:1} For idempotent~$t$,
+		$\concat{t}{h}$ is idempotent if and only if
+		$h(\move{h} \cap t(X)) \subseteq \fix{\concat{t}{h}}$.
+	\end{enumerate}
+\end{corollary}
+\begin{proof}
+	\ref{prelim:prop:compositionidempth:1}: For idempotent~$h$ we have
+	$h(t(X)) \subseteq h(X) \subseteq \fix{h}$ by \cref{prelim:prop:idempotent},
+	so the second condition of \cref{prelim:prop:compositionidempt:3} of
+	\cref{prelim:prop:compositionidempt} always holds.
+	
+	\ref{prelim:prop:compositionidemptt:1}: For idempotent~$t$ we have
+	$t(X) \subseteq \fix{t}$ by \cref{prelim:prop:idempotent}, so
+	$\fix{h} \cap t(X) \subseteq \fix{h} \cap \fix{t} \subseteq \fix{\concat{t}{h}}$
+	by \cref{prelim:trans:eqn:fix-comp}, and the second condition of
+	\cref{prelim:prop:compositionidempt:4} of
+	\cref{prelim:prop:compositionidempt} always holds.
+\end{proof}
+
+\begin{remark}
+	By \cref{prelim:prop:compositionidempth:1} of
+	\cref{prelim:cor:compositionidempt-one}, for idempotent~$h$ the composition
+	$\concat{t}{h}$ is idempotent if $h(t(X)) \subseteq \fix{t}$, as then
+	$\move{t} \cap h(t(X)) = \emptyset$.
+	This also follows directly from
+	$h(t(X)) \subseteq \fix{h} \cap \fix{t} \subseteq \fix{\concat{t}{h}}$ with
+	\cref{prop:idemp:item:img} of \cref{prelim:prop:idempotent}.
+	The condition is not necessary: if $h(x) = c$ for all $x \in X$ and
+	$t(c) \ne c$, then $h$ and $\concat{t}{h}$ are idempotent and
+	$h(t(X)) \cap \fix{t} = \emptyset$.
+\end{remark}
+
+\begin{corollary} \label{prelim:cor:comp-idempotents-idempotent}
+	Let $t, h \colon X \to X$ be idempotent.
+	Then $\concat{t}{h}$ is idempotent if and only if
+	$\move{t} \cap h(\move{h} \cap t(X)) \subseteq \fix{\concat{t}{h}}$.\footnote{Equivalently,
+		for $x \in X$, $h(t(x)) \ne t(x)$ and $t(h(t(x))) \ne h(t(x))$ imply
+		$h(t(x)) = h(t(h(t(x))))$.}
+\end{corollary}
+\begin{proof}
+	If $\concat{t}{h}$ is idempotent, then
+	$h(t(X)) \subseteq \fix{\concat{t}{h}}$ by \cref{prelim:prop:idempotent},
+	and the set in question is contained in $h(t(X))$.
+	
+	Conversely, as~$t$ is idempotent we have
+	$\fix{h}\cap t(X) = \fix{h}\cap \fix{t} \subseteq \fix{\concat{t}{h}}$
+	by \cref{prelim:trans:eqn:fix-comp}, and as~$h$ is idempotent we have
+	$\fix{t} \cap h(t(X)) \subseteq \fix{t}\cap \fix{h} \subseteq \fix{\concat{t}{h}}$.
+	With $t(X) = ( \move{h} \cap t(X) ) \uplus ( \fix{h} \cap t(X) )$ and
+	$X = \move{t} \uplus \fix{t}$ we obtain
+	\begin{multline*}
+		h(t(X)) = ( \move{t} \cap h(\move{h} \cap t(X)) ) \cup
+		\\ ( \move{t} \cap ( \fix{h}\cap t(X) ) ) \cup ( \fix{t} \cap h(t(X)) ),
+	\end{multline*}
+	where we used $h(\fix{h}\cap t(X)) = \fix{h}\cap t(X)$.
+	All three sets are contained in $\fix{\concat{t}{h}}$, the first by
+	assumption, so $\concat{t}{h}$ is idempotent by \cref{prelim:prop:idempotent}.
+\end{proof}
+
+\begin{corollary} \label{prelim:cor:comp-idempotents-idempotent2}
+	Let $t, h \colon X \to X$ be idempotent.
+	Then $\concat{t}{h}$ is idempotent if one of the following is true:
+	\begin{enumerate}
+		\item \label{prelim:cor:comp-idempotents-idempotent2:1}
+		$\dupl{h} \subseteq \fix{\concat{t}{h}}$, i.e., $h(t(y)) = y$ for all $y \in \dupl{h}$,
+		
+		\item \label{prelim:cor:comp-idempotents-idempotent2:2}
+		$\excl{t} \subseteq \fix{\concat{t}{h}}$,
+		
+		\item \label{prelim:cor:comp-idempotents-idempotent2:3} $ht = th$.
+	\end{enumerate}
+\end{corollary}
+\begin{proof}
+	\ref{prelim:cor:comp-idempotents-idempotent2:1}: As~$h$ is idempotent, we
+	have $h(\move{h} \cap t(X)) \subseteq h(\move{h}) = \dupl{h}$ by
+	\cref{prelim:idemp:1} of \cref{prelim:cor:idempotent}, which is contained in
+	$\fix{\concat{t}{h}}$ by assumption.
+	Thus the claim follows from \cref{prelim:prop:compositionidemptt:1} of
+	\cref{prelim:cor:compositionidempt-one}.
+	
+	\ref{prelim:cor:comp-idempotents-idempotent2:2}: With
+	\cref{prelim:prop:idempotent} we find
+	$\move{t} = \excl{t} \subseteq \fix{\concat{t}{h}}$, so
+	\cref{prelim:cor:comp-idempotents-idempotent} gives the claim.
+	
+	\ref{prelim:cor:comp-idempotents-idempotent2:3}: We have
+	$h(t(h(t(x)))) = h(h(t(t(x)))) = h(t(x))$ for $x \in X$.
+	Note that here only the idempotency of~$h$ and~$t$ in the last step is used,
+	but not \cref{prelim:cor:comp-idempotents-idempotent}.
+\end{proof}
+
+\begin{proposition} \label{prelim:trans:idemp:prop:tX-in-fixh}
+	Let $t, h \colon X \to X$ be idempotent.
+	Then the following are equivalent.
+	\begin{enumerate}
+		\item \label{prelim:trans:idemp:prop:tX-in-fixh:1} $\concat{t}{h} = t$.
+		
+		\item \label{prelim:trans:idemp:prop:tX-in-fixh:2} $t(X) \subseteq \fix{h}$.
+		
+		\item \label{prelim:trans:idemp:prop:tX-in-fixh:3} $t(X) \cap h^{-1}(\dupl{h}) \subseteq \dupl{h}$.
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+	$\ref{prelim:trans:idemp:prop:tX-in-fixh:1} \Rightarrow \ref{prelim:trans:idemp:prop:tX-in-fixh:2}$:
+	By assumption we have $h(t(x)) = t(x)$ for all $x \in X$.
+	
+	$\ref{prelim:trans:idemp:prop:tX-in-fixh:2} \Rightarrow \ref{prelim:trans:idemp:prop:tX-in-fixh:3}$:
+	For $t(x) \in h^{-1}(\dupl{h})$ we have $t(x) = h(t(x)) \in \dupl{h}$.
+	
+	$\ref{prelim:trans:idemp:prop:tX-in-fixh:3} \Rightarrow \ref{prelim:trans:idemp:prop:tX-in-fixh:1}$:
+	Suppose $h(t(x)) \ne t(x)$ for some $x \in X$.
+	Then $h(t(x)) \in \dupl{h}$ by \cref{prelim:idemp:1} of
+	\cref{prelim:cor:idempotent}, so $t(x) \in t(X) \cap h^{-1}(\dupl{h})$, but
+	$t(x) \notin \dupl{h}$ as~$h$ fixes every element of $\dupl{h}$ by
+	\cref{prelim:idemp:4b} of \cref{prelim:cor:idempotent}.
+	Thus \cref{prelim:trans:idemp:prop:tX-in-fixh:3} fails.
+\end{proof}
+
+Next, we refine \cref{prelim:func:prop:inv-dupl} for the case that one
+transformation is idempotent.
+For idempotent $t \colon X \to X$ and $A \subseteq X$ we have
+\begin{equation} \label{prelim:trans:idemp:eqn:inv}
+	t^{-1}(A) = ( A \cap t(X) ) \cup t^{-1}( A \cap \dupl{t} ),
+\end{equation}
+as $x \in t^{-1}(A)$ with $x \notin \dupl{t}$ satisfies $x = t(x) \in A \cap t(X)$
+by \cref{prelim:idemp:1} of \cref{prelim:cor:idempotent}, while
+$A \cap t(X) \subseteq t^{-1}(A)$ holds as~$t$ fixes $t(X)$.
+
+\begin{proposition}  \label{prelim:trans:idemp:prop:inv-dupl}
+	Let $t \colon X \to X$ be idempotent and $h \colon X \to Y$. Then
+	\begin{align*}
+		(\concat{t}{h})^{-1}(\dupl{\concat{t}{h}})
+		& = t^{-1}(\dupl{t}) \cup ( h^{-1}( \dupl{h_{|t(X)}} ) \cap t(X) ) \\
+		& = t^{-1}(\dupl{t}) \cup h^{-1}( \dupl{\concat{t}{h}}).
+	\end{align*}
+\end{proposition}
+\begin{proof}
+	Set $A = h^{-1}(\dupl{h_{|t(X)}})$ and $B = A \cap t(X) = h_{|t(X)}^{-1}(\dupl{h_{|t(X)}})$.
+	For the first identity we have
+	\begin{align*}
+		(\concat{t}{h})^{-1}(\dupl{\concat{t}{h}})
+		& = t^{-1}(\dupl{t}) \cup t^{-1}(A) \tag{\cref{prelim:func:prop:inv-dupl}} \\
+		& = t^{-1}(\dupl{t}) \cup B \cup t^{-1}(A \cap \dupl{t} ) \tag{Eqn.~\eqref{prelim:trans:idemp:eqn:inv}} \\
+		& = t^{-1}(\dupl{t}) \cup B,
+	\end{align*}
+	the last step as $t^{-1}(A \cap \dupl{t}) \subseteq t^{-1}(\dupl{t})$.
+	
+	For the second identity, note that
+	$\excl{t} \cup \dupl{t} \subseteq t^{-1}(\dupl{t})$ by
+	\cref{prelim:idemp:3,prelim:idemp:5} of \cref{prelim:cor:idempotent}.
+	Hence
+	\begin{align*}
+		t^{-1}(\dupl{t}) \cup h^{-1}(\dupl{\concat{t}{h}})
+		& = t^{-1}(\dupl{t}) \cup h_{|t(X)}^{-1}(\dupl{\concat{t}{h}}) \tag{$\excl{t} \subseteq t^{-1}(\dupl{t})$} \\
+		& = t^{-1}(\dupl{t}) \cup h_{|t(X)}^{-1}(h_{|t(X)}(\dupl{t})) \cup B \tag{Eqn.~\eqref{prelim:eqn:dupl0}} \\
+		& = t^{-1}(\dupl{t}) \cup B,
+	\end{align*}
+	where the last step holds since, by \cref{prelim:eqn:finvfinclusion},
+	$h_{|t(X)}^{-1}(h_{|t(X)}(\dupl{t})) \subseteq \dupl{t} \cup B$
+	and $\dupl{t} \subseteq t^{-1}(\dupl{t})$.
+	Together with the first identity this shows the claim.
+\end{proof}
+
+%\begin{proof}
+%	Since $X \setminus t(X) = \excl{t} = \move{t} \subseteq t^{-1}(\dupl{t})$
+%	by \cref{prelim:idemp:3,prelim:idemp:1} of \cref{prelim:cor:idempotent},
+%	we have
+%	\begin{equation} \label{prelim:trans:idemp:eqn:absorb}
+%		t^{-1}(\dupl{t}) \cup S = t^{-1}(\dupl{t}) \cup ( S \cap t(X) )
+%		\qquad \text{for every } S \subseteq X.
+%	\end{equation}
+%	Set $A = h^{-1}(\dupl{h_{|t(X)}})$ and $B = A \cap t(X)$.
+%	
+%	For the first identity, \cref{prelim:func:prop:inv-dupl} gives
+%	$(\concat{t}{h})^{-1}(\dupl{\concat{t}{h}}) = t^{-1}(\dupl{t}) \cup t^{-1}(A)$.
+%	By \cref{prelim:trans:idemp:eqn:absorb} we may replace $t^{-1}(A)$ by
+%	$t^{-1}(A) \cap t(X)$, which equals~$B$ as~$t$ fixes $t(X)$.
+%	
+%	For the second identity, \cref{prelim:trans:idemp:eqn:absorb} likewise
+%	replaces $h^{-1}(\dupl{\concat{t}{h}})$ by
+%	$h^{-1}(\dupl{\concat{t}{h}}) \cap t(X)$, so it suffices to show that this
+%	set is contained in $t^{-1}(\dupl{t}) \cup B$; the reverse inclusion holds
+%	as $\dupl{h_{|t(X)}} \subseteq \dupl{\concat{t}{h}}$ by
+%	\cref{prelim:eqn:dupl0}.
+%	So let $x \in t(X)$ with $h(x) \in \dupl{\concat{t}{h}}$.
+%	By \cref{prelim:eqn:dupl0} we have $h(x) \in \dupl{h_{|t(X)}}$, giving
+%	$x \in B$, or $h(x) = h(y)$ for some $y \in \dupl{t}$.
+%	In the latter case $y \in \dupl{t} \subseteq t(X)$, so either $x = y \in t^{-1}(\dupl{t})$,
+%	or $x$ and~$y$ are distinct elements of $t(X)$ with the same image
+%	under~$h$, whence $h(x) \in \dupl{h_{|t(X)}}$ and again $x \in B$.
+%\end{proof}
+
+
+\begin{remark}
+	In \cref{prelim:trans:idemp:prop:inv-dupl}, the set
+	$h^{-1}(\dupl{h_{|t(X)}}) \cap t(X)$ may be replaced with either
+	$h^{-1}(\dupl{h_{|t(X)}})$ or $h^{-1}(\dupl{\concat{t}{h}}) \cap t(X)$,
+	since both contain $h^{-1}(\dupl{h_{|t(X)}}) \cap t(X)$ and are contained in
+	$h^{-1}(\dupl{\concat{t}{h}})$.
+	However, $h^{-1}(\dupl{h_{|t(X)}})$ cannot be replaced with
+	$h^{-1}(\dupl{h})$, see \cref{prelim:func:ex:inv-dupl}.
+\end{remark}
+
+
+\todo[inline]{auskommentiert}
+\begin{comment}
+\IN{idempotent transformation}
+We call $t \colon X \to X$ an \emph{idempotent (transformation)}
+if it is idempotent w.r.t.~functional composition, i.e., we have $t^2 = t$. 
+For example, the idempotent transformations of defect one are precisely the simple idempotents introduced in \cref{subsec:tail}.
+
+First, in~\cref{prelim:prop:idempotent}, we list several equivalent conditions to idempotency,
+and \cref{prelim:cor:idempotent} collects some consequences.
+Then \cref{prelim:prop:compositionidempt} characterizes idempotency
+of the composition,
+and \cref{prelim:prop:compositionidempth,prelim:prop:compositionidemptt,prelim:cor:comp-idempotents-idempotent2}
+give characterizations under the additional assumptions on the idempotency of the given functions.
+\Cref{prelim:trans:idemp:prop:inv-dupl} gives
+a formula for the inverse image of the duplicate set of the composition involving at least one idempotent,
+stating that it equals a union of inverse images of the individual transformations.
+
+\begin{proposition}\label{prelim:prop:idempotent}
+	Let $t \colon X \to X$. Then the following are equivalent.
+	\begin{enumerate}
+		\item \label{prop:idemp:item:idemp} $t$ is idempotent.
+		
+		\item \label{prop:idemp:item:inv} $t(x) \in t^{-1}(t(x))$ for all $x \in X$.
+		
+		\item \label{prop:idemp:item:invy} $t^{-1}(y) \ne \emptyset$ implies $y \in t^{-1}(y)$ for $y \in X$.
+		
+		\item \label{prop:idemp:item:img} $t(X) \subseteq \fix{t}$.
+									
+		\item \label{prop:idemp:item:excl} $\move{t} \subseteq \excl{t}$. 		
+
+		\item \label{prop:idemp:item:tmove}  $t(\move{t}) \subseteq \fix{t}$.			
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+The equivalences $\ref{prop:idemp:item:idemp} \Leftrightarrow~\ref{prop:idemp:item:inv} 
+\Leftrightarrow~\ref{prop:idemp:item:invy}\Leftrightarrow~\ref{prop:idemp:item:img}$ follow readily.
+		
+$\ref{prop:idemp:item:img} \Rightarrow~\ref{prop:idemp:item:excl}$: 
+This follows as $\move{t} = X \setminus \fix{t} \subseteq X \setminus t(X) =  \excl{t}$.
+
+$\ref{prop:idemp:item:excl} \Rightarrow~\ref{prop:idemp:item:tmove}$:
+Here $t(\move{t}) \subseteq t(X) = X \setminus \excl{t} \subseteq X \setminus \move{t} = \fix{t}$.
+
+$\ref{prop:idemp:item:tmove} \Rightarrow~\ref{prop:idemp:item:img}$: As $t(\fix{t}) = \fix{t}$
+and $t(\move{t}) \subseteq \fix{t}$,
+we find $t(X) = t(\fix{t} \cup \move{t}) = t(\fix{t}) \cup t(\move{t}) \subseteq \fix{t}$.
+\end{proof} 
+
+\begin{corollary} \label{prelim:cor:idempotent}
+Suppose $t \colon X \to X$ is idempotent.
+Then we have the following:
+\begin{enumerate}
+\item \label{prelim:idemp:2} $t(X) = \fix{t}$
+
+\item \label{prelim:idemp:3} $\move{t} = \excl{t}$
+
+\item \label{prelim:idemp:1} $\dupl{t} = t(\move{t})$ (equivalently, $t(x) \notin \dupl{t}$ implies $t(x) = x$)
+
+\item \label{prelim:idemp:4b} $\dupl{t} = t(\dupl{t})$
+
+\item \label{prelim:idemp:5} $t^{-1}(\dupl{t}) = \move{t} \cup \dupl{t}$
+
+\item \label{prelim:idemp:7} For $A \subseteq X$ with $\dupl{t} \subseteq A$ we have $t(A) \subseteq A$.
+\end{enumerate}	
+\end{corollary}
+\begin{proof}
+\ref{prelim:idemp:2}: This follows from \cref{prop:idemp:item:img} of \cref{prelim:prop:idempotent} 
+and \cref{prelim:eqn:fiximage}.
+	
+\ref{prelim:idemp:3}: This follows from \cref{prop:idemp:item:excl} of \cref{prelim:prop:idempotent} 
+and \cref{prelim:eqn:exclmove}.
+
+\ref{prelim:idemp:1}: By \cref{prop:idemp:item:tmove} of \cref{prelim:prop:idempotent} and \cref{prelim:eqn:fixmovedupl} we have the following inclusion which give the claim:
+\[
+t(\move{t})
+\subseteq \fix{t}\cap t(\move{t})
+\subseteq \dupl{t} 
+\subseteq t(\move{t}).
+\]
+
+\ref{prelim:idemp:4b}: This follows as $\dupl{t} \subseteq t(X) \subseteq \fix{t}$
+by \cref{prop:idemp:item:img} of \cref{prelim:prop:idempotent}.
+
+\ref{prelim:idemp:5}: By \cref{prelim:prop:compinvAt} 
+and since $\move{t} \subseteq t^{-1}(\dupl{t})$
+and $\dupl{t} \subseteq t(X) \subseteq \fix{t}$ by \cref{prelim:idemp:1,prelim:idemp:2}, respectively,
+we have 
+\[
+	t^{-1}(\dupl{t}) = ( \move{t} \cap t^{-1}(\dupl{t}) ) \cup ( \fix{t} \cap \dupl{t} ) 
+	= \move{t} \cup \dupl{t}.
+\]
+
+\ref{prelim:idemp:7}: This follows from \cref{prelim:idemp:1}.
+\end{proof}
+
+Next, we investigate when the composition of two transformations gives an idempotent transformation.
+
+\begin{proposition} \label{prelim:prop:compositionidempt}
+Let $t, h \colon X \to X$. Then the following are equivalent.
+	
+\begin{enumerate} 
+\item \label{prelim:prop:compositionidempt:1} $\concat{t}{h}$ is idempotent.
+
+\item \label{prelim:prop:compositionidempt:3} 
+$\move{t} \cap h(t(X)) \subseteq \fix{ht}$ and $\fix{t}  \cap h(t(X)) \subseteq \fix{h}$.
+
+\item \label{prelim:prop:compositionidempt:2} $t(y) \in h^{-1}(y)$ for all $y \in h(t(X))$.
+
+\item \label{prelim:prop:compositionidempt:4}  $h(\move{h} \cap t(X)) \subseteq \fix{\concat{t}{h}}$
+and $\fix{h} \cap t(X) \subseteq \fix{\concat{t}{h}}$.
+\end{enumerate} 
+\end{proposition}
+\begin{proof}
+$\ref{prelim:prop:compositionidempt:1} \Rightarrow \ref{prelim:prop:compositionidempt:3}$: Let $\concat{t}{h}$ be idempotent.
+Since, by \cref{prelim:prop:idempotent}, $h(t(X)) \subseteq \fix{\concat{t}{h}}$, we get 
+$\move{t} \cap h(t(X)) \subseteq \fix{\concat{t}{h}}$.
+With \cref{prelim:trans:eqn:fix-comp} 
+we find $\fix{t} \cap h(t(X)) \subseteq \fix{h}$.
+
+$\ref{prelim:prop:compositionidempt:3} \Rightarrow \ref{prelim:prop:compositionidempt:2}$: Let $x \in X$. Set $y = h(t(x))$
+and consider $h(t(y))$. If $t(y) \ne y$, then $h(t(y)) = y$
+by assumption. Otherwise, if $t(y) = y$, then $h(y) = y$
+by assumption, so that $h(t(y)) = y$.
+Hence, in each case, we find $t(y) \in h^{-1}(y)$.
+
+$\ref{prelim:prop:compositionidempt:2} \Rightarrow \ref{prelim:prop:compositionidempt:4}$:
+Let $x \in X$. Suppose $h(t(x)) \ne t(x)$.
+By Item~\ref{prelim:prop:compositionidempt:2} applied to $y = h(t(x))$, we have $h(t(y)) = y$
+and so $h(t(x)) \in \fix{\concat{t}{h}}$.
+Next, suppose $h(t(x)) = t(x)$.
+By Item~\ref{prelim:prop:compositionidempt:2} applied to $y = t(x)$, we have $h(t(t(x))) = h(t(y)) = y = t(x)$
+and so $t(x) \in \fix{\concat{t}{h}}$.
+
+$\ref{prelim:prop:compositionidempt:4} \Rightarrow \ref{prelim:prop:compositionidempt:1}$:
+We have $h(t(x)) = h(( \move{h}\cap t(X) ) \cup ( \fix{h}\cap t(X) ) )
+= h(\move{h} \cap t(X)) \cup h(\fix{h}\cap t(X)) 
+= h(\move{h} \cap t(X)) \cup (\fix{h}\cap t(X)) \subseteq \fix{\concat{t}{h}}$.
+Thus, by \cref{prelim:prop:idempotent},
+$\concat{t}{h}$ is idempotent.
+\end{proof}
+
+\begin{corollary} \label{prelim:prop:compositionidempth} \label{prelim:prop:compositionidemptt}
+	Let $t, h \colon X \to X$.
+	\begin{enumerate}
+	\item \label{prelim:prop:compositionidempth:1} For idempotent~$h$, $\concat{t}{h}$ is idempotent
+	if and only if $\move{t} \cap h(t(X)) \subseteq \fix{ht}$.
+	
+	\item \label{prelim:prop:compositionidemptt:1} For idempotent~$t$, $\concat{t}{h}$ is idempotent
+	if and only if $h(\move{h} \cap t(X)) \subseteq \fix{\concat{t}{h}}$.
+	\end{enumerate}
+\end{corollary}
+\begin{proof}
+\ref{prelim:prop:compositionidempth:1}: 
+ For idempotent~$h$, we have $h(t(X)) \subseteq h(X) \subseteq \fix{h}$
+ by \cref{prelim:prop:idempotent}.
+ Thus, $\fix{t} \cap h(t(X)) \subseteq \fix{h}$ is always fulfilled
+ and the claim follows from \cref{prelim:prop:compositionidempt:3} of \cref{prelim:prop:compositionidempt}.
+
+\ref{prelim:prop:compositionidemptt:1}: By \cref{prelim:prop:idempotent}
+we have $t(X) \subseteq \fix{t}$.
+Since $\fix{h}\cap \fix{t}\subseteq \fix{\concat{t}{h}}$ by \cref{prelim:trans:eqn:fix-comp},
+the claim follows from \cref{prelim:prop:compositionidempt:4} of \cref{prelim:prop:compositionidempt}.
+\end{proof}
+
+%\begin{remark}
+%By the previous corollary, for idempotent~$h$,
+%$\concat{t}{h}$ is idempotent if $h(t(X)) \subseteq \fix{t}$
+%since then $\move{t} \cap h(t(X)) = \emptyset$.
+%But this also follows directly from $h(t(X)) \subseteq \fix{h} \cap \fix{t} \subseteq \fix{\concat{t}{h}}$
+%with \crefitem{prelim:prop:idempotent}{prop:idemp:item:img}.
+%We note that this condition is not necessary.
+%For example, if $h(x) = c$ for all $x \in X$ and $t(c) \ne c$, then
+%$h$ and $\concat{t}{h}$ are idempotent and $h(t(X)) \cap \fix{t} = \emptyset$.
+%\end{remark}
+
+\begin{corollary} \label{prelim:cor:comp-idempotents-idempotent}
+	Let $t, h \colon X \to X$ be idempotent. 
+	Then $\concat{t}{h}$ is idempotent if and only if 
+	$\move{t} \cap h(\move{h} \cap t(X)) \subseteq \fix{\concat{t}{h}}$.\footnote{Equivalently,
+	for $x \in X$, $h(t(x)) \ne t(x)$ and
+	$t(h(t(x))) \ne h(t(x))$ imply $h(t(x)) = h(t(h(t(x))))$.}
+\end{corollary}
+\begin{proof}
+	First, suppose $\concat{t}{h}$ is idempotent.
+	Since~$h$ and~$t$ are idempotent, by \cref{prelim:prop:compositionidempth} 
+	we find $\move{t} \cap h(\move{h} \cap t(X)) \subseteq \fix{\concat{t}{h}}$.
+	
+	Conversely, suppose $\move{t} \cap h(\move{h} \cap t(X)) \subseteq \fix{\concat{t}{h}}$.
+	Since $t$ is idempotent,
+	we have $h(\fix{h}\cap t(X)) = \fix{h}\cap t(X) = \fix{h}\cap \fix{t} \subseteq \fix{\concat{t}{h}}$.
+	Since~$h$ is idempotent,
+	we have $\fix{t} \cap h(t(X)) \subseteq \fix{t}\cap \fix{h} \subseteq \fix{\concat{t}{h}}$.
+	We have
+	\begin{multline*}
+	h(t(X)) = ( \move{t} \cap h(\move{h} \cap t(X)) ) \cup 
+	\\ ( \move{t} \cap h(\fix{h}\cap t(X))) \cup ( \fix{t} \cap h(t(X)) )
+	\end{multline*}
+	Thus, $\concat{t}{h}\subseteq \fix{\concat{t}{h}}$
+	and so $\concat{t}{h}$ is idempotent.	
+\end{proof}
+
+\begin{corollary} \label{prelim:cor:comp-idempotents-idempotent2}
+	Let $t, h \colon X \to X$ be idempotent.
+	Then $\concat{t}{h}$ is idempotent if one of the following is true:
+\begin{enumerate}
+\item \label{prelim:cor:comp-idempotents-idempotent2:1}
+$\dupl{h} \subseteq  \fix{\concat{t}{h}}$, i.e.,  $h(t(y)) = y$ for all $y \in \dupl{h}$,
+
+\item \label{prelim:cor:comp-idempotents-idempotent2:2}
+ $\excl{t} \subseteq  \fix{\concat{t}{h}}$,
+
+\item \label{prelim:cor:comp-idempotents-idempotent2:3} $ht = th$.
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+\ref{prelim:cor:comp-idempotents-idempotent2:1}: 
+ Since $h$ is idempotent, we have $h(\move{h} \cap t(X)) \subseteq \dupl{h}$.
+ Thus, the claim follows from \cref{prelim:prop:compositionidemptt:1} of \cref{prelim:prop:compositionidemptt}.
+ 
+\ref{prelim:cor:comp-idempotents-idempotent2:2}: With \cref{prelim:prop:idempotent}, 
+ we find $\move{t} = \excl{t} \subseteq \fix{\concat{t}{h}}$.
+ Then \cref{prelim:cor:comp-idempotents-idempotent}
+ implies idempotency of~$\concat{t}{h}$.
+ 
+\ref{prelim:cor:comp-idempotents-idempotent2:3}: We have $h(t(h(t(x)))) = h(h(t(t(x)))) = h(t(x))$ for $x \in X$. 	
+\end{proof}
+
+\begin{proposition} \label{prelim:trans:idemp:prop:tX-in-fixh}
+	Let $t, h \colon X \to X$ be idempotent.
+	Then the following are equivalent.
+	\begin{enumerate}
+		\item  \label{prelim:trans:idemp:prop:tX-in-fixh:1} $\concat{t}{h} = t$.
+		
+		\item  \label{prelim:trans:idemp:prop:tX-in-fixh:2} $t(X) \subseteq \fix{h}$.
+		
+		\item  \label{prelim:trans:idemp:prop:tX-in-fixh:3} $t(X) \cap h^{-1}(\dupl{h}) \subseteq \dupl{h}$.
+	\end{enumerate}
+\end{proposition}
+\begin{proof} 
+	$\ref{prelim:trans:idemp:prop:tX-in-fixh:1} \Rightarrow \ref{prelim:trans:idemp:prop:tX-in-fixh:2}$: By assumption,
+	we have $h(t(x)) = t(x)$ for all $x \in X$ and so $t(X) \subseteq \fix{h}$.
+	
+	$\ref{prelim:trans:idemp:prop:tX-in-fixh:2} \Rightarrow \ref{prelim:trans:idemp:prop:tX-in-fixh:3}$: 	
+	Let $t(x) \in h^{-1}(\dupl{h})$.
+	Since $t(X) \subseteq \fix{h}$, we have $t(x) = h(t(x)) \in \dupl{h}$.
+	
+	$\ref{prelim:trans:idemp:prop:tX-in-fixh:3} \Rightarrow \ref{prelim:trans:idemp:prop:tX-in-fixh:1}$: 
+	Suppose $h(t(x)) \ne t(x)$ for $x \in X$.
+	Then $h(t(x)) \in \dupl{h}$ since~$h$ is idempotent,
+	but $t(x) \notin \dupl{h}$ since $h$ fixes every point from $\dupl{h}$.
+	Thus \cref{prelim:trans:idemp:prop:tX-in-fixh:3} fails.
+\end{proof}
+
+Next, we refine \cref{prelim:func:prop:inv-dupl}
+for the case that one transformation is idempotent. 
+We need the following equation for idempotent $t \colon X \to X$ and $A \subseteq X$ that is easy to verify
+\begin{equation} \label{prelim:trans:idemp:eqn:inv}
+	t^{-1}(A) = ( A \cap t(X) ) \cup t^{-1}( A \cap \dupl{t} )
+\end{equation}
+
+\begin{proposition}  \label{prelim:trans:idemp:prop:inv-dupl}
+	Let $t \colon X \to X$ be idempotent and $h \colon X \to Y$.
+	Then we have
+	\begin{align*}
+	(\concat{t}{h})^{-1}(\dupl{\concat{t}{h}}) 
+	& = t^{-1}(\dupl{t}) \cup ( h^{-1}( \dupl{h_{|t(X)}} ) \cap t(X) ) \\
+	& = t^{-1}(\dupl{t}) \cup h^{-1}( \dupl{\concat{t}{h}})	
+	\end{align*}
+\end{proposition}
+\begin{proof}
+	Set $A = h^{-1}(\dupl{h_{|t(X)}})$. 
+	Now, we have the following:
+	\begin{align*}
+		(\concat{t}{h})^{-1}(\dupl{\concat{t}{h}}) 
+		& = t^{-1}(\dupl{t}) \cup t^{-1}(A) \tag{Prop.~\ref{prelim:func:prop:inv-dupl}} \\
+		& = t^{-1}(\dupl{t}) \cup t^{-1}(A \cap \dupl{t} ) \cup ( A  \cap t(X) ) \tag{Eqn.~\ref{prelim:trans:idemp:eqn:inv}} \\
+		& = t^{-1}(\dupl{t}) \cup ( A \cap t(X) )
+	\end{align*}
+	
+	Next, set $B = A \cap t(X) = h_{|t(X)}^{-1}(\dupl{h_{|t(X)}})$.
+	Using $h(\dupl{t}) = h_{|t(X)}(\dupl{t})$, \cref{prelim:eqn:finvfinclusion},
+	and the idempotency of~$t$ we have the following:
+	\begin{align*}
+		& t^{-1}(\dupl{t}) \cup h^{-1}(\dupl{\concat{t}{h}}) \\
+		& = t^{-1}(\dupl{t}) \cup ( t(X) \cap h^{-1}(\dupl{\concat{t}{h}}) ) \tag{$\excl{t}\subseteq t^{-1}(\dupl{t})$} \\
+		& = t^{-1}(\dupl{t}) \cup h_{|t(X)}^{-1}(\dupl{\concat{t}{h}})   \\
+		& = t^{-1}(\dupl{t}) \cup h_{|t(X)}^{-1}(h(\dupl{t} \cup \dupl{h_{|t(X)}})) \tag{Eqn.~\eqref{prelim:eqn:dupl0}} \\
+		& = t^{-1}(\dupl{t}) \cup h_{|t(X)}^{-1}(h(\dupl{t})) \cup B \\
+		& = t^{-1}(\dupl{t}) \cup h_{|t(X)}^{-1}(h_{|t(X)}(\dupl{t})) \cup B \\
+		& = t^{-1}(\dupl{t}) \cup \dupl{t} \cup h_{|t(X)}^{-1}(h_{|t(X)}(\dupl{t}) \cap \dupl{h_{|t(X)}}) \cup B \\
+		& = t^{-1}(\dupl{t}) \cup \dupl{t} \cup B  \\
+		& = t^{-1}(\dupl{t}) \cup B \tag{$\dupl{t}\subseteq t^{-1}(\dupl{t})$}
+	\end{align*}
+	This shows the claimed identities.	
+\end{proof}
+
+\begin{remark}	
+	In \cref{prelim:trans:idemp:prop:inv-dupl}, the set
+	$h^{-1}(\dupl{h_{|t(X)}}) \cap t(X)$
+	may be replaced with either
+	$h^{-1}(\dupl{h_{|t(X)}})$
+	or
+	$h^{-1}(\dupl{\concat{t}{h}}) \cap t(X)$,
+	since both contain
+	$h^{-1}(\dupl{h_{|t(X)}}) \cap t(X)$
+	and are contained in
+	$h^{-1}(\dupl{\concat{t}{h}})$.
+	However,
+	$h^{-1}(\dupl{h_{|t(X)}})$
+	cannot be replaced with
+	$h^{-1}(\dupl{h})$, see
+	\cref{prelim:func:ex:inv-dupl}.
+\end{remark}
+\end{comment}

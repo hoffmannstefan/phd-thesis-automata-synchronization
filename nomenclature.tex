@@ -1,0 +1,201 @@
+
+
+
+
+
+
+%https://www.resurchify.com/latex_tutorial/latex_glossaries.php
+%https://en.wikibooks.org/wiki/LaTeX/Glossary
+%https://www.google.com/search?q=latex+overview+mathematical+notation+with+page+numbers&rlz=1C1GCEU_deDE823DE823&ei=Ao-HY_PMBMj6sAermoXoAg&ved=0ahUKEwjz1YWvs9b7AhVIPewKHStNAS0Q4dUDCA8&uact=5&oq=latex+overview+mathematical+notation+with+page+numbers&gs_lcp=Cgxnd3Mtd2l6LXNlcnAQAzIFCAAQogQyBwgAEB4QogQyBQgAEKIEMgUIABCiBDoKCAAQRxDWBBCwAzoFCCEQoAE6CAghEBYQHhAdOgQIIRAVOgcIIRCgARAKSgQIQRgASgQIRhgAUKIGWIgYYKsZaAFwAXgAgAGoAYgB3hCSAQQ1LjEzmAEAoAEByAEIwAEB&sclient=gws-wiz-serp
+
+
+
+%https://tex.stackexchange.com/questions/274202/create-a-notation-summary-in-latex
+%https://tex.stackexchange.com/questions/274463/feynman-trig-notation-creating-custom-characters?rq=1
+%https://tex.stackexchange.com/questions/54720/page-with-symbols-and-notation
+%https://www.google.com/search?q=nomenclature&rlz=1C1GCEU_deDE823DE823&oq=nomenclature&aqs=chrome..69i57j0i512l9.280j0j7&sourceid=chrome&ie=UTF-8
+%https://www.google.com/search?q=pageref&rlz=1C1GCEU_deDE823DE823&oq=pageref+&aqs=chrome..69i57j0i512l3j0i30l6.2234j0j7&sourceid=chrome&ie=UTF-8
+%http://www.weinelt.de/latex/pageref.html
+
+\label{chap:notationindex}
+
+\noindent Standard logical and set-theoretical notation
+that is briefly mentioned (and fixed) at the beginnings
+of \cref{intro:sec:basic,sec:logic_set_theory_number_theory}
+and common %well-known
+expressions, as, for example, $\binom{n}{2} = \frac{n(n-1)}{2}$, $u^n$ or $t^n$ for the $n$-fold concatenation product (resp.~composition) of a word $u$ or transformation $t$, etc.,
+do not appear in the notation index.
+We assume a sufficient level of familiarity
+with such notions on the part of the reader to not feel it necessary
+to include them in this index. Furthermore, notations that are only mentioned in a single paragraph (for example, in a discussion section)
+and are not used beyond that are also not included.
+
+\todo[inline]{long table mit ki prüfen}
+
+% https://tex.stackexchange.com/questions/73283/how-to-use-multirow
+% curly braces um den zweizeiler mit modulo notatio?
+% https://tex.stackexchange.com/questions/33345/making-a-table-fit-on-a-page-by-moving-it-left
+%\begin{longtable}{p{4.6cm}p{8.1cm}p{1.3cm}}
+\begin{longtable}{p{0.34\textwidth} p{0.56\textwidth} p{0.1\textwidth}}		
+	$f \colon X \to Y$ & (Total) function $f$ from $X$ to $Y$ & \pageref{def:total_function} \\
+	$\Sigma$           & A finite alphabet, i.e., set of symbols & \pageref{def:Sigma} \\
+	$\Sigma^*$         & Set of words over $\Sigma$ with concatenation & \pageref{def:Sigmastar} \\
+	$u\cdot v$ or $uv$ & Concatenation of two words $u,v$ & \pageref{def:Sigmastar} \\
+	$|u|$              & Length of word $u$ & \pageref{def:length_of_word} \\
+	$\varepsilon$      & The empty word & \pageref{def:empty-word} \\
+	$\mathbb N_0$      & $\{0,1,2,3,\ldots\}$ & \pageref{def:N0} \\	
+	$\mathbb Z$        & Set of integers & \pageref{def:integers} \\
+	$\mathbb R$        & Set of real numbers & \pageref{def:realnumbers} \\
+	$[n]$             & The set $\{ 0,1,\ldots, n- 1\}$ & \pageref{def:finite_set_n} \\
+	$\max(M) / \min(M)$ & Maximum/minimum of finite $\emptyset \ne M \subseteq \mathbb N_0$ & \pageref{def:min} \\
+	$\max(a_1,\ldots,a_n)$ & Maximum of $a_1,\ldots,a_n \in N_0$ & \pageref{def:min} \\
+	$\min(a_1,\ldots,a_n)$ & Minimum of $a_1,\ldots,a_n \in N_0$ & \pageref{def:min} \\
+	$\semiautomat{A}{Q}{\Sigma}{\delta}$ & Automaton specification of $\mathcal A$ & \pageref{def:automaton} \\
+	$\applytrans{\delta}{S}{u}$ & Image of $S \subseteq Q$ in $\semiautomat{A}{Q}{\Sigma}{\delta}$ & \pageref{def:image-delta} \\
+	$\Syn(\mathcal A)$ & Set of synchronizing words of  $\mathcal A$ & \pageref{def:set_of_sync_words} \\	
+	$\rt{\mathcal A}$  & Reset length of $\mathcal A$ & \pageref{def:rt} \\
+	$\mathcal C_n = ([n], \{a,b\}, \delta_n)$   & Automata from the \v{C}ern\'y family & \pageref{def:Cn} \\
+	$[p,q]$ & Interval between $p,q \in Q$ in $\mathcal C_n$ & \pageref{def:interval} \\
+	$\mathcal P(X)$ & Power set of set~$X$ & \pageref{def:powerset} \\
+	$(f(x))_{x \in A}$ & Notation to specify function $f\colon X \to Y$ & \pageref{def:tuple-notation-function} \\
+	$\pi_i \colon X_1 \times \cdots \times X_n \to X_i$            & Component projection mapping & \pageref{def:pi} \\
+	$a \bmod b$       & Unique $0 \le r < b$ with $a = bn + r$ for $r,n \in \mathbb N_0$ & \pageref{def:bmod} \\
+%	$a \equiv_b a'$ or  &  \multirow{ 2}{*}{$a$ and $a'$ are congruent modulo $b$} & \pageref{def:residue_congruence} \\
+%	$a \equiv a' \pmod{b}$                  & & \\	
+$a \equiv a' \pmod{b}$ or $a \equiv_b a'$                & $a$ and $a'$ are congruent modulo $b$ & \pageref{def:residue_congruence} \\
+%	-  & Trivial group &  \pageref{def:trivial group} \\
+%	-  & Group of units of a semigroup & \pageref{def:group of units} \\ 
+	$\gcd(M), \lcm(M)$    & Greatest com. div. / least common multiple & \pageref{def:gcd} \\
+	$\lfloor x \rfloor$ & $\lfloor x \rfloor = \min\{ k\in \mathbb Z \mid k \le x\}$ & \pageref{def:floorfn} \\
+	$Y^X$ & Set of functions $f \colon X \to Y$ & \pageref{def:BraisedA} \\ 
+	$\applyfunc{S}{f}$ & Extension of $f \colon X \to Y$ to subsets $S \subseteq X$ & \pageref{def:f_set_ext} \\
+	$\applyfunc{S}{f^{-1}}, \applyfunc{x}{f^{-1}}$ & Inverse image of $S$ (resp. $x$) for $f \colon X \to Y$ & \pageref{def:preimage} \\
+	$\dupl{f}$, $\dupl{u}$ & Duplicate states of $f \colon X \to Y$ / word $u \in \Sigma^*$ & \pageref{def:dupl_t}, \pageref{def:exclword} \\	
+	$\excl{f}$, $\excl{u}$ & Excluded states of $f \colon X \to Y$ / word $u \in \Sigma^*$ & \pageref{def:excl_t}, \pageref{def:exclword} \\	
+	$\concatcirc{f}{g}$ or $\concat{f}{g}$ & Function composition & \pageref{def:fun_comp} \\	
+	$\rank{f}$, $\rank{u}$ & Rank of $f \colon X\to Y$ / word $u \in \Sigma^*$ & \pageref{def:rank}, \pageref{def:rankword} \\
+	$\defect{f}$, $\defect{u}$ & Defect of $f \colon X \to Y$ / word $u \in \Sigma^*$ & \pageref{def:defect}, \pageref{def:defectword} \\
+	$\excess{f}{A}$ & Excess of~$A$ under~$f$ & \pageref{def:excess} \\
+	$(k_1, \ldots, k_l)$ & Kernel-type notation & \pageref{def:kernel-type} \\
+	$\fix{t}, \move{t}$ & Set of fixpoints / moved points & \pageref{def:fixmove} \\  
+	$\operatorname{id}_X \colon X \to X$  & Identity transformation on $X$ & \pageref{def:identity_transformation} \\
+	$(a_0 ~ a_1 ~ \cdots ~ a_{m-1})_X,  ()$ & Cycle notation & \pageref{def:cycle-notation} \\
+	$[a_1 \mapsto \cdots \mapsto a_m]_X$ & Tail transformation notation & \pageref{def:SI-mapping} \\
+	$[x]_{\sim}$ & Equivalence class of $x$ w.r.t.~$\sim$ & \pageref{def:equivalenceclasses} \\
+	$X / {\sim}$ & Set of equivalence classes w.r.t.~$\sim$ & \pageref{def:eqfactor} \\
+	$\pi_{\sim} \colon X \to X / {\sim}$ & Canonical projection map & \pageref{def:canprojmap} \\
+	$\sim_f$     & Kernel rel.~of $f$ (equiv.~rel.~induced by $f$) & \pageref{def:kernel} \\
+	$\upperset{T}$           & Smallest upper set containing $T$ & \pageref{def:genupperset} \\		
+	$+_n, \cdot_n$ & Cropped operations on $[n]$ & \pageref{def:plusmaln} \\
+	$AB$ & Product on subsets $A,B \subseteq S$, $S$ semigroup & \pageref{def:product_subsets} \\
+	$A^n$, $A^{\le n}$, $A^{< n}$, $aA$, $Aa$ & Operations derived from products on subsets & \pageref{def:powers-smaller} \\	
+	$\le_S$,$\le_M$, $\le_G$ & Subsemigroup, submonoid, subgroup & \pageref{def:subsemigroup} \\ %,\pageref{def:subgroup} \\   
+		$Z(G)$ & Center of a group $G$ & \pageref{def:center} \\	
+	$\langle T \rangle_S$, $\langle T \rangle_M$, $\langle T \rangle_G$ & Semigroup, monoid, group generated by $T$ & \pageref{def:gensubstructures} \\
+		$A = (a_{ij})_{\substack{i\in \{1,\ldots,n\}, j \in \{1, \ldots, m\}}}$ & $n \times m$ matrix & \pageref{def:matrix} \\	
+	%	$v = (v_i)_{i \in \{1,\ldots n\}}$ & $n$-dimensional vector & \pageref{def:vector} \\
+	$I_n$, $O_n$ & $n \times n$ identity and zero matrices, respectively.  & \pageref{def:identitymtx} \\	
+	    $\mathcal T_X$ & Full transformation semigroup on $X$ & \pageref{def:T_X}  \\
+	  $\mathcal T_n$ & Full transformation semigroup on $[n]$ & \pageref{def:T_n} \\
+	    $\mathcal S_X$ & Full symmetric group on $X$ & \pageref{def:S_X} \\
+	$\Orbit{a}{G}$  & Orbit of $a$ in permutation group $G$      & \pageref{def:orbit} \\
+	 $\Stab{a}{G}$   & Point stabilizer of $a$ in permutation $G$ & \pageref{def:stabilizer} \\
+	$t^g$           & Conjugation of $t \colon X \to X$ by $g \colon X \to X$ & \pageref{def:conjugation} \\
+		$\mathcal S_n$ & Full symmetric group on $[n]$ & \pageref{def:S_n} \\
+		$\mathcal A_n$ & Alternating group on $[n]$ & \pageref{def:A_n}  \\
+		$L^*, L^+$ & Kleene star and plus & \pageref{def:Kleenestar} \\
+		$\pref{u}, \pref{L}$ & Set of prefixes of word $u$ (resp.~$L \subseteq \Sigma^*$) & \pageref{def:pref} \\
+	$\suff{u}, \suff{L}$ & Set of suffixes of word $u$ (resp.~$L \subseteq \Sigma^*$) & \pageref{def:suff} \\
+	$\fact{u}, \fact{L}$ & Set of factors/infixes of word $u$ (resp.~$L \subseteq \Sigma^*$) & \pageref{def:fact} \\
+	$|u|_a$ & Number of occurrences of $a \in \Sigma$ in $u \in \Sigma^*$ & \pageref{def:occurrences_of_letters} \\ 
+	$u^{-1}L$ & Language quotient of $L$ by $u$ & \pageref{def:quotient} \\
+		$\pi_{\Gamma}\colon \Sigma^* \to \Gamma^*$ & Projection morphism & \pageref{def:projection} \\
+		$\mathcal{RE}(\Sigma)$ & Set of regular expressions over $\Sigma$ & \pageref{def:RegSigma} \\
+	$L(R)$                   & Language described by $R \in \mathcal{RE}(\Sigma)$ & \pageref{def:language_reg_ex} \\
+	$\psi\colon \Sigma^* \to \mathbb N_0^{\Sigma}$ & Parikh map/Parikh morphism & \pageref{def:Parikhmap} \\
+	$\operatorname{Aut}(G)$ & Automorphism group of a graph $G = (V,E)$ & \pageref{def:AutG} \\
+	$G_t$ / $G_R$ & Functional graph / graph of a relation & \pageref{def:Gf} \\ % \pageref{def:GR} \\
+	$N^+(U)$      & Vertices $v$ with edge $(u,v)$ s.t.~$u \in U$, $v \notin U$ & \pageref{def:Nplus} \\
+	$O(g)$, $o(g)$  & Big $O$ and small $o$ notation for $g \colon \mathbb N_0 \to \mathbb N_0$ & \pageref{def:bigO} \\
+	($\LOGSPACE$-uniform)~$\NC^k$, $\AC^k$                  
+	& Circuit families or 
+	languages decidable by circuit families in ($\LOGSPACE$-uniform) $\NC^k$/$\AC^k$  &  \pageref{def:AC0circuitclass}, \pageref{def:ACkNCk} \\
+	$\LOGSPACE$  & Languages decidable in det. log. space & \pageref{def:L}  \\
+	$\NL$        & Languages decidable in nondet. log. space & \pageref{def:NL} 		\\ 
+	$\NC$ & Language class $\bigcup_{k\ge 0} \text{\LOGSPACE-uniform } \NC^k$  &  \pageref{def:NC} \\
+	$\PTIME$     & Languages decidable in det. poly. time & \pageref{def:P} \\
+	$\NP$        & Languages decidable in nondet. poly. time & \pageref{def:NP}  \\
+	$\PSPACE$    & Languages decidable in det. poly. space & \pageref{def:PSPACE} \\
+	% $\NPSPACE$   & Problems decidable in nondet. poly. space & \pageref{def:NPSPACE}  \\
+	$\NPSPACE$   & Languages decidable in nondet. poly. space & \pageref{def:NPSPACE}  \\
+	$\lelogm$ / $\eqlogm$   & log-space many-one reduction / equivalent& \pageref{def:lelogm} \\
+	$\lePm$ / $\eqPm$      & polynomial time many-one reduction / equivalent & \pageref{def:lePm} \\
+	$\leACkm{0}$ / $\leNCkm{1}$ & \LOGSPACE-uniform $\AC^0$ / $\NC^1$ many-one reduction & \pageref{def:leACZEROm} \\ 
+	% $\eqlogm$    & log-space many-one equivalent & \pageref{def:eqlogm} \\
+	% $\eqPm$      & polynomial time many-one equivalent & \pageref{def:eqPm} \\
+	$\eqACkm{0}$ / $\eqNCkm{1}$ & \LOGSPACE-uniform $\AC^0$ / $\NC^1$ many-one equivalent & \pageref{def:eqACZEROm} \\
+	$\leNCkT{1}$ / $\eqNCkT{1}$ & \LOGSPACE-uniform $\NC^1$ oracle reduction / equivalent & \pageref{def:eqACZEROm} \\
+%	$\eqNCkT{1}$ & \LOGSPACE-uniform $\NC^1$ oracle equivalent & \pageref{def:eqACZEROm} \\
+	% $\AC^0$                  & Polynomial size, constant depth \& unbounded fan-in circuit complexity class & \pageref{def:AC0}	
+	$G^D$ & Diagonal action on~$G$ & \pageref{def:diagonal-action}\\
+	$\applytrans{\delta^{-1}}{q}{u}$ & Inverse transition of~$\delta$ & \pageref{def:inverse_transition} \\
+	$G(\mathcal A)$ & Automaton graph of automaton $\mathcal A$ & \pageref{def:aut_graph} \\
+		$\lereach$, $\lereach^{\mathcal A}$  & Reachability quasiorder  w.r.t.~$\mathcal A$ & \pageref{def:reach_order} \\
+		$\eqreach$               & Equivalence relation induced by $\lereach$ & \pageref{def:induced_reach_order} \\
+		$\fword{\delta}{u}$ & $\fword{\delta}{u}\colon Q \to Q$ induced by $u \in \Sigma^*$ in $\semiautomat{A}{Q}{\Sigma}{\delta}$ & \pageref{def:fwordu} \\
+	$\TS{\mathcal A}$, $\TM{\mathcal A}$ & Transformation semigroup/monoid of~$\mathcal A$ & \pageref{def:transformation_semigroup} \\
+%	 & Transformation monoid of~$\mathcal A$ & \pageref{def:transformation_monoid} \\
+			$[a]_{\mathcal A}$, $[u]_{\mathcal A}$, $[a]$, $[u]$  & Transition matrix for letter/word $a$/$u$ w.r.t.~$\mathcal A$ & \pageref{def:transitionmtx} \\	
+	$\mathcal A \cong \mathcal B$ & $\mathcal A$ and $\mathcal B$ are isomorphic & \pageref{def:isomorphic} \\
+				$\mathcal A_{|S}$,
+	$\mathcal A_{|\Gamma}$,
+	$\restrictAutGamS{\mathcal A}{\Gamma}{S}$ & Restriction of $\mathcal A$ to upper set $S$, $\Gamma$ or both. & \pageref{def:restriction_aut} \\
+		$\semiautomat{A / {\sim}}{Q / {\sim}}{\Sigma}{\delta_{\sim}}$& Quotient automaton w.r.t.~$\TM{\mathcal A}$-congruence $\sim$ & \pageref{def:factor_aut} \\
+	$\sim_S$                 & Rees congruence for upper set $S$ & \pageref{def:Rees_congruence} \\
+				$\mathcal A_1 \times \cdots \times \mathcal A_m$, $\mathcal A^n$ & Product aut.~of $\mathcal A_1, \ldots, \mathcal A_m$ / $n$-fold product & \pageref{def:product_aut} \\
+	$\mathcal P(\mathcal A)$ & Power automaton of $\mathcal A$ & \pageref{def:power_aut} \\
+	$\mathcal A^{\le 2}$ & Auxiliary construction for pair automaton & \pageref{def:pair_aut} \\
+$\mathcal A^{\le 2} / {\sim_F}$ & Pair automaton of $\mathcal A$ &  \pageref{def:pair_aut} \\	
+		$\automat{A}{Q}{\Sigma}{\delta}{q_0}{F}$ & Automaton as language acceptor & \pageref{def:automaton-acceptor} \\
+	%$\semiautomat{A_{|S, \Gamma}}{Q}{\Gamma}{\delta_{|S,\Gamma}}$ & Restriction of $\mathcal A$ to upper set $S$ and  $\Gamma\subseteq \Sigma$ & \pageref{def:restriction_aut} \\
+	%$\semiautomat{A_{|S}}{Q}{\Sigma}{\delta_{|S}}$ & Abbreviation for $\mathcal A_{|S, \Sigma}$, called subautomaton & \pageref{def:restriction_aut} \\
+	$L(\mathcal A)$          & Language accepted by automaton $\mathcal A$ & \pageref{def:accepted_lang_aut} \\	
+			$\mathcal A_{q,S}$ & Changing/adding start $s$ \& final set $F$ to $\mathcal A$ & \pageref{def:add_start_final} \\	
+	%	$\equiv_{\mathcal A, F}$ & Distinguishability relation w.r.t.~$\mathcal A$ and $F$ & \pageref{def:dist_relation} \\
+	$\equiv_L$ & Myhill-Nerode relation & \pageref{def:Nerode} \\
+	$\minaut{L}$ & Minimal automaton of $L \subseteq \Sigma^*$ & \pageref{def:minaut} \\
+	$\pi_{\mathcal A}$ & Morphism onto $\mathcal A_L$ from accessible $\mathcal A$ & \pageref{def:Nerode-morphism} \\ 
+	$\le_{\mathcal R}$ & $\mathcal R$-quasiorder on words w.r.t.~automaton & \pageref{def:R-quasiorder} \\
+	$\sim_s$           & Stability relation & \pageref{def:stability} \\
+	$\Sigma_I, \Sigma_G$ & Subalphabets w.r.t.~OI-automaton & \pageref{def:subalphabets_SI} \\	
+	$\mathcal B_{n,m, r}$ & Strongly conn.~comm. automata & \pageref{def:grid-aut} \\	
+	$\Gamma_k(\mathcal A) = (Q_k, E_k)$ & Bondar-Casas-Volkov graph construction & \pageref{def:Gammakgraphs} \\
+    $I(\mathcal A) = (Q, E)$ & The Rystsov graph & \pageref{def:Rystsovgraph} \\
+    $I_i(\mathcal A) = (Q, E_i)$ & Auxiliary graph introduced by Rystsov & \pageref{def:Rystsovgraph} \\    
+	$I(S) = ([n], E)$                   & Rystsov graph extended to $S \le_S \mathcal T_n$ & \pageref{def:graph_IS} \\
+	$\Gamma_1(S) = ([n], E)$ & $\Gamma_1(\mathcal A)$-graph extended to $S \le_S \mathcal T_n$ & \pageref{def:GammaS} \\
+	$\Gamma_{1,i}(\mathcal A)$ & Variant of $\Gamma_1(\mathcal A)$-graph & \pageref{def:Gamma1i-graph} \\	
+	$\mathcal A_{f,a}$ & Adding letter $a$ to $\mathcal A$ defined via $f \colon Q \to Q$ & \pageref{def:Afa} \\
+	$a \rightsquigarrow_T b$ / $a \rightsquigarrow b$ & Quasiorder used in~\cref{sync_max:grp:Aprim:sync}. & \pageref{def:quasiorderidemp} \\
+	$\mathbf{D},\mathbf{E},\mathbf{F},\mathbf{G},\mathbf{H},\mathbf{I},\mathbf{J},\mathbf{K}$ & Exceptional automata for \v{C}ern\'y bound & \pageref{def:exceptional_aut} \\
+	$\mathcal V_n = \mathcal W_n$  & Class of slowly synchronizing automata & \pageref{def:Vn} \\
+	$\mathcal L_n = \mathcal D_n'$ & Class of slowly synchronizing automata & \pageref{def:Ln} \\
+	$\mathcal F_n$, $n > 3$ odd    & Class of slowly synchronizing automata & \pageref{def:Fn} \\
+	$\mathcal K_n = \mathcal G_n$, $n > 5$ odd & Class of slowly synchronizing automata & \pageref{def:Kn} \\
+		$\overline{\mathcal A_n}$, $n \ge 8$ even & Class of slowly synchronizing automata & \pageref{def:overlineAn} \\
+		$\mathcal M_n$, $n \ge 3$              & Class of slowly synchronizing automata & \pageref{def:Mn}  \\
+		$\mathcal B_n$, $n \ge 5$ odd &  Class of slowly synchronizing automata & \pageref{def:Bn} \\
+%		$\mathcal{A}_{\operatorname{add}(q, S)}$ & Construction from Ex.~\ref{syncmax:slowly:ex} & \pageref{def:Aadd} \\
+		$f \colon X \nrightarrow Y$ & Partial function $f$ from $X$ to $Y$ & \pageref{def:partial_function}  \\
+	$\sigma_L \colon \Sigma^* \to \Sigma^*$ & Levenshtein-Romanov mapping & \pageref{def:levenshtein-romanov-mapping} \\
+ 	$\rho \colon \Sigma^* \to \mathbb N_0$ & Equal-letter runs & \pageref{def:rho} \\
+	$\eqLsimU{L}{\sim}{U}$ & Relation derived from $\equiv_L$ & \pageref{def:Nerode-generalization} \\
+	$\equiv_{L}^{>n}$  & Relation defined with $\eqLsimU{L}{\sim}{U}$ & \pageref{def:equivLn}  \\
+	$\preeqLL{C}{V}$  & Relation used to define $\eqLL{C}{V}$ & \pageref{def:preeqLL}  \\		
+	$\eqLL{C}{V}$      & Relation defined with $\eqLsimU{L}{\sim}{U}$  & \pageref{def:eqLL} \\ 
+	$\Sigma_{i,j}$ & Subalphabet w.r.t.~small constraint automaton & \pageref{def:Sigmaij} \\
+	%$\vec{u}, \vec{v}, \vec{x}, \vec{y}, \ldots$ & Notation for elements in $\mathbb N_0^{\Sigma}$ in Sec.~\ref{sec:constr_sync:commutative} & \pageref{def:vecs} \\
+	$\psi_n \colon \Sigma^* \to \{0,1,\ldots,n\}^{\Sigma}$ & $n$-cropped Parikh map & \pageref{def:n-cropped-Parikh-map} \\
+	$L_i^F$ & Shorthand $L_i^F = L(\mathcal B_{i,F})$ for Table~\ref{constr_sync:table:three_states_23} & \pageref{def:LiFnotation} \\		
+	$\mathcal A_t, \mathcal A_c$ & Sync.~binary SI-automata, see Prop.~\ref{prop:structure_simp_idem_binary} & \pageref{def:AtAc}
+\end{longtable}

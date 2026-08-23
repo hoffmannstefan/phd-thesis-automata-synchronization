@@ -1,0 +1,1331 @@
+%!TEX root = ./../../springer-mono-format/book.tex
+%!TEX root = ./../../thesis-trier.tex
+
+Here, in \cref{constrsync:sec:codes:basic-notions} we introduce codes and overlap-free languages
+and state some basic relations. Some of our later results will use prefix codes and solid codes. 
+A few conditions using prefix codes use constructions related to maximal prefix codes. This
+class of codes is discussed in \cref{constrsync:sec:max-prefix-codes}.
+In \cref{constrsync:sec:more-on-prefix-codes} we collect properties of prefix codes that we need for those results.
+\Cref{constrsync:sec:codes:levensthein-romanov} states some further characterizations of our classes of codes and overlap-free languages and relations to the Levenshtein-Romanov mapping.
+\Cref{constrsync:sec:codes:solid} collects characterizations of solid codes (some of them have
+not been observed before).
+
+\subsection{Basic Notions}
+\label{constrsync:sec:codes:basic-notions}
+
+Here, in \cref{constrsync:def:codes}, we introduce overlap-free languages,
+codes, and various subclasses of codes as, for example, solid codes, comma-free codes, and infix codes.
+%Here, in \cref{constrsync:def:codes}, we introduce codes, various subclasses thereof as, for example, solid codes, comma-free codes, and infix codes,
+%and overlap-free languages.
+\Cref{constr_sync:prop:selfsync_implies_avoiding} 
+proves that every solid code is a comma-free code, and that every comma-free code is an infix code.
+In \cref{constrsync:ex:binarysolidcode} we also show that overlap-free languages
+are not codes in general. The remaining inclusions among infix, bifix, prefix, and suffix codes
+are obvious. \Cref{fig:code-hasse} gives an overview of the inclusion relations among
+the introduces code classes and overlap-free languages.
+As formally stated in \cref{constr_sync:prop:coding_morphisms},
+codes are used to encode symbols from some source alphabet.
+%Codes are used to encode symbol from some source alphabet,
+%a formal statement of this fact is given
+%in \cref{constr_sync:prop:coding_morphisms}.
+%In \cref{constr_sync:prop:coding_morphisms} we formalize 
+%the idea that codes encode symbols from a source alphabet.
+%the relation
+%between a source alphabet and codes as an encoding of symbols from such an alphabet.
+\Cref{constr_sync:lem:two-words-code,constrsync:prop:conjugate-words} 
+give two combinatorial results on word equations.
+
+% L = emptyset erlauben? macht für präfixcode bei einigen aussagen sinn.
+\begin{definition} \label{constrsync:def:codes}
+	Let $L \subseteq \Sigma^+$ be non-empty and $u,v,w \in \Sigma^*$.
+	
+	\IN{code}
+	\IN{overlap-free code}
+	\IN{infix code}
+	\IN{prefix code}
+	\IN{suffix code}
+	\IN{bifix code}
+	\IN{solid code}
+	\IN{comma-free code}
+	\index{unique factorization property|see{code}}
+	\begin{enumerate}%[itemsep=-2pt]	
+		\item \label{constrsync:item:code} $L$ is a \emph{code} if, for $u_1, \ldots, u_n, v_1, \ldots, v_m \in L$,
+		the equality
+		\[
+		u_1 \cdots u_n = v_1 \cdots v_m
+		\]
+		implies $n = m$ and $u_i = v_i$ for all $i \in \{1,\ldots,n\}$ (the \emph{unique factorization property} in $L^*$ w.r.t.~$L$).
+		
+		\item  $L$ is \emph{overlap-free}		
+		if $uv, vw \in L$ with $u \ne\varepsilon$ and  $w \ne \varepsilon$ implies $v = \varepsilon$, i.e., no proper non-empty suffix
+		of a word from~$L$ is also a proper non-empty prefix of some word in~$L$.\footnote{The condition
+			that~$u$ and~$v$ are non-empty is missing in~\cite{DBLP:journals/tcs/JurgensenS21},
+			but it is essential since without it,
+			for $v \in L$, we have $\varepsilon\cdot v, v \cdot \varepsilon \in L$
+			and thus $v = \varepsilon$, which
+			contradicts the fact that $L$ is a subset of $\Sigma^+$.}		
+		
+		%\item $L$ is a \emph{block code} if it is a code and there exits $n > 0$ such that $L \subseteq \Sigma^n$.
+		
+		\item $L$ is an \emph{infix code} (or \emph{infix-free}) if $u, vuw \in L$ implies $v = w = \varepsilon$.
+		
+		\item $L$ is a \emph{prefix code} (or \emph{prefix-free}) if $uv, u \in L$ implies $v = \varepsilon$.
+		
+		\item $L$ is a \emph{suffix code} (or \emph{suffix-free}) if $vu, u \in L$ implies $v = \varepsilon$.
+		
+		\item $L$ is a \emph{bifix code} if it is a prefix and a suffix code. 
+		
+		\item $L$ is a \emph{solid code} if it is an overlap-free infix code.
+		
+		\item $L$ is a \emph{comma-free code} if $L^2 \cap \Sigma^+ L \Sigma^+ = \emptyset$.\footnote{The name comma-free refers to the fact that, when facing a stream of code words,
+			we can uniquely decipher the next code words when 
+			starting to read from somewhere in the middle of the stream
+			without the need of a special separation symbol.}
+	\end{enumerate}
+\end{definition}
+
+\Cref{constrsync:fig:freeness-fails} gives graphical depictions when some of the defining
+conditions from \cref{constrsync:def:codes} fail.
+
+\begin{table}[htbp]
+	\centering
+	\caption[Failure of defining conditions for various language classes]{Situations where the defining 
+		conditions for overlap-, infix-, prefix-, suffix-, and comma-freeness fail. 
+		Boxes labeled $u,v,w$ represent words or factors, and their relative positions indicate the overlaps.}
+	\label{constrsync:fig:freeness-fails}
+	
+	\setlength{\aboverulesep}{6pt}
+	\setlength{\belowrulesep}{6pt}
+	
+	\begin{tabular}{m{4cm} m{6cm}}
+		\toprule
+		not overlap-free & \tikzcell{	
+			\node[normal] (A1) {$u$};
+			\node[overlap, right=0pt of A1] (A2) {$v$};
+			
+			\node[overlap, below=-0.5pt of A2] (B1) {$v$};
+			\node[normal, right=0pt of B1] (B2) {$w$};            
+		} \\
+		\midrule
+		
+		not infix-free & \tikzcell{
+			\node[draw, minimum height=6mm, minimum width=4cm] (u) {$u$};
+			\node[normal, below=0pt of u] (v) {$v$};
+		} \\
+		\midrule
+		
+		not prefix-free & \tikzcell{        
+			\node[draw, minimum height=6mm, minimum width=4cm] (u) {$u$};
+			\node[normal, anchor=north west] (v) at (u.south west) {$v$};        
+		} \\
+		\midrule
+		
+		not suffix-free & \tikzcell{
+			\node[draw, minimum height=6mm, minimum width=4cm] (u) {$u$};
+			\node[normal, anchor=north east] (v) at (u.south east) {$v$};        
+		} \\
+		\midrule
+		
+		not comma-free & \tikzcell{
+			\node[normal] (u) {$u$};
+			\node[normal, right=0pt of u] (v) {$v$};
+			
+			\node[normal, anchor=north] (w) at ($(u.south)!0.5!(v.south)$) {$w$};        
+		} \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+
+By definition a code is a subset of $\Sigma^+$, but as $\varepsilon = \varepsilon \cdot \varepsilon$
+a language fulfilling \crefitem{constrsync:def:codes}{constrsync:item:code}  
+never contains the empty word and we could 
+replace $\Sigma^+$ by~$\Sigma^*$  in the definition.
+%equivalently define a code as a subset of $\Sigma^*$. 
+However, the defining conditions 
+for overlap-free languages, infix, prefix, suffix, bifix, solid, and comma-free codes
+are also fulfilled for $L = \{\varepsilon\}$ and the exclusion of the empty word makes
+a difference in these cases.
+
+\begin{example} \label{constrsync:ex:binarysolidcode}
+	\begin{enumerate}
+		\item The set $\Sigma$ is a code, as $\Sigma^*$ fulfills the unique factorization property w.r.t.~$\Sigma$.
+		
+		\item For $n \ge 1$, the set $\Sigma^n$ is a code. A subset of~$\Sigma^n$
+		is a solid code if and only if it is overlap-free. Thus, $\Sigma$
+		is a solid code.
+		
+		\item \label{constrsync:ex:comma-free-single-word}  $\{ w \}$ is a code for $w \in \Sigma^+$. 
+		Here, we have that 
+		$\{ w \}$ is not a comma-free code if and only if $w = uv$
+		for $u,v \in \Sigma^*$ such that $uv = vu$.
+		This follows since $uv = vu$ implies $uvuv \in \Sigma^+ vu \Sigma^+$
+		and, conversely, $ww = x w y$ for $x,y \in \Sigma^+$
+		implies that we can write $w = xu = vy$ for $u,v \in \Sigma^+$
+		with $uv = w$. Now $xu = uv$ implies $|x| = |v|$
+		and similarly we obtain $|u| = |y|$. Thus, since $x$ and $v$
+		are equal-length prefixes of~$w$ we have $x = v$
+		and similarly $u = y$ and thus $vu = w = uv$.
+		
+		\item $\{a,ab\}$ is an overlap-free code that is not a prefix code.
+		
+		\item $\{a,ab,aab\}$ is overlap-free, but not a code since $(aab) = (a)(ab)$.
+		
+		\item $\{abc,b\}$ is an overlap-free bifix code that is not an infix code.
+		
+		\item $a^*b$ is a prefix code that is overlap-free and not a suffix code. 
+		
+		\item  \label{constrsync:ex:binarysolidcodeitem}
+		%solid code
+		%abab
+		%aaabbb
+		%aabab
+		$\{ aba^ibb \mid i \ge 1\}$ is a solid code. 
+		
+		\item The language~$C$ from \cref{prelim:lem:alphabet-reduction} forms a solid code.
+		
+		\item \label{constrsync:ex:comma-free-not-solid} $\{abb,aba\}$ is a comma-free code, but not a solid code since
+	    it is not overlap-free.
+		
+		\item \label{constrsync:ex:infix-not-comma-free} $\{ab,ba\}$ is an infix code, but not a comma-free code.
+		
+		\item Let $C \subseteq \Sigma^+$ be a prefix code. Then $C\Sigma^n$ is a prefix code for each $n \ge 1$.
+			
+		\item For $L \subseteq \Sigma^*$ with $L \cap \Sigma^+ \ne \emptyset$,
+		the language $L \setminus ( L\Sigma^+ \cup \{\varepsilon\} )$ is a prefix code.
+		
+		\item \label{constrsync:ex:constr-solid-code} Suppose $C \subseteq \Sigma^+$ is a finite prefix code
+		such that $c\Sigma^* \cap C = C \cap \Sigma^*c = \emptyset$
+		for some $c \in \Sigma$.
+		Set $k = \max\{ l \ge 0 \mid \Sigma^* c^l \Sigma^* \cap C \ne \emptyset \} + 1$.
+		For example, when applying the construction to the prefix code $C = \{bcb, bccb\}$
+		we obtain $\{cccbcb, cccbccb\}$.
+		Then, $c^k C$ is a solid code  as we show next.
+		
+		\underline{1. $c^kC$ is an infix code:} Assume $xc^kuy = c^kv$ with $u,v \in C$ and $x,y \in \Sigma^*$.
+		As $c^k$ is not a factor of $v$, 
+		we have $|x| < k$, which gives $x \in c^*$.
+		Since $v \notin c\Sigma^*$
+		we conclude $|x| = 0$.
+		Hence we have $uy = v$ and as $C$ is a prefix code we get $y = \varepsilon$.
+		So $c^kC$ is an infix code. 
+		
+		
+		\underline{2. $c^kC$ is overlap-free:} Assume $xy = c^ku$ and $yz = c^kv$
+		for $u,v \in C$ and $x,y,z \in \Sigma^*$.
+		%with $x,z \ne \varepsilon$.
+		For $|y| \le k$, as $yz = c^kv$ we have $y \in c^*$
+		and, as $u \notin \Sigma^*c$, from $xy = c^ku$ we get $|y| = 0$.
+		For $|y| > k$, from $yz = c^kv$ we find $y = c^kw$ for some $w \in \pref{v}$.
+		Then, from $xy = c^ku$, as $c^k \notin \factor{u}$, we must have $|x| < k$.
+		Further, as $u \notin c\Sigma^*$, $xy = c^ku$ then gives $|x| = 0$, which 
+		implies that $c^ku$ is a prefix of~$c^kv$.
+		As $c^kC$ is an infix code, we find $|z| = 0$ and so $y = c^ku = c^kv$.
+		Hence $c^kC$ is overlap-free.
+		% Assume $y \ne \varepsilon$.
+		% As $u \notin \Sigma^*c$, we have $y = c^kv'$ for some $v' \in \Sigma^+$.
+		% Then, as $u \notin c\Sigma^*$ we have $|x| > k$.
+		% However, this implies $c^k \in \fact{u}$, which 
+		% is not possible. Hence, we have $y = \varepsilon$
+		% and so~$c^kC$ is overlap-free.
+		
+		\item By the previous item, for a finite prefix code $C \subseteq \Sigma^+$
+		and distinct $c,a \in \Sigma$ with 
+		$k = \max\{ l \ge 0 \mid \Sigma^* c^l \Sigma^* \cap C \ne \emptyset \} + 1$
+		we have that $c^k a C a$ is a solid code
+		and $c^k aC$ and $c^k Ca$ are prefix codes
+		if $C \cap \Sigma^*c = \emptyset$ and $c \Sigma^* \cap C = \emptyset$, respectively,
+		since $aC$, $Ca$ and $aCa$ are prefix code as well. 
+		
+	\end{enumerate}
+\end{example} 
+
+\begin{remark}		
+	We actually came up with the construction from \cref{constrsync:ex:constr-solid-code}
+	in \cref{constrsync:ex:binarysolidcode} by analysing
+	a result from~\cite[Thm.~29]{FernauGHHVW19}
+	and extending it in~\cite[Thm.~17]{DBLP:conf/fct/Hoffmann21} (see also the discussion on page~\pageref{discussion:strongly-self-sync-codes}).	
+	However, a closely related variant of this construction is much older and was introduced 
+	by Gilbert~\cite{Gilbert1960Synchronization} in the context of synchronization between sender and receiver during message transmission
+	and by Levenshtein~\cite{Lev64,levenshtein1970maximum_en} 
+	to construct maximal solid codes of equal-length words.\footnote{Levenshtein referred to them as non-overlapping codes. In fact, 
+		codes of equal-length words
+		are infix codes. Thus, such a code forms a solid code if and only if it is overlap-free.}
+	Levenshtein considers codes of the form $c^k C$, where
+	$C = \{ u \in \Sigma^{n} \mid u \notin \Sigma^* c^k \Sigma^* \text{ and } u \notin c\Sigma^* \text{ and } u \notin \Sigma^* c \}$
+	for $1 \le k < n$ and $c \in \Sigma$.
+	Further generalizations appear in~\cite[Construction~2]{Blackburn2015NonOverlappingCodes}. It was also independently rediscovered in~\cite{CheeKiahPurkayasthaWang2013}.
+\end{remark}
+
+A prefix code is also characterized by the property
+that for code words $u,v$ and any words $w,w'$
+the equality $uw = vw$ implies $u = v$
+since $uv = vw$ implies that either $u$ is a prefix of~$v$
+or vice versa by the unique factorization property of~$\Sigma^*$
+w.r.t.~$\Sigma$ and so both must be equal.
+Now, as the naming anticipates, this yields that prefix 
+codes (and similarly suffix codes) are indeed codes: The equation $u_1 \cdots u_n = v_1 \cdots v_m$ implies
+$u_1 = v_1$ and $u_2 \cdots u_n = v_2 \cdots v_m$ for prefix codes (resp.~$u_m = v_m$ and $u_1 \cdots u_{n-1} = v_1 \cdots v_{m-1}$ for suffix codes).
+Continuing, we ultimately find $n = m$ and $u_i = v_i$ 
+for all $i \in \{1,\ldots,n\}$. 
+Thus, as subclasses, bifix and infix codes are also codes.
+Furthermore, as we show next, solid and comma-free codes are infix codes,
+yielding that all the mentioned classes except overlap-free languages
+are codes. See \cref{fig:code-hasse} for an overview of the inclusion relations.
+
+\begin{proposition}[\cite{DBLP:reference/hfl/JurgensenK97,DBLP:journals/tcs/JurgensenS21}]
+	\label{constr_sync:prop:selfsync_implies_avoiding}
+	\begin{enumerate} 
+		\item \label{constr_sync:prop:item:sc-in-cf} The class of solid codes is properly contained in the 
+		class of comma-free codes. 
+		
+		\item \label{constr_sync:prop:item:cf-in-ic} The class of comma-free codes is properly contained in the class of infix codes.
+	\end{enumerate} 	
+\end{proposition}
+\begin{proof}
+	A comma-free code that is not a solid code
+	and an infix code that is not comma-free
+	are given in \cref{constrsync:ex:comma-free-not-solid} and \cref{constrsync:ex:infix-not-comma-free} 
+	of \cref{constrsync:ex:binarysolidcode}, respectively.
+	Next, we show the claimed inclusions.	
+		
+	\ref{constr_sync:prop:item:sc-in-cf}:
+	Let $L \subseteq \Sigma^+$ be non-empty. Suppose~$L$ is not comma-free.
+	Then there exist $u,v,w \in L$ such that
+    $uv = xwy$ for some $x,y \in \Sigma^+$.
+	Then $|x| \ge |u|$ or $|y| \ge |v|$ 
+	implies $w \in \factor{v}$ or $w \in \factor{v}$, respectively, so that $L$
+	is not an infix code.
+	For $|x| < |u|$ and $|y| < |v|$, we have 
+	$w = u'v'$ for a proper non-empty suffix $u'$ of $u$
+	and a proper non-empty prefix~$v'$ of~$v$,
+	so that $L$ is not overlap-free.
+	Hence, if $L$ is a solid code, we must have $L^2 \cap \Sigma^+L\Sigma^+ = \emptyset$.
+	
+	\ref{constr_sync:prop:item:cf-in-ic}: Let $C \subseteq \Sigma^+$ be a comma-free code.
+	Suppose $u, vuw \in C$ for $u,v,w \in \Sigma^*$.
+	For $w \ne \varepsilon$, we have $uvuw \in C^2 \cap \Sigma^+ u \Sigma^+$,
+	and for $v \ne \varepsilon$, we have $vuwu \in C^2 \cap \Sigma^+u \Sigma^+$.
+	Whence, by comma-freeness, we find $v = w = \varepsilon$. So $C$ is an infix code.
+\end{proof}
+
+\begin{figure}[ht]
+	\centering
+	\begin{tikzpicture}[
+		node distance=1.7em,
+		every node/.style={align=center},
+		every path/.style={-}
+		]
+		
+		\node (solid) {solid};
+		\node (comma) [above=of solid] {comma-free};
+		\node (infix) [above=of comma] {infix};
+		\node (bifix) [above=of infix] {bifix};
+		\node (prefix) [above left=of bifix] {prefix};
+		\node (suffix) [above right=of bifix] {suffix};
+		\node (general) [above=of bifix, yshift=10mm] {code};
+		
+		\node (overlap) [
+		right=3em of comma,
+		yshift=6mm
+		] {overlap-free};
+		
+		\draw (solid) -- (comma);
+		\draw (comma) -- (infix);
+		\draw (infix) -- (bifix);
+		
+		\draw (bifix) -- (prefix);
+		\draw (bifix) -- (suffix);
+		
+		\draw (prefix) -- (general);
+		\draw (suffix) -- (general);
+		
+		\draw (solid) -- (overlap);		
+	\end{tikzpicture}
+	\caption[Relations between different code classes and overlap-free languages]{Inclusion relations between different code classes and overlap-free languages.}
+	\label{fig:code-hasse}
+\end{figure}
+
+\IN{rooted tree} \index{root|see{rooted tree}}
+\begin{remark} \label{syncmax:rem:root-tree-prefix-code}
+	Prefix codes can be visualized as rooted trees.
+	A \emph{rooted tree} is an undirected connected and acyclic graph
+	with the selection of a distinguished node, called the \emph{root}.
+	A prefix code $C \subseteq \Sigma^+$
+	induces the rooted tree $(C,  \{ \{ u, ux \} \mid u,ux \in \pref{C} \})$ with root $\varepsilon$ and 
+	where each node has outdegree at most~$|\Sigma|$.
+	For example, $\{00,01,10,110,111\}$ from \Cref{fig:intro:encoding}
+	is a prefix code with its corresponding
+	rooted tree shown (with added directions).
+	Conversely, by labeling the outgoing edges 
+	of each node of a rooted tree where each node has outdegree at most~$|\Sigma|$
+	by a distinct letter from~$\Sigma$
+	we uniquely obtain a prefix code.
+	In this sense, up to a reordering of the alphabet,
+	prefix codes over~$\Sigma$
+	correspond uniquely to rooted trees with outdegree at most $|\Sigma|$.
+\end{remark}
+
+\IN{intercode of index one}
+Comma-free codes are also known as \emph{intercodes of index one}~\cite[Thm.~3]{DBLP:journals/iandc/Jurgensen08}.\footnote{There appear to be two typographical errors in~\cite{DBLP:journals/iandc/Jurgensen08}. The definition of intercodes of index one omits the exponent~$2$, i.e., it states $L \cap \Sigma^+ L \Sigma^+ = \emptyset$ instead of $L^2 \cap \Sigma^+ L \Sigma^+ = \emptyset$. Furthermore, the condition $u,w \ne \varepsilon$ appears to be missing from the definition of an overlap-free code. Without this condition, only $L=\emptyset$ satisfies the definition, for if $v \in L$, we have $\varepsilon \cdot v = v \cdot \varepsilon$, and so $v=\varepsilon$. But this is impossible because $L \subseteq \Sigma^+$.}
+Originally, comma-free codes were defined to be subsets of $\Sigma^n$ for some $n \ge 1$~\cite{golomb_gordon_welch_1958}, but this restriction was subsequently dropped~\cite{DBLP:books/daglib/0025093,DBLP:journals/iandc/Jurgensen08,DBLP:journals/tcs/JurgensenS21}.
+
+\IN{coding morphism}
+\IN{channel alphabet}
+\IN{source alphabet}
+The (algebraic) approach regarding %(variable-length) 
+codes as certain subsets of $\Sigma^*$ goes back to Schützenberger~\cite{DBLP:journals/tit/Schutzenberger56}.
+Prior to this, the theory of codes had its origin in Shannon's theory of information~\cite{Shannon:1948:MTCa,Shannon:1948:MTCb}.
+Both viewpoints are linked via \emph{coding morphisms}, i.e., injective morphisms $\varphi \colon \Gamma^* \to \Sigma^*$
+such that $\applyfunc{\Gamma}{\varphi}$ is a code.
+Here, $\Gamma$ is called the \emph{source alphabet} 
+and $\Sigma$ the \emph{channel alphabet}. 
+Intuitively, this  expresses the fact
+that codes  may be used as communication tools via a correspondence (encoding)
+between the letters  $a \in \Gamma$ of the source alphabet
+by code words $\varphi(a)$ over the channel alphabet~$\Sigma$,
+where injectivity guarantees that a message $\varphi(u)$, $u \in \Gamma^*$,
+can be uniquely deciphered as $u$ by the receiver.
+%the decoding of a will never lead to ambiguities. 
+% used for transmission
+% of a word over $\Gamma$.
+%The unique factorization property 
+%guarantees that the decoding will never lead to ambiguities. 
+%The link is as follows: codes may be used as communication tools by defining a correspondence (encoding)
+%between the letters of a ``source'' alphabet $\Gamma$ 
+%and the words of a code $C \subseteq \Sigma^+$ over the ``channel'' alphabet~$\Sigma$. The unique factorization property 
+%guarantees that the decoding will never lead to ambiguities. 
+%This is formalized by \emph{coding morphisms}: injective morphisms $\varphi \colon \Gamma^* \to \Sigma^*$ such that $\applyfunc{\Gamma}{\varphi}$ is a code where $\Gamma$ is called the \emph{source alphabet} 
+%and $\Sigma$ the \emph{channel alphabet}.
+For instance, in the introductory
+example on error-prone communication from \cref{intro:sec:examples:communication}, 
+the source alphabet is $\{a,h,l,o,r\}$
+and the channel alphabet is $\{0,1\}$.
+%For reference we state the following relation between coding morphisms and codes~\cite[Prop~2.1.1]{DBLP:books/daglib/0025093}.
+The following statement~\cite[Prop~2.1.1]{DBLP:books/daglib/0025093} summarizes the relation of codes to coding morphisms.
+
+\begin{proposition}[{\cite[Prop.~2.1.1]{DBLP:books/daglib/0025093}}]
+	\label{constr_sync:prop:coding_morphisms}
+	To every code $C \subseteq \Sigma^+$ there exists a coding morphism $\varphi \colon \Gamma^* \to \Sigma^*$ with $\varphi(\Gamma) = C$.  
+	Moreover,
+	any bijection from some alphabet~$\Gamma$ (here possibly infinite) onto a code $C \subseteq \Sigma^+$ 
+	extends (as in \cref{prelim:prop:UMP}) to a unique injective morphism from $\Gamma^*$ to $\Sigma^*$ with image~$C^*$. Conversely, for injective morphisms $\varphi \colon \Gamma^* \to \Sigma^*$, $\applyfunc{\Gamma}{\varphi}$
+	is a code.	
+	%	 = C$ for $C \subseteq \Sigma^+$, then~$C$ is a code.\todo{originalformulierung?}
+\end{proposition}
+
+%\todo{großschreiben Universal...?}
+%By the universal mapping property (\cref{prelim:prop:UMP}) the extension 
+%in \cref{constr_sync:prop:coding_morphisms} 
+%is unique and we always have $\varphi(\Gamma^*) = C^*$.
+
+Throughout this work, our alphabet is always finite,
+the only exception being \cref{prelim:prop:UMP,constr_sync:prop:coding_morphisms} 
+where the (source) alphabets can be infinite.
+
+%Note that the source alphabet might be infinite in this context.
+
+\begin{remark}
+	Combining these notions, we find that $L \subseteq \Sigma^+$
+	is a code if and only if the map $\hat{i} \colon L^* \to \Sigma^*$
+	from \cref{prelim:sec:formallang:basics} is injective, i.e.,
+	a coding morphism where~$L$ is considered as a (possibly infinite)
+	alphabet.
+	% \hat{i} factors through any Gamma* to \Sigma* where Gamma and L bijective. Damit folgt vorherige Prop.
+	Thus we can identify words formed by concatenating words from a code~$C$ with tuples
+	over~$C$ in a unique way. This yields that \cref{prelim:prop:UMP}
+	transfers to codes, i.e., every function from $C$ into a monoid~$M$
+	extends uniquely into a monoid morphism from~$C^*$ into~$M$.	
+\end{remark}
+
+The next two results are well-known in combinatorics on words. \Cref{constr_sync:lem:two-words-code}
+characterizes codes of size two and \cref{constrsync:prop:conjugate-words} gives a factorization result for triples of words $u,v,w$
+such that $uv = wu$. 
+For a proof of the former result see~\cite[Cor.~1.2.6, Prop.~1.3.1 \& 1.3.2]{lothaire_1997}
+or~\cite[Lem.~5.1]{Ginsburg1964BOUNDEDAL} or~\cite[Lem.~3 \& Cor.~4.1]{LyndonSchutzenberger1962} for the latter three equivalences,
+and for the latter result see~\cite[Prop.~1.3.4]{lothaire_1997}
+or~\cite[Lem.~2]{LyndonSchutzenberger1962}.
+
+\begin{proposition}
+	\label{constr_sync:lem:two-words-code}
+	\label{constr_sync:lem:common_power}
+	Let $u,v \in \Sigma^*$ be distinct. Then the following are equivalent.
+	\begin{enumerate}
+		\item $\{u,v\}$ is not a code.
+		
+		\item $u,v \in w^*$ for some $w^*$.
+		
+		\item $u^i = v^j$ for some $i,j \ge 0$.
+		
+		\item $uv = vu$.
+	\end{enumerate}	
+\end{proposition}
+
+\begin{remark}
+	By \cref{constr_sync:lem:common_power}, with \cref{constrsync:ex:comma-free-single-word} from \cref{constrsync:ex:binarysolidcode}, 
+	$\{w\}$ for $w \in \Sigma^+$ is comma-free if and only if $w = v^i$ for $i \ge 1$
+	implies $i = 1$, 
+\end{remark}
+
+% Beweis von einem Teil:
+% uv = vu
+% u = u_1 .... u_n
+% Angenommen u_1 = u_{n - m + 1}, ..., u_m = u_n und u_{m+1} = u_1, ..., u_n = u_{n - m} für ein m.
+% Dann potenz von u_1 ... u_m. Folgt ganz einfach, da man die "Gleichungen" einfach nacheinander liest
+\begin{proposition} \label{constrsync:prop:conjugate-words}
+	\label{constrsync:lem:schuetz-lyndon}
+	Let $u,v,w \in \Sigma^*$
+	with $w \ne \varepsilon$ such that $uv = wu$.
+	Then $w = xy$, $u = (xy)^kx$, and $v = yx$
+	for some $x,y \in \Sigma^*$ and $k \ge 0$.		
+\end{proposition}
+
+\subsection{More on Prefix Codes}
+\label{constrsync:sec:more-on-prefix-codes}
+
+Here we give further properties of prefix codes. We begin with another characterization in \cref{constrsync:prop:char-prefix-code}. \Cref{constrsync:prop:suffix-factorizations} gives additional conditions equivalent to part of this characterization. As pointed out in \cref{constrsync:rem:prefix-codes-general-factorization}, these statements characterize prefix codes in a way that generalizes the defining property of codes by including certain suffixes in addition to code words. We then derive several consequences that will be needed later. Finally, in \cref{constr_sync:prop:aut_prefix_free}, we characterize regular prefix codes via PDFAs.
+
+\begin{proposition} \label{constrsync:prop:char-prefix-code}
+	A language $C \subseteq \Sigma^+$ is a prefix code if and only if it is a code
+	such that $C^* \cap C^*u \ne \emptyset$ for $u \in \Sigma^*$
+	implies $u \in C^*$.
+\end{proposition}
+\begin{proof}
+ First, suppose~$C$ is a prefix code.
+ Then it is a code.
+ The remaining claim is equivalent to the fact that $vu \in C^*$ for $v \in C^*$
+ implies $u \in C^*$.
+ We show this by induction on the length of a product of~$v$ into words from~$C$.
+ For $v = \varepsilon$, the claim clearly holds.
+ Otherwise, we have $v = xx'$ and $vu = yy'$ with $x,y \in C$
+ and $x',y' \in C^*$.
+ Since~$C$ is a prefix code and $yy' = vu = xx'u$,
+ we find $y = x$ and $y' = x'u$.
+ Since $y',x' \in C^*$, inductively, we find $u \in C^*$.
+ Thus, by induction, we obtain the claim. 
+ 
+ Next, suppose that $C$ is not a prefix code. Then there exist $u \in C$ and a non-empty word $v \in \Sigma^+$ such that $uv \in C$. Thus either $C$ is not a code, or, if $C$ is a code, necessarily $v \notin C^+$. Indeed, otherwise the word $uv \in C$ would have the alternative factorization
+ $
+ uv = u \cdot v
+ $
+with $u \in C$ and $v \in C^+$, contradicting the unique factorization property of a code.
+\end{proof}
+
+The latter condition in \cref{constrsync:prop:char-prefix-code} is equivalent to two other conditions concerning the uniqueness of certain suffixes, as stated below. Notably, these equivalences hold for arbitrary languages in $\Sigma^+$, 
+not just codes. For example, they apply to~$(\Sigma^i)^+$ for $i \ge 1$ and $\{ab,b\}$, although neither of these languages is a code.
+
+\begin{proposition}  \label{constrsync:prop:suffix-factorizations}
+	Let $L \subseteq \Sigma^+$ be any language not containing the empty word. Then the following are equivalent.
+	\begin{enumerate}
+		\item \label{constrsync:prop:suffix-factorizations:1} For $u,v \in \Sigma^* \setminus L\Sigma^*$ with $L^* u \cap L^* v \ne \emptyset$ we have $u = v$. 
+		
+		\item \label{constrsync:prop:suffix-factorizations:2} $L^* \cap L^* v \ne \emptyset$ for $v \in \Sigma^*$ implies $v \in L^*$.
+		
+		\item \label{constrsync:prop:suffix-factorizations:3} For $u,v \in \Sigma^+ \setminus L\Sigma^+$ with $L^* u \cap L^* v \ne \emptyset$ we have $u = v$.
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+	$\ref{constrsync:prop:suffix-factorizations:1} \Rightarrow \ref{constrsync:prop:suffix-factorizations:2}$: 
+	Let $u, uv \in L^*$. Since $\varepsilon \notin L$, we can write $v = xy$
+	with $x \in L^*$ and $y \notin L\Sigma^*$.
+	Then we have $uv \in L^* \cap L^*y$. By \cref{constrsync:prop:suffix-factorizations:1}, we find $y = \varepsilon$
+	and thus $v \in L^*$.
+	
+	$\ref{constrsync:prop:suffix-factorizations:2} \Rightarrow \ref{constrsync:prop:suffix-factorizations:3}$: 
+	Let $w,w' \in L^*$ such that $wu = w'v$ with $u,v \in \Sigma^+ \setminus L\Sigma^+$.
+	Assume $u \ne v$. Then, without loss of generality,
+	we have $u = xv$ for some non-empty $x \in \Sigma^+$.
+	This gives $w' = wx$. By assumption, we find $x \in L^+$
+	and thus $u \in L\Sigma^+$, but $u \notin L \Sigma^+$ by choice of~$u$.
+	Thus, we must have $u = v$.
+	
+	$\ref{constrsync:prop:suffix-factorizations:3} \Rightarrow \ref{constrsync:prop:suffix-factorizations:1}$: Suppose \cref{constrsync:prop:suffix-factorizations:3} holds true.
+	Let $L^* u \cap L^* v \ne \emptyset$ for some $u,v \notin L\Sigma^*$.
+	Then there exists $w \in L^*$
+	such that $wu \in L^*v$.
+	Assume $u \ne v$. 
+	Then, by \cref{constrsync:prop:suffix-factorizations:3},
+	we have $u,v \notin \Sigma^+ \setminus L \Sigma^+$.
+	Since $u,v \notin L \Sigma^+$,
+	this yields $u = \varepsilon$ or $v = \varepsilon$.
+	Without loss of generality, let $u = \varepsilon$.	
+	Write $w = xx'$ and $x'x' = yy'$ with $x$ and $y$ being the longest proper prefixes of~$w$ and $x'x'$, respectively, in~$L^*$. Then we have 
+	\[
+	x', y' \in \Sigma^+ \setminus L\Sigma^+
+	\text{ and }
+	wx' \in L^* x' \cap L^* y'.
+	\]
+	By assumption, this gives $x' = y'$.
+	Since $x'x' = yy'$ we find $x' = y$.
+	Thus $x' \in L^*$ since $y \in L^*$. With $x' \notin L\Sigma^+$ and $|x| > 0$,
+	we get $x' \in L$.	
+	We have $w \in L^* x' \cap L^* v$ where $v \in \Sigma^+$ since $u \ne v$.
+	By assumption, we find $x' = v$, contradicting $v \notin L \Sigma^*$ since $x' \in L$.
+	Thus, we must have $v = \varepsilon$.
+\end{proof}
+
+Note that $u$ and~$v$ must be non-empty in \cref{constrsync:prop:suffix-factorizations:3} of
+\cref{constrsync:prop:suffix-factorizations}.
+For example, consider any non-empty language $L \subseteq \Sigma^+$.
+Then for $w \in L$ we have $w \in L^*\varepsilon \cap L^*w$,
+but $w \ne \varepsilon$ since~$L$ is a subset of~$\Sigma^+$.
+
+Combining \cref{constrsync:prop:char-prefix-code,constrsync:prop:suffix-factorizations},
+we obtain that prefix codes extend the unique factorization property of codes
+in the following sense.
+
+\begin{corollary}  \label{constrsync:rem:prefix-codes-general-factorization}
+	 \label{contrsync:prop:prefix-code-suffix-unique}
+	A language $C \subseteq \Sigma^+$ is a prefix code if and only if
+	for $u_1, \ldots, u_{n-1} \in C$, $v_1, \ldots, v_{m-1} \in C$,
+	and $u_n, v_m \in \Sigma^+ \setminus C\Sigma^+$
+	such that
+	\[
+	u_1 \cdots u_{n-1} u_n = v_1 \cdots v_{m-1} v_m
+	\]
+	we have $n = m$ and $u_i = v_i$ for all $i \in \{1,\ldots,n\}$.
+\end{corollary}
+\begin{proof}
+	Suppose~$C$ is a prefix code and let $u_1, \ldots, u_n$
+	and $v_1, \ldots, v_m$ as in the statement
+	with $u_1 \cdots u_{n-1} u_n = v_1 \cdots v_{m-1} v_m$.
+	Thus $C^* u_n \cap C^* v_m \ne \emptyset$.
+	By \cref{constrsync:prop:char-prefix-code,constrsync:prop:suffix-factorizations}
+	this gives $u_n = v_m$.
+	Thus $u_1 \cdots u_{n-1} = v_1 \cdots v_{m-1}$.
+	Since $C$ is a code, we find $n = m$ and $u_1 = v_1, \ldots, u_{n-1} = v_{n-1}$.	
+	
+	Conversely, this condition yields that~$C$ is a code
+	since it generalizes the unique factorization property.
+	Next, suppose $C^* u \cap C^* v$ for some $u,v \in \Sigma^+ \setminus C\Sigma^+$.
+	Then there exist $u_1, \ldots, u_n \in C$
+	and $v_1, \ldots, v_m \in C$
+	such that $u_1 \cdots u_n u = v_1 \cdots v_m v$.
+	By assumption, we find $n = m$, $u_i = v_i$ for $i \in \{1,\ldots,n\}$,
+	and $u = v$.
+	Thus, by \cref{constrsync:prop:char-prefix-code,constrsync:prop:suffix-factorizations},
+	we conclude that~$C$ is a prefix code.
+\end{proof}
+
+Note that for a prefix code, we have
+$C \subseteq \Sigma^+ \setminus C\Sigma^+$, i.e., the condition from
+\cref{constrsync:rem:prefix-codes-general-factorization}
+also allows $u_n$ and $v_m$ to belong to~$C$.
+
+With our result, a variant of
+\cref{constrsync:rem:prefix-codes-general-factorization}
+can also be formulated with
+$u_n, v_m \in \Sigma^* \setminus C\Sigma^*$
+instead of
+$u_n, v_m \in \Sigma^+ \setminus C\Sigma^+$.
+
+\begin{corollary}
+	Let $C \subseteq \Sigma^+$ be a prefix code.
+	Then the factorization witnessing a word to
+	be in $\pref{C^*} = C^*( \pref{C} \setminus C )$
+	is unique, i.e., 
+	for $u \in \pref{C^*}$
+	there exists precisely one factorization
+	of the form $u = u_1 \cdots u_{n-1} u_n$
+	with $u_1, \ldots, u_{n-1} \in C$
+	and $u_n \in \pref{C}\setminus C$.	
+\end{corollary}
+\begin{proof}
+	This follows directly from \cref{contrsync:prop:prefix-code-suffix-unique}
+	since $\pref{C} \cap C\Sigma^+ = \emptyset$ for a prefix code~$C$.
+\end{proof}
+
+
+
+
+
+\begin{corollary} \label{contrsync:lem:prefix-code-uv}
+	Let $C \subseteq \Sigma^+$ be a prefix code.
+	Then $\pref{C^*} \cap C^*u \ne \emptyset$ for $u \in \Sigma^*$
+	implies $u \in \pref{C^*}$.	
+\end{corollary}
+\begin{proof}
+	Let $vu \in \pref{C^*}$ with $v \in C^*$.	
+	Write $vu = xx'$ and $u = yy'$ with $x \in C^*$ and $x'$ being a proper prefix of some word in~$C$
+	and $y$ being a longest proper prefix of~$u$ in~$C^*$.
+	Since~$C$ is a prefix code, we have $x' \notin C\Sigma^+$
+	and, by choice of~$y$, we have $y' \in \Sigma^+ \setminus C\Sigma^+$.
+	For $x' = \varepsilon$, we have $vu \in C^*$
+	and by \cref{constrsync:prop:char-prefix-code} we find $u \in C^*$.
+	Next, suppose $x' \ne \varepsilon$.
+	We have $xx' = vu = vyy'$ and so $vu \in C^*x' \cap C^*y'$
+	and by \cref{constrsync:prop:char-prefix-code,constrsync:prop:suffix-factorizations} we find $x' = y'$.
+	Since $x' \in \pref{C^*}$,
+	this gives $u = yx' \in C^*\pref{C^*} = \pref{C^*}$.	
+\end{proof}
+
+\Cref{contrsync:lem:prefix-code-uv} fails for general codes. For example, for $C = \{a,ab\}$
+we have $ab \in \pref{C^*}$, $a \in C$, but $b \notin \pref{C^*}$.
+
+\begin{corollary}
+	Let $C \subseteq \Sigma^+$ be a prefix code and $u \in \Sigma^*$.
+	Suppose $C^*u \cap C^* ( \pref{C} \setminus C ) \ne \emptyset$
+	and that~$u$ is not a proper prefix of some word from~$C$ and $u \notin C\Sigma^+$.
+	Then we have $u \in C$.
+\end{corollary}
+\begin{proof}
+	Since $C^*w \subseteq \pref{C^*}$,
+	we have $C^* u \cap \pref{C^*} \ne \emptyset$.
+	Thus, by \cref{contrsync:lem:prefix-code-uv}, 
+	we find $u\in \pref{C^*}$.
+	Since $u \notin C\Sigma^+$, this gives $u \in \pref{C}$.
+	Then, since $u \notin \pref{C}\setminus C$,
+	we must have $u \in C$.
+\end{proof}
+
+\begin{corollary}
+	Let $C \subseteq \Sigma^+$ be a prefix code and $L \subseteq \Sigma^*$
+	such that $C^* L \subseteq L$.
+	Then we have the following:
+	\begin{align}  
+		C^* ( L \setminus \pref{C^*} ) & = L \setminus \pref{C^*} \label{constrsync:eqn:complementprefCstar} \\	
+		( \pref{C} \setminus C ) \Sigma	\cap \pref{C^*} & = ( \pref{C} \setminus C ) \Sigma	\cap \pref{C}, \label{constrsync:eqn:capprefCstar} 
+	\end{align}
+\end{corollary}
+\begin{proof}
+	\Cref{constrsync:eqn:complementprefCstar}: Since $\varepsilon \in C^*$
+	we have $L \setminus \pref{C^*} \subseteq 	C^* ( L \setminus \pref{C^*} )$.
+	Next, consider $u \in C^*$
+	and $v \in L \setminus \pref{C^*}$.
+	Now, \cref{contrsync:lem:prefix-code-uv} 
+	would yield $v \in \pref{C^*}$
+	for $uv \in \pref{C^*}$.
+	Thus, we must have $uv \in  L \setminus \pref{C^*}$.
+	
+	\Cref{constrsync:eqn:capprefCstar}:	
+	Let $ux = v_1 \cdots v_n$ for $u \in \pref{C} \setminus C$, $x \in \Sigma$,
+	and $v_1, \ldots, v_{n-1} \in C$
+	and $v_n \in \pref{C}$.
+	We have $ux \notin C\Sigma^+$.
+	Thus $n = 1$ and so $ux \in \pref{C}$.
+\end{proof}
+
+Lastly, we collect some facts on PDFAs accepting prefix codes. Related statements to Item~\ref{constr_sync:prop:aut_prefix_free:item:trim} and~\ref{constr_sync:prop:aut_prefix_free:item:min}
+from \ref{constr_sync:prop:aut_prefix_free} have been given in~\cite[Prop.~2.2]{Eilenberg1974}.
+
+\begin{proposition}
+	\label{constr_sync:prop:aut_prefix_free}
+	\label{constr_sync:prop:aut_prefix_free_exact_sync}
+	Let $L \subseteq \Sigma^+$ be a regular language.
+	
+	\begin{enumerate}
+		\item \label{constr_sync:prop:aut_prefix_free:item:trim} $L$ is a prefix code if and only if for every trim PDFA $\automat{B}{P}{\Sigma}{\mu}{p_0}{E}$
+		with $L = L(\mathcal B)$ the states in $E$ have no outgoing transitions, i.e., $\mu(p, x)$ is undefined
+		for each $p \in E$ and $x \in \Sigma$.
+		
+		% det und PDFA equal wenn maximal, sonst determinstic eien non-final trap zustand
+		\item  \label{constr_sync:prop:aut_prefix_free:item:min} If $L$ is a prefix code, then the complete and deterministic minimal automaton $\minaut{L}$
+		and a PDFA with the least number of states accepting $L$
+		both have a single final state.
+		
+		\item  \label{constr_sync:prop:aut_prefix_free:item:sync} If $L$ is a prefix code and $\automat{B}{P}{\Sigma}{\mu}{p_0}{\{e\}}$ a  trim PDFA 
+		with $L = L(\mathcal B)$, 
+		then there exists an exactly synchronizing word $w \in L(\mathcal B)$
+		with $\mu(P, w) = \{e\}$.
+	\end{enumerate}
+\end{proposition} 
+\begin{proof}
+	\ref{constr_sync:prop:aut_prefix_free:item:trim}: Let $\automat{B}{P}{\Sigma}{\mu}{p_0}{E}$ be a trim PDFA with $L = L(\mathcal B)$.
+	First, suppose $\mu(p, x)$ is defined for some $p \in E$ and $x \in \Sigma$.
+	As $\mathcal B$ is trim, 
+	there exist $u,v \in \Sigma^*$
+	with $\mu(\mu(p, x), u) \in E$ and $\mu(p_0, v) = p$.
+	As $v \in L$ is a proper prefix of $vxu \in L$, $L$ is not a prefix code.
+	Conversely, suppose $L$ is not a prefix code and $L = L(\mathcal B)$.
+	Then there exist $u,v \in L$
+	such that $v = uxu'$ for some $x \in \Sigma$ and $u' \in \Sigma^*$.
+	Then $\mu(p_0, u) \in E$ and $\mu(p_0, ux)$ is defined.
+	
+	\ref{constr_sync:prop:aut_prefix_free:item:min}: 
+	For $u,v \in L$ and $w \in \Sigma^+$
+	we have $uw, vw \notin L$ since~$L$ is a prefix code,
+	which gives $u \equiv_L v$. Therefore we obtain the claim
+	for the complete and deterministic minimal automaton.
+	The PDFA with the least number of states (up to renaming of the states)
+	is obtained from the minimal automaton by omitting
+	all non-coaccessible states (which form a set of size at most one), i.e.,
+	by omitting the state $[u]_{\equiv_L}$ for $u \notin \pref{L}$
+	if such a word $u$ exists. Formally, 
+	let $\automat{B}{P}{\Sigma}{\mu}{p_0}{F}$
+	where $P = \{ [u]_{\equiv_L} \mid u \in \pref{L} \}$, $p_0 = [\varepsilon]_{\equiv_L}$,
+	$F = \{ [u]_{\equiv_L} \mid u \in L \}$,
+	and $\mu([u]_{\equiv_L}, x) = [ux]_{\equiv_L}$ for $x \in \Sigma$ and $u \in \pref{L}$. Since~$L$ is regular, $P$ is finite.
+	We have $L = L(\mathcal B)$ and $F$ is a singleton, which gives the claim.
+		
+	\ref{constr_sync:prop:aut_prefix_free:item:sync}: Set $n = |P|$. By Item~\ref{constr_sync:prop:aut_prefix_free:item:trim}
+	the state $e$ has no outgoing transitions.
+	Inductively, define a sequence of subsets of states $P_0, P_1, P_2, \ldots$, all containing the state $e$, % |P_i| \le n - i für i \ge n - 1
+	by setting $P_0 = P$
+	and, for $i > 0$, $P_i = \mu(P_{i-1}, u_i)$
+	where $u_i$ is some word with $\mu(p, u_i) = e$ if there exists $p \in P_{i-1} \setminus \{e\}$
+	and $u_i = \varepsilon$ otherwise.
+	Then, for $|P_i| > 1$, as $u_i \ne \varepsilon$ yields that $\mu(e, u_i)$ is undefined,
+	it is $|P_{i+1}| < |P_i|$.
+	So $\mu(P, u_0 u_1 \cdots u_{n-1}) = \{e\}$ and there exist $p \in P$ and $v \in \Sigma^*$
+	such that $\mu(p, u_0 u_1 \cdots u_{n-1}) = e$ and $\mu(p_0, v) = p$.
+	Then for $w = vu_0 u_1 \cdots u_{n-1}$ we have $w \in L(\mathcal B)$ and $\mu(P, w) = \{e\}$.				
+\end{proof}
+
+\begin{example}\label{constrsync:ex:exact-sync}
+	Consider the prefix code $C = \{b,ab,aab\}$.
+	Then we obtain a trim PDFA $\mathcal B$ 
+	accepting $C$ by setting $\mathcal B = (P, \{a,b\}, \mu, \varepsilon, \{e\})$ with $P = \pref{C}\setminus C \cup \{e\}$, i.e., the proper prefixes
+	of~$C$ and~$e$ are considered as states of $\mathcal B$,
+	and 
+	\[
+	\mu(u, x) = \begin{cases}
+		e   & \text{if } ux \in C, \\
+		ux  & \text{if } ux \in \pref{C} \setminus C.
+	\end{cases}
+	\]
+	We have $\mu(P, b) = \{e\}$ (we also obtain this word by following the procedure from the proof of 
+	\crefitem{constr_sync:prop:aut_prefix_free}{constr_sync:prop:aut_prefix_free:item:sync}).
+	Other exactly synchronizing words are $aa$ and $aab$ with $\mu(P, aa) = \{aa\}$ and $\mu(P, aab) = \{e\}$.
+\end{example}
+
+\subsection{Relations to the Levenshtein-Romanov Mapping}
+\label{constrsync:sec:codes:levensthein-romanov}
+
+Here, we state characterizations and conditions for prefix, suffix, bifix, and infix codes
+and overlap-free languages and combinations of these properties. We collect
+several conditions here, but our focus is on those involving the Levenshtein-Romanov mapping.
+
+\begin{proposition} \label{constrsync:prop:prefix-code}
+	Let $L \subseteq \Sigma^+$ be non-empty. Then the following are equivalent.
+	\begin{enumerate}
+		\item \label{constrsync:prop:prefix-code:1} $L$ is a prefix code.
+		
+		\item \label{constrsync:prop:prefix-code:1a} $\pref{L} \setminus L$ equals the
+		set of proper prefixes $\bigcup_{u \in L} ( \pref{u} \setminus \{u\} )$ of words from~$L$.
+		
+		\item \label{constrsync:prop:prefix-code:3} We have $\sigma_{\pref{L} \setminus \{u\}}(u) \ne u$ 
+		for all $u \in L$.\footnote{With \cref{constrsync:eqn:sigma_prefL}, this is equivalent to $L$ being a singleton or, otherwise, to $\sigma_{L\setminus \{u\}}(u) \ne u$ for all $u \in L$.}
+		
+		\item \label{constrsync:prop:prefix-code:4} For all $u \in L$ and $v \in \Sigma^+$
+		we have $\sigma_L(uv) \ne uv$.	
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+	$\ref{constrsync:prop:prefix-code:1} \Rightarrow \ref{constrsync:prop:prefix-code:1a}$:
+	The set $\pref{L} \setminus L$ is always a subset of the set of proper prefixes of words from~$L$.
+	Conversely, if~$u \in \pref{L}$ such that $uv \in L$ for some non-empty $v\in \Sigma^+$,
+	then $u \notin L$ by the defining condition of a prefix code.	
+		
+	$\ref{constrsync:prop:prefix-code:1a} \Rightarrow \ref{constrsync:prop:prefix-code:3}$: 
+	Let $u \in L$ with $\sigma_{\pref{L}\setminus{u}}(u) = u$.
+	Then $u$ is a proper prefix of a word $v \in L$ with $u \ne v$.
+	We have $u \notin \pref{L} \setminus L$
+	and thus $\pref{L} \setminus L$ does not equal the set of proper prefixes.
+		
+	$\ref{constrsync:prop:prefix-code:3} \Rightarrow \ref{constrsync:prop:prefix-code:4}$: Suppose $\sigma_L(uv) = uv$ for $u \in L$
+	and $v\in \Sigma^+$. Then we have $uv \in \pref{L}$
+	where $uv \ne u$. Thus $L$ is not a singleton set 
+	and we find $\sigma_{L\setminus\{u\}}(uv) = uv$.
+	
+	$\ref{constrsync:prop:prefix-code:4} \Rightarrow \ref{constrsync:prop:prefix-code:1}$: 
+	If $\sigma_L(uv) = uv$
+	for $u \in L$ and $v \in \Sigma^+$, then $uv\in \pref{L}$
+	and thus $uvw \in L$ for some $w \in \Sigma^*$.
+	Since $vw \ne \varepsilon$, $L$ is not a prefix code in this case.	
+\end{proof}
+
+\begin{proposition} \label{constrsync:prop:suffix-code}
+	Let $L \subseteq \Sigma^+$ be non-empty. Then the following are equivalent.
+	\begin{enumerate}
+		\item \label{constrsync:prop:suffix-code:1} $L$ is a suffix code.\footnote{By \crefitem{constrsync:prop:suffsigmaB}{constrsync:prop:suffsigma:3B}, $L$ being a suffix code
+		is also equivalent to $\suff{\sigma_{\pref{L}\setminus\{u\}}} \cap ( L \setminus \{u\} ) = \emptyset$
+		for all $u \in L$.}
+		
+		\item \label{constrsync:prop:suffix-code:1a} $\suff{L} \setminus L$ equals the set of proper suffixes
+		$\bigcup_{u \in L} ( \suff{u}\setminus\{u\} )$ of words from~$L$.
+				
+		\item \label{constrsync:prop:suffix-code:4} 
+		%We have $uv \notin L$ for all $v \in L$ and $u \in \Sigma^+$.
+		We have $\sigma_L(uv) \notin L \setminus\{v\}$ for all $v \in L$ and $u \in \Sigma^+$.
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+	$\ref{constrsync:prop:suffix-code:1} \Rightarrow \ref{constrsync:prop:suffix-code:1a}$: The set $\suff{L}\setminus L$
+	is contained in the set of proper suffixes for any language. Conversely, if~$u$ is a proper suffix of a word from~$L$,
+	then it is a suffix not contained in~$L$ if~$L$ is a suffix code, i.e., it is contained in $\suff{L}\setminus L$.
+			
+	$\ref{constrsync:prop:suffix-code:1a} \Rightarrow \ref{constrsync:prop:suffix-code:4}$: 
+	Suppose $\sigma_L(uv) \in L \setminus \{v\}$ for some $v \in L$
+	and $u \in \Sigma^+$. Then $\sigma_L(uv)$ is a word in~$L$
+	having~$v$ as a proper suffix, but we have $v \notin \suff{L} \setminus L$ since $v \in L$.
+		
+	$\ref{constrsync:prop:suffix-code:4} \Rightarrow \ref{constrsync:prop:suffix-code:1}$: For $uv \in L$ with $v \in L$ and $u \in \Sigma^+$ we have $\sigma_L(uv) = uv \in L \setminus \{ v \}$.
+\end{proof}
+
+\begin{example}
+	 $L = \{aaab,ab,aabb\}$ is not a suffix code and $\sigma_{L\setminus\{u\}}(u) \notin L$ for all $u \in L$.
+%	\begin{enumerate}
+%		\item $L = \{baa,aaab,a\}$ is not a suffix code
+%		and we have $\sigma_{L\setminus\{u\}}(u) \notin L \setminus \{u\}$
+%		for all $u \in L$.
+%	\end{enumerate}
+\end{example}
+
+\begin{proposition} \label{constrsync:prop:bifix-code}
+	Let $L \subseteq \Sigma^+$ be non-empty. Then the following are equivalent.
+	\begin{enumerate}
+		\item \label{constrsync:prop:bifix-code:1} $L$ is a bifix code.
+		
+		\item \label{constrsync:prop:bifix-code:2} We have $u,v \notin \suff{u}\cap \pref{v}$ for all $u,v \in L$ with $u\ne v$.
+		
+		\item \label{constrsync:prop:bifix-code:3} We have $\suff{\sigma_{\pref{L}\setminus\{u\}}(u)} \cap L = \emptyset$	
+		for all $u \in L$.
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+$\ref{constrsync:prop:bifix-code:1} \Leftrightarrow \ref{constrsync:prop:bifix-code:2}$: 
+For distinct $u,v \in L$ we have $u \in \suff{u} \cap \pref{v}$ (resp.~$v \in \suff{u} \cap \pref{v}$)
+if and only if $u$ is a proper prefix of~$v$ (resp.~$v$ is a proper suffix of~$v$) in~$L$,
+which gives the claim.
+
+$\ref{constrsync:prop:bifix-code:2} \Leftrightarrow \ref{constrsync:prop:bifix-code:3}$: 
+By \crefitem{constrsync:prop:suffsigmaB}{constrsync:prop:suffsigma:3B}, we have $v \in \suff{\sigma_{\pref{L}\setminus\{u\}}(u)} \cap L$ if and only if $v$ is a proper suffix of $u$
+or $v = u$ and $u$ is a proper prefix of some word from~$L$,
+which gives the claim.
+\end{proof}
+
+Clearly, $L \subseteq \Sigma^+$ is a prefix (resp.~suffix) code
+if and only if $u \notin \suff{u} \cap \pref{v}$ (resp.~$u \notin \suff{v} \cap \pref{u}$) for distinct $u,v \in L$, 
+giving similar characterizations as \cref{{constrsync:prop:bifix-code:2}} of \cref{constrsync:prop:bifix-code}.
+
+\begin{proposition} \label{constrsync:prop:infix-code}
+	Let $L \subseteq \Sigma^+$ be non-empty. Then the following are equivalent.
+	\begin{enumerate}	
+		\item \label{constrsync:prop:infix-code:1} $L$ is an infix code.	
+		
+		\item \label{constrsync:prop:infix-code:3} $L \Sigma^+ \cap \suff{L} = \Sigma^+ L \cap L = \emptyset$.
+		
+		\item \label{constrsync:prop:infix-code:4} $\Sigma^* L \Sigma^+ \cap L = \Sigma^+ L \Sigma^* \cap L = \emptyset$.
+		
+		\item \label{constrsync:prop:infix-code:5} $\Sigma^* L \Sigma^+ \cap L = \Sigma^+ L \cap L = \emptyset$.		
+		
+		% entsprechende chars wie die folgenden gehen auch für prefix und suffix codes, im fliestext danach
+		\item \label{constrsync:prop:infix-code:2} $\Sigma^+ L \cap \pref{L} = L \Sigma^+ \cap L = \emptyset$.
+		
+		\item \label{constrsync:prop:infix-code:6} $L$ is a prefix code such that $\sigma_L(uv) = v$ for all $u \in \Sigma^*$ and $v \in L$.
+			
+		\item \label{constrsync:prop:infix-code:8} We have $uv \notin \pref{L}$
+		and $vu \notin L$ for all $u \in \Sigma^+$ and $v \in L$.
+				
+		\item \label{constrsync:prop:infix-code:9} We have $\suff{\sigma_{\pref{L}\setminus\{u\}}(u)} \cap L = \emptyset$ for all $u \in \pref{L}$.
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+The equivalences from \cref{constrsync:prop:infix-code:1,constrsync:prop:infix-code:3,constrsync:prop:infix-code:4,constrsync:prop:infix-code:5,constrsync:prop:infix-code:2} are clear.
+	
+$\ref{constrsync:prop:infix-code:2}\Rightarrow \ref{constrsync:prop:infix-code:6}$:
+The condition $\Sigma^+L \cap L = \emptyset$ implies that~$L$ is a prefix code.
+Since $v \in L$ we have $\sigma_L(uv) \in \Sigma^*v \cap \pref{L}$.
+By assumption, $\Sigma^+ v \cap \pref{L}$ is empty. Thus $\sigma_L(uv) = v$.
+
+$\ref{constrsync:prop:infix-code:6}\Rightarrow \ref{constrsync:prop:infix-code:8}$:
+Let $v \in L$ and $u \in \Sigma^+$.
+For $uv \in \pref{L}$, by \cref{constr_sync:eqn_sigma_pref1} we have $\sigma_L(uv) = uv \ne v$.
+For $vu \in L$, $L$ is not a prefix code.
+
+$\ref{constrsync:prop:infix-code:8}\Rightarrow \ref{constrsync:prop:infix-code:9}$:
+Let $v \in \suff{\sigma_{\pref{L}\setminus\{u\}}(u)} \cap L$.
+By \cref{constrsync:prop:suffsigma:3B} of \cref{constrsync:prop:suffsigmaB}, 
+$v$ is a proper suffix of $u$ or we have $u = v$ and $u$ is a proper prefix of some word from~$L$.
+In the first case, we have $wv \in L$ for some $w \in \Sigma^+$
+and in the latter case $vw \in L$ for some $w \in \Sigma^+$.
+Thus, \cref{constrsync:prop:infix-code:8} does not hold.
+
+$\ref{constrsync:prop:infix-code:9}\Rightarrow \ref{constrsync:prop:infix-code:1}$:
+Let $v \in L$ and $uvw \in L$ with $u \ne \varepsilon$ or $w \ne \varepsilon$.
+For $u = \varepsilon$, $v$ is a proper prefix of some word from~$L$.
+Thus we have $v = \sigma_{\pref{L}\setminus\{v\}}(v)$ and $v \in \pref{L}$.
+So,  \cref{constrsync:prop:infix-code:9}
+does not hold.
+Next, suppose $u \ne \varepsilon$.
+Since $v \in L$ and $uv\ne v$
+we have $\sigma_{\pref{L}\setminus\{uv\}}(uv) = w'v$ for some $w' \in \Sigma^*$.
+Thus $v \in \suff{\sigma_{\pref{L}\setminus\{uv\}}(uv)} \cap L$.
+Since $uv \in \pref{L}$, \cref{constrsync:prop:infix-code:9}
+does not hold.
+\end{proof}
+
+\begin{example} 	
+	For $L = \{a,ab\}$, we have $\sigma_L(uv) = v$ for all $u \in \Sigma^*$ and $v \in L$, but $L$ is not a prefix code. Hence, the assumption that $L$ is a prefix code in \crefitem{constrsync:prop:infix-code}{constrsync:prop:infix-code:6} is necessary.
+\end{example}
+
+Similar characterizations as in \cref{constrsync:prop:infix-code:2,constrsync:prop:infix-code:3,constrsync:prop:infix-code:4,constrsync:prop:infix-code:5} 
+from \cref{constrsync:prop:infix-code} can also be easily given for prefix and suffix codes.
+
+For $u,v \in \Sigma^*$, $\sigma_{\{v\}}(u)$ is the longest word $w$
+such that $u \in w\Sigma^*$ and $v \in \Sigma^* w$. This suggests that we can relate
+overlap-freeness to the Levenshtein-Romanov mapping. The next statements give some such relations.
+
+\begin{proposition} \label{constrsync:prop:overlap-free}
+	Let $L \subseteq \Sigma^+$ be non-empty. Then the following are equivalent.
+	\begin{enumerate}
+		\item \label{constrsync:prop:overlap-free:1} $L$ is overlap-free.
+		
+		\item \label{constrsync:prop:overlap-free:3} For all $u \in \Sigma^+$ we 
+		have $u\Sigma^+\cap L = \emptyset$ or $\Sigma^+ u \cap L = \emptyset$.
+		
+		\item \label{constrsync:prop:overlap-free:2} For all $u,v \in L$ we 
+		have $\suff{u} \cap \pref{v} \subseteq \{\varepsilon, u, v\}$.
+		
+		\item \label{constrsync:prop:overlap-free:2a} For all $u,v \in L$
+		we have $\sigma_{\{v\}}(u) \in \{\varepsilon, u, v\}$ and $\suff{u}\cap \pref{u} \subseteq \{\varepsilon, u\}$.	
+				
+		\item \label{constrsync:prop:overlap-free:2aa} For all $u,v \in L$ we have $\sigma_{\pref{v}\setminus\{v\}}(u) \in \{\varepsilon, u\}$.
+		
+		\item \label{constrsync:prop:overlap-free:3a} We have $uv \notin L$ for all non-empty and proper prefixes $u,v$ of words from~$L$.
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+$\ref{constrsync:prop:overlap-free:1} \Rightarrow \ref{constrsync:prop:overlap-free:3}$:  Suppose we have $u\Sigma^+ \cap L \ne \emptyset$
+and $\Sigma^+u \cap L \ne \emptyset$ for some $u \in \Sigma^+$.
+Then $uv \in L$ and $wu \in L$ for some $v,w \in \Sigma^+$ and so~$L$ is not overlap-free.
+
+$\ref{constrsync:prop:overlap-free:3} \Rightarrow \ref{constrsync:prop:overlap-free:2}$: 
+Let $w \in \suff{u} \cap \pref{v}$
+with $w \notin\{\varepsilon,u,w\}$ for $u,v \in L$.
+Then $u = xw$ and $v = wy$ for some $x,y \in \Sigma^+$ and so $u \in \Sigma^+w$ and $v \in w\Sigma^+$.
+
+$\ref{constrsync:prop:overlap-free:2} \Rightarrow \ref{constrsync:prop:overlap-free:2a}$: 
+By \cref{constrsync:eqn:sigmaL-in-suffpref} and the assumption we have $\sigma_{\{v\}}(u) \in \suff{u} \cap \pref{v} \subseteq \{\varepsilon, u, v\}$.
+From \cref{constrsync:prop:overlap-free:2} we also get $\suff{u}\cap \pref{u} \subseteq \{\varepsilon, u\}$.
+
+$\ref{constrsync:prop:overlap-free:2a} \Rightarrow \ref{constrsync:prop:overlap-free:2aa}$: 
+Suppose $\sigma_{\pref{v}\setminus\{v\}}(u) = w$ for some $w \notin \{\varepsilon, u\}$.
+Then we have
+\[
+\sigma_{\{v\}}(u) = 
+\begin{cases}
+u & \text{if $u$ is a prefix of~$v$}, \\
+w & \text{otherwise.}
+\end{cases}
+\]
+In the first case, we have $w \in \suff{u}\cap \pref{u}$, in the second 
+case we have $\sigma_{\{v\}}(u) \notin \{\varepsilon, u, v\}$.
+
+$\ref{constrsync:prop:overlap-free:2aa} \Rightarrow \ref{constrsync:prop:overlap-free:3a}$:
+Suppose we have $uv \in L$ for non-empty and proper prefixes $u,v$ of words from~$L$.
+Then there exists $w \in \Sigma^+$ such that $vw \in L$.
+We have $\sigma_{\pref{vw}\setminus\{vw\}}(uv) = xv$ for some $x \in \Sigma^*$.
+By assumption, $x = u$. By \cref{constr_sync:eqn_sigma_pref1}, in this case, $uv$ is a prefix of $vw$.
+Thus, $uv$ has $v$ as a proper prefix and 
+we find that $\sigma_{\pref{uv}\setminus\{uv\}}(uv)$
+has $v$ as a suffix.
+Since $uv$ is not a prefix of a word from $\pref{uv}\setminus\{uv\}$,
+we also have $\sigma_{\pref{uv}\setminus\{uv\}}(uv) \ne uv$.
+Thus \cref{constrsync:prop:overlap-free:2aa} does not hold.
+
+$\ref{constrsync:prop:overlap-free:3a} \Rightarrow \ref{constrsync:prop:overlap-free:1}$: 
+ If~$L$ is not overlap-free, then $uv, vw \in L$ for some non-empty $u,v,w \in \Sigma^+$ where
+ $u,v$ are non-empty and proper prefixes of words from~$L$.
+ Thus, \cref{constrsync:prop:overlap-free:3a} does not hold.
+\end{proof}
+
+\begin{remark}
+	Note that $\sigma_{\pref{v}\setminus\{v\}}(u) = \varepsilon$
+	implies $\sigma_{\{v\}}(u) \in \{\varepsilon, v\}$,
+	but the converse implication does not hold. For example, 
+	we have $\sigma_{\{aa\}}(baa) = aa$, but $\sigma_{\{a\}}(baa) = a$.
+\end{remark} 
+
+\begin{corollary} \label{constrsync:rem:overlap-free}
+	Let $u \in \Sigma^*$. Then the following are equivalent.
+	\begin{enumerate}
+	\item $\{u\}$ is overlap-free.
+	
+	\item $\sigma_{\pref{u}\setminus\{u\}}(u) = \varepsilon$.
+	
+	\item $\suff{u}\cap \pref{u} \subseteq \{\varepsilon, u\}$.
+	\end{enumerate}
+\end{corollary}
+
+\begin{proposition} \label{constr_sync:cor:sigma_L_prefix-eps}
+	Let $L \subseteq \Sigma^+$ and $u \in L$ where $L$ contains at least two words.
+	Then we have $\sigma_{\pref{L} \setminus \{u\}}(u) = \varepsilon$
+	if and only if $\{u\}$ is overlap-free and $\sigma_{L \setminus \{u\}}(u) = \varepsilon$.
+\end{proposition}
+\begin{proof}
+	First, suppose $\sigma_{\pref{L} \setminus \{u\}}(u) = \varepsilon$.
+	Since $u \in L$ we have $\pref{L}\setminus \{u\} = ( L \setminus \{u\} ) \cup ( \pref{u} \setminus \{u\})$.
+	Thus, by \crefitem{constr_sync:prop:sigma_L_prefix}{constr_sync:prop:sigma_L_prefix:7},
+	we find $\sigma_{L \setminus\{u\}}(u) = \varepsilon$
+	and $\sigma_{\pref{u}\setminus\{u\}}(u) = \varepsilon$, and thus~$u$ is overlap-free by \cref{constrsync:rem:overlap-free}.
+	Conversely, if $\{u\}$ is overlap-free and $\sigma_{L\setminus\{u\}}(u) = \varepsilon$,
+	then by \cref{constrsync:rem:overlap-free,constrsync:eqn:sigma_prefL} 
+	we obtain $\sigma_{\pref{L} \setminus \{u\}}(u) = \varepsilon$.
+\end{proof}
+
+\begin{example}
+	Let $L = \{a, ab,ba\}$. Then $L$ is not overlap-free. 
+	Note that here we have $uv \notin L$ for all $u,v \in \pref{L} \setminus L = \{\varepsilon, b\}$.
+\end{example}
+
+Suppose $uv, vw \in L$ for non-empty $u,v,w \in \Sigma^+$.
+Then $uvw \in \left(\bigcup_{x \in L} \pref{x}\setminus\{x\} \right) L \cap L\Sigma^+$. Thus, if the latter
+set is empty, then~$L$ is overlap-free. The following statement also shows that when~$L$
+is a prefix, this condition characterizes overlap-freeness of~$L$.
+
+\begin{proposition} \label{constrsync:prop:overlap-free-prefix}
+Let $L \subseteq \Sigma^+$ be non-empty. Then the following are equivalent.
+\begin{enumerate}		
+\item \label{constrsync:prop:overlap-free-prefix:1xx} $L$ is an overlap-free prefix code.
+
+\item \label{constrsync:prop:overlap-free-prefix:2xx} For all $u,v \in L$ we have $\suff{u} \cap \pref{v} \subseteq \{\varepsilon, v\}$.
+
+\item  \label{constrsync:prop:overlap-free-prefix:2ax} For all $u,v \in L$ we have $\sigma_{\pref{u}\setminus\{u\}}(v) = \varepsilon$.		
+
+\item  \label{constrsync:prop:overlap-free-prefix:2bx} For all $u \in L$, the language $\{u\}$ is overlap-free and 
+$\sigma_{\{v\}}(u) \in \{\varepsilon, v\}$ for distinct $u,v \in L$.
+
+\item \label{constrsync:prop:overlap-free-prefix:8}  For all $u \in L$, $\{u\}$ is overlap-free
+and $\sigma_{L\setminus\{u\}}(u) \in (L \setminus\{u\}) \cup \{\varepsilon\}$
+if $L \setminus\{u\} \ne \emptyset$.		
+
+\item \label{constrsync:prop:overlap-free-prefix:5ax} For all $u \in L$ we have 
+$\sigma_{\pref{L} \setminus \{u\}}(u) \in ( L \setminus \{u\} ) \cup \{\varepsilon\}$.
+
+\item \label{constrsync:prop:overlap-free-prefix:3yx} 
+We have $uv \notin L$ for all $u,v \in \Sigma^+$ such that $u \in L$ or $v \in \pref{L} \setminus L$.
+
+\item \label{constrsync:prop:overlap-free-prefix:2axy} $L$ is a prefix code
+such that $\left(\bigcup_{u \in L} \pref{u}\setminus\{u\} \right) L \cap L\Sigma^+ = \emptyset$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}	
+$\ref{constrsync:prop:overlap-free-prefix:1xx} \Rightarrow \ref{constrsync:prop:overlap-free-prefix:2xx}$: 
+This follows from \cref{constrsync:prop:overlap-free} and the fact that 
+$u \notin \pref{v}$ for distinct $u,v \in L$ when~$L$ is a prefix code.
+	
+$\ref{constrsync:prop:overlap-free-prefix:2xx} \Rightarrow \ref{constrsync:prop:overlap-free-prefix:2ax}$: 
+We have $\sigma_{\pref{u}\setminus\{u\}}(v) \in \suff{v} \cap ( \pref{u} \setminus\{u\} ) \subseteq \{\varepsilon\}$ by assumption and the definition of~$\sigma_L$.
+	
+$\ref{constrsync:prop:overlap-free-prefix:2ax} \Rightarrow \ref{constrsync:prop:overlap-free-prefix:2bx}$:
+By \cref{constrsync:rem:overlap-free}, we find that $\{u\}$ is overlap-free for each $u \in L$.
+Next, for $u,v \in \Sigma^*$ we have
+\[
+\sigma_{\{v\}}(u) = \begin{cases}
+	\sigma_{\pref{v}\setminus\{v\}}(u) & \text{if } v \notin \suff{u}, \\
+	v & \text{otherwise.}	
+\end{cases}
+\]
+Thus, we get $\sigma_{\{v\}}(u) \in \{\varepsilon,v\}$
+if $u,v \in L$ by \cref{constrsync:prop:overlap-free-prefix:2ax}.
+
+$\ref{constrsync:prop:overlap-free-prefix:2bx}\Rightarrow\ref{constrsync:prop:overlap-free-prefix:8}$: We have $\sigma_{L \setminus \{u\}}(u) = \sigma_{\{v\}}(u)$
+for some $v \in L$ with $v \ne u$. By assumption, $\sigma_{\{v\}}(u) \in \{\varepsilon,v\}$
+and this gives the claim.
+
+$\ref{constrsync:prop:overlap-free-prefix:8}\Rightarrow\ref{constrsync:prop:overlap-free-prefix:5ax}$: This follows from \cref{constrsync:eqn:sigma_prefL,constrsync:rem:overlap-free}.
+
+$\ref{constrsync:prop:overlap-free-prefix:5ax} \Rightarrow \ref{constrsync:prop:overlap-free-prefix:3yx}$:
+Let $u$ be a shortest non-empty word such that $uv \in L$
+for some $v \in \Sigma^+$
+with $u \in L$ or $v \in \pref{L}\setminus L$.
+If $u \in L$,
+then $\sigma_{\pref{L}\setminus\{u\}}(u) = u$.
+Next, suppose $v \in \pref{L}\setminus L$.
+Then $\sigma_{\pref{L}\setminus\{uv\}}(uv) = xv$
+for some $x \in \Sigma^*$.
+Assume $\sigma_{\pref{L}\setminus\{uv\}}(uv) \in L$.
+Since $v \notin L$, this gives $x \ne \varepsilon$.
+By the minimal choice of~$u$, we find $x = u$.
+Thus we have $\sigma_{\pref{L}\setminus\{uv\}}(uv) = uv$.
+This gives the claim.
+
+$\ref{constrsync:prop:overlap-free-prefix:3yx} \Rightarrow \ref{constrsync:prop:overlap-free-prefix:2axy}$:
+If $L$ is not a prefix code, then $uv \in L$
+for some $u \in L$ and $v \in \Sigma^*$.
+Next, suppose~$L$ is a prefix code
+and $uv = wx$ for $u$ being a proper prefix of some word from~$L$
+and where $v,w \in L$ and $x \in \Sigma^+$.
+Since~$L$ is a prefix code,
+we have $w = uy$ and $v = yx$ for some $y \in \Sigma^+$
+where $y \notin L$. Then we have $uy \in L$ with $y \in \pref{L}\setminus L$.
+
+$\ref{constrsync:prop:overlap-free-prefix:2axy} \Rightarrow 
+\ref{constrsync:prop:overlap-free-prefix:1xx}$:
+Suppose $uv \in L$ and $vw \in L$ for some $u,v,w \in \Sigma^+$.
+Since~$L$ is a prefix code, we have $u \notin L$.
+Thus 
+$uvw \in \left(\bigcup_{u \in L} \pref{u}\setminus\{u\} \right) L \cap L\Sigma^+$.
+\end{proof}
+
+\begin{remark}
+	Let $L = \{ aabb, bba, abb \}$ and $u = aabb$.
+	Then we have $\sigma_{\pref{L} \setminus \{u\}}(u) = abb$
+	where $abb \in L \setminus \{u\}$,
+	but $\sigma_{\{bba\}}(u) = bb \notin \{\varepsilon, bba\}$.	
+	Thus the equivalences of \cref{constrsync:prop:overlap-free-prefix:2bx} 
+	and \cref{constrsync:prop:overlap-free-prefix:5ax}
+	in \cref{constrsync:prop:overlap-free-prefix}
+	do not hold for a fixed $u \in L$, but only when quantified
+	over all~$u \in L$.	
+\end{remark}
+
+\begin{corollary}\label{lem:overlap-free-prefix}
+	Let $C \subseteq \Sigma^+$ be a prefix code.
+	Then $C$ is overlap-free if and only if $(\pref{C} \setminus C) C \cap C \Sigma^+ = \emptyset$.
+\end{corollary} 
+\begin{proof}
+	Let~$C$ be a prefix code.
+	Then its set of proper prefixes
+	$\bigcup_{u \in L} \pref{u}\setminus\{u\}$
+	equals $\pref{C}\setminus C$.
+	Thus the claim follows from \cref{constrsync:prop:overlap-free-prefix}.
+\end{proof}
+
+\begin{remark}
+	Let $L \subseteq \Sigma^*$ be non-empty and $u \in \Sigma^*$.
+	We have
+	\[
+	\sigma_{\pref{L}\setminus \{u\}}(u) \notin \bigcup_{v \in L} ( \pref{v} \setminus \{\varepsilon,v\} )
+	\Rightarrow
+	\sigma_{\pref{L} \setminus \{u\}}(u) \in ( L \setminus \{u\} ) \cup \{\varepsilon\}.
+	\]
+	The converse implication holds if no proper suffix of~$u$ contained in~$L$
+	is a proper prefix of some other word from~$L$ (which holds if~$L$ is a prefix code).
+	This yields that \cref{constrsync:prop:overlap-free-prefix:5ax} 
+	from \cref{constrsync:prop:overlap-free-prefix}
+	can also be stated by saying the image of the Levenshtein-Romanov mapping
+	is not in $\bigcup_{v \in L} ( \pref{v} \setminus \{\varepsilon,v\} )$
+	since either condition, when quantified over all words $u \in L$,
+	yields that~$L$ is a prefix code.
+\end{remark}
+
+\begin{proposition} \label{constrsync:prop:overlap-suffix}
+Let $L \subseteq \Sigma^+$. Then the following are equivalent.
+\begin{enumerate}
+\item \label{constrsync:prop:overlap-suffix:1} $L$ is an overlap-free suffix code.
+
+\item \label{constrsync:prop:overlap-suffix:2} For all $u,v \in L$ we have $\suff{u} \cap \pref{v} \subseteq \{\varepsilon, u\}$.
+
+\item \label{constrsync:prop:overlap-suffix:3} $\{u\}$ is overlap-free for $u \in L$ and $\sigma_{\{v\}}(u) \in \{\varepsilon, u\}$ for $u,v \in L$.
+
+\item \label{constrsync:prop:overlap-suffix:4} $uv \notin L$ for all $u,v \in \pref{L} \setminus \{\varepsilon\}$.	
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+$\ref{constrsync:prop:overlap-suffix:1} \Leftrightarrow \ref{constrsync:prop:overlap-suffix:2}$: This follows from \cref{{constrsync:prop:overlap-free:2}} of \cref{constrsync:prop:overlap-free}
+and the fact that for distinct $u,v \in L$ we have $v \notin \suff{u}$ if and only if~$L$ is a suffix code.
+
+$\ref{constrsync:prop:overlap-suffix:1} \Leftrightarrow \ref{constrsync:prop:overlap-suffix:3}$:
+This follows from \cref{{constrsync:prop:overlap-free:2a}} of \cref{constrsync:prop:overlap-free}
+and \cref{constr_sync:eqn_sigma_suff0}.
+
+$\ref{constrsync:prop:overlap-suffix:1} \Leftrightarrow \ref{constrsync:prop:overlap-suffix:4}$: This follows from \cref{constrsync:prop:overlap-free:3a} of
+\cref{constrsync:prop:overlap-free}
+and the definition of a suffix code.	
+\end{proof}
+
+\begin{proposition} \label{constrsync:prop:overlap-free-bifix}
+	Let $L \subseteq \Sigma^+$ be non-empty. Then the following are equivalent.	
+	\begin{enumerate}
+		
+		\item \label{constrsync:prop:overlap-free-bifix:1} $L$ is an overlap-free bifix code.
+		
+		\item \label{constrsync:prop:overlap-free-bifix:2} For $u,v \in L$ we have
+		\[
+		\suff{u} \cap \pref{v} = \begin{cases}
+			\{\varepsilon\} & \text{if } u \ne v, \\
+			\{\varepsilon, u\} & \text{if } u = v.	
+		\end{cases}
+		\]
+		
+		\item \label{constrsync:prop:overlap-free-bifix:3} For $u \in L$ we have $\sigma_{\pref{L}\setminus\{u\}}(u) = \varepsilon$.\footnote{As stated
+			in \cref{constr_sync:cor:sigma_L_prefix-eps},
+			this is equivalent to $\{u\}$ being overlap-free
+			and $\sigma_{L\setminus\{u\}}(u) = \varepsilon$
+			if $L \setminus \{u\} \ne \emptyset$.}
+
+		\item \label{constrsync:prop:overlap-free-bifix:4} 
+		We have $uv \notin L$ for all $u,v \in \Sigma^+$ with $u \in L$ or $v \in \pref{L}$.
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+$\ref{constrsync:prop:overlap-free-bifix:1} \Leftrightarrow \ref{constrsync:prop:overlap-free-bifix:2}$: This follows from \cref{constrsync:prop:overlap-free,constrsync:prop:bifix-code}.
+
+$\ref{constrsync:prop:overlap-free-bifix:1} \Leftrightarrow \ref{constrsync:prop:overlap-free-bifix:3}$:
+First, suppose $L$ is an overlap-free bifix code.
+By \crefitem{constrsync:prop:overlap-free-prefix}{constrsync:prop:overlap-free-prefix:5ax}
+we have that $\sigma_{\pref{L}\setminus\{u\}}(u)$ is in $( L \setminus \{u\} ) \cup \{\varepsilon\}$.
+Since $\sigma_{\pref{L}\setminus\{u\}}(u)$ is a suffix of $u$, 
+it cannot be contained in $L \setminus \{u\}$ since~$L$ is a suffix code.
+Conversely, by \crefitem{constrsync:prop:overlap-free-prefix}{constrsync:prop:overlap-free-prefix:5ax}
+this condition implies that~$L$ is an overlap-free prefix code.
+Next, if $uv \in L$ for $u \in \Sigma^+$ and $v \in L$,
+then $\sigma_{\pref{L}\setminus\{uv\}}(uv)$ has the non-empty word $v$ as a suffix.
+Thus, $L$ must be a suffix code.
+
+$\ref{constrsync:prop:overlap-free-bifix:1} \Leftrightarrow \ref{constrsync:prop:overlap-free-bifix:4}$: 
+This follows from \crefitem{constrsync:prop:overlap-free-prefix}{constrsync:prop:overlap-free-prefix:3yx}
+and the definition of a suffix code.
+\end{proof}
+
+Note that $L \subseteq \Sigma^+$ is a prefix (resp.~suffix, bifix, infix, overlap-free) code/language
+if and only if $\{u,v\}$ is a prefix (resp.~suffix, bifix, infix, overlap-free) code/language
+for all $u,v \in L$. So, the conditions from the above statements characterizing those language classes
+can be written as conditions that must be true for all pairs (of possibly equal) words in $L$.
+
+The following further characterizations were given in~\cite{DBLP:journals/tcs/JurgensenS21}
+for non-empty $L \subseteq \Sigma^+$: 
+\begin{enumerate}
+	\item $\pref{L}\cap \Sigma^*L = L$ if and only if $\sigma_L(u) \in L$ for all $u \in \Sigma^*L$,
+	
+	\item $L$ is an overlap-free prefix code if and only if $\sigma_L(uv) = \sigma_L(v)$
+	for all $u \in L$ and $v \in \Sigma^+$,
+	
+	\item $L$ is a suffix code such that $\pref{L} \cap \Sigma^*L = L$ if and only if $\sigma_L(uv) = v$
+	for all $u \in \Sigma^+$ and $v \in L$ (this condition also appears in \crefitem{constrsync:prop:infix-code}{constrsync:prop:infix-code:6}).
+\end{enumerate}
+
+In the next section we will investigate overlap-free infix codes, i.e., solid codes, in more detail.
+
+We always have $L \cup \{\varepsilon\} \subseteq \pref{L} \cap \suff{L}$
+for any language $L \subseteq \Sigma^*$. Lastly, we connect
+the converse inclusion to overlap-freeness.
+
+\begin{proposition}  \label{constrsync:prop:pref-suff-overlap-free-inclusion-eqn}
+	Let $C \subseteq \Sigma^+$ be a prefix or a suffix code.
+	If $\pref{C} \cap \suff{C} \subseteq C \cup \{\varepsilon\}$,
+	then $C$ is overlap-free.
+\end{proposition}
+\begin{proof}
+	Let $uv, vw \in C$ for non-empty $u,v,w$.
+	Then we have $v \in \pref{C} \cap \suff{C}$
+	and since~$C$ is a prefix or suffix code, we have $v \notin C$, i.e.,
+	$\pref{C} \cap \suff{C}$
+	is not a subset of~$C$.
+\end{proof}
+
+\begin{proposition} \label{constrsync:prop:overlap-free-inclusion-eqn}
+	Let $L \subseteq \Sigma^*$.
+	If $L$ is overlap-free,
+	then $\pref{L} \cap \suff{L} \subseteq L \cup \{\varepsilon\}$.
+\end{proposition}
+\begin{proof}
+	Let $u \in \pref{L}\cap \suff{L}$ with $u \ne \varepsilon$.
+	Then $uv, wu \in L$ for some $v,w \in \Sigma^*$.
+	If~$L$ is overlap-free, then $v = \varepsilon$
+	or $w = \varepsilon$ and each case gives $u \in L$,
+	which shows the claim.	
+	%Let $v \in \pref{L}\cap \suff{L}$ with $v \ne \varepsilon$ and $v \notin L$.
+	%Then we have $uv, vw \in L$ for some non-empty $u,w \in \Sigma^+$, i.e., $L$ 
+	%is not overlap-free.
+\end{proof}
+
+Thus, we find that a prefix or suffix code~$C$
+is overlap-free if and only if $\pref{C} \cap \suff{C} \subseteq C \cup \{\varepsilon\}$.
+
+\subsection{Characterizing Solid Codes}
+\label{constrsync:sec:codes:solid}
+
+\input{../part4/notions/charsolidcode}

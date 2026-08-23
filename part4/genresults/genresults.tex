@@ -1,0 +1,47 @@
+%!TEX root = ./../../springer-mono-format/book.tex
+%!TEX root = ./../../thesis-trier.tex
+
+In~\cref{constr_sync:sec:prelim_results} we show that \constrsync{L} is decidable and in \PSPACE.
+Furthermore, we give example constraint languages
+yielding constrained synchronization 
+problems with computational complexities 
+in $\AC^0$, or \LOGSPACE-, \NL-, \NP-, or \PSPACE-complete.
+
+In~\cref{constr_sync:sec:manip} we present results on altering and simplifying 
+the constraint language and how certain operations as forming factor sets, unions, intersections, morphisms, and concatenation
+affect the computational complexity.
+This also yields
+general methods to deduce complexity lower bounds between different instances of constrained synchronization problems.
+
+General hardness conditions for \NL, \NP, and \PSPACE\  are given in \cref{constr_sync:sec:hardness}.
+This section also develops a general framework to deduce these hardness results introducing
+the notion of auxiliary state avoiding words and the introduction of relations derived from the Myhill-Nerode relation.
+
+In~\cref{constr_sync:sec:aut} we discuss the representation of the constraint by PDFAs.
+We show that we have some freedom in the choice of a start state and a set of final states.
+
+\section{Basic Complexity Results and Examples}
+\label{constr_sync:sec:prelim_results}
+
+\input{../part4/genresults/basicexamples}
+
+\section{Manipulating Constraint Languages}
+\label{constr_sync:sec:manip}
+
+\input{../part4/genresults/manipulating}
+
+\section{Hardness Conditions}
+\label{constr_sync:sec:hardness}
+
+\input{../part4/genresults/new_pspace}
+
+
+\section{Remarks on Constraint PFDAs}
+\label{constr_sync:sec:aut}
+
+\input{../part4/genresults/startfinal}
+
+\section{Discussion}
+\label{constr_sync:sec:gen_results:discussion}
+	
+\input{../part4/genresults/discussion} 

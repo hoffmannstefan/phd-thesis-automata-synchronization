@@ -1,0 +1,482 @@
+
+\DeclareMathOperator{\lcm}{lcm}
+
+\newcommand{\pref}[1]{\operatorname{Pref}(#1)}
+\newcommand{\suff}[1]{\operatorname{Suff}\left(#1\right)}
+\newcommand{\factor}[1]{\operatorname{Fact}(#1)}
+\newcommand{\fact}[1]{\ensuremath{\operatorname{Fact}(#1)}}
+\newcommand{\constrsync}[1]{\text{\normalfont \textsc{Sync}\textsc{[}\mbox{$#1$}\textsc{]}}\xspace}
+\newcommand{\concat}[2]{#2 #1}
+\newcommand{\concatcirc}[2]{\ensuremath{#2 \circ #1}}
+\newcommand{\applyfunc}[2]{#2(#1)}
+\newcommand{\applytrans}[3]{\ensuremath{#1(#2,#3)}}
+\newcommand{\applytransexplicit}[3]{\ensuremath{#1(#2,#3)\xspace\,}}
+\newcommand{\semiautomat}[4]{\mathcal #1 = (#2, #3, #4)}
+\newcommand{\automat}[6]{\ensuremath{\mathcal #1 = (#2, #3, #4, #5, #6)}}  % entfernt überstrich, wenn man es so benutzt: \automat{\overline{\mathcal A}_i}{Q_i \cup \{p_i\}}{\overline{\delta_i}}{p_i}{F_i}
+\newcommand{\semiautomatexpl}[4]{\ensuremath{\mathcal #1 = (#2, #3, #4)}}
+\newcommand{\automatp}[6]{\ensuremath{#1 = (#2, #3, #4, #5, #6)}}
+\newcommand{\perm}{\operatorname{perm}}
+\newcommand{\Syn}{\operatorname{Syn}}
+\newcommand{\Cerny}{\v{C}ern\'{y}\xspace}
+\newcommand{\orbit}[2]{\ensuremath{#2(#1)}}
+\newcommand{\Orb}{\operatorname{Orb}}
+\newcommand{\rt}[1]{\operatorname{rt}{(#1)}}
+
+\newcommand{\rank}[1]{\ensuremath{\operatorname{rank}(#1)}}
+\newcommand{\defect}[1]{\ensuremath{\operatorname{def}(#1)}} 
+\newcommand{\Orbit}[2]{\ensuremath{\operatorname{Orb}_{#2}(#1)}}
+\newcommand{\Stab}[2]{\ensuremath{{#2}_{#1}}}
+\newcommand{\lereach}{\ensuremath{\precsim_R}}
+\newcommand{\eqreach}{\ensuremath{\simeq_R}}
+\newcommand{\lelogm}{\ensuremath{\le_m^{\log}}}
+\newcommand{\lePm}{\ensuremath{\le_m^{\PTIME}}}
+\newcommand{\leACZEROm}{\ensuremath{\le_m^{\AC^0}}}
+\newcommand{\leACkm}[1]{\ensuremath{\le_m^{\AC^{#1}}}}
+\newcommand{\leNCkm}[1]{\ensuremath{\le_m^{\NC^{#1}}}}
+\newcommand{\leNCkT}[1]{\ensuremath{\le_T^{\NC^{#1}}}}
+\newcommand{\eqlogm}{\ensuremath{\equiv_m^{\log}}}
+\newcommand{\eqPm}{\ensuremath{\equiv_m^{\PTIME}}}
+\newcommand{\eqACZEROm}{\ensuremath{\equiv_m^{\AC^0}}}
+\newcommand{\eqACkm}[1]{\ensuremath{\equiv_m^{\AC^{#1}}}}
+\newcommand{\eqNCkm}[1]{\ensuremath{\equiv_m^{\NC^{#1}}}}
+\newcommand{\eqNCkT}[1]{\ensuremath{\equiv_T^{\NC^{#1}}}}
+\newcommand{\fword}[2]{\ensuremath{{#1}_{#2}}}
+\newcommand{\SI}[2]{\ensuremath{[#1 \mapsto #2]}}
+\newcommand{\move}[1]{\operatorname{move}(#1)}
+\newcommand{\fix}[1]{\operatorname{fix}(#1)}
+\newcommand{\dupl}[1]{\operatorname{dupl}(#1)}
+\newcommand{\excl}[1]{\operatorname{excl}(#1)}
+\newcommand{\TM}[1]{\mathcal T_M(#1)}
+\newcommand{\TS}[1]{\mathcal T_S(#1)}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\PA}[1]{\mathcal P(#1)}
+
+\newcommand{\rYES}{{\sc YES}\xspace}
+\newcommand{\rNO}{{\sc NO}\xspace}
+\newcommand{\eqLp}[1]{\mathrel{\ensuremath{\equiv_{L}^{\ge #1}}}}
+\newcommand{\eqLn}{\mathrel{\eqLp{n}}}
+\newcommand{\eqLpp}[2]{\mathrel{\ensuremath{\equiv_{#1}^{\ge #2}}}}
+\newcommand{\eqLL}[2]{\mathrel{\ensuremath{\equiv_{#1, #2}}}}
+\newcommand{\NeqLL}[2]{\mathrel{\ensuremath{\not\equiv_{#1,#2}}}}
+\newcommand{\eqLsimU}[3]{\mathrel{\ensuremath{\equiv_{#1}^{#2, #3}}}}
+\newcommand{\preeqLL}[2]{\mathrel{\ensuremath{\sim_{#1, #2}}}}
+ \newcommand{\excess}[2]{\operatorname{exc}_{#1}(#2)}
+ 
+%\newcommand{\shift}[1]{\mathsf{X}_{#1}} % X_{#1}
+%\newcommand{\term}[1]{\textit{#1}}
+%\newcommand{\leftm}{{\vartriangleright}}  % "left marker"
+%\newcommand{\rightm}{{\vartriangleleft}} % "right marker"
+
+\newcommand{\Zb}{\mathbb{Z}}
+\newcommand{\minaut}[1]{\ensuremath{\operatorname{MinAut}(#1)}}
+\newcommand{\restrictAutGamS}[3]{\ensuremath{#1_{|#2, #3}}}
+\newcommand{\upperset}[1]{\mbox{\ensuremath{\displaystyle  \uparrow \!\!#1}}}
+\newcommand{\lowerset}[1]{\ensuremath{\downarrow \!\!#1}}
+\renewcommand{\vec}[1]{\ensuremath{\boldsymbol{#1}}}
+
+
+\newcommand{\PTIME}{\textsf{P}\xspace}
+\newcommand{\LOGSPACE}{\textsf{L}\xspace}
+\newcommand{\WNL}{\textsf{WNL}\xspace}
+\newcommand{\WSYNC}{\textsf{W[Sync]}\xspace}
+
+%\renewcommand{\SAT}{\textsc{\sc SAT}\xspace}
+\newcommand{\SIS}{\textsc{\sc Sync\-Into}\xspace}
+\newcommand{\ST}{\textsc{\sc Set\-Trans}\xspace}
+\newcommand{\DST}{\textsc{\sc Disj\-Set\-Trans}\xspace}
+\newcommand{\SFS}{\text{\sc Sync\-From}\xspace}
+\newcommand{\DFAS}{\text{\sc Sync}\xspace}
+\newcommand{\DFASWS}{\text{\sc Sync\-Short}\xspace}
+\newcommand{\DFASS}{\text{\sc Sync\-State}\xspace}
+\newcommand{\DFASW}{\text{\sc Sync\-Words}\xspace}
+\newcommand{\DFAINT}{\text{\sc Intersection}\xspace}
+\newcommand{\DAG}{\text{\sc DAG}\xspace} 
+\newcommand{\DFAST}{\textsc{\sc Sync\-Trap}\xspace}
+\newcommand{\THREESAT}{\text{\sc 3SAT}\xspace}
+\newcommand{\ONEDAGST}{\text{\sc $1$-DAG-ST}\xspace}
+\newcommand{\ONEDAG}{\text{\sc $1$-DAG}\xspace}
+\newcommand{\TWODAG}{\text{\sc $2$-DAG}\xspace}
+\newcommand{\TWODAGST}{\text{\sc $2$-DAG-ST}\xspace}
+\newcommand{\KDAG}{\text{\sc $k$-DAG}\xspace}
+\newcommand{\SCP}{\text{\sc Single\-Cycle}\xspace}
+\newcommand{\PDFAINT}{\text{\sc PDFA-Intersection}\xspace}
+\newcommand{\SCC}{\text{\sc Strongly\-Conn}\xspace}
+\newcommand{\kDAGST}[1]{\text{\sc $#1$-DAG-ST}\xspace}
+\newcommand{\KDAGST}{\kDAGST{k}\xspace}
+\newcommand{\ORD}{{\sc OrderBetweenVertices}\xspace}
+\newcommand{\REACH}{\text{\sc Reach}\xspace}
+\newcommand{\REACHF}{\text{\sc ReachFrom}\xspace}
+
+\newcommand{\problemdef}[4]{
+	% \problemdef{title}{non-small-caps reference/comment/... in title}{input}{problem}
+	% Next line: width of the drawn box, spacing left (right with "right = ...")
+	\begin{tcolorbox}[width = \textwidth,colback=white,arc=0pt,outer arc=0pt,boxrule=0.7pt,left =0.5em,right=0em]
+		\textsc{#1} #2
+		\\[2pt]
+		% Next line: table width
+		\begin{tabular}{ @{}l p{0.84\textwidth} c }
+			\textsf{Input:} & #3 \\[.5pt]
+			\textsf{Problem:} & #4
+		\end{tabular}
+		\vspace{-0.25em}
+	\end{tcolorbox}
+}
+
+\crefname{lemma}{Lemma}{Lemmas}
+\crefname{proposition}{Proposition}{Propositions}
+\crefname{theorem}{Theorem}{Theorems}
+\crefname{equation}{Equation}{Equations}
+\crefname{item}{Item}{Items}
+\crefname{corollary}{Corollary}{Corollaries}
+\crefname{section}{Section}{Sections}
+\crefname{example}{Example}{Examples}
+\crefname{Fact}{Fact}{Facts}
+\crefname{table}{Table}{Tables}
+\crefname{remark}{Remark}{Remarks}
+\crefname{part}{Part}{Parts}
+\crefname{figure}{Figure}{Figures}
+\crefname{chapter}{Chapter}{Chapters}
+\crefname{definition}{Definition}{Definitions}
+\crefname{corollary}{Corollary}{Corollaries}
+
+% https://tex.stackexchange.com/questions/410585/cleveref-format-for-enumerate
+\crefname{enumi}{Item}{Items}
+\crefname{enumii}{Item}{Items}
+\crefname{enumiii}{Item}{Items}
+
+% https://latex.org/forum/viewtopic.php?t=6667
+\newcommand{\crefitem}[2]{\cref{#1},~Item~\ref{#2}}
+\newcommand{\Crefitem}[2]{\Cref{#1},~Item~\ref{#2}}
+
+
+%%\newcommand{\THM}{Thm.}
+%%\newcommand{\COR}{Cor.}
+%%\newcommand{\SEC}{Sect.}
+%%\newcommand{\PROP}{Prop.}
+%%\newcommand{\REM}{Rem.}
+%%\newcommand{\LEM}{Lem.}
+%%\newcommand{\EQN}{Eqn.}
+%%\newcommand{\FIG}{Fig.}
+\newcommand{\THM}{Theorem}
+\newcommand{\COR}{Corollary}
+\newcommand{\PROP}{Proposition}
+%\newcommand{\REM}{Remark}
+\newcommand{\SEC}{Section}
+\newcommand{\LEM}{Lemma}
+%\newcommand{\EQN}{Equation}
+\newcommand{\FIG}{Figure}
+%\newcommand{\EX}{Example}
+%\newcommand{\CHAP}{Chapter}
+
+
+
+
+
+%% https://tex.stackexchange.com/questions/570985/how-to-use-a-fact-as-an-equation-in-latex
+%\newcommand\myparbox[1]{\parbox{0.667\textwidth}{\raggedright #1}} % choose width suitably
+%
+%
+%
+%
+%% \sqcup  oder \square
+%% https://tex.stackexchange.com/questions/136485/empty-clause-symbol
+%\newcommand{\TMblank}{%
+%\text{\fboxsep=-.2pt\fbox{\rule{0pt}{1.35ex}\rule{1.15ex}{0pt}}}%
+%}
+
+\tikzstyle{every state}=[blur shadow,fill={rgb:black,0.4;white,10}]
+
+
+% Nur fuer pdflatex
+%\DeclareUnicodeCharacter{0301}{*************************************}
+\DeclareUnicodeCharacter{0301}{\i}
+
+
+
+
+
+
+
+
+\DeclareSymbolFont{rsfscript}{OMS}{rsfs}{m}{n}
+\DeclareSymbolFontAlphabet{\mathrsfs}{rsfscript}
+
+% https://tex.stackexchange.com/questions/22012/hyperref-and-imakeidx-do-not-work-together
+\newcommand{\BHT}[1]{\normalsize{\hyperpage{#1}}\normalsize}
+\newcommand{\IN}[1]{\index{#1|BHT}}
+%\renewcommand{\index[1]{\index{#1|BH}}
+
+% Mit \IN geht das nicht
+%\IN{function composition|see{composition}}
+%\index{function composition|see{composition}}
+
+
+
+
+
+
+% https://tex.stackexchange.com/questions/21234/doing-something-only-when-the-draft-option-is-on
+\makeatletter
+\def\ifdraft{\ifdim\overfullrule>\z@
+	\expandafter\@firstoftwo\else\expandafter\@secondoftwo\fi}
+\makeatother
+
+% https://tex.stackexchange.com/questions/32208/footnote-runs-onto-second-page
+\interfootnotelinepenalty=10000 %% Completely prevent breaking of footnotes
+
+
+
+
+
+% https://tex.stackexchange.com/questions/655563/what-is-the-meaning-of-no-math-alphabet-change-to-frozen-version-normal-on-inpu
+\def\@font@info#1{}
+\setcounter{localmathalphabets}{0}
+
+
+
+
+
+% Andrew Stacey's code from
+% https://tex.stackexchange.com/a/50054/3954
+%\makeatletter
+%\tikzset{%
+%	remember picture with id/.style={%
+%		remember picture,
+%		overlay,
+%		save picture id=#1,
+%	},
+%	save picture id/.code={%
+%		\edef\pgf@temp{#1}%
+%		\immediate\write\pgfutil@auxout{%
+%			\noexpand\savepointas{\pgf@temp}{\pgfpictureid}}%
+%	},
+%	if picture id/.code args={#1#2#3}{%
+%		\@ifundefined{save@pt@#1}{%
+%			\pgfkeysalso{#3}%
+%		}{
+%			\pgfkeysalso{#2}%
+%		}
+%	}
+%}
+
+%\def\savepointas#1#2{%
+%	\expandafter\gdef\csname save@pt@#1\endcsname{#2}%
+%}
+%
+%\def\tmk@labeldef#1,#2\@nil{%
+%	\def\tmk@label{#1}%
+%	\def\tmk@def{#2}%
+%}
+%
+%\tikzdeclarecoordinatesystem{pic}{%
+%	\pgfutil@in@,{#1}%
+%	\ifpgfutil@in@%
+%	\tmk@labeldef#1\@nil
+%	\else
+%	\tmk@labeldef#1,(0pt,0pt)\@nil
+%	\fi
+%	\@ifundefined{save@pt@\tmk@label}{%
+%		\tikz@scan@one@point\pgfutil@firstofone\tmk@def
+%	}{%
+%		\pgfsys@getposition{\csname save@pt@\tmk@label\endcsname}\save@orig@pic%
+%		\pgfsys@getposition{\pgfpictureid}\save@this@pic%
+%		\pgf@process{\pgfpointorigin\save@this@pic}%
+%		\pgf@xa=\pgf@x
+%		\pgf@ya=\pgf@y
+%		\pgf@process{\pgfpointorigin\save@orig@pic}%
+%		\advance\pgf@x by -\pgf@xa
+%		\advance\pgf@y by -\pgf@ya
+%	}%
+%}
+%\newcommand\tikzmark[2][]{%
+%	\tikz[remember picture with id=#2] {#1;}}
+%\makeatother
+%% end of Andrew's code
+%
+%\newcommand\ShadeCell[4][0pt]{%
+%	\begin{tikzpicture}[overlay,remember picture]%
+%		\shade[#4] ( $ (pic cs:#2) + (0pt,1.9ex) $ ) rectangle ( $ (pic cs:#3) + (0pt,-#1*\baselineskip-.8ex) $ );
+%	\end{tikzpicture}%
+%}%
+%
+%\newcommand\HatchedCell[4][0pt]{%
+%	\begin{tikzpicture}[overlay,remember picture]%
+%		\fill[#4] ( $ (pic cs:#2) + (0,1.9ex) $ ) rectangle ( $ (pic cs:#3) + (0pt,-#1*\baselineskip-.8ex) $ );
+%	\end{tikzpicture}%
+%}%
+
+
+
+
+
+% https://tex.stackexchange.com/questions/161338/can-cleveref-be-made-to-use-the-oxford-comma-for-multiple-citations
+\newcommand{\creflastconjunction}{, and\nobreakspace}
+
+
+%		\tikzset{every state/.style={minimum size=1pt}}
+
+
+\newcommand{\tikzcell}[1]{%
+	\begin{tikzpicture}[
+		baseline=(current bounding box.center),
+		every node/.style={align=center},
+		inner sep=0pt,
+		outer sep=0pt,
+		overlap/.style={draw, minimum height=6mm, minimum width=1.6cm},
+		normal/.style={draw, minimum height=6mm, minimum width=1.6cm}
+		]
+		#1
+	\end{tikzpicture}%
+}
+
+
+% Mark thesis as confidential
+% \usepackage[angle=0,fontsize=16pt,color=black,pos={20.5cm, 0.5cm} ,anchor=rt,alignment=r,text=TAJEMNICA\ PŁ\\Egz.\ nr\ X]{draftwatermark}
+
+% Highlight thesis author in bibliobraphy
+% \usepackage{xstring}
+% \let\originalbibitem\bibitem
+% \def\bibitem#1#2\par{%
+	%   \noexpandarg
+	%   \originalbibitem{#1}
+	%   \StrSubstitute{#2}{I.Nazwisko}{\textbf{I.Nazwisko}}\par}
+
+
+
+
+
+\newcommand{\cg}{\cellcolor{gray!50}}
+%\newcommand{\cd}{\cellcolor{gray!20}}
+\newcommand{\cd}{}
+
+
+\def\ygap{2}
+\def\xgap{2}
+\def\arrowgap{.125}
+\tikzset{
+	arc center/.is choice,
+	arc center/left/.code={\def\isLeft{1}\tikzset{arc to}},
+	arc center/right/.code={\def\isLeft{0}\tikzset{arc to}},
+	arc center offset/.code={\def\centerOffset{#1}\tikzset{arc to}},
+	arc direction/.is choice,
+	arc direction/cw/.code={\def\isCw{1}\tikzset{arc to}},
+	arc direction/ccw/.code={\def\isCw{0}\tikzset{arc to}},
+	arc to/.style={
+		to path={
+			[evaluate={
+				coordinate \u, \v, \m, \mv, \mvOrtho, \c, \cu, \cv;
+				\u = (\tikztostart);
+				\v = (\tikztotarget);
+				\m = (\u)!0.5!(\v);
+				\mv = (\v)-(\m);
+				if \isLeft then {
+					\mvOrtho = (-\mvy, \mvx);
+				} else {
+					\mvOrtho = (\mvy, -\mvx);
+				};
+				\c = (\m)+(\mvOrtho);
+				\c = (\m)!\centerOffset!(\c);
+				\cu = (\u)-(\c);
+				\cv = (\v)-(\c);
+				\radius = veclen(\cu);
+				\startAngle = atan2(\cuy, \cux);
+				\endAngle = atan2(\cvy, \cvx);
+				if \isCw then {
+					if \startAngle < \endAngle then {
+						\endAngle = \endAngle - 360;
+					};
+				} else {
+					if \startAngle > \endAngle then {
+						\endAngle = \endAngle + 360;
+					};
+				};
+			}]
+			arc[radius=\radius pt, start angle=\startAngle, end angle=\endAngle] \tikztonodes
+		}
+	},
+	vertex/.style={circle, inner sep=1pt},
+	left loop/.style={arc center=left, arc direction=cw, arc center offset=10pt},
+	right loop/.style={arc center=right, arc direction=ccw, arc center offset=10pt},
+	invisible/.style={text opacity=0},
+	-{Stealth[round, flex=1]}
+}
+
+
+
+
+
+
+
+
+\newcommand{\decisionproblem}[3]{%
+	\par\addvspace{.5\baselineskip}
+	\noindent
+	
+	\begin{tabularx}{\textwidth}{@{\hspace{\parindent}} l X c}
+		\multicolumn{2}{@{\hspace{\parindent}}l}{#1} \\
+		\textsf{Input:}    & #2 \\
+		\textsf{Question:} & #3
+	\end{tabularx}
+	
+	\par\addvspace{.5\baselineskip}
+}
+
+
+
+\NewDocumentCommand{\VertexChain}{O{} m m m m m}{%
+	% #1 = optionaler Startknoten
+	% #2 = prefix
+	% #3,#4,#5,#6 = Indizes
+	
+	% --- Start ---
+	\IfBlankTF{#1}{%
+		\node[state,label=above:$v_{#3}$] (#2-#3) {};
+	}{%
+		\node[state,label=above:$v_{#3}$, right=of #1, xshift=0.5em] (#2-#3) {};
+	}
+	
+	\node[right=of #2-#3] (#2-d1) {$\cdots$};
+	
+	\node[state,
+	label={[xshift=-7pt]above:$v_{#4}$}, 
+	right=of #2-d1
+	] (#2-#4) {};
+	
+	\node[state, label=above:$v_{{#4}+1}$, right=of #2-#4] (#2-#4n) {};	
+	
+	\node[right=of #2-#4n] (#2-d2) {$\cdots$};
+	
+	\node[state,
+	label={[xshift=-7pt]above:$v_{#5}$}, 
+	right=of #2-d2] (#2-#5) {};
+	
+	\node[state,label=above:$v_{{#5}+1}$, right=of #2-#5] (#2-#5n) {};
+	
+	\node[right=of #2-#5n] (#2-d3) {$\cdots$};
+	
+	\node[state,
+	label={[xshift=-7pt]above:$v_{#6}$},
+	right=of #2-d3
+	] (#2-#6) {};
+	
+	\path[->]
+	(#2-#3) edge (#2-d1)
+	(#2-d1) edge (#2-#4)
+	%(#2-#4) edge (#2-#4n)
+	(#2-#4n) edge (#2-d2)
+	(#2-d2) edge (#2-#5)
+	%(#2-#5) edge (#2-#5n)
+	(#2-#5n) edge (#2-d3)
+	(#2-d3) edge (#2-#6);
+}
+
+\newcommand{\thesistitle}{The Set of Synchronizing Words and the Constrained Synchronization Problem}
+
+% https://tex.stackexchange.com/questions/20576/passing-newenvironment-parameters-to-the-end-block
+\NewDocumentEnvironment{proofitem}{m}
+{%
+	\noindent\emph{Proof of #1:}%
+}
+{%
+	\emph{[End, Proof of #1]}%
+}

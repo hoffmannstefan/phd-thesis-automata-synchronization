@@ -1,0 +1,176 @@
+%!TEX root = ./../../springer-mono-format/book.tex
+%!TEX root = ./../../thesis-trier.tex
+
+\IN{permutation}
+\IN{inverse transformation}
+A \emph{permutation} is a bijective transformation.
+Recall that, in this case, as discussed in \cref{prelim:subsec:func:basic}, 
+there exists an \emph{inverse transformation} $t^{-1} \colon X \to X$
+such that $\concat{t}{t^{-1}} = \concat{t^{-1}}{t} = \operatorname{id}_X$.
+
+
+\IN{permuted subset} 
+\IN{quasipermutation}
+For an arbitrary transformation $t \colon X \to X$
+and $S \subseteq X$ we say that $t$ \emph{permutes a subset $S \subseteq X$} 
+if $t_{|S}$ is a permutation on $S$. 
+We call~$t \colon X \to X$ a \emph{quasipermutation}~\cite{GorKou95} if it permutes its image $t(X)$.
+
+First, in~\cref{prelim:prop:permutation} we collect several well-known characterizations of permutations
+on finite sets. Then, the remaining statements investigate quasipermutations.
+
+\begin{proposition}
+	\label{prelim:prop:permutation} \label{prelim:prop:non-perm-dupl-cycle}
+	Let $t \colon [n] \to [n]$. Then the following are equivalent.
+	\begin{enumerate}
+		\item \label{prelim:prop:item:not_perm} $t$ is a permutation.
+		
+		\item \label{prelim:prop:item:non_injective} $\dupl{t} = \emptyset$, i.e., $t$ is injective.		
+		
+		\item \label{prelim:prop:item:invdupl} $t^{-1}(\dupl{t}) \cap t([n])$ is empty.
+				
+		\item \label{prelim:prop:item:root} $t$ has no root point.
+				
+		\item \label{prelim:prop:item:defect} $\defect{t} = 0$.
+		
+		\item \label{prelim:prop:item:cycles} Every state is a cycle state.
+		
+		\item \label{prelim:prop:item:identity} There exists $i > 0$ such that $t^i = \operatorname{id}_{[n]}$.			
+		
+		\item \label{prelim:prop:item:not_surjective} $\rank{t} = n$, i.e., $t$ is surjective.		
+	\end{enumerate}	
+\end{proposition}
+\begin{proof} 
+	$\ref{prelim:prop:item:not_perm}\Rightarrow~\ref{prelim:prop:item:non_injective}$: This follows as a permutation 
+	is injective by definition.
+		
+	$\ref{prelim:prop:item:non_injective}\Rightarrow~\ref{prelim:prop:item:invdupl}$: 
+	This is obvious.
+	
+	$\ref{prelim:prop:item:invdupl}\Rightarrow~\ref{prelim:prop:item:root}$:
+	Let $y \in [n]$ be a root point.
+	Then $y \in \dupl{t}$ and $t^p(y) = y$ for some $p > 0$.
+	This gives $t^{p-1}(y) \in t^{-1}(\dupl{t}) \cap t([n])$.	
+		
+	$\ref{prelim:prop:item:root}\Rightarrow~\ref{prelim:prop:item:defect}$:
+	Suppose $\defect{t} > 0$.
+	Then there exists $x \in \excl{t}$.
+	By finiteness, there exists a minimal $i \ge 0$
+	such that $t^i(x) = t^{i+p}(x)$ for some $p > 0$, where, since $x \in \excl{t}$, we must have $i > 0$.
+	Set $y = t^{i}(x)$. We have $t^p(y) = y$.
+	By the minimal choice of~$i$, we have $t^{i-1}(x) \ne t^{i + p - 1}(x)$
+	and both map to the same point~$y$. Hence we have $y \in \dupl{t}$.
+	Thus~$y$ is a root point.
+		
+	$\ref{prelim:prop:item:defect}\Rightarrow~\ref{prelim:prop:item:cycles}$:
+	By \cref{prelim:prop:item:defdupl2} from~\cref{prelim:prop:gentransdef},
+	we have $|\dupl{t}| \le \defect{t} = 0$, i.e.~$t$ is injective.
+	By finiteness
+	there exist $i \ge 0$ and $p > 0$ with $i$ minimal
+	such that $t^i(x) = t^{i+p}(x)$.
+	For $i > 0$, by injectivity, we obtain $t^{i-1}(x) = t^{i - 1 + p}(x)$,
+	contradicting the minimal choice of $i$. So $i = 0$ and $x = t^p(x)$. Thus~$x$
+	is a cycle state.
+		
+	$\ref{prelim:prop:item:cycles}\Rightarrow~\ref{prelim:prop:item:identity}$: 
+	By assumption for each $x \in [n]$ there exists $i_x > 0$
+	such that $\applyfunc{x}{t^{i_x}} = x$.
+	Then $t^{\lcm\{ i_x \mid x \in [n] \}} = \operatorname{id}_{[n]}$.	
+	
+	$\ref{prelim:prop:item:identity}\Rightarrow~\ref{prelim:prop:item:not_surjective}$: 
+	By assumption we have $x = t(t^{i-1}(x)) \in t([n])$ for each $x \in [n]$.
+	So $t([n]) = [n]$, which gives $\rank{t} = n$.	
+	
+	$\ref{prelim:prop:item:not_surjective}\Rightarrow~\ref{prelim:prop:item:not_perm}$:
+	By \cref{prelim:prop:item:rank-defect-eqn} from \cref{prelim:prop:rank-defect} 
+	we have $n = \rank{t} = n + \defect{t}$. Thus $\defect{t} = 0$.
+	By \cref{prelim:prop:item:defdupl2} from~\cref{prelim:prop:gentransdef},
+	we have $|\dupl{t}| \le \defect{t} = 0$, i.e.~$t$ is injective.	
+\end{proof} 
+
+\begin{corollary}
+    Let $t \colon X \to X$ and $S \subseteq X$ be finite.
+    Then~$t$ permutes~$S$ if and only if $t(S) = S$.		
+\end{corollary}
+
+\begin{proposition} \label{prelim:prop:quasiperm}
+	Let $t \colon [n] \to [n]$. Then the following are equivalent.
+	\begin{enumerate}
+		\item \label{prelim:prop:quasiperm:1} $t$ is a quasipermutation.	
+		
+		\item \label{prelim:prop:quasiperm:2} For each $x \in X$, $t(x)$ is a cycle point.
+		
+		\item \label{prelim:prop:quasiperm:3} For each $x \in \excl{t}$, $t(x)$ is a cycle point.	
+		
+		\item \label{prelim:prop:quasiperm:4} The set of tail points equals $\excl{t}$.
+		
+		\item \label{prelim:prop:quasiperm:5} $\dupl{t_{|t([n])}} = \emptyset$.
+		
+		% noch: t^{-1}(dupl) nur excl und cycle states
+	\end{enumerate}	
+\end{proposition}
+\begin{proof}
+	$\ref{prelim:prop:quasiperm:1}\Rightarrow \ref{prelim:prop:quasiperm:2}$:
+	By assumption, $t_{|t(X)}$ is a permtuation.
+	Then the claim follows from \cref{prelim:prop:item:cycles} of \cref{prelim:prop:permutation}
+	applied to the permutation $t_{|t(X)}$.
+		
+	$\ref{prelim:prop:quasiperm:2}\Rightarrow \ref{prelim:prop:quasiperm:3}$:	This is clear.
+		
+	$\ref{prelim:prop:quasiperm:3}\Rightarrow \ref{prelim:prop:quasiperm:4}$:	
+	Clearly, states in $\excl{t}$ are tail points.
+	For a tail point $x$ we have $x = t^i(z)$
+	for an excluded point~$z$ and some $i \ge 0$.
+	By assumption, $i = 0$ and so $x = z$.
+	Thus $\excl{t}$ equals precisely the tail points.	
+	
+	$\ref{prelim:prop:quasiperm:4}\Rightarrow \ref{prelim:prop:quasiperm:5}$:
+	Assume $t_{|t(X)}$ is not injective.
+	Then $t(t(x)) = t(t(z))$ for $x,z \in [n]$
+	with $t(x) \ne t(z)$.
+	Since a cycle point has precisely one predecessor on its cycle,
+	one of both points $t(x)$ or $t(z)$ must be a tail point,
+	and this point is $t(X)$.
+	
+	$\ref{prelim:prop:quasiperm:5}\Rightarrow \ref{prelim:prop:quasiperm:1}$:
+	We have $t(t([n])) \subseteq t([n])$.
+	By assumption, $t$ acts injectively on $t(X)$.
+	This yields $|t(t([n]))| = |t([n])|$ and thus we 
+	obtain $t(t([n])) = t([n])$.
+\end{proof}
+
+\begin{lemma} \label{prelim:trans:lem:stable-fibers}
+	Let $t \colon [n] \to [n]$ be a quasipermutation. Then
+	\[
+	|t^{-1}(y)| = |t^{-1}(y) \cap \excl{t}| + 1
+	\quad \text{for } y \in t([n]),
+	\]
+	and $t^{-1}(y) = \emptyset$ otherwise. In particular
+	$\dupl{t} = t(\excl{t})$.
+\end{lemma}
+\begin{proof}
+	As $t(t([n])) = t([n])$ and $t([n])$ is finite, $t_{|t([n])}$ is a permutation
+	of $t([n])$. Hence every $y \in t([n])$ has exactly one preimage in $t([n])$,
+	and the remaining preimages lie in $\excl{t} = [n] \setminus t([n])$, which
+	gives the displayed equality; points outside $t([n])$ have no preimage.
+	Consequently $|t^{-1}(y)| \ge 2$ if and only if $t^{-1}(y)$ meets $\excl{t}$,
+	that is, if and only if $y \in t(\excl{t})$.
+\end{proof}
+
+\begin{proposition}
+	Let $t \colon [n] \to [n]$ be of defect at most two.
+	If $\dupl{t} = t(\excl{t})$, then~$t$ is a quasipermutation. 
+\end{proposition}
+\begin{proof}
+	If there exists $x \in \dupl{t}$
+	not contained in a cycle, then $x = t^i(y) = t^j(z)$
+	for two distinct excluded points $y, z \in \excl{t}$ and $i,j \ge 1$.
+	By \cref{prelim:prop:item:root} of \cref{prelim:prop:non-perm-dupl-cycle} 
+	there exists another point in $\dupl{t}$ contained in a cycle,
+	which must be the image of yet another excluded point by assumption.
+	Then $t$ would have defect at least three.
+	Thus every duplicate point is contained in a cycle.
+	Then, with $\dupl{t} = t(\excl{t})$,
+	the image of every excluded point is a cycle point.
+	Thus, with \cref{prelim:prop:quasiperm}, $t$ is a quasipermutation.	
+\end{proof}

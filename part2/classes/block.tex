@@ -1,0 +1,323 @@
+%!TEX root = ./../../springer-mono-format/book.tex
+%!TEX root = ./../../thesis-trier.tex
+
+In the present section, we investigate automata all of whose strongly connected components are blocks. These automata arose from the study of solvable automata, which we introduce later in \cref{prelim:subclasses:solvable}. We observed that several properties of solvable automata extend to this more general class.
+
+First, \cref{prelim:thm:SCCblocks-rank_r} gives a bound on the length of the shortest words of rank~$r$. \Cref{prelim:classes:block:prop:sync-into-bound} gives bounds on the length of the shortest words mapping the entire state set into an upper set. \Cref{prelim:classes:pto:prop:u-raised-to-n} gives words ending in certain maximal states. We derive several consequences in \cref{prelim:classes:block:cor:S-into-T,prelim:classes:block:cor:Q-into-S,prelim:classes:block:cor:Q-into-S-bound}. \Cref{prelim:classes:block:prop:char-sink-state} characterizes maximal states. Lastly, in \cref{prelim:class:block:cor:sync_trap_state}, we show that every synchronizing state is a trap state.
+
+
+\begin{theorem} \label{prelim:thm:SCCblocks-rank_r}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be an $n$-state automaton all of whose strongly connected components are blocks that has a word of rank~$r$.
+	Then there exists a word of length
+	at most $n - r$ whose rank is at most $r$,
+	and this bound is tight.
+	
+	Furthermore, let $u \in \bigcap_{a \in \Sigma}\Sigma^* a \Sigma^*$.
+	Then $u^{n - r}$
+	has rank at most $r$, and $\delta(Q, u^{n - 1})$
+	is the union of all sink components of~$\mathcal A$.
+\end{theorem}
+\begin{proof}
+	Suppose $\mathcal A$ admits a word of rank $r$.
+	We can assume $n > r$.
+	By Proposition~\ref{prelim:cor:composition-series-maximal-states}
+	there exists a sequence of upper sets 
+	\begin{equation}\label{eqn:sequence}
+		S_1 \subsetneq \cdots \subsetneq S_m = Q
+	\end{equation}
+	where~$S_1$ equals the union of all sink components
+	and $S_{i} \setminus S_{i-1}$ for $i \in \{2,\ldots,m\}$ 
+	are all the strongly connected components that are not sink components.
+	Let $i \in \{2,\ldots,m\}$
+	and set $S = S_{i} \setminus S_{i-1}$.
+	As $S$ is not a sink component,
+	we have $\delta(S, x_i) \setminus S \ne \emptyset$
+	for some $x_i \in \Sigma$,
+	which gives $\delta(S, x_i) \cap S = \emptyset$
+	as $S$ is a block.
+	As $S_i$ is an upper set, 
+	we have $\delta(S, x_i) \subseteq S_i = S_{i-1} \cup S$ 
+	and so $\delta(S, x_i) \subseteq S_{i-1}$.
+	Hence, we find
+	\[
+	\delta(S_i, x_i) = \delta(S_{i-1} \cup S, x_i) = \delta(S_{i-1}, x_i) \cup \delta(S, x_i) \subseteq S_{i-1}.
+	\]
+	This also gives $\delta(S_i, u) \subseteq S_{i-1}$ for all $i \in \{2,\ldots,m\}$
+	since $\delta(S_i, a) \subseteq S_i$ and $\delta(S_{i-1}, a) \subseteq S_{i-1}$
+	for all $a \in \Sigma$.
+	Now, inductively,  
+	from $\delta(S_i, x_i) \subseteq S_{i-1}$
+	and  $\delta(S_i, u) \subseteq S_{i-1}$ for all $i \in \{2,\ldots,m\}$,
+	we obtain that
+	for all $i \in \{2,\ldots,m\}$ we have
+	\begin{equation*}\label{eqn:word-each-letter}
+		\delta(Q, x_m \cdots x_i) \subseteq S_{i-1}
+		\quad\text{ and }\quad
+		\delta(Q, u^{m - (i - 1)}) \subseteq S_{i-1}.
+	\end{equation*}
+	Since the sequence from Equation~\eqref{eqn:sequence}
+	strictly decreases, we get $|S_i| \le n - (m - i)$
+	for $i \in \{1,\ldots,m\}$.
+	%  Now, for a sink component $S \subseteq Q$ and $x \in \Sigma$
+	%  we have $\delta(S, x) \subseteq S$
+	%  and as it is a block this gives $\delta(S, x) = S$, i.e., $x$
+	%  permutes $S$. 
+	As~$S_1$ is a union of sink components that are blocks, 
+	from Equation~\eqref{eqn:closed-block} we get $S_1 = \delta(S_1, u) \subseteq \delta(Q, u)$
+	for each $u \in \Sigma^*$, which gives $S_1 \subseteq \delta(Q,u^{n-1})$  and $|S_1| \le r$.
+	As $|S_1| \le r$ there exists a maximal $j \in \{1,\ldots,m\}$
+	such that $|S_j| \le r$. 
+	We have $j \ne m$
+	and $r < |S_{j+1}| \le n - (m - (j+1))$.
+	So we get $m - j - 1 < n - r$.
+	Now, as $\delta(Q, x_m \cdots x_{j+1}) \subseteq S_j$
+	and $\delta(Q, u^{m - j}) \subseteq S_{j}$
+	the words $x_m \cdots x_{j+1}$ 
+	and $u^{m - j}$
+	of length $m - j \le n - r$ and $|\Sigma|(m-j)$, respectively,
+	have rank at most~$r$,
+	and the same follows for $u^{n- r}$.
+	Lastly, $\delta(Q, u^{m - 1}) \subseteq S_1$
+	gives $\delta(Q, u^{n - 1}) \subseteq S_1$ as $m - 1 \le n - 1$
+	and so $\delta(Q, u^{n - 1}) = S_1$.
+	
+	For tightness, consider the automata from the proof of \cref{prelim:prop:unary_bound}.
+\end{proof}
+
+\begin{remark}
+	\Cref{prelim:automata:cor:composition-series-maximal-states} 
+	can be used to give an inductive
+	proof of \cref{prelim:thm:SCCblocks-rank_r}. 
+	We can assume~$\mathcal A$ admits a word $u \in \Sigma^*$ of rank~$r$
+	with $r < n$ for $n = |Q|$.
+	If~$Q$ equals the set of maximal states,
+	then~$Q$ equals a union of sink components.
+	By assumption, these sink components are blocks.
+	By \cref{eqn:closed-block} 
+	each letter permutes each sink component.
+	Thus, $\mathcal A$ is a permutation automaton.
+	Now, for  $r < |Q|$, this cannot be the case.
+	Then \cref{prelim:automata:cor:composition-series-maximal-states}
+	yields existence of a proper and non-empty
+	upper set $S \subseteq Q$
+	such that $\mathcal A / {\sim_S}$
+	is strongly trap-connected.
+	Since $|\delta(S, u)| \le r$,
+	inductively, there exists $v \in \Sigma^*$
+	with $|v| \le \max\{ |S| - r, 0 \}$
+	such that $|\delta(S, v)| \le r$.
+	Furthermore, we have $\delta(Q \setminus S, x) \cap S \ne \emptyset$
+	for some~$x \in \Sigma$ since~$Q \setminus S$ is not a sink component
+	by \cref{prelim:fact:factor-strongly-trap}. 
+	Thus, as $Q \setminus S$ is a block,
+	we find $\delta(Q \setminus S, x) \subseteq S$.
+	Hence $\delta(Q, x) \subseteq S$.
+	Then $|\delta(Q, xv)| \le r$
+	and $|xv| \le 1 + \max\{ |S| - r, 0 \} \le n - r$.
+	For $w \in \bigcap_{a \in \Sigma} \Sigma^* a \Sigma^*$, we can also inductively
+	suppose $|\delta(S, w^{\max\{|S|-r,0\}})| \le r$
+	and, similarly as above, conclude
+	$|\delta(Q, w^{n - r})| \le r$.
+\end{remark}
+
+\begin{proposition} \label{prelim:classes:block:prop:sync-into-bound}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be an automaton all of whose strongly connected components are blocks and $S \subseteq Q$ be an upper set.
+	Suppose $\delta(Q, u) \subseteq S$ for some $u \in \Sigma^*$.
+		Then there exists $v \in \Sigma^*$
+		with $\delta(Q, v) \subseteq S$ and $|v| \le |Q| - |S|$,
+		and this bound is tight.
+\end{proposition}
+\begin{proof}
+	We may assume $Q \ne \emptyset$; then $\emptyset \ne \delta(Q,u) \subseteq S$, so $S \ne \emptyset$.
+	We induct on~$|Q|$.
+	
+	If $S = Q$, then $v = \varepsilon$ works. So assume $S \subsetneq Q$.
+	Then $S$ is a non-empty proper upper set, so we may choose an inclusion-maximal
+	proper non-empty upper set $T \subseteq Q$ and put $C := Q \setminus T$.
+	By \cref{prelim:automata:prop:TsetminusS-strong-conn,prelim:automata:cor:SsetminusT},
+	$C$ is a strongly connected component, hence a block by assumption.
+	
+	As $T$ is an upper set, $\mathcal A_{|T}$ is well defined and its strongly connected
+	components are strongly connected components of~$\mathcal A$, hence blocks.
+	Moreover $T \cap S$ is an upper set of $\mathcal A_{|T}$ and
+	$\delta(T,u) \subseteq T \cap \delta(Q,u) \subseteq T \cap S$.
+	Since $|T| < |Q|$, induction gives $w \in \Sigma^*$ with
+	$\delta(T,w) \subseteq T \cap S$ and $|w| \le |T| - |T \cap S| = |T \setminus S|$.
+	
+	\emph{Case 1: $C \subseteq S$.} Then $Q \setminus S \subseteq T$, so
+	$|w| \le |T \setminus S| = |Q \setminus S| = |Q| - |S|$.
+	As $S$ is an upper set, $\delta(C,w) \subseteq S$, whence
+	$\delta(Q,w) = \delta(C,w) \cup \delta(T,w) \subseteq S$. Take $v = w$.
+	
+	\emph{Case 2: $C \not\subseteq S$.} 	
+	First, $\delta(C,a) \cap T \ne \emptyset$ for some
+	$a \in \Sigma$: otherwise $\delta(C,a) \subseteq C$ for all $a \in \Sigma$, so $C$ and
+	hence $C \cap S$ are upper sets; the latter is non-empty because
+	$\emptyset \ne \delta(C,u) \subseteq C \cap S$, and it is a proper subset of~$C$,
+	so $T \subsetneq T \cup (C \cap S) \subsetneq Q$ contradicts the maximality of~$T$.
+	Fix such an~$a$. Since $C$ is a block, $\delta(C,a) \cap C = \emptyset$, i.e.
+	$\delta(C,a) \subseteq T$, and $\delta(T,a) \subseteq T$; thus $\delta(Q,a) \subseteq T$
+	and $\delta(Q,aw) \subseteq \delta(T,w) \subseteq S$.
+	Finally $Q \setminus (S \cup T) = C \setminus S \ne \emptyset$, so
+	\[
+	|Q| - |S| = |Q \setminus (S \cup T)| + |T \setminus S|
+	\ge 1 + |T \setminus S| \ge 1 + |w| = |aw| .
+	\]
+	Take $v = aw$.
+	
+	Tightness follows from the automata in \cref{prelim:fig:unary_tight}
+	with $S = \{q_{n-r}, \ldots, q_n\}$.
+\end{proof}
+
+\Cref{prelim:classes:block:prop:sync-into-bound} 
+might fail if~$S$ is not an upper set. For example, 
+in the automaton from \cref{prelim:classes:rem:unary-seq-aut},
+the shortest word mapping all states into $\{1, n\}$
+is $a^{n - 1}$.
+
+
+
+
+
+\begin{proposition} \label{prelim:classes:pto:prop:u-raised-to-n}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be an automaton all of whose strongly connected components are blocks and $S \subseteq Q$. Then, for $u \in \bigcap_{a \in \Sigma} \Sigma^* a \Sigma^*$
+	and $n \ge |Q| - 1$	we have
+	\[
+	\delta(S, u^{n}) \subseteq \{ q \in \upperset{S} \mid q \text{ is a maximal state } \}. 
+	\]
+\end{proposition}
+\begin{proof}
+	Let $q \in S$. Clearly, $\delta(q, u^n) \in \upperset{S}$.
+	By finiteness,
+	we have $\delta(q, u^{i + p}) = \delta(q, u^i)$
+	for some $0 \le i < |Q|$ and $p > 0$.
+	Let $T$ be the strongly connected component~$T$
+	with $\delta(q, u^i) \in T$.
+	We have 
+	\[
+	\delta(q, u^{i+p}) \eqreach \delta(q, u^{i+p-1}) \eqreach \cdots \eqreach \delta(q, u^{i})
+	\]
+	Thus $\delta(T, u) \cap T \ne \emptyset$.
+	Since~$T$ is a block, we find $\delta(T, u) = T$.
+	Because~$u$ contains each letter,
+	this yields $\delta(T, a) = T$
+	for each $a \in \Sigma$
+	and so~$T$ is a sink component.
+	Hence, $\delta(q, u^i)$ is maximal,
+	and so $\delta(q, u^n)$ is maximal.	
+\end{proof}
+
+The containment in \cref{prelim:classes:pto:prop:u-raised-to-n} 
+can be proper. For example, this is the case for $S = \{q_1\}$ and $u = ab$ in 
+the automaton whose strongly connected components are blocks from \cref{prelim:fig:rho-aut-left}
+
+\begin{corollary}  \label{prelim:classes:block:cor:S-into-T}
+	\label{prelim:classes:block:cor:equalR}
+	Suppose $\semiautomat{A}{Q}{\Sigma}{\delta}$ is an automaton all of whose strongly connected components are blocks.
+	Let $S \subseteq Q$ and $R = \{ q \in \upperset{S} \mid \text{$q$ is a maximal state} \}$.
+	Suppose $R \subseteq S$.
+	
+	\begin{enumerate}
+	\item \label{prelim:classes:block:cor:S-into-T:2} For $T \subseteq Q$ we have $\delta(S, u) \subseteq T$ for some $u \in \Sigma^*$ if and only if $R \subseteq T$.
+		
+	\item \label{prelim:classes:block:cor:S-into-T:1} For $u \in \bigcap_{a \in \Sigma} \Sigma^* a \Sigma^*$
+	and $n \ge |Q| - 1$	we have
+	$
+	\delta(S, u^{n}) = R.
+	$
+	\end{enumerate}	
+\end{corollary}
+\begin{proof}
+ \ref{prelim:classes:block:cor:S-into-T:2}: First, let $\delta(S, u) \subseteq T$
+ for some $u \in \Sigma^*$.
+ For $R \subseteq S$, the set $R$ is the union of the sink components contained in~$S$.
+ By \cref{eqn:closed-block}, $\delta(S, u)$
+ also contains these sink components.
+ Thus $R$ is contained in $\delta(S, u)$ and therefore in~$T$.
+ 
+ Conversely, if $R \subseteq T$, 
+ by \cref{prelim:classes:pto:prop:u-raised-to-n} 
+ there exists a word mapping~$Q$ into $R$,
+ and thus into~$T$.
+ 
+ \ref{prelim:classes:block:cor:S-into-T:1}: Set $T = \delta(S, u^n)$.
+ We have $\delta(S, u^n) \subseteq T$.
+ Thus, by \cref{prelim:classes:block:cor:S-into-T:2}, we get $R \subseteq T$.
+ By \cref{prelim:classes:pto:prop:u-raised-to-n} we have $T \subseteq R$.
+\end{proof}
+
+Note that $R \subseteq S$ holds in \cref{prelim:classes:block:cor:S-into-T} if~$S$ is an upper set.
+
+\Crefitem{prelim:classes:block:cor:S-into-T}{prelim:classes:block:cor:S-into-T:2} 
+generalizes the 
+statement from \cref{prelim:thm:SCCblocks-rank_r} that words which contain each letter applied $|Q| - 1$ times map the whole state set onto the set of maximal states.
+
+\begin{corollary} \label{prelim:classes:block:cor:Q-into-S}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be an automaton all of whose strongly connected components are blocks.
+	For $S \subseteq Q$ there exists $u \in \Sigma^*$ 
+	such that $\delta(Q, u) \subseteq S$
+	if and only if $T \subseteq S$
+	for each sink component $T \subseteq Q$ of~$\mathcal A$.	
+\end{corollary}
+\begin{proof}
+	This follows from \cref{prelim:classes:block:cor:S-into-T}
+	applied to~$Q$ and~$S$ (since in this case, $R$ equals the union of all sink components).
+\end{proof}
+
+\begin{corollary} \label{prelim:classes:block:cor:Q-into-S-bound}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be an automaton all of whose strongly connected components are blocks and $S \subseteq Q$.
+Suppose $\delta(Q, u) \subseteq S$ for some $u \in \Sigma^*$.
+Then there exists $v \in \Sigma^*$
+with $\delta(Q, v) \subseteq S$ and $|v| \le |Q| - 1$.		
+\end{corollary}
+\begin{proof}
+	Let~$R$ be the union of all sink components in~$\mathcal A$.
+	By \cref{prelim:classes:pto:prop:u-raised-to-n} 
+	there exists a word mapping~$Q$ into~$R$.
+	Thus, by \cref{prelim:classes:block:prop:sync-into-bound},
+	we have $\delta(Q, u) \subseteq R$
+	for some $u \in \Sigma^*$ with $|u| \le |Q| - |R| \le |Q| - 1$.
+	By \cref{prelim:classes:block:cor:Q-into-S},
+	we have $R \subseteq S$
+	and so~$u$ maps~$Q$ into~$S$.	
+\end{proof}
+
+Next, we characterize the maximal states.
+
+\begin{proposition} \label{prelim:classes:block:prop:char-sink-state}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be an automaton all of whose strongly connected components are blocks.
+	A state $q \in Q$ is contained in a sink component
+	if and only if for all $x \in \Sigma$ we have $\delta(q, x^i) = q$
+	for some $i \in \{1,\ldots,|Q|\}$.
+\end{proposition}
+\begin{proof}
+	Let $S \subseteq Q$ be the strongly connected component 
+	with $q \in S$.
+	First, assume~$S$ is a sink component.
+	By Equation~\eqref{eqn:closed-block}, every letter $x \in \Sigma$
+	permutes $S$ and so $\delta(q, x^i) = q$
+	for some $i \in \{1,\ldots,|S|\}$.
+	Next, assume~$S$ is not a sink component.
+	Then, as~$S$ is a block,
+	we have $\delta(S, x) \cap S = \emptyset$
+	for some $x \in \Sigma$.
+	As~$S$ is a strongly connected component,
+	$\delta(q, x) \notin S$ yields $\delta(q, x^i) \notin S$,
+	and so $\delta(q, x^i) \ne q$,
+	for all $i \ge 1$.
+\end{proof}
+
+\begin{proposition} \label{prelim:class:block:cor:sync_trap_state} \label{constr_sync:prop:sink-blocks-sync-trap}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be an automaton all of whose sink components are blocks.
+	Then each synchronizing state is a trap state.
+\end{proposition}
+\begin{proof}
+	By \cref{prelim:thm:SCC_sync_words}, the set of synchronizing states~$S$
+	is a sink component.
+	Thus $\mathcal A_{|S}$ is a synchronizing permutation automaton. 
+	This implies $|S| = 1$.
+\end{proof}
+
+So, by \cref{prelim:class:block:cor:sync_trap_state} 
+an automaton in which all sink components are blocks is synchronizable
+if and only if it has a unique trap state that is reachable from every other state. 

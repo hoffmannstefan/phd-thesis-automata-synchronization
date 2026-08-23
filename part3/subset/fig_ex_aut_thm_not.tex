@@ -1,0 +1,86 @@
+\begin{figure}[htb]
+\begin{minipage}{0.25\textwidth}
+ \scalebox{1}{\begin{tikzpicture}[shorten >=1pt,->,node distance=2.3cm]
+  %\tikzstyle{vertex}=[circle,color=red!60,fill=black!10,minimum size=25pt,inner sep=1pt,very thick]
+  %\tikzstyle{vertex}=[circle,draw,minimum size=25pt,inner sep=1pt]
+  
+  \node[state] (0) {$0$};
+  \node[state, right of=0] (1) {$1$};
+  \node[state, below of=1] (2) {$2$};
+  \node[state, left of=2]  (3) {$3$};
+  
+  \path[->] (0) edge [above] node {$a,b$} (1)
+            (1) edge [bend left, right] node {$a,b$} (2)
+            (2) edge [below] node {$b$} (3)
+            (3) edge [left]  node {$b$} (0)
+            (2) edge [bend left, left] node {$a$} (1)
+            (3) edge [loop below] node {$a$} (3);
+\end{tikzpicture}}%
+\end{minipage}%\hspace*{0.25cm}
+\begin{minipage}{0.75\textwidth}
+\scalebox{1}{\begin{tikzpicture}[shorten >=1pt,->,node distance=1cm and 0.9cm]
+  \tikzstyle{vertex}=[]
+  
+  % \node at (0,-1) (s) {start};  
+   
+  \node[vertex] (0123)               {$\{0,1,2,3\}$};
+  \node[vertex, right = of 0123, xshift=-0.5cm] (123) {$\{1,2,3\}$};
+  \node[vertex, below = of 123]  (023) {$\{0,2,3\}$};
+  \node[vertex, below = of 023]   (013) {$\{0,1,3\}$};
+  \node[vertex, below left = of 013,xshift=0.7cm]  (012) {$\{0,1,2\}$};
+  
+  \node[vertex, right = of 023] (13) {$\{1,3\}$};
+  \node[vertex, above = of 13]  (02) {$\{0,2\}$};
+  \node[vertex, below = of 13]  (23) {$\{2,3\}$};
+  \node[vertex, right = of 23]  (03) {$\{0,3\}$};
+  \node[vertex, below = of 03]  (01) {$\{0,1\}$};
+  \node[vertex, left = of 01]  (12) {$\{1,2\}$};
+  
+  \node[vertex,  right = of 02, yshift=0.2cm] (0) {$\{0\}$};
+  \node[vertex,  right = of 0]  (1) {$\{1\}$};
+  \node[vertex,  below = of 1]  (2) {$\{2\}$};
+  \node[vertex,  left = of 2]   (3) {$\{3\}$};
+  
+  
+  \path (123) edge [loop above] node {$a$} (123);
+  \path (012) edge [above] node {$a$} (12);
+  \path (013) edge [bend left=45,left] node {$a$} (123);
+  
+  %\path[->] (s) edge (0123);
+  
+    \path[->] (0) edge [below] node {$a,b$} (1)
+            (1) edge [bend left, right] node {$a,b$} (2)
+            (2) edge [below] node {$b$} (3)
+            (3) edge [left]  node {$b$} (0)
+            (2) edge [bend left, right] node {$a$} (1)
+            (3) edge [loop below] node {$a$} (3);
+            
+  
+  \path[->] (0123) edge [above] node {$a$} (123);
+  \path[->] (0123) edge [loop above] node {$b$} (0123);
+  \path[->] (123)  edge [right] node {$b$} (023); 
+  \path[->] (023)  edge [right] node {$b$} (013);
+  \path[->] (013)  edge [above,pos=.6] node {$b$} (012);
+  \path[->] (012)  edge [bend left,left] node {$b$} (123);
+  
+  \path[->] (023)  edge [above] node {$a$} (13);
+  \path[->] (13)   edge [bend left,left] node {$b$} (02);
+  \path[->] (02)   edge [bend left=40,right] node {$b$} (13);
+  \path[->] (13)   edge [bend left,right] node {$a$} (23);
+  \path[->] (23)   edge [bend left,left] node {$a$} (13);
+  \path[->] (23)   edge [above] node {$b$} (03);
+  \path[->] (03)   edge [right] node {$b$} (01);
+  \path[->] (01)   edge [above] node {$a,b$} (12);
+  \path[->] (12)   edge [left] node {$b$} (23);
+  \path[->] (03)   edge [above] node {$a$} (13);
+  \path[->] (12)   edge [loop below] node {$a$} (12);
+  
+  \path[->] (02) edge [bend left,above] node {$a$} (1);
+  
+\end{tikzpicture}}%
+\end{minipage}%
+ %\caption{Automaton from Example~\ref{ex:I_vs_Gamma1} where $I(\TS{\mathcal A})$ 
+% 	is a proper subgraph of $\Gamma_1(\TS{\mathcal A})$.}
+\caption[Example power automaton]{Left: An automaton. Right: Its power automaton (empty set omitted).}
+ \label{fig:thm_not_usable}
+\end{figure}

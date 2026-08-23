@@ -1,0 +1,319 @@
+%!TEX root = ./../../springer-mono-format/book.tex
+%!TEX root = ./../../thesis-trier.tex
+
+Here, \cref{constr_sync:thm:PSPACE} shows that \constrsync{L} 
+is decidable and solvable in polynomial space for regular $L \subseteq \Sigma^*$.
+Then, \cref{constr_sync:thm:introductory_examples} 
+presents various example problems and their complexities.
+
+\begin{theorem}
+	\label{constr_sync:thm:PSPACE}
+	Let $L \subseteq \Sigma^*$ be regular.
+	Then \constrsync{L} is decidable and in \PSPACE.
+\end{theorem}
+\begin{proof}
+	An input semiautomaton $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	admits a synchronizing word in~$L$, i.e. $L \cap \Syn(\mathcal A) \ne \emptyset$,
+	if and only if there exists $t \in Q$ such that
+	\[  
+	L \cap \bigcap_{q \in Q} L(\mathcal A_{q, \{t\}}) \ne \emptyset.
+	\]
+	Let $\mathcal B$ be a complete automaton 
+	with $L = L(\mathcal B)$, which can be chosen in advance
+	since~$L$ is fixed by the definition of the problem.
+	
+	An algorithm solving the problem
+	can guess the state~$t$
+	and then call a procedure
+	to solve \DFAINT for $\mathcal B$
+	and the automata 
+	$\mathcal A_{q, \{t\}}$ for $q \in Q$
+	as input (so that it is called with $|Q|+1$ automata as arguments).
+	By \cref{prelim:thm:complexities},
+	\DFAINT is in \PSPACE.
+	So this algorithm can run in nondeterministic polynomial space.
+	Since $\PSPACE = \NPSPACE$ 
+	by \cref{prelim:eqn:cc_inclusions}
+	we obtain the claim.
+\end{proof}
+
+The following introductory examples (one for each complexity class that will come up in this part)
+are presented here to motivate the later results and to have some easy and concrete cases
+with self-contained and independent proofs. Each example will be generalized in the coming sections.
+
+\begin{theorem}
+	\label{constr_sync:thm:introductory_examples}
+	Let $a,b,c \in \Sigma$ be three distinct letters.
+	\begin{enumerate}
+		
+		\item \label{constrsync:ex:item:a} $\constrsync{\{a\}}$ is in $\AC^0$.
+		
+		\item \label{constrsync:ex:item:bstar} $\constrsync{b^*}$ and $\constrsync{ab^*}$ are \LOGSPACE-complete
+	    even for trap-state input automata.
+		
+		\item \label{constrsync:ex:item:ab} $\constrsync{(a+b)^*}$ and $\constrsync{\Sigma^*}$ are \NL-complete. 
+	
+		\item \label{constrsync:ex:item:abstara} $\constrsync{ab^*a}$ is \NP-complete even for input automata with a trap state~\cite{FernauGHHVW19}.
+		
+		\item \label{constrsync:ex:item:abcL} $\constrsync{(a+b)^*c^lL}$ is \PSPACE-complete for 
+		non-empty and regular $L \subseteq \Sigma^*$ such that $|\fact{L} \cap \{a^n, b^m, c^l \}| \le 2$
+		for some $n,m, l \ge 1$ even for trap-state automata as input.
+		
+		\item \label{constrsync:ex:item:cab} $\constrsync{c(a+b)^*}$ is \PSPACE-complete even for strongly connected automata as input~\cite{FernauGHHVW19}.	
+	\end{enumerate}
+\end{theorem}
+\begin{proof}
+	\ref{constrsync:ex:item:a}: 
+	The letter $a$ synchronizes a given input automaton
+	if and only if the transition matrix $A = (a_{ij})_{1 \le i,j \le n}$ 
+	of $a$ contains a column of ones.
+	Equivalently, there exists $J \in \{1,\ldots,n\}$
+	such that for all $i \in \{1,\ldots,n\}$ we have 
+	$a_{iJ} = 1$.
+	This can be checked by an~$\AC^0$ circuit implementing the formula 
+	\[
+	\bigvee_{J \in \{1,\ldots,n\}} \left( \bigwedge_{i \in \{1,\ldots,n\}} a_{iJ} \right).
+	\]
+	In \cref{sec:constr_sync:finite} (\cref{constr_sync:thm:finite}) 
+	this is generalized to finite constraint languages.
+		
+	\ref{constrsync:ex:item:bstar}:  
+	In \cref{thm:SYNC-solv} we have shown that \DFAST for unary
+	automata is \LOGSPACE-complete. This problem is equivalent
+	to $\constrsync{b^*}$.			
+	By adding self-loops to each state for the letter $a$
+	in an input automaton $\semiautomat{A}{Q}{\{b\}}{\delta}$
+	over~$\{b\}$, we obtain 
+	an $\leACZEROm$-reduction from this problem. So, $\constrsync{b^*} \le_m^{\text{AC}^0} \constrsync{ab^*}$.	
+	Next, we get an $\leACZEROm$-reduction
+	from $\constrsync{ab^*}$
+	to \SFS over the unary alphabet $\{b\}$ 
+	in the following way: for $\semiautomat{A}{Q}{\{a,b\}}{\delta}$
+	construct the \SFS-instance $(\mathcal A_{|\{b\}}, S)$
+	with $S = \applytrans{\delta}{Q}{a}$
+	where w.r.t.~$Q = \{q_1, \ldots, q_n\}$
+	a characteristic bit-vector of $S$ can 
+	be computed by an~$\AC^0$ circuit 
+	as, for $[a] = (m_{ij}^{(a)})_{i,j\in \{1,\ldots,n\}}$,
+	we have $q_j \in S$ if and only if $m_{ij}^{(a)} = 1$ for some $i \in \{1,\ldots,n\}$.	
+	Then the claim follows as \SFS over $\{b\}$ is in \LOGSPACE
+	by \cref{thm:SF-ST-comm}. 
+		
+	\ref{constrsync:ex:item:ab}: $\constrsync{(a+b)^*}$ and $\constrsync{\Sigma^*}$ are
+	equivalent to the unconstrained synchronization problem
+	over $\{a,b\}$ and~$\Sigma$, which are \NL-complete by Theorem~\ref{prelim:complexity:general_aut_sync}
+	since $|\Sigma| \ge 2$.
+	
+	\ref{constrsync:ex:item:abstara}:
+	We give a reduction from \DST
+	over a unary alphabet, which is \NP-complete by Theorem~\ref{compl:thm:comm_ST}.
+	Let $(\mathcal A, S, T)$ be an instance
+	with $\semiautomat{A}{Q}{\{b\}}{\delta}$ and $S, T \subseteq Q$
+	such that $S \cap T = \emptyset$.
+	Pick some $\hat s \in S$
+	and let $\overline{S} \colon ( Q \setminus T ) \to S$
+	be given by $\overline{S}(q) = \hat{s}$ if $q \in Q \setminus (S \cup T)$
+	and $\overline{S}(q) = q$ otherwise. Construct
+	$\semiautomat{A'}{Q \cup \{t\}}{\{a,b\}}{\delta'}$ with a new state $t \notin Q$ 
+	where, for $q \in Q$ and $x \in \{a,b\}$,
+	\[
+	\applytrans{\delta'}{q}{x} = \begin{cases}
+		\applytrans{\delta}{q}{b} & \text{if } x = b, \\
+		\overline{S}(q)           & \text{if } x = a \text{ and } q \in Q \setminus T, \\
+		t                         & \text{if } x = a \text{ and } q \in T
+	\end{cases}
+	\]
+	and $\applytrans{\delta'}{t}{x} = t$ for all $x \in \{a,b\}$. 
+	The state $t$ must be the unique synchronizing state since it is a trap state.
+	Furthermore, for $m \ge 0$,     
+	we have $\applytrans{\delta}{S}{b^m} \subseteq T$
+	if and only if $\applytrans{\delta'}{Q\cup \{t\}}{ab^ma} = \{t\}$,
+	which yields that this is a valid reduction.
+	
+	In \cref{constr_sync:sec:motivation} we have already established that
+	$\constrsync{ab^*a}$ is in \NP\ 
+	by using the matrix orbit problem.
+	For a different argument, given $\semiautomat{A}{Q}{\Sigma}{\delta}$,
+	by \cref{prelim:word_in_PA} applied to $S = \delta(Q, a)$
+	there exists a word in $ab^*a$ synchronizing~$\mathcal A$
+	if and only if there exists $0 \le i < 2^{|Q|} - 1$
+	such that $|\applytrans{\delta}{Q}{ab^ia}| = 1$.
+	Using a binary encoding, $i$ can be guessed
+	in polynomial time. By a square-and-multiply
+	algorithm the transition matrix of $b^i$ can be computed in polynomial time. Then,
+	the condition $|\applytrans{\delta}{Q}{ab^ia}| = 1$  
+	can be checked in polynomial time.
+		
+	\ref{constrsync:ex:item:abcL}:
+	By \cref{constr_sync:thm:PSPACE} we only have to establish \PSPACE-hardness.
+	We give a reduction from \SIS over a binary alphabet, which
+	is \PSPACE-complete by Theorem~\ref{prelim:thm:binary_pspace_problems}. 
+	Let $(\mathcal A, S)$ be an instance of \SIS
+	where $\semiautomat{A}{Q}{\{a_1, a_2\}}{\delta}$ 
+	and $S \subseteq Q$. 		
+			
+	Let $u_1 = a^{n}b^{m}$, $u_2 = a^{n+1}b^{m}$.
+	Intuitively, we re-encode the letters $a_1$ and $a_2$
+	into words $u_1$ and~$u_2$, respectively, and build a new automaton~$\mathcal A'$
+	containing a copy of~$Q$ in its state set 
+	that branches along these two words in the same way as~$\mathcal A$
+	branches on $a_1$ and~$a_2$.
+	Additionally, the new automaton uses $c^l$
+	to map states from~$S$ into a trap state.
+	A word from the constraint language $(a+b)^*cL$
+	synchronizes $\mathcal A'$
+	if and only if, before reading $c^l$, we land
+	inside~$S$. This follows since the suffix of this word following $c^l$ only uses letters
+	from $\{u_1,u_2\}$, $\{u_1,c^l\}$, or $\{u_2,c^l\}$,
+	but the construction is done in a way such that 
+	we need all three words to make any changes to the current state set
+	yielding a new synchronizing word.
+	
+	Set $P = \pref{\{a^n b^{m-1}, a^{n+1}b^{m-1}, c^{l-1} \}}$.
+	Let $\semiautomat{A'}{ ( Q \times P ) \cup \{t\}}{\{a,b,c\}}{\delta'}$
+	where, for $q \in Q$, $u \in P$,
+	and $x \in \{a,b,c\}$, we set
+	\[
+	\delta'((q, u), x) =
+	\begin{cases}
+		(q, ux) & \text{if } ux \in P, \\
+		(\delta(q, a_i), \varepsilon) & \text{if $ux = u_i$ for some $i \in \{1,2\}$,} \\	
+		(q, \varepsilon) & \text{if $ux = c^l$ and $q \notin S$}, \\
+		t                & \text{if $ux = c^l$ and $q \in S$},\\
+		(q, \sigma_P(ux)) & \text{otherwise, i.e., if $ux \notin P \cup \{u_1, u_2, c^l\}$,}
+	\end{cases}
+	\]
+	and $\delta'(t, x) = t$ for all $x \in \{a,b,c\}$.\footnote{Note that 
+		for $u \in P$ and $x \in \{a,b,c\}$
+		with $ux \notin P$
+		we have $\sigma_P(ux) = x$ expect in the case $u = a^{n+1}$ and $x = a$.}
+
+	\Cref{constrsync:fig:reduction} shows a part of the reduction
+	for a single state~$q \in Q$ of the input automaton
+	and $n = m = 2$.
+	 The additional ``auxiliary'' states, used to track the current prefix and to branch when $abb$ or $aabb$ has been read, are indicated by rectangles. Transitions labeled~$c$ are omitted for clarity: they either return to $(q,\varepsilon)$ if $q \notin S$ or lead to the trap state~$t$. 
+	 Along such a $c$-path $(q, c^i)$ with $1 \le i \le l-2$, 
+	 reading $a$ or $b$ leads to $(q,\varepsilon)$.
+	
+		\begin{figure}[htb]
+			\centering
+			\begin{tikzpicture}				
+				\node (q) {$(q, \varepsilon)$};
+				\node[draw,rectangle, below = of q] (qa) {$(q, a)$};
+				\node[draw,rectangle, below = of qa] (qaa) {$(q, aa)$};
+				\node[draw,rectangle, below left = of qa] (qab) {$(q, ab)$};
+				\node[below = of qab] (qabb) {$(\delta(q, a_1),\varepsilon)$};
+				\node[draw, rectangle, below right = of qaa] (qaab) {$(q, aab)$};
+				\node[below = of qaab] (qaabb) {$(\delta(q, a_2), \varepsilon)$};
+				
+				\node[right = of q, yshift=1em] (q-dummy) {$\ldots$};
+				\node[right = of qa, yshift=1em] (qa-dummy) {$\ldots$};
+				\node[right = of qaa, yshift=1.7em] (qaa-dummy) {$\ldots$};
+				\node[right = of qaab, yshift=1em] (qaab-dummy) {$\ldots$};
+				\node[left = of qab, yshift=1em] (qab-dummy) {$\ldots$};
+				\node[left = of qabb, yshift=1em] (qabb-dummy) {$\ldots$};
+				\node[right = of qaabb, yshift=1em] (qaabb-dummy) {$\ldots$};
+				
+				\path[->] (q) edge [right] node {$a$} (qa)
+				(qa) edge [right] node {$a$} (qaa)
+				(qaa) edge [below] node {$b$} (qaab);
+				
+				\path[->] (qa) edge [above] node {$b$} (qab)
+				(qab) edge [left] node {$b$} (qabb);
+				
+				\path[->] (qaab) edge [right] node {$b$} (qaabb);
+				
+				\path[->] (qaab) edge [bend right=68,right] node {$a$} (q)
+				(qab) edge [bend left,left] node {$a$} (q);
+				\path[->] (qaa) edge [loop right] node {$a$} (qaa);
+				\path[->] (q) edge [loop left] node {$b$} (q);
+				
+				\path[->] (q) edge [above] node {$c$} (q-dummy);
+				\path[->] (qa) edge [above] node {$c$} (qa-dummy);
+				\path[->] (qaa) edge [above] node {$c$} (qaa-dummy);
+				\path[->] (qab) edge [above] node {$c$} (qab-dummy);
+				\path[->] (qaab) edge [above] node {$c$} (qaab-dummy);
+				\path[->] (qaabb) edge [above] node {$c$} (qaabb-dummy);
+				\path[->] (qabb) edge [above] node {$c$} (qabb-dummy);				
+			\end{tikzpicture}
+			\caption[Construction for hardness of constraint language $\{a,b\}^*c^lL$]
+			{Some states for an example of the construction in \cref{constrsync:ex:item:abcL} with $n = m = 2$,
+				see the proof of \cref{constrsync:ex:item:abcL} for an explanation.}
+			\label{constrsync:fig:reduction}
+		\end{figure}
+	
+	Next, we show that $(\mathcal A, S)$ is a \rYES-instance of \SIS 
+	if and only if $\Syn(\mathcal A')$ contains a word from the constraint language.
+			
+	First, suppose $\delta(Q, w) \subseteq S$ for some $w \in \{a_1,a_2\}^*$.
+	We have 
+	\[
+	\delta'(( Q \times P ) \cup \{t\}, b^{m+1}) = Q \times \{\varepsilon\} \cup \{t\}.
+	\]
+	Let $\varphi \colon \{a_1,a_2\}^* \to \{a,b,c\}^*$
+	be the morphism given by $\varphi(a_i) = u_i$ for $i \in \{1,2\}$.
+	Since $\delta'((q, \varepsilon), u_i) = (\delta(q, a_i), \varepsilon)$
+	for $i \in \{1,2\}$ and $q \in Q$,
+	we find $\delta'((q, \varepsilon), \varphi(w)) = (\delta(q, w), \varepsilon)$
+	for all $q \in Q$
+	and thus $\delta'(Q \times \{\varepsilon\}, \varphi(w)) \subseteq S \times \{\varepsilon\}$.
+	For $q \in S$
+	we have $\delta'((q, \varepsilon), c^l) = t$.
+	Since~$L$ is non-empty, we can pick some word $v \in L$.
+	Combining everything and since~$t$ is a trap state,
+	we find that 	
+	$\delta'((Q \times P) \cup \{t\}, b^{m+1} \varphi(w) c^l v) = \{t\}$.
+		
+	Conversely, suppose we have $|\delta'(Q \times P \cup \{t\}, wc^lv)| = 1$
+	for some $w \in \{a,b\}^*$ and $v \in L$.
+	Since~$t$ is a trap state, we find $\delta'(Q \times P \cup \{t\}, wc^lv) = \{t\}$.
+	Let $q \in Q$.
+	We have $\delta'((q, \varepsilon), w) = (p, u)$
+	for some $u \in \pref{\{u_1, u_2\}}$ and $p \in Q$. Assume $p \notin S$.
+	Then $\delta'((p, u), c^l) = (p, \varepsilon)$ (this holds for $u = \varepsilon$ and 
+	for $u \ne \varepsilon$).	
+	Next, to map $(p, \varepsilon)$ to~$t$, we must first map it to a state
+	in $S \times P$ and then apply $c^l$.	
+	Now, for $w' \in \{a,b,c\}^*$
+	to have $\delta'((p, \varepsilon), w') \in S \times P$
+	it must have $u_1$ or $u_2$ as a factor,
+	and to map a state from~$S \times P$
+	to~$t$ it must have $c^l$ as a factor.
+	Since by assumption $|\fact{L} \cap \{a^n, b^m, c^l\}| \le 2$,
+	we have $c^l \notin \fact{L}$
+	or $|\fact{L} \cap \{a^n, b^m\}| \le 1$.
+	where the latter case yields $u_1, u_1 \notin \fact{L}$.
+	Thus there is no way to map $(p, \varepsilon)$
+	to~$t$ with a word from~$L$	and so we must have $p \in S$.
+	Now, we have $\delta'((q, \varepsilon), w) = (p, u)$
+	if and only if
+	there exist words $v_0, v_1, \cdots, v_r$ 
+	and $w_1, w_2, \cdots w_r \in \{u_1, u_2\}$
+	such that
+	\begin{enumerate}
+	\item $w = v_0 w_1 v_1 w_2 \cdots w_r v_r$,
+		
+	\item $v_r$ has $u$ as a suffix, and
+	
+	\item $\delta'((q, \varepsilon), w_1 \cdots w_r) = (p, \varepsilon)$. 	
+	\end{enumerate}
+	Let $x_i \in \{a_1, a_2\}$ for $i \in\{1,\ldots,r\}$
+	with $x_i = a_1$ if $w_i = u_1$
+	and $x_i = a_2$ otherwise.
+	Then $\delta(q, x_1 \cdots x_r) = p$
+	and thus $\delta(Q, x_1 \cdots x_r) \subseteq S$.
+	
+	
+	\ref{constrsync:ex:item:cab}: By \cref{constr_sync:thm:PSPACE} we only have to establish \PSPACE-hardness.
+	We give a reduction from \SFS over a binary alphabet, which is \PSPACE-complete
+	by \cref{prelim:thm:binary_pspace_problems} even for strongly connected automata.
+	Let $(\mathcal A, S)$ be
+	an \SFS-instance with $\semiautomat{A}{Q}{\{a,b\}}{\delta}$
+	and $S \subseteq Q$. Pick some $\hat s \in S$.
+	By extending~$\delta$ with $\applytrans{\delta}{q}{c} = q$ for each $q \in S$
+	and $\applytrans{\delta}{q}{c} = \hat s$ for $q \notin S$
+	we obtain an automaton over $\{a,b,c\}$ with 
+	$\applytrans{\delta}{Q}{c} = S$
+	that has a synchronizing word of the form~$cu$ for $u \in \{a,b\}^*$
+	if and only if $|\applytrans{\delta}{S}{u}| = 1$.	
+\end{proof}

@@ -1,0 +1,480 @@
+
+Here, we investigate $\constrsync{L}$ in case the constraint
+language $L \subseteq \Sigma^*$ is a commutative regular language.
+In this case, we prove that the problem
+is in~$\AC^0$
+or complete for $\LOGSPACE, \NL, \NP$, or $\PSPACE$ (\cref{constr_sync:thm:comm}).
+
+First, in Section~\ref{constr_sync:sec:cropped-Parikh-map} we  introduce the cropped Parikh map
+and state basic properties. \SEC~\ref{constrsync:sec:comm:simplifying} 
+states conditions to simplify a commutative regular constraint language.
+Finally, in Section~\ref{comm:subsec:classification}, we conclude  with the complexity classification.
+
+Here $\mathbb N_0^{\Sigma}$ and $[n]^{\Sigma}$ are equipped with the component-wise order
+induced by the usual order on~$\mathbb N_0$, see \cref{prelim:ex:order:NzeroSigma-induced-pto}.
+Recall that $\psi \colon \Sigma^* \to \mathbb N_0^{\Sigma}$
+denotes the Parikh map and $+_n$ an operation on~$[n]^{\Sigma}$
+defined in Example~\ref{prelim:ex:algstructures}. Here, elements from~$\mathbb N_0^{\Sigma}$
+are written in boldface.
+
+\begin{remark}
+	Note that for commutative $U,V \subseteq \Sigma^*$
+	we have $U \subseteq \factor{V}$
+	if and only if, for each $u \in U$,
+	we have $\psi(u) \le \psi(v)$ for some $v \in V$.
+	Thus $\factor{U} = \Sigma^*$
+	if and only if for each $\vec{v} \in \mathbb N_0^{\Sigma}$
+	we have $\vec{v} \le \psi(u)$ for some $u \in U$.
+\end{remark}
+
+\subsection{The Cropped Parikh Map}
+\label{constr_sync:sec:cropped-Parikh-map}
+
+\IN{$n$-cropped Parikh map} \label{def:n-cropped-Parikh-map}
+Here, we introduce the cropped Parikh map.
+\cref{constrsync:comm:prop:croppedmap} collects several properties of it.
+Then, in \cref{constrsync:prop:incomparable}, we state
+a formula for the intersection of inverse images of sets incomparable 
+elements with ideal languages.
+
+Let $n \ge 0$. The \emph{$n$-cropped Parikh map} $\psi_n \colon \Sigma^* \to \mathbb [n]^{\Sigma}$ is given, 
+for $u \in \Sigma^*$, by 
+\[ 
+\psi_{n}(u)(a) = \min\{ |u|_a, n-1 \}.
+\]
+
+\begin{proposition} \label{constrsync:comm:prop:croppedmap} The following holds:
+	\begin{enumerate}		
+		\item \label{constrsync:comm:prop:croppedmap:1}
+		$\forall u,v \in \Sigma^* \colon 
+				\psi_n(u) = \psi_n(v)  \Leftrightarrow \forall a \in \Sigma \colon |u|_a = |v|_a \lor ( |u|_a \ge n-1 \land |v|_a \ge n-1 ).			
+		$
+				
+		\item \label{item:psi_n} For $u,v \in \Sigma^*$ we have that $\applyfunc{u}{\psi} = \applyfunc{v}{\psi}$ implies $\applyfunc{u}{\psi_n} = \applyfunc{v}{\psi_n}$.
+		
+		\item \label{constrsync:comm:prop:croppedmap:2} $\applyfunc{\applyfunc{L}{\psi}}{\psi^{-1}} 
+		\subseteq 
+		\applyfunc{\applyfunc{L}{\psi_n}}{\psi_n^{-1}}$   for every $L \subseteq \Sigma^*$.
+		
+		\item  \label{constrsync:comm:prop:croppedmap:3} $\applyfunc{F}{\psi_n^{-1}}$
+		is a commutative and regular language for every $F \subseteq [n]^{\Sigma}$.
+			
+		\item  \label{constrsync:comm:prop:croppedmap:4} $\psi_n$ is a monoid morphism from $(\Sigma^*, \cdot)$ onto $([n]^{\Sigma}, +_n)$. 
+			
+		\item \label{constrsync:comm:prop:croppedmap:4a} For $u, v \in \Sigma^*$ with 
+		$u \in \Sigma^* v_1 \Sigma^* \cdots \Sigma^* v_m \Sigma^*$
+		where $v = v_1 \cdots v_m$ with $v_1, \ldots, v_m \in \Sigma$
+		we have $\psi_n(u) \le \psi_n(v)$.		
+		Thus also for 	$u \in \pref{\{v\}}$
+		or
+		$u \in \suff{\{v\}}$
+		or
+		$u \in \factor{\{v\}}$
+		we have $\psi_n(u) \le \psi_n(v)$.	
+		
+	\item  \label{constrsync:comm:prop:croppedmap:5} Let $u,u',v,w \in \Sigma^*$, $\vec{v} \in \mathbb N_0^{\Sigma}$ and $\psi_n(u) = \psi_n(u')$. Then	
+	\begin{align}
+		\psi_n(u)            & = \psi_n(vu'w) \Leftrightarrow v,w \in \{ a \in \Sigma \mid \psi_n(u)(a) = n - 1\}^* \label{constrsync:eqn:psinuvw} \\
+		\psi_n^{-1}(\vec{v}) & = \Gamma^* \psi_n^{-1}(\vec{v}) \Gamma^*
+	\end{align}
+%	and $\psi_n^{-1}(\vec{v}) = \Gamma^* \psi_n^{-1}(\vec{v}) \Gamma^*$ 
+	 where $\Gamma = \{ a \in \Sigma \mid \vec{v}(a) = n - 1 \}$. % for $\vec{v} \in [n]^{\Sigma}$.
+	\end{enumerate}  
+\end{proposition}
+\begin{proof}
+Item \ref{constrsync:comm:prop:croppedmap:1}, \ref{constrsync:comm:prop:croppedmap:4},
+\ref{constrsync:comm:prop:croppedmap:4a}, and~\ref{constrsync:comm:prop:croppedmap:5} 
+are clear. Item~\ref{constrsync:comm:prop:croppedmap:1} implies Item~\ref{item:psi_n}.
+%and Item~\ref{item:psi_n} implies Item~\ref{constrsync:comm:prop:croppedmap:2}.	
+
+\ref{constrsync:comm:prop:croppedmap:2}: Suppose $u \in \applyfunc{\applyfunc{L}{\psi}}{\psi^{-1}}$.
+Then  $\applyfunc{u}{\psi} = \applyfunc{v}{\psi}$
+for some $v \in L$.
+By Item~\ref{item:psi_n} we find $\applyfunc{u}{\psi_n} = \applyfunc{v}{\psi_n}$.
+So $u \in \applyfunc{\applyfunc{L}{\psi_n}}{\psi_n^{-1}}$.
+
+\ref{constrsync:comm:prop:croppedmap:3}:  As $\applyfunc{u_1 u_2 u_3 u_4}{\psi_n} = \applyfunc{u_1 u_3 u_2 u_4}{\psi_n}$
+for all $u_1, u_2, u_3, u_4 \in \Sigma^*$, the language $\psi_n^{-1}(F)$ is commutative.  % $\applyfunc{\applyfunc{L}{\psi_n}}{\psi_n^{-1}}$ is commutative.
+Define $\automat{A}{[n]^{\Sigma}}{\Sigma}{\delta}{(0)_{a\in \Sigma}}{F}$
+where $\delta(q, a)$ equals $\vec{v}$
+with $\vec{v}(a) = \min\{ q(a)+1, n-1 \}$
+and $\vec{v}(b) =  q(b)$ for $b \ne a$ and $a,b \in \Sigma$.
+Then $L(\mathcal A) = \applyfunc{F}{\psi_n^{-1}}$.\footnote{In fact, the finite monoid $([n]^{\Sigma}, +_n)$
+	recognizes $\applyfunc{F}{\varphi_n^{-1}}$ as defined in~\cite{Pin86}.}
+\end{proof} 
+
+Note that for $N \subseteq [n]^{\Sigma}$
+we have $\factor{\psi_n^{-1}(N)} = \Sigma^*$
+if and only if $(n, \ldots, n) \in N$.
+
+\begin{proposition}
+\label{constrsync:prop:incomparable}
+    Let $N \subseteq [n]^{\Sigma}$ be a set of incomparable elements where $n \ge 0$, $\vec{v} \in N$,
+    $\Gamma = \{ a \in \Sigma \mid \vec{v}(a) = n - 1 \}$
+    and  $L \subseteq \applyfunc{\vec{v}}{\psi_n^{-1}}$.
+    Then $\applyfunc{N}{\psi_n^{-1}} \cap \Sigma^* L \Sigma^* = \Gamma^* L \Gamma^*$.	
+\end{proposition}
+\begin{proof}
+	For $u \in L$ and $v,w \in \Gamma^*$,
+	by \cref{constrsync:eqn:psinuvw} it is $\psi_n(vuw) = \psi_n(u)$.
+	As $\psi_n(u) \in N$,
+	we get $\Gamma^* L \Gamma^* \subseteq \psi_n^{-1}(N) \cap \Sigma^* L \Sigma^*$.
+	Conversely, suppose $\psi_n(vuw) \in N$ for $u \in L$ and $v,w \in \Sigma^*$.
+	We have $\psi_n(u) \le \psi_n(vuw)$.
+	As the vectors in $N$
+	are incomparable, this gives $\psi_n(u) = \psi_n(vuw)$.
+	By \cref{constrsync:eqn:psinuvw}, $v,w \in \Gamma^*$.
+\end{proof}
+
+\begin{example} \label{constrsync:ex:incomparable}
+ The assumption of incomparability of the elements in $N$
+ is necessary.
+ For example, let $\Sigma = \{a_1, a_2\}$ and $n \ge 3$.
+ We identify $\vec{v} \in \mathbb N_0^{\Sigma}$
+ with the tuple $(\vec{v}(a_1), \vec{v}(a_2))$ 
+ and set $N = \{ (n,n), (n,2) \}$.
+ Then 
+  $a_1^n a_2^n \in \psi_{n+1}^{-1}(N) \cap \Sigma^* a_1^n a_2^2 \Sigma^*$
+  but $a_1^n a_2^n \notin a_1^* a_1^n a_2^2 a_1^*$.
+ So $ \psi_{n+1}^{-1}(N) \cap \Sigma^* a_1^n a_2^2 \Sigma^* \ne a_1^* a_1^n a_2^2 a_1^*$
+ for $a_1^n a_2^2 \in \psi_{n+1} ^{-1}( (n, 2) )$. 
+\end{example}
+
+\subsection{Simplifying the Constraint Language}
+\label{constrsync:sec:comm:simplifying}
+
+Here, we show two statements that imply
+that a commutative regular constraint language
+can be replaced by a simpler commutative constraint language.
+By \cref{constr_sync:prop:comm_constraint_max}
+considers inverse images of the cropped Parikh 
+map and \cref{constr_sync:prop:cropped_by_B} 
+implies that we can replace a commutative
+constraint language by some inverse image
+of the cropped Parikh map.
+
+\begin{proposition} 
+	\label{constr_sync:prop:comm_constraint_max}
+    Let $N \subseteq [n]^{\Sigma}$ for some $n \ge 0$
+    and $M = \{ \vec{v} \in N \mid \text{$\vec{v}$ is maximal in~$N$} \}$.
+    Then
+	\[
+	\constrsync{\psi_{n}^{-1}(N)} 
+	\equiv_m^{\AC^0} 
+	\constrsync{\psi_{n}^{-1}(M)}.
+	\]
+\end{proposition}
+\begin{proof}
+	The claim follows from 
+	\cref{gen_results:cor:factors_etc_complexity}
+	since $\factor{\psi_{n}^{-1}(M)}
+	= \psi_{n}^{-1}(N)$.
+\end{proof}
+
+\begin{proposition}
+	\label{constr_sync:prop:cropped_by_B}
+	Let $\automat{B}{P}{\Sigma}{\mu}{p_0}{F}$ be a PDFA and $n >|P|$.
+	Then for a complete and deterministic semiautomaton $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	we have 
+	\[ \Syn(\mathcal A) \cap \psi_n^{-1}(\psi_n(L(\mathcal B))) \ne \emptyset
+	\Leftrightarrow 
+	\Syn(\mathcal A) \cap \psi^{-1}(\psi(L(\mathcal B))) \ne \emptyset.
+	\]
+\end{proposition}
+\begin{proof}
+	First, suppose $u \in \Syn(\mathcal A) \cap \psi_n^{-1}(\psi_n(L(\mathcal B)))$.
+	Let $\Gamma \subseteq \Sigma$ be a maximal set such that $\psi_n(u) = \psi_n(v)$
+	for some $v \in L(\mathcal B)$
+	with
+	\[
+	 |v|_a \ge |u|_a
+	\]
+	for all $a \in \Gamma$.
+    Assume there exists $b \in \Sigma \setminus \Gamma$.
+    So, $|v|_b < |u|_b$.
+    As $\psi_n(u) = \psi_n(v)$,
+    we have $|v|_b, |u|_b \ge n - 1$.
+    Hence, we can write $v = v_1 \cdots v_{n-1}$
+    with $|v_i|_b > 0$ for $i \in \{1,\ldots,n-1\}$.
+    As $n > |P|$, by finiteness
+    $\applytrans{\mu}{p_0}{v_1 \cdots v_i} = \applytrans{\mu}{p_0}{v_1 \cdots v_j}$
+     for some $1 \le i < j < n$.
+    Then $v' = v_1 \cdots v_{i-1} (v_i \cdots v_j)^{|u|_b} v_{j+1} \cdots v_n \in L(\mathcal B)$,
+    $\psi_n(u) = \psi_n(v')$
+    and $|v'|_a \ge |u|_a$ for all $a \in \Gamma \cup \{b\}$,
+    contradicting the maximal choice of $\Gamma$.
+    So, we must have $\Gamma = \Sigma$.
+    Now, let $\Sigma = \{a_1, \ldots, a_k\}$ and set $w = a_1^{|v|_{a_1} - |u|_{a_1}} \cdots a_1^{|v|_{a_k} - |u|_{a_k}}u$.
+    Then  $\applyfunc{w}{\psi} = \applyfunc{v}{\psi}$
+    so that $w \in \psi^{-1}(\psi(L(\mathcal B)))$.
+    By Theorem~\ref{prelim:thm:sync_words_is_ideal}
+    we have $w \in \Syn(\mathcal A)$.
+    Conversely, \crefitem{constrsync:comm:prop:croppedmap}{constrsync:comm:prop:croppedmap:2}
+	yields the other implication.		
+\end{proof} 
+
+\subsection{Complexity Classification}
+\label{comm:subsec:classification}
+
+Here, we give a complete complexity classification for commutative regular
+constraint languages.
+
+First, in \cref{constrsync:lem:comm:single-vector}, 
+we classify the complexity for regular constraint languages
+of the form $\constrsync{\psi_n^{-1}(\vec{v})}$ for some $\vec{v} \in \mathbb N_0^{\Sigma}$.
+Then, in \cref{constr_sync:thm:comm}, we 
+give a complete overview of the computational complexity for different
+types of commutative constraint languages.
+%state the complete classification.
+The formulation of the classification
+uses the set $\max \applyfunc{L(\mathcal B)}{\psi_{n+1}}$
+of incomparable elements for an $n$-state constraint PDFAs.
+
+\begin{lemma}
+\label{constrsync:lem:comm:single-vector}
+ Let $\vec{v} \in \mathbb [n]^{\Sigma}$.
+ Then for the problem $\constrsync{\psi_n^{-1}(\vec{v})}$
+ the following complexities are possible:
+  
+% \[
+% \begin{cases}
+% \AC^0                     & \text{if } \forall a \in \Sigma \colon \vec{v}(a) < n - 1, \\ 
+%% \text{\LOGSPACE-complete} & \text{if } ( \exists a \in \Sigma \colon \vec{v}(a) = n - 1 \land ( \exists b \in \Sigma \colon 0 < \vec{v}(b) < n - 1 \rightarrow \vec{v}(b) = 1 \land \forall c \in \Sigma \setminus \{a,b\} \colon \vec{v}(c) = 0 ) ) \\
+% \text{\LOGSPACE-complete} & \text{if } \,\begin{aligned}%[b]
+% 	& ( \exists a \in \Sigma \colon \vec{v}(a) = n - 1 \land ( \exists b \in \Sigma \colon 0 < \vec{v}(b) < n - 1 \rightarrow \vec{v}(b) = 1 \\
+% 	& \quad  \land \forall c \in \Sigma \setminus \{a,b\} \colon \vec{v}(c) = 0 ) )
+% \end{aligned}
+% \end{cases} 
+% \]
+%  
+%  
+%  \[
+%  \text{left hand side} =
+%  \begin{cases}
+%  	\!\begin{aligned}%[b]
+%  		& \text{a very long expression} \\
+%  		& + \text{that continues on the next line}
+%  	\end{aligned}           & \text{1st condition} \\%[1ex]
+%  	\text{short expression} & \text{2nd condition}
+%  \end{cases}
+%  \]
+%  
+\begin{enumerate}
+\item \label{constrsync:comm:single:item:AC0} in $\AC^0$ if $\vec{v}(a) < n - 1$ for all $a \in \Sigma$,
+
+
+\item \label{constrsync:comm:single:item:L} \LOGSPACE-complete if there exists $a \in \Sigma$ such that $\vec{v}(a) = n - 1$
+and $\vec{v}(b) > 0$ for some $b \in \Sigma \setminus \{a\}$
+implies $\vec{v}(b) = 1$ and $\vec{v}(c) = 0$ for all $c \in \Sigma\setminus\{a,b\}$.
+%
+%and one of the following is true:
+%
+%\begin{enumerate}
+%\item either $\vec{v}(b) = 0$ for all $b \in \Sigma \setminus\{a\}$ or
+%\item there exists $b \in \Sigma$ such that $\vec{v}(b) = 1$ and $\vec{v}(c) = 0$ for all $c \in \Sigma\setminus\{a,b\}$.
+%\end{enumerate}
+
+
+\item \label{constrsync:comm:single:item:NL} \NL-complete if there exist distinct $a,b \in \Sigma$ 
+ such that $\vec{v}(a) = \vec{v}(b) = n - 1$
+ and for all $a \in \Sigma$ it is $\vec{v}(a) \in \{0,n-1\}$,
+
+
+\item \label{constrsync:comm:single:item:NP} \NP-complete if $\sum_{\substack{a \in \Sigma \\ \vec{v}(a) < n - 1}} \vec{v}(a) \ge 2$
+ and $\vec{v}(b) = n - 1$ for precisely one $b \in \Sigma$.
+ 
+% in the following cases:
+%\begin{enumerate}
+%	\item there exist $a,b,c \in \Sigma$ 
+%	such that $0 < \vec{v}(a), \vec{v}(c) < n-1$
+%	and $\vec{v}(b) = n-1$
+%	and $\vec{v}(d) < n - 1$ for $d \in \Sigma \setminus \{a,b,c\}$,
+%	
+%	
+%	\item there exist $a,b \in \Sigma$ such that $2 \le \vec{v}(a) < n-1$
+%	and $\vec{v}(b) = n-1$
+%	and $\vec{v}(c) < n - 1$ for $c \in \Sigma \setminus \{a,b\}$,
+%\end{enumerate}
+
+
+\item \label{constrsync:comm:single:item:PSPACE} \PSPACE-complete if there exist distinct $a,b,c \in \Sigma$ 
+ such that $0 < \vec{v}(a) < n - 1$
+ and $\vec{v}(b) = \vec{v}(c) = n - 1$.
+\end{enumerate}		
+\end{lemma}
+\begin{proof}
+\ref{constrsync:comm:single:item:AC0}: This is equivalent
+to finiteness of $\psi_n^{-1}(\vec{v})$
+and so containment in $\AC^0$ 
+follows from \THM~\ref{constr_sync:thm:finite}. 
+
+\ref{constrsync:comm:single:item:L} Suppose $\vec{v}(a) = n - 1$. 
+ Then $\psi_n^{-1}(\vec{v})$
+ is infinite and \LOGSPACE-hardness follows from \THM~\ref{constr_sync:thm:infinite}.
+ If $\vec{v}(b) = 0$ for all $b \in \Sigma \setminus \{a\}$,
+ then $\psi_n^{-1}(\vec{v}) = a^{n-1}a^* \subseteq a^*$. 
+ Otherwise, suppose $\vec{v}(b) = 1$
+ and $\vec{v}(c) = 0$ for all $c \in \Sigma \setminus \{a,b\}$.
+ Then 
+ $\psi_n^{-1}(\vec{v}) = a^*ba^{n-1}a^* \cup a^*aba^{n-2}a^* \cup a^*a^2ba^{n-3} \cup \ldots \cup a^*a^{n-1}ba^* \subseteq a^* b^* a^*$ (note that we have $\fact{\psi_n^{-1}(\vec{v})}) = a^* b a^*$).
+ So, in both cases, containment in \LOGSPACE
+ follows from \cref{constr_sync:cor:in_star_star}.
+ 
+ 
+\ref{constrsync:comm:single:item:NL} Set $\Gamma = \{ a \in \Sigma \mid \vec{v}(a) = n - 1 \}$.  Then
+ $\psi_n^{-1}(\vec{v}) = \{ u \in \Gamma^* \mid \forall a \in \Gamma \colon |u|_a \ge n - 1 \}$.
+ So $\factor{\psi_n^{-1}(\vec{v})} = \Gamma^*$.
+ As $|\Gamma| \ge 2$,
+ \Cref{constr_sync:cor:factors_sets_included,constr_sync:cor:one-state} 
+ give the claim.
+  
+\ref{constrsync:comm:single:item:NP}
+  First, if there exists $a \in \Sigma$ with $2 \le \vec{v}(a) \le n - 1$,
+  then consider
+  \[
+  \pi_{\{a,b\}}(\psi_n^{-1}(\vec{v})) \cap \{a,b\}^* a b^{\vec{v}(b)} b^* a^{\vec{v}(a)-1} \{a,b\}^* = b^* a b^{\vec{v}(b)}b^* a^{\vec{v}(a)-1} b^*. 
+  \]
+  Otherwise, there exist distinct $a,c \in \Sigma$ with $\vec{v}(a) = \vec{v}(b) = 1$.
+  Then consider 
+   \[
+  \pi_{\{a,b,c\}}(\psi_n^{-1}(\vec{v})) \cap \{a,b,c\}^* a b^* c \{a,b,c\}^* = b^* a b^{\vec{v}(b)}b^* c b^*. 
+  \]
+  By \cref{constr_sync:gen_results:thm:ideal_separation,constr_sync:thm:letter_bounded,thm:hom_lower_bound_complexity},
+  we find that $\constrsync{\psi_n^{-1}(\vec{v})}$ is \NP-hard.
+  Next, for $u \in \psi_n^{-1}(\vec{v})$ and $a \in \Sigma \setminus \{b\}$
+  we have $|u|_a < n - 1$.
+  By \crefitem{ex:only_one_letter_infinitely}{ex:only_one_letter_infinitely:3}, 
+  $\psi_n^{-1}(\vec{v})$ is sparse.
+  So, by \cref{sparse:thm:bounded_in_NP}, 
+  $\constrsync{\psi_n^{-1}(\vec{v})}$ is in \NP.
+  
+\ref{constrsync:comm:single:item:PSPACE} In this case we have 
+\[
+\pi_{\{a,b,c\}}(\psi_n^{-1}(\vec{v})) \cap \{a,b,c\}^* a^{\vec{v}(a)} b^{n-1} c^{n-1}\{a,b,c\}^* = \{b,c\}^* a^{\vec{v}(a)} b^{n-1} c^{n-1} \{b,c\}^*.
+\]
+By \cref{constrsync:pspace-hard-example} 
+the language on the right hand side yields a \PSPACE-hard constrained problem.
+By \cref{constr_sync:gen_results:thm:ideal_separation,thm:hom_lower_bound_complexity}, $\constrsync{\psi_n^{-1}(\vec{v})}$ is \PSPACE-hard.
+\Cref{constr_sync:thm:PSPACE} yields that the problem is in \PSPACE. 	
+\end{proof}
+
+\begin{theorem}
+	\label{constr_sync:thm:comm}
+	Let $\mathcal B$ be an $n$-state PDFA recognizing a commutative language.
+	Denote by~$N$ the set of maximal vectors in $\applyfunc{L(\mathcal B)}{\psi_{n+1}}$.
+	
+	\begin{enumerate}
+		\item \label{item:comm:finite} If $L(\mathcal B)$ is finite (equivalently $\vec{v} < (n, \ldots, n)$ for all $\vec{v} \in N$),
+		then \constrsync{L(\mathcal B)} is in $\AC^0$.
+		
+		\item \label{item:comm:LOGSPACE} If $L(\mathcal B)$ is infinite (or equivalently there exist $\vec{v} \in N$ and $a \in \Sigma$ such that $\vec{v}(a) = n$)
+		and if $\vec{v}(a) = n$ and $\vec{v}(b) > 0$ for some $a,b \in \Sigma$
+		imply $\vec{v}(b) = 1$ and $\vec{v}(c) = 0$ for all $c \in \Sigma \setminus \{a,b\}$,
+		then \constrsync{L(\mathcal B)} is \LOGSPACE-complete.
+
+%		the following is true:
+%		\begin{multline*}
+%			\forall \vec{v} \in N  \colon  ( \exists a \in \Sigma : \vec{v}(a) = n ) \Rightarrow 
+%			( ( \forall b \in \Sigma \setminus \{a\} \colon \vec{v}(b) = 0 ) \lor \\
+%			( \exists b \in \Sigma : \vec{v}(b) = 1 \land \forall c \in \Sigma \setminus \{b,c\} \colon \vec{v}(c) = 0 ) ), 
+%		\end{multline*}
+%		then \constrsync{L(\mathcal B)} is \LOGSPACE-complete.
+		
+		\item \label{item:comm:NL} If for every $\vec{v} \in N$ we have $\vec{v}(a) \in \{0,n\}$ for all $a \in \Sigma$
+		and there exists $\vec{v} \in N$ and distinct $a,b \in \Sigma$ such that $\vec{v}(a) = \vec{v}(b) = n$,
+		then \constrsync{L(\mathcal B)} is \NL-complete. 
+		
+		\item \label{item:comm:NP}
+		If there exists $\vec{v} \in N$
+		with $\sum_{\substack{a \in \Sigma \\ \vec{v}(a) < n - 1}} \vec{v}(a) \ge 2$
+		and $\vec{v}(b) = n$ for some $b \in \Sigma$,
+		then \constrsync{L(\mathcal B)} is \NP-hard.
+%			
+%		The problem $\constrsync{\psi_{n}^{-1}(N)}$
+%		is \NP-hard in the following cases:
+%		\begin{enumerate}
+%			\item there exist $a,b,c \in \Sigma$ and $\vec{v} \in N$
+%			such that $0 < \vec{v}(a), \vec{v}(c) < n$
+%			and $\vec{v}(b) = n$.
+%			\item there exist $a,b \in \Sigma$ and $\vec{v} \in N$
+%			such that $2 \le \vec{v}(a) < n$
+%			and $\vec{v}(b) = n$.
+%		\end{enumerate}
+%		
+		If additionally, 
+		for every $\vec{u} \in N$
+		we have that $|\{ a \in \Sigma \mid \vec{u}(a) = n \}| \ge 2$
+		implies $\vec{u}(a) \in \{0,n\}$ for all $a \in \Sigma$, then  \constrsync{L(\mathcal B)}
+		is \NP-complete.
+		
+		
+		\item \label{comm:prop:hardness:pspace}  Suppose there exist $a,b,c \in \Sigma$ and $\vec{v} \in N$
+		such that $0 < \vec{v}(a) < n$
+		and $\vec{v}(b) = \vec{v}(c) = n$.
+		Then $\constrsync{L(\mathcal B)}$ %\psi_{n}(L(\mathcal B))}$
+	    is \PSPACE-complete.
+	\end{enumerate}
+\end{theorem}
+\begin{proof} 
+If $L(\mathcal B)$ is finite, containment in $\AC^0$
+follows from \cref{constr_sync:thm:finite}.
+Next, suppose $L(\mathcal B)$ is infinite.
+As $L(\mathcal B)$ is commutative,
+we have $L(\mathcal B) = \applyfunc{\applyfunc{L(\mathcal B)}{\psi}}{\psi^{-1}}$.
+Proposition~\ref{constr_sync:prop:cropped_by_B} then gives
+\[
+\constrsync{L(\mathcal B)} \equiv_m^{\AC^0}
+\constrsync{\applyfunc{
+		\applyfunc{L(\mathcal B)}{\psi_{n}}}{\psi_{n}^{-1}}
+}.
+\]
+Proposition~\ref{constr_sync:prop:comm_constraint_max} 
+yields $\constrsync{L(\mathcal B)} \eqACZEROm \constrsync{\psi_{n+1}^{-1}(N)}$
+with $N = \max \psi_n(L(\mathcal B))$.
+
+Now, for each case, \ref{item:comm:LOGSPACE}, \ref{item:comm:NL}, \ref{item:comm:NP}, or \ref{comm:prop:hardness:pspace},
+for $\vec{v} \in N$, by \cref{constrsync:lem:comm:single-vector},
+$\constrsync{\applyfunc{\vec{v}}{\psi_n^{-1}}}$ is in \LOGSPACE, \NL, \NP, or \PSPACE, respectively.
+ Then, by \cref{constr_sync:thm:union},
+as
+\[
+\applyfunc{N}{\psi_n^{-1}}
+= \bigcup_{\vec{v} \in N} \applyfunc{\vec{v}}{\psi_n^{-1}},
+\]
+we obtain containment in the respective complexity class.
+
+Next, each case \ref{item:comm:LOGSPACE}, \ref{item:comm:NL}, \ref{item:comm:NP}, or \ref{comm:prop:hardness:pspace},
+claims existence of a single $\vec{v} \in N$
+such that we obtain \LOGSPACE-, \NL-, \NP- or \PSPACE-hardness, respectively,
+of  $\constrsync{\psi_n^{-1}(\vec{v})}$ from \LEM~\ref{constrsync:lem:comm:single-vector}. 
+The elements of $N$ are pairwise incomparable.
+So, by \cref{constrsync:prop:incomparable} 
+we have $\psi_n^{-1}(N) \cap \Sigma^* \psi_n^{-1}(\vec{v}) \Sigma^* = \psi_n^{-1}(\vec{v})$.
+Then, by the ideal intersection theorem (\cref{constr_sync:gen_results:thm:ideal_separation}),
+\LOGSPACE-, \NL-, \NP-  and \PSPACE-hardness
+follows for $\constrsync{\psi_n^{-1}(N)}$
+in each case \ref{item:comm:LOGSPACE}, \ref{item:comm:NL}, \ref{item:comm:NP}, or \ref{comm:prop:hardness:pspace}, respectively.
+\end{proof}
+
+\begin{remark}
+The property that the elements in $N$ are pairwise incomparable
+is crucial in the formulation of \cref{constr_sync:thm:comm}. 
+Consider $N = \{(n,n), (n,2)\}$ from Example~\ref{constrsync:ex:incomparable}  where $\Sigma = \{a_1, a_2\}$.
+Then $N$ fulfills the condition from \crefitem{constr_sync:thm:comm}{item:comm:NP},
+but $\fact{\psi_n^{-1}(N)} = \{a_1, a_2\}^*$.
+So, by \cref{gen_results:cor:factors_etc_complexity,constr_sync:cor:one-state},
+$\constrsync{\psi_n^{-1}(N)}$ is \NL-complete.
+\end{remark}
+
+\begin{example}
+\begin{enumerate}
+\item $\constrsync{a^*aba^* \cup a^*baa^*}$ is \LOGSPACE-complete.
+
+\item $\constrsync{\{ u \in \{a,b\}^* : |u|_a \ge n, |u|_b \ge m\}}$ for some $n,m \ge 0$ is \NL-complete.
+	
+\item $\constrsync{\{ u \in \{a,b\}^* : |u|_a \le n, |u|_b \ge m \}}$ for some $n \ge 2$ and $m \ge 0$ is \NP-complete.
+	
+\item $\constrsync{\{ u \in \{a,b,c\}^* : |u|_a \le n, |u|_b, |u|_c \ge m \}}$ for some $n \ge 1$ and $m \ge 0$
+	is \PSPACE-complete for distinct $a,b,c$.
+\end{enumerate}	
+\end{example}

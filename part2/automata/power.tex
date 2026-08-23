@@ -1,0 +1,186 @@
+%!TEX root = ./../../springer-mono-format/book.tex
+%!TEX root = ./../../thesis-trier.tex
+
+\label{def:power_aut} \IN{power (semi-)automaton}
+Let $\semiautomat{A}{Q}{\Sigma}{\delta}$. The \emph{power (semi-)automaton} 
+is $\semiautomat{P({\mathcal A})}{\mathcal P(Q)}{\Sigma}{\delta}$
+where $\delta \colon \mathcal P(Q)\times \Sigma \to \Sigma$ is the extension of
+$\delta \colon Q \times \Sigma \to Q$ to subsets $\applytrans{\delta}{S}{x} = \{ \applytrans{\delta}{q}{x} \mid q \in Q \}$ 
+for $S \subseteq Q$ and $x \in \Sigma$ (see also Section~\ref{intro:sec:basic}).
+\Cref{fig:thm_not_usable} shows the power automaton
+of a four-state automaton. Also, part of the power 
+automaton of the \v{C}ern\'y automaton $\mathcal C_4$
+is depicted in \cref{sync_max:fig:C4-poweraut}.
+
+In this section, we present properties of powers of a single word in the power automaton. These can also be interpreted as properties of transformations on subsets of a finite set; however, since our focus is on automata, we express them in automata-theoretic terms.
+
+\todo[inline]{bild kompakter}
+
+\input{../part3/subset/fig_ex_aut_thm_not}
+
+\begin{proposition} \label{prelim:fact:cycle_states} \label{prelim:automata:power:P}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ with $n = |Q|$ and $u \in \Sigma^*$. 
+	Then for $i \ge 0$ we have
+	$\delta(Q, u^{i+1}) \subseteq \delta(Q, u^i)$
+	and for $P = \delta(Q, u^{n-1})$
+	the following is true:
+	\begin{enumerate}
+	\item $P = \delta(Q, u^{n - |P|})$,
+		
+	\item $\delta(P, u) = P$ ($u$ permutes~$P$) where~$P$
+	is the largest set with this property, and $P = \delta(Q, u^i)$ for all $i \ge n - |P|$,
+		
+	\item $P \subseteq \delta(Q, u^i)$ for all $i \ge 0$.
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+	For the first claim, since $\delta(Q, u) \subseteq Q$
+	and $\delta(Q, u^{i+1}) \subseteq \delta(Q, u^i)$
+	implies 
+	\[ \delta(\delta(Q, u^{i+1}), u) \subseteq \delta(\delta(Q, u^i), u),
+	\]
+	by induction we find that $\delta(Q, u^{i+1}) \subseteq \delta(Q, u^i)$
+	for all $i \ge 0$.
+	
+	Next, by finiteness, there exists a minimal $j \ge 0$
+	such that $\delta(Q, u^{j+1}) = \delta(Q, u^j)$.
+	Then we have $\delta(Q, u^k) = \delta(Q, u^j)$ for all $k \ge j$
+	and we get the following chain of proper inclusions
+	\begin{equation}\label{prelim:automata:power:eqn:seq}
+		\delta(Q, u^j) \subsetneq \delta(Q, u^{j-1}) \subsetneq\cdots \subsetneq \delta(Q, u) \subsetneq Q.
+	\end{equation}
+	This yields $\delta(Q, u^j) \subseteq \delta(Q, u^i)$ for every $i \ge 0$.
+	Since $|\delta(Q, w)| \ge 1$ for all $w \in \Sigma^*$,
+	the above chain of proper inclusions has length at most $n - |\delta(Q, u^j)|$, i.e., $j  \le n - |\delta(Q, u^j)|$.
+	Hence we find
+	\[
+	P = \delta(Q, u^{n-1}) = \delta(Q, u^{n - |\delta(Q, u^j)|}) = \delta(Q, u^j)
+	= \delta(Q, u^{n}) = \delta(P, u),
+	\]
+	and so $P = \delta(Q, u^{n - |P|})$,
+	$P \subseteq \delta(Q, u^i)$ for all $i \ge 0$,
+	and $P$ is permuted by~$u$. This also gives
+	$P = \delta(Q, u^i)$ for $i \ge n - |P|$
+	by induction.	
+	Furthermore, if $\delta(S, u) = S$ for $S \subseteq Q$,
+	then $S = \delta(S, u^i) \subseteq \delta(Q, u^{i})$ for all $i \ge 0$.
+	In particular, we obtain $S \subseteq \delta(Q, u^{n-1}) = P$
+	and so $P$ is the largest set permuted by~$u$. This shows all claims.
+\end{proof}
+
+The set~$P$ from \cref{prelim:fact:cycle_states}
+is precisely the set of cycle states described in \cref{prelim:rem:intuition-functional-graph}.
+By finiteness, after applying a word at most $n - 1$ times
+to any state we end up at a cycle state. 
+
+Note that since $\delta(Q, u) \subseteq Q$ for $u \in \Sigma^*$,
+we have $\delta(Q, uv) \subseteq \delta(Q, v)$ for each $v \in \Sigma^*$.
+
+\begin{corollary}  \label{prelim:automata:cor:power:P}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ with $n = |Q|$ and $u \in \Sigma^*$. 
+	Then we have $\delta(Q, u^i) = \delta(Q, u^{\min\{n-1,i\}})$ for $i \ge 0$.
+\end{corollary}
+\begin{proof}
+	 By \cref{prelim:automata:power:P}, the word~$u$
+	 permutes the set $\delta(Q, u^{n-1})$.
+	 Thus, for $i \ge n - 1$ we find $\delta(Q, u^i) = \delta(Q, u^{n-1})$, which gives the claim.
+\end{proof}
+
+In~\cite[Lem.~1~\&~2]{DBLP:journals/iandc/PribavkinaR11} it was also proved that $P$
+is the largest set permuted by~$u$ in \cref{prelim:fact:cycle_states},
+together with the fact that we have to apply~$u$ at most $n - |P|$
+times to~$Q$ to obtain~$P$.
+
+Note that for the properties collected in \cref{prelim:automata:power:P} to hold
+it is essential that we start from the whole state set before applying powers of~$u$.
+
+\begin{proposition} \label{prelim:word_in_PA} \label{prelim:automata:power:prop:S}  
+Let $\semiautomat{A}{Q}{\Sigma}{\delta}$, $n = |Q|$, $u \in \Sigma^*$, $S \subseteq Q$, and $i \ge 0$.
+
+\begin{enumerate}
+\item \label{prelim:automata:power:prop:S:1} $\delta(S, u^i) = \delta(S, u^j)$ for some $0 \le j < 2^n - 1$.
+
+\item \label{prelim:automata:power:prop:S:2} $|\delta(S, u^i)| = |\delta(S, u^j)|$ for some $0 \le j \le n - |\delta(S, u^i)|$. 
+
+\item \label{prelim:automata:power:prop:S:3} $|\delta(S, u^i)| = |\delta(S, u^{\min\{n-1,i\}})|$. 
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+\ref{prelim:automata:power:prop:S:1}: We can assume $S \ne \emptyset$.
+ Let $j \ge 0$ be a minimal number
+ such that $\delta(S, u^i) = \delta(S, u^j)$.
+ Assume $j \ge 2^n - 1$.
+ We have $\delta(S, u^k) \ne \emptyset$ for all $k \ge 0$. 
+ Since there are at most $2^n - 1$ non-empty subsets, 
+ and the sequence $\delta(S, u^0), \delta(S, u), \ldots, \delta(S, u^{2^n-1})$
+ has length $2^n$, there exist $0 \le k < k' \le 2^n - 1$
+ such that $\delta(S, u^{k}) = \delta(S, u^{k'})$.
+ Then $\delta(S, u^{j - (k' - k)}) = \delta(S, u^j)$,
+ contradicting the minimal choice of~$j$.
+ So, we have $j < 2^n - 1$.
+
+\ref{prelim:automata:power:prop:S:2}: We can assume $i > n - |\delta(S, u^i)|$.
+ For the minimal $j \ge 0$ 
+ with $\delta(Q, u^{j+1}) = \delta(Q, u^j)$, 
+ we have a proper chain of inclusions as in \cref{prelim:automata:power:eqn:seq}.
+ Thus, for $k \in \{0,1,\ldots,j\}$,
+ we get $|\delta(Q, u^k)| \le n - k$.
+ Since $\delta(S, u^j) \subseteq \delta(Q, u^j)$,
+ we find $|\delta(S, u^j)| \le n - j$,
+ and so $j \le n - |\delta(S, u^j)|$.
+ Set $P = \delta(Q, u^{n-1})$.
+ With \cref{prelim:automata:power:P} we get
+ $\delta(Q, u^j) = P$ and that $u$ permutes~$P$,
+ and so $u$ acts injectively on subsets of~$P$.
+ Thus, from $\delta(S, u^j) \subseteq P$
+ we obtain $|\delta(S, u^k)| = |\delta(S, u^j)|$
+ for all $k \ge j$.
+ In particular, since $i > j$,
+ we find $|\delta(S, u^i)| = |\delta(S, u^j)|$.
+  
+ \ref{prelim:automata:power:prop:S:3}: We can assume $i \ge n$.
+ 	By Item~\ref{prelim:automata:power:prop:S:2} 
+ 	we have $|\delta(S, u^i)| = |\delta(S, u^j)|$
+ 	for some $0 \le j < n$.
+ 	With \cref{eqn:subset-mapped-to-smaller-set} 
+ 	we find
+ 	\begin{enumerate}
+ 	\item $
+ 	|\delta(S, u^{n-1})| = |\delta(\delta(S, u^j), u^{n - 1 - j})| \le |\delta(S, u^j)|
+ 	$
+ 	and
+ 	
+ 	\item $|\delta(S, u^i)| = |\delta(\delta(S, u^{n - 1}), u^{i - n + 1})| \le |\delta(S, u^{n - 1})|.
+ 	$
+ 	\end{enumerate}
+ 	Thus we obtain $|\delta(S, u^i)| = |\delta(S, u^{n-1})|$.
+\end{proof}
+
+\begin{corollary} 	\label{prelim:fact:unary_sync_word}
+ Let $\semiautomat{A}{Q}{\Sigma}{\delta}$, $u \in \Sigma^*$, and $S \subseteq Q$.
+ Then $|\delta(S, u^i)| = 1$ for some $i \ge 0$
+ if and only if $|\delta(S, u^{n - 1})| = 1$ for $n = |Q|$.
+\end{corollary}
+\begin{proof}
+  First, assume $|\delta(S, u^i)| = 1$ for some $i \ge 0$.
+  Since $|\delta(S, u^{i})| = |\delta(S, u^{\min\{n-1, i\}})|$
+  by \crefitem{prelim:automata:power:prop:S}{prelim:automata:power:prop:S:3} 
+  and $|\delta(S, u^{n - 1})| \le |\delta(S, u^{\min\{n-1, i\}})|$, 
+  we find $|\delta(S, u^{n - 1})| = 1$.
+  The converse implication is obvious.
+\end{proof}
+
+\begin{remark}
+To obtain \crefitem{prelim:automata:power:prop:S}{prelim:automata:power:prop:S:1},
+we have basically used the fact that in any $n$-state automaton 
+we enter a cycle when we read a word more than $n-1$ times.
+Now, as $u$ permutes $P$ in \cref{prelim:fact:cycle_states},
+the smallest $i \ge 0$ such that $\delta(q, u^i) = q$
+for all $q \in P$
+is asymptotically equal to $\exp((1+o(1))\sqrt{(|P|\ln{|P|})}$
+by a result from Landau~\cite{landau03}.
+This can be used to improve the bound from \cref{prelim:word_in_PA}
+asymptotically. However, as 
+the bound given is sufficient for our applications,
+we do not bother to state a more precise bound.
+\end{remark}

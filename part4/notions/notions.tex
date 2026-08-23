@@ -1,0 +1,80 @@
+%!TEX root = ./../../springer-mono-format/book.tex
+%!TEX root = ./../../thesis-trier.tex
+
+% https://english.stackexchange.com/questions/186434/is-notations-a-proper-english-word
+Here, we introduce additional concepts and notations %that is only 
+needed in \cref{part:constrsync}, and give two new results in coding theory.
+Specifically, in \cref{constr_sync:subsec:pfun}, we introduce partial functions. 
+\Cref{constr_sync:subsec:pdfa} introduces
+partial automata (PDFAs), which generalize our automata model by allowing
+the transition relation to be partial function.
+These automata give a convenient specification mechanism
+for constraint languages (see the discussion in \cref{constrsync:notions:sec:discussion}).
+\Cref{constr_sync:subsec:levenshtein-romanov-map} introduces
+the Levenshtein-Romanov mapping.
+In \cref{constr_sync:chap:classes_constraint_languages} we use prefix codes in some hardness conditions
+and solid codes for a statement on the preservation of the computational complexity.
+\Cref{constr_sync:subsec:codes} introduces the relevant notions
+related to codes, various subclasses of codes as, for example, solid codes,
+and overlap-free languages. We also present two new characterizations of solid codes.
+ % that have not been noted before.
+Later, in \cref{thm:constr_sync_hom_strongly_self_sync}, 
+we will prove, using the Levenshtein-Romanov mapping, 
+that the computational complexity
+of the constrained synchronization is preserved for reencodings
+of the constraint language by solid codes.
+\Cref{constr_sync:sec:bounded,constr_sync:subsec:monoid} introduce bounded and monoid languages, respectively.
+%both will be later investigated 
+%as classes of constraint languages in \cref{sec:constr_sync:letter_bounded,constr_sync:sec:monoid}, respectively.
+Lastly, in \cref{constr_sync:sec:growth}, we investigate
+the growth of languages, and state connections to bounded and monoid languages.
+In particular, we classify the growth of monoid languages.
+
+\section{Partial Functions}
+\label{constr_sync:subsec:pfun}
+
+\input{../part4/notions/partialfunc}
+
+\section{Partial Automata (PDFAs)}
+\label{constr_sync:subsec:pdfa}
+
+\input{../part4/notions/pdfa}
+
+\section{The Levenshtein-Romanov Mapping}
+\label{constr_sync:subsec:levenshtein-romanov-map}
+
+\input{../part4/notions/levenshtein}
+
+\section{Codes and Overlap-Free Languages}
+\label{constr_sync:subsec:codes}
+
+\input{../part4/notions/codes}
+
+%\section{Characterizing Solid Codes}
+%\label{constr_sync:subsec:charsolidcode}
+
+\section{Bounded Languages}
+\label{constr_sync:sec:bounded} 
+
+\input{../part4/notions/bounded}
+
+\section{Monoid Languages}
+\label{constr_sync:subsec:monoid}
+
+\input{../part4/notions/monoid}
+
+\section{The Growth of Languages}
+\label{constr_sync:sec:growth} 
+
+\input{../part4/notions/growth}
+
+%\section{General Assumptions on Constraint Languages and Constraint PDFAs}
+\section{Assumptions on Constraint Languages and Constraint PDFAs}
+\label{constr_sync:sec:assumptions}
+ 
+\input{../part4/notions/remarkconstraut}
+
+\section{Discussion}
+\label{constrsync:notions:sec:discussion}
+
+\input{../part4/notions/discussion}

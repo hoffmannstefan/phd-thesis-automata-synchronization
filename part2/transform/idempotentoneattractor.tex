@@ -1,0 +1,378 @@
+%!TEX root = ./../../springer-mono-format/book.tex
+%!TEX root = ./../../thesis-trier.tex
+
+\Cref{prelim:thm::one-attractor-idempotent} lists several characterizations for idempotents
+whose duplicate set contains at most one point,
+and \cref{prelim:prop:one-attractor-idempotent-fin} 
+provides an additional characterization for finite domains.
+Then, \cref{prelim:trans:idempt-one-point:prop:comp}, which we need in Part~\ref{part:aut},
+gives conditions when the composition of two idempotent one-point singulars
+yields an idempotent one-point singular. As a consequence, we obtain
+that if the composition of two simple idempotents yields a simple idempotent,
+then it equals one of the two original simple idempotents.
+
+A simple idempotent is an idempotent one-point singular.
+Rystsov~\cite{Rystsov2000} introduced simple idempotents
+and showed~\cite[Lem.~1]{Rystsov2000} that a simple idempotent $t \colon [n] \to [n]$
+on a finite set fulfills $\applyfunc{A}{t^{-1}} \subseteq A$
+or $A \subseteq \applyfunc{A}{t^{-1}}$ for every $A \subseteq [n]$.
+In~\crefitem{prelim:thm::one-attractor-idempotent}{prelim:prop:item:inverse_super_or_subset2} 
+we extend this result by characterizing the transformations that fulfill 
+this equation as precisely the idempotents whose
+duplicate set contains at most one point.
+
+\begin{theorem}
+	\label{prelim:thm::one-attractor-idempotent}
+	Let $t \colon X \to X$ with~$X$ non-empty. Then the following are equivalent.
+	\begin{enumerate}
+	\item \label{prelim:prop:item:one-attractor} 
+	$t$ is an idempotent one-point singular or equals the identity transformation.
+
+    \item \label{prelim:prop:item:equation}
+    $t = [a_{m-1}\mapsto a_m] \cdots [a_1 \mapsto a_m]$
+    for $\move{t} = \{ a_1, \ldots, a_m \}$ and $\dupl{t} = \{a_m\}$ or $t = \operatorname{id}_X$.
+
+    \item \label{prelim:prop:item:one-attractor-a} 
+    $\dupl{t}$ contains at most one point and $t$ is idempotent.
+
+	\item \label{prelim:prop:item:oneattractor-single} $\dupl{t}$ contains at most one point
+	and $|\applyfunc{z}{t^{-1}}| = 1$ implies $\applyfunc{z}{t^{-1}} = \{z\}$
+	for all $z \in X$.
+		
+	\item  \label{prelim:prop:item:invimg1}  There exists $y \in X$ such that for all $z \in X$
+	we have $\applyfunc{z}{t^{-1}} = \{z\}$
+	or $z \in \applyfunc{y}{t^{-1}}$.
+	
+	\item  \label{prelim:prop:item:invimg1a} There exists $y \in X$
+	such that $x \in t^{-1}(z)$ implies $t(x) = x$ for $z,x\in X$ with $z \ne y$.	
+	
+	\item  \label{prelim:prop:item:mapping} For all $x,z \in X$ 
+	with $t(x) \ne x$ and $t(z) \ne z$
+	we have $t(x) = t(z)$, i.e., $\move{t} \subseteq t^{-1}(y)$ for some $y \in X$.
+	
+	\item \label{prelim:prop:item:invimg2} There exists $y \in X$ such that for all $z \in X$
+	we have $\applyfunc{z}{t^{-1}} \subseteq \{z\}$
+	or $z \in \applyfunc{y}{t^{-1}}$.
+	
+	\item \label{prelim:prop:item:excluded2} There exists $y \in X$ such that, for all $z \in t(X)$, we have
+	\[
+	\applyfunc{z}{t^{-1}} = \begin{cases}
+		\excl{t} \cup \{y\} & \text{if } z = y, \\
+		\{ z \}             & \text{otherwise.}
+	\end{cases}
+	\]
+	
+	\item \label{prelim:prop:item:inverse_super_or_subset2} For all $A \subseteq X$ we have
+	$A \subseteq \applyfunc{A}{t^{-1}}$ or
+	$\applyfunc{A}{t^{-1}} \subseteq A$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+	$\ref{prelim:prop:item:one-attractor} \Rightarrow~\ref{prelim:prop:item:equation}$
+	For $t \ne \operatorname{id}_X$,
+	let $\dupl{t} = \{a_m\}$ and $\move{t} = \{a_1, \ldots, a_{m-1}\}$.
+	Then we have $t = [a_{m-1}\mapsto a_m] \cdots [a_1 \mapsto a_m]$.
+		
+	$\ref{prelim:prop:item:equation} \Rightarrow~\ref{prelim:prop:item:one-attractor-a}$:
+	This is clear.
+	
+	$\ref{prelim:prop:item:one-attractor-a} \Rightarrow~\ref{prelim:prop:item:oneattractor-single}$: 
+	By assumption, $\dupl{t}$ contains at most one point. By idempotency,
+	the rest of the claim follows from \crefitem{prelim:prop:idempotent}{prop:idemp:item:invy}.	
+	
+	$\ref{prelim:prop:item:oneattractor-single} \Rightarrow~\ref{prelim:prop:item:invimg1}$: 
+	For $\dupl{t} \ne \emptyset$, let $y$
+	be the unique point in $\dupl{t}$,
+	otherwise, let $y \in X$ be any point.
+	Next, let $z \in X$ with $t(z) \ne y$. 
+	Then as $t(z) \notin \dupl{t}$ we have $t^{-1}(t(z)) = \{z\}$.
+	By assumption $|t^{-1}(t(z))| = 1$
+	gives $t^{-1}(t(z)) = \{t(z)\}$.
+	Thus $t(z) = z$, which gives $t^{-1}(z) = \{z\}$. 
+
+$\ref{prelim:prop:item:invimg1} \Rightarrow~\ref{prelim:prop:item:invimg1a}$: Let $x,z \in X$ with $z \ne y$ and suppose $x \in t^{-1}(z)$.
+Since $t^{-1}(z) = \{z\}$, we get $x = z$ and so $t(x) = x$.
+
+$\ref{prelim:prop:item:invimg1a} \Rightarrow~\ref{prelim:prop:item:mapping}$: Suppose $t(x) \ne x$ and $t(z) \ne z$
+for $x,z \in X$.
+Since $x \in t^{-1}(t(x))$ and $z \in t^{-1}(t(z))$,
+we find $t(x) = t(z) = y$.
+
+$\ref{prelim:prop:item:mapping} \Rightarrow~\ref{prelim:prop:item:invimg2}$: 
+We can assume $t(x) \ne x$ for some $x \in X$, as otherwise~$t$
+equals the identity transformation and the claim obviously holds.
+Then set $y = t(x)$. Next, consider $z \in X$
+with $z \notin t^{-1}(y)$.
+By assumption, $t(z) = z$. Now, assume $t(z) = t(z')$ for some $z' \in X$
+with $z \ne z'$.
+Then $t(z') \ne z'$ yields $t(z') = y$. So, this is not possible
+and we have $t^{-1}(z) = \{z\}$.
+
+$\ref{prelim:prop:item:invimg1a} \Rightarrow~\ref{prelim:prop:item:invimg2}$: 	Let $z \in X$ with $z \ne y$
+and assume $z \notin t^{-1}(y)$.
+Now, for $x \in X$ with $x \in t^{-1}(z)$, by assumption, we get $z = t(x) = x$
+and so $t^{-1}(z) \subseteq \{z\}$.
+
+$\ref{prelim:prop:item:invimg2} \Rightarrow~\ref{prelim:prop:item:excluded2}$: 
+ Let $z \in t(X)$ and suppose $z \ne y$.
+ We have $z = t(x)$ for some $x \in X$.
+ Thus $x \in t^{-1}(z)$. Since $z \ne y$,
+ by assumption $t^{-1}(z) \subseteq \{z\}$
+ and so $z = x$. This gives $t^{-1}(z) = \{z\}$.
+ Since $t^{-1}(z) = \{z\}$ for $z \in t(X)$ with $z \ne y$,
+ and the union of the inverse images equals~$X$,
+ we have that the remaining points $\excl{t} \cup \{y\}$
+ must be in the inverse image of $t^{-1}(y)$, 
+ and since this union is pairwise disjoint, no other point is in $t^{-1}(y)$  
+ and so $t^{-1}(y) = \excl{t} \cup \{y\}$.
+ 
+$\ref{prelim:prop:item:excluded2} \Rightarrow \ref{prelim:prop:item:inverse_super_or_subset2}$: Let $A \subseteq X$.
+Then
+\[
+t^{-1}(A) = t^{-1}(A \cap t(X))
+= \begin{cases}
+	A \cap t(X) & \text{if } y \notin A, \\
+	\excl{t} \cup A & \text{if } y \in A. 	
+\end{cases}
+\]
+So, $t^{-1}(A) \subseteq A$ for $y \notin A$
+and $A \subseteq t^{-1}(A)$ for $y \in A$.
+	
+$\ref{prelim:prop:item:inverse_super_or_subset2} \Rightarrow~\ref{prelim:prop:item:one-attractor}$: 
+ For $z \in X$, consider $A = \{t(z)\}$. Then $A \subseteq t^{-1}(A)$ or $t^{-1}(A) \subseteq A$ and as $t^{-1}(A) \ne \emptyset$,
+ we get $t(z) \in t^{-1}(t(z))$ for both cases.
+ Hence, by~\crefitem{prelim:prop:idempotent}{prop:idemp:item:inv},~$t$ is idempotent. Then, for $\dupl{t} = \emptyset$ we have $t = \operatorname{id}_X$.
+ Next, for $\dupl{t} \ne \emptyset$,
+ by \crefitem{prelim:cor:idempotent}{prelim:idemp:5}
+ there exists $y \in \dupl{t}$
+ such that  $x \in t^{-1}(y) \cap \excl{t}$
+ for some $x \in X$.
+ Let $y' \in \dupl{t}$ and set $A = \{x,y'\}$.
+ Then $t^{-1}(A) = t^{-1}(y')$ and, as $t^{-1}(y')$ contains at least two points,
+ for $A \subseteq t^{-1}(y')$ or $t^{-1}(y') \subseteq A$
+ we get $x \in t^{-1}(y')$ in both cases.
+ Now $x \in t^{-1}(y) \cap t^{-1}(y')$ gives $y = y'$
+ and so~$t$ is a one-point singular.
+%
+% Alternativer Beweis für one-point singular:
+%	Suppose $y,y' \in \dupl{t}$.
+%	Then there exist $z,z' \in X$ with $z \in t^{-1}(y)$, 
+%	$z' \in t^{-1}(y')$, $z \ne y$ and $z' \ne y'$. % z,z' excluded
+%	Set $A = \{y, z'\}$. 
+%	First, suppose $A \subseteq t^{-1}(A)$.
+%	Then $z' \in t^{-1}(A)$.
+%	As the inverse images partition $X$,
+%	we must have $y' \in A$.
+%	As $y' \ne z'$, this implies $y = y'$.
+%	Next, suppose $t^{-1}(A) \subseteq A$.
+%	As $y \in A$ we have $z \in t^{-1}(A)$.
+%	So, $z \in A$.
+%	Now, $z \ne y$ implies $z = z'$,
+%	which yields $y = y'$.
+%   Hence $t$ is a one-point singular.
+\end{proof}
+
+Regarding \crefitem{prelim:thm::one-attractor-idempotent}{prelim:prop:item:equation},
+inductively, from \cref{prelim:trans:eqn:SI-one-singular0} (but it is also easy to verify directly)
+we get the following identity:
+\begin{equation} \label{prelim:eqn:concat-SI}
+\concat{\SI{a_1}{a_2}}{\concat{\cdots \SI{a_2}{a_3}}{\SI{a_{m-1}}{a_m}}}
+= [a_{m-1}\mapsto a_m] \cdots [a_2 \mapsto a_m][a_1 \mapsto a_m]. 
+\end{equation}
+
+Next, we state a new characterization of idempotents on finite sets whose duplicate set contains at most one point.
+
+\begin{proposition} 
+\label{prelim:prop:one-attractor-idempotent-fin}
+  Let $t \colon [n] \to [n]$. 
+  Then $t = \operatorname{id}_{[n]}$ or $t$ is an idempotent one-point singular
+  if and only if 
+  for all $A \subseteq [n]$
+  we have that $|\applyfunc{A}{t^{-1}}| = |A|$
+  implies $\applyfunc{A}{t^{-1}} = A$.		
+\end{proposition}
+\begin{proof}
+	We can assume $t \ne \operatorname{id}_{[n]}$.
+	First, suppose $t$ is an idempotent one-point singular. Let $A \subseteq [n]$ be such that
+	$|t^{-1}(A)| = |A|$.
+	By~\crefitem{prelim:thm::one-attractor-idempotent}{prelim:prop:item:inverse_super_or_subset2} we have $t^{-1}(A) \subseteq A$ or $A \subseteq t^{-1}(A)$.
+	Finiteness implies $t^{-1}(A) = A$ in both cases.
+		
+	Conversely, consider a set $A \subseteq [n]$.
+	Since $\defect{t} + |A \cap t([n])| \ge |t^{-1}(A \cap t([n]))|$ by \crefitem{prelim:prop:gentransdef}{prelim:prop:item:defA},
+	we can choose $B \subseteq \excl{t}$
+	such that $|B| + |A \cap t([n])| = |t^{-1}(A \cap t([n]))|$
+	where we let $B \subseteq A \cap \excl{t}$ if $|B| \le |A \cap \excl{t}|$
+	and $A \cap \excl{t} \subseteq B$ otherwise.
+	Since $B \subseteq \excl{t}$
+	we have $|B| + |A \cap t([n])| = |B \cup (A \cap t([n]))|$
+	and $t^{-1}(A \cap t([n])) = t^{-1}(( A \cap t([n]) ) \cup B)$.
+	Thus $| t^{-1}(( A \cap t([n]) ) \cup B) | = | ( A \cap t([n]) ) \cup B) |$
+	and so $t^{-1}( ( A \cap t([n]) ) \cup B) = ( A \cap t([n]) ) \cup B$.
+	Since $t^{-1}(A) = t^{-1}(A \cap t([n]))$
+	and $A = (A \cap t([n])) \cup (A \cap \excl{t})$,
+	we find $t^{-1}(A) \subseteq A$ for $B \subseteq A \cap \excl{t}$
+	and $A \subseteq t^{-1}(A)$
+	for $A \cap \excl{t}\subseteq B$.
+	Therefore, by \crefitem{prelim:thm::one-attractor-idempotent}{prelim:prop:item:inverse_super_or_subset2}, 
+	it follows that $t$ is an idempotent one-point singular.
+\end{proof}
+
+\begin{proposition} \label{prelim:trans:idempt-one-point:prop:comp} 
+	Let $t, h \colon X \to X$ be idempotent one-point singulars. Then the following are equivalent.
+	\begin{enumerate}
+		\item \label{prelim:trans:idempt-one-point:prop:comp:1} $\concat{t}{h}$ is an idempotent one-point singular.
+			
+		\item \label{prelim:trans:idempt-one-point:prop:comp:2a} 
+		$\move{t} \cap h(\move{h} \cap t(X)) \subseteq \fix{\concat{t}{h}}$
+		and 
+		$\dupl{\concat{t}{h}} = h(\dupl{t})$.\footnote{Recall that
+			$\dupl{h_{|t(X)}} \subseteq h(\dupl{t})$ is equivalent to $\dupl{\concat{t}{h}} = h(\dupl{t})$
+			by \cref{prelim:eqn:dupl0}.}
+		
+		\item \label{prelim:trans:idempt-one-point:prop:comp:2} $h(\move{h} \cap t(X)) \subseteq h(\dupl{t})$.
+				
+		\item \label{prelim:trans:idempt-one-point:prop:comp:3} $t(X) \subseteq \fix{h}$ or $\dupl{h} = h(\dupl{t})$.\footnote{This is equivalent to the statement that $\move{h} \cap t(X) \ne \emptyset$ implies $\dupl{h} = h(\dupl{t})$.}
+	    
+	    \item \label{prelim:trans:idempt-one-point:prop:comp:4} We have $\concat{t}{h} = t$
+	    or with $\move{t} \cup \move{h} = \{a_1, \ldots, a_{m-1}\}$ and $\dupl{h} = \{a_m\}$
+	    for distinct $a_1, \ldots, a_m \in X$
+	    we have
+	    \[
+	    \concat{t}{h} = [a_1 \mapsto a_m] \cdots [a_{m-1} \mapsto a_m].
+	    \]
+\end{enumerate}	
+\end{proposition}
+\begin{proof}
+$\ref{prelim:trans:idempt-one-point:prop:comp:1} \Rightarrow \ref{prelim:trans:idempt-one-point:prop:comp:2a}$:
+ The first inclusion follows from \cref{prelim:cor:comp-idempotents-idempotent}.
+ Since $\concat{t}{h}$ and $t$ are one-point singulars, we must have $\dupl{\concat{t}{h}} = h(\dupl{t})$.
+ 	
+$\ref{prelim:trans:idempt-one-point:prop:comp:2a} \Rightarrow \ref{prelim:trans:idempt-one-point:prop:comp:2}$: 
+Let $x \in X$ be such that $h(t(x)) \ne t(x)$.
+If $t(h(t(x))) \ne h(t(x))$, then, by assumption, $h(t(h(t(x)))) = h(t(x))$
+and thus $h(t(x)) \in \dupl{h_{|t(X)}}$.
+If $t(h(t(x))) = h(t(x))$, then $h(t(x)) \in t(X)$.
+By idempotency of~$h$, we find $h(h(t(x))) = h(t(x))$.
+Thus $h(t(x)) \in \dupl{h_{|t(X)}}$.
+Since $\dupl{h_{|t(X)}} \subseteq \dupl{\concat{t}{h}} = h(\dupl{t})$
+we obtain the claim.
+ 
+$\ref{prelim:trans:idempt-one-point:prop:comp:2} \Rightarrow \ref{prelim:trans:idempt-one-point:prop:comp:3}$: 
+Let $t(x) \in \move{h}$.
+Since~$h$ is an idempotent, we have $h(\move{h}) = \dupl{t}$. Since it is a one-point singular, we find 
+$\dupl{h} = \{ h(t(x)) \}$.
+By assumption, we have $h(t(x)) \in h(\dupl{t})$. Since~$t$ is a one-point singular
+we get $h(\dupl{t}) = \{ h(t(x)) \}$.
+Thus $\dupl{h} = h(\dupl{t})$.
+
+%$\ref{prelim:trans:idempt-one-point:prop:comp:2} \Rightarrow \ref{prelim:trans:idempt-one-point:prop:comp:2a}$:
+%It suffices to show $\dupl{h_{|t(X)}} \subseteq h(\dupl{t})$.
+%Let $z \in \dupl{h_{|t(X)}}$.
+%Since two points from~$t(X)$ are mapped to~$z$,
+%we have $z = h(t(x))$ for some $x \in X$ with $t(x) \ne z$.
+%By assumption, this gives $z \in h(\dupl{t})$.
+
+$\ref{prelim:trans:idempt-one-point:prop:comp:3} \Rightarrow \ref{prelim:trans:idempt-one-point:prop:comp:4}$: 
+Suppose $ht \ne t$, i.e., $t(X) \nsubseteq \fix{h}$.
+Then, by \cref{prelim:trans:idempt-one-point:prop:comp:3}, we have $\dupl{t} \subseteq h^{-1}(a_m)$.
+Let $x \in \move{t}$. Then $t(x) \in \dupl{t}$ since $t$ is idempotent
+and so $h(t(x)) = a_m$.
+Next, let $x \in \fix{t}$ and $x \in \move{h}$.
+Then $h(t(x)) = h(x) = a_m$ since~$h$ is idempotent.
+Next, for $x \in \fix{t}\cap \fix{h}$
+we have $h(t(x)) = x$.
+Thus, precisely the points from $\move{t} \cup \move{h}$ are mapped to~$a_m$
+and all other points are fixed. This is precisely
+the transformation described by $[a_1 \mapsto a_m] \cdots [a_{m-1} \mapsto a_m]$.\footnote{Alternatively, the equation for $\concat{t}{h}$ follows by deriving $\dupl{\concat{t}{h}} = \dupl{h}$,
+	substituting this into \cref{prelim:trans:idemp:prop:inv-dupl},
+	and noting that all points outside of $t^{-1}(\dupl{t}) \cup h^{-1}(\dupl{h}) = \move{t} \cup \move{h} \cup \{a_m\}$
+	are fixed by $\concat{t}{h}$.}
+
+$\ref{prelim:trans:idempt-one-point:prop:comp:4} \Rightarrow 
+\ref{prelim:trans:idempt-one-point:prop:comp:1}$: Clearly, in each case,
+$\concat{t}{h}$ is an idempotent one-point singular.
+\end{proof}
+
+\begin{corollary}
+	Let $t, h \colon X \to X$ be idempotent one-point singulars
+	such that $\concat{t}{h}$ is an idempotent one-point singular.
+	Then
+	\[
+	(\concat{t}{h})^{-1}(\dupl{\concat{t}{h}})
+	=
+	\begin{cases}
+		t^{-1}(\dupl{t}) & \text{if } t(X) \subseteq \fix{h}, \\
+		t^{-1}( \dupl{t} ) \cup h^{-1}( \dupl{h} ) & \text{otherwise,}				
+	\end{cases}
+	\]
+	where we also have $t^{-1}( \dupl{t} ) \cup h^{-1}( \dupl{h} )
+	= t^{-1}( \dupl{t} ) \cup ( t(X) \cap h^{-1}( \dupl{h} ))$.
+\end{corollary}
+\begin{proof}
+	First, suppose $t(X) \subseteq \fix{h}$.
+	Then $\concat{t}{h} = t$ and $\dupl{\concat{t}{h}} = \dupl{t}$,
+	which gives the equality for this case.
+	
+	Next, suppose $t(X) \nsubseteq \fix{h}$. By \cref{prelim:trans:idempt-one-point:prop:comp},
+	we have $\dupl{h} = \dupl{\concat{t}{h}}$.
+	Then the claim follows from \cref{prelim:trans:idemp:prop:inv-dupl}.
+\end{proof}
+
+\begin{remark}
+	\Cref{prelim:trans:fig:duplconcatingduplf} 
+	shows two idempotent one-point singulars
+	whose composition results in an idempotent one-point singular.
+	The first two pictures on the left show the case $t(X) \subseteq \fix{h}$ (see also \cref{prelim:trans:idemp:prop:tX-in-fixh}),
+	the rightmost picture shows the case $\dupl{h} = h(\dupl{t})$.
+\end{remark} 
+
+\begin{corollary} \label{prelim:cor:concat_SI} 
+	Let $t, h \colon X \to X$ be two simple idempotents.
+	If $\concat{t}{h}$ is a simple idempotent,
+	then $\concat{t}{h} \in \{t,h\}$.	
+\end{corollary}
+\begin{proof}
+	By \crefitem{prelim:trans:idempt-one-point:prop:comp}{prelim:trans:idempt-one-point:prop:comp:4},
+	if $\concat{t}{h}$ is a simple idempotent,
+	we must have $\concat{t}{h} = t$
+	or $\move{t} \cup \move{h} = \{a\}$ and $\dupl{h} = \{b\}$,
+	which gives $h = \SI{a}{b}$,
+	and $\concat{t}{h} = \SI{a}{b}$.
+\end{proof}
+
+\begin{remark}
+	Several simple idempotents composed
+	can result in new simple idempotents,
+	a result that fails for two simple idempotents
+	by \cref{prelim:cor:concat_SI}.
+	For example, consider $t_1 = \SI{1}{2}$, 
+	$t_2 = \SI{2}{3}$, and $t_3 = \SI{3}{1}$.
+	Then $\concat{\concat{t_3}{\concat{t_2}{t_1}}}{\concat{t_3}{\concat{t_2}{t_1}}} = \SI{1}{3}$
+	where $\concat{\concat{t_2}{t_1}}{\concat{t_3}{\concat{t_2}{t_1}}} = [1 \mapsto 3 \mapsto 2]$.
+\end{remark}
+
+\begin{remark}
+Let $t,h \colon X \to X$ such that $t$ (resp.~$h$) is a simple idempotent
+moving $a$ to the distinct point~$b$.
+Then a simple case yields that $\concat{t}{h}$ is a simple idempotent
+if and only if $\move{h} \subseteq \{a,b\}$ and $h(b) \in \{a,b\}$ 
+(resp.~$\move{t} \subseteq \{a,b\}$ and $t(b) \in \{a,b\}$).
+In this case we have that $\concat{t}{h}$ equals $\SI{a}{b}$ or $\SI{b}{a}$ (resp.~$\SI{a}{b}$ for $t(a) \in \{a,b\}$ 
+and $\SI{a}{t(a)}$ for $t(a) \notin \{a,b\}$). The next example illustrates
+some cases.
+\end{remark}
+
+\begin{example}
+	Let $t, h \colon X \to X$ for $X = \{1,2,3\}$
+	with $t(1) = t(2) = 2$, $t(3) = 1$, 
+	and	$h(1) = h(3) = 3, h(2) = 1$. 
+	Then we have
+	\begin{enumerate}
+		\item $\concat{t}{\SI{1}{3}} = \SI{1}{2}$.		
+		
+		\item $\concat{\SI{1}{2}}{h} = \SI{2}{1}$.
+		
+		\item $\concat{\SI{1}{2}}{\SI{1}{3}} = \SI{1}{2}$.	
+	\end{enumerate}
+\end{example}

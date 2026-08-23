@@ -1,0 +1,48 @@
+%!TEX root = ../../../springer-mono-format/book.tex
+%!TEX root = ../../../thesis-trier.tex
+
+The set of synchronizing words of a semiautomaton
+$\semiautomat{A}{Q}{\Sigma}{\delta}$ is a regular ideal language:
+it is an ideal, since $\delta(Q, uwv) \subseteq \delta(\delta(Q,w), v)$
+is a singleton whenever $\delta(Q,w)$ is, and it is regular, since
+$\Syn(\mathcal A) = L(\mathcal P(\mathcal A)_{Q, \mathcal F})$
+with $\mathcal F = \{ \{q\} \mid q \in Q \}$.
+
+Next, suppose $\automat{A}{Q}{\Sigma}{\delta}{q_0}{F}$ is minimal and accepts a
+{non-empty} ideal language. Then, as observed by
+Maslennikova~\cite{DBLP:journals/corr/Maslennikova14,DBLP:journals/ijfcs/Maslennikova19},
+\begin{equation}\label{prelim:eqn:reg_ideal}
+	L(\mathcal A) = \Syn(\mathcal A).
+\end{equation}
+The assumption $L(\mathcal A) \ne \emptyset$ cannot be dropped: the minimal
+automaton for $\emptyset$ is $(\{q\}, \Sigma, \delta, q, \emptyset)$ with
+$\delta(q,x) = q$, which is synchronizing with $\Syn(\mathcal A) = \Sigma^*$.
+Of course, $\emptyset$ is still the set of synchronizing words of any
+non-synchronizing semiautomaton, and so we obtain the following
+characterization.
+
+\begin{theorem}
+	\label{prelim:thm:sync_words_is_ideal}
+	Let $I \subseteq \Sigma^*$. Then $I$ is a regular ideal language if and only
+	if $I = \Syn(\mathcal A)$ for some finite semiautomaton
+	$\semiautomat{A}{Q}{\Sigma}{\delta}$.
+\end{theorem}
+
+By \cref{prelim:thm:sync_words_is_ideal}, investigating acceptors for sets of
+synchronizing words, as we do in \cref{part:aut}, amounts to investigating
+acceptors for regular ideal languages. In the following, we use the fact that
+$\Syn(\mathcal A)$ is an ideal language without further mention.
+
+As a shortest word in a regular language accepted by an $n$-state
+automaton has length at most $n-1$, \cref{prelim:eqn:reg_ideal} yields the
+following bound.
+
+\begin{proposition}
+	\label{prelim:prop:reset_length_ideal}
+	If $\automat{A}{Q}{\Sigma}{\delta}{q_0}{F}$ is a minimal $n$-state automaton
+	accepting an ideal language, then $\mathcal A$ is synchronizing with reset
+	length at most $n-1$.
+\end{proposition}
+
+For $i \ge 1$, the minimal automaton for $\Sigma^* a^i \Sigma^*$ has $i+1$ states
+and reset threshold $i$, so the bound is sharp for every $n \ge 1$.

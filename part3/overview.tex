@@ -1,0 +1,87 @@
+
+\Cref{part:aut} studies automata that accept the set of synchronizing words of a given automaton. 
+We derive new notions and conditions related to the size of 
+accepting automata for sets of synchronizing words, also giving conditions 
+under which minimal automata for such sets have maximal size. 
+We further relate our findings to classical automata-theoretic results 
+from the field of descriptional complexity.
+This part is based on the papers~\cite{DBLP:conf/lata/Hoffmann21,
+	DBLP:journals/tcs/Hoffmann21,
+	DBLP:conf/lata/Hoffmann21a,
+	DBLP:conf/dcfs/Hoffmann21,
+	DBLP:conf/dcfs/Hoffmann22,
+	HoffmannCircularExtended,
+	HoffmannLATAextended2,
+	Hoffmann2024}, 
+but the presentation has been extended and unified, with additional new results included.
+
+Except in \cref{sync_max:sec:compl_reach,sync_max:sec:BVC-graphs,sync_max:sec:augmentative,sync_max:sec:rystsov_graph} and the discussion sections, which review notions and results from the literature, all results presented are novel and due to the author. Next, we describe the organization of \cref{part:aut} and give a broad overview of each chapter and its relation to the work on which this thesis is based. A more detailed overview of the chapters, including descriptions of their individual sections, is given at the beginning of each chapter.
+
+In \cref{sync_max:chap:prelim}, we first note that the set of synchronizing words is a regular language acceptable by the power automaton.
+To obtain lower bounds on the size of automata accepting the set of synchronizing words, we apply minimality conditions to the power automaton. This leads us to the notions of reachability of subsets and distinguishability of pairs of subsets.
+The rest of the chapter investigates these two notions, giving sufficient conditions for reachability and distinguishability. We also introduce completely reachable automata, a class previously studied in the literature, and the new class of completely distinguishable automata, for which we prove several equivalent characterizations.
+The results in this chapter are based on~\cite{DBLP:conf/dlt/Hoffmann23,Hoffmann2024}, where completely distinguishable automata were introduced, but it also contains new unpublished material, see \cref{overview:sec:unpublished}.
+
+\Cref{sync_max:chap:sync_max} introduces sync-maximal automata as synchronizing automata for which an automaton accepting the set of synchronizing words is as large as possible, i.e., for which the gap between the state complexity and the reset complexity of the set of synchronizing words is maximal. We investigate sufficient conditions and derive structural properties, showing that sync-maximal automata are closely related to completely reachable automata. We also give various examples. The notion of sync-maximal automata, as well as the structural results, were first introduced in~\cite{DBLP:conf/dlt/Hoffmann23,Hoffmann2024}. 
+
+\Cref{sync_max:chap:graphs} discusses graph-theoretical constructions that yield sufficient conditions for complete reachability and complete distinguishability. First, we review constructions and results from the literature. We then extend some of these constructions to arbitrary transformation semigroups. Finally, we give graph-theoretical conditions ensuring complete reachability or distinguishability of certain pairs of subsets. The results from this chapter are new and have not been published before.
+
+\Cref{sync_max:sec:subclasses} investigates the following subclasses of automata: commutative automata, automata in which every letter has defect at most one, SI-automata, and circular automata.
+For commutative automata, we show that an automaton recognizing the set of synchronizing words can be computed in polynomial time when the alphabet is fixed. This result was published in~\cite{DBLP:journals/tcs/Hoffmann21} in the context of the constrained synchronization problem for commutative constraint languages, and will be used later in \cref{part:constrsync}.
+We then consider automata in which every letter has defect at most one. In this setting, we show that if the group of units of the transformation monoid is transitive, then synchronizability implies complete distinguishability. As a consequence, a binary automaton with at least three states is completely reachable if and only if it is sync-maximal. These results are taken from~\cite{Hoffmann2024}.
+Then we investigate SI-automata. For example,
+we show that in synchronizing SI-automata
+distinct pairs $2$-sets are distinguishable.
+We derive this from more general and unpublished results,
+but it also follows from~\cite[Lem.~11]{DBLP:conf/dcfs/Hoffmann22}.
+However, the paper~\cite{DBLP:conf/dcfs/Hoffmann22} 
+contains a mistake stemming from a false statement~\cite[Prop.~2]{DBLP:conf/dcfs/Hoffmann22}.
+We discuss this in detail at the end of \cref{sync_max:sec:subclasses:discussion}.
+Lastly, we investigate circular automata and state a sufficient condition for complete reachability and complete distinguishability. A special case of this condition was published in~\cite{HoffmannCircularExtended}, with a preliminary version presented in~\cite{DBLP:conf/lata/Hoffmann21a}.
+
+\Cref{sync_max:chap:decision} studies the decision problems for complete reachability, complete distinguishability, and sync-maximality, as well as related questions.
+For example, we prove that these problems 
+are \NL-hard for SI-automata, with complete reachability even being \NL-complete for SI-automata,
+and in \PSPACE\ for general automata.
+The results on SI-automata were published in~\cite{DBLP:conf/dlt/Hoffmann23,Hoffmann2024}.
+
+\Cref{sync_max:sec:perm_grps} 
+discusses relations to permutation groups.
+We introduce primitive groups and
+characterize them in terms of complete reachability,
+complete distinguishability, and in terms of sync-maximality
+of associated automata.
+The relation of primitive groups to complete reachability
+was first published in~\cite{DBLP:conf/lata/Hoffmann21},
+and the relation to sync-maximality in~\cite{DBLP:conf/dcfs/Hoffmann21}.
+The extended journal publication~\cite{HoffmannLATAextended2} 
+of~\cite{DBLP:conf/lata/Hoffmann21,DBLP:conf/dcfs/Hoffmann21} contains 
+both of these characterizations.
+We then introduce $A$-primitivity 
+and study its connection to congruences, orbitals,
+generating sets, synchronization, reachability,
+and homogeneity properties.
+Our results generalize existing characterizations
+of primitivity from the literature,
+and a characterization by
+a homogeneity property also gives
+a new characterization. 
+The notion of $A$-primitivity is introduced here for the first time, and the results of this chapter have not been published previously.
+
+\Cref{sync_max:chap:slowly} discusses families of slowly synchronizing
+automata. We observe that, for most of these families of automata,
+the minimal automata accepting their sets of synchronizing words
+have exponential size. In particular,
+we use results from Chapter~\ref{sync_max:sec:subclasses}
+on circular automata to deduce sync-maximality
+for several families of slowly synchronizing circular automata
+from the literature, including one family for which 
+sync-maximality has previously only been conjectured.
+This confirmation of the conjecture was 
+presented in~\cite{DBLP:conf/lata/Hoffmann21a,HoffmannCircularExtended}.
+We then show, for three families of slowly synchronizing but not sync-maximal
+automata, that minimal automata for their sets 
+of synchronizing words are exponentially larger.
+Based on our observations, we formulate various conjectures.
+Apart from the confirmation of the aforementioned conjecture,
+the results from this chapter have not been published.

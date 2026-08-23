@@ -1,0 +1,51 @@
+%!TEX root = ./../../springer-mono-format/book.tex
+%!TEX root = ./../../thesis-trier.tex
+
+The notion of $\leq_{\log m}$-reduction is too strong to classify problems inside $\LOGSPACE$, since the reduction itself already has the computational power of $\LOGSPACE$. For this reason, we consider weaker (and finer) notions such as $\leq^{T}_{NC^1}$- and $\leq^{m}_{AC^0}$-reductions.\footnote{There does not seem to be a universal convention on when to call one form of reduction weaker or stronger. Our convention appears to be the prevalent one, although the opposite convention, where the roles are reversed, is also used in the literature, for example in~\cite{DBLP:journals/siamcomp/ChandraSV84}.}	
+
+Clearly, a $\leACZEROm$-reduction is also an $\leNCkT{1}$-reduction and a $\lelogm$-reduction.\footnote{However, $\leNCkT{1}$-reductions
+	are \emph{not} known to be $\lelogm$-reductions.
+	This is because of the difference between oracle and many-one
+	reductions. For example, the former allows complementation
+	of the results of oracle queries, see also the discussion in~\cite[Sect.~23.6]{DBLP:books/crc/99/AllenderLR2010a}.}
+Most of the time, the reductions we present here
+are $\leACZEROm$-reductions. But often, 
+concluding results are formulated for $\leNCkT{1}$-
+or $\lelogm$-reductions only.
+The reason  is that we often use results from the literature that are only
+stated for these stronger forms of reduction.
+
+To make statements regarding complexity classes 
+more concise, we omit mentioning the type of reduction  and, 
+when nothing else is said, adopt the following conventions.
+
+\begin{enumerate}
+	\item When talking about complete or hard problems
+	for \NL, \PTIME, \NP\  or \PSPACE, we
+	mean this with respect to $\lelogm$-reductions.
+	
+	\item When talking about complete or hard problems 
+	in \LOGSPACE, we mean this with respect to $\leNCkT{1}$-reductions.	
+	
+	\item When talking about circuit complexity classes and families of circuits, as 
+	already said on page~\pageref{prelim:rem:circuit-uniform},
+	when nothing else is said, 
+	we always mean the \LOGSPACE-uniform variants. 
+\end{enumerate}
+
+Regarding the first two assumptions, when citing results from the literature
+we occasionally say explicitly what kind of reduction is involved. 
+Also, complexity classification
+results stated in \cref{part:constrsync} involve
+ different reducibility notions. For example, \NP-
+and \LOGSPACE-completeness statements are w.r.t.~$\lelogm$- and $\leNCkT{1}$-reducibility, respectively.
+However, having a single (weak) form of reduction is preferable,
+as it would imply stronger separation results, see~\cite[Sect.~23.6.1]{DBLP:books/crc/99/AllenderLR2010a} for a short discussion. 
+We reserve the question
+whether our complexity classification results hold for a common
+notion of reduction for future work.
+
+\begin{remark} \label{prelim:rem:reductionsAC0} 
+	Most of our reductions can be expressed by simple operations on input automata that are computable by $\AC^0$ circuits. For example, these include adding letters according to a fixed transition scheme, adding auxiliary states with transitions derived from the given ones, taking Cartesian products, or rewiring the transition structure of an input automaton.
+	However, we often omit the full bit-level details of these reductions, as this would lead to lengthy and technical proofs.
+\end{remark}

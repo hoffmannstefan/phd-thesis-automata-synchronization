@@ -1,0 +1,345 @@
+%!TEX root = ./../../../springer-mono-format/main.tex
+%!TEX root = ./../../thesis-trier.tex
+
+\label{def:Sigmaij}
+Here, we investigate constraint PDFAs $\automat{B}{P}{\Sigma}{\mu}{1}{F}$
+where the state set is $P = \{1,2,\ldots,n\}$ for $n \in \{2,3\}$.
+Let
+$\Sigma_{i,j} = \{ x \in \Sigma \mid \applytrans{\mu}{i}{x} = j \}$
+w.r.t.~$\mathcal B$ for $i,j \in \{1,2,\ldots,n\}$.
+Note that, by determinism of $\mathcal B$,
+we have $\Sigma_{i,j} \cap \Sigma_{i,k} = \emptyset$
+for $j \ne k$ where $i,j,k \in \{1,\ldots,n\}$.
+
+First, in~\cref{constr_sync:sec:two-state}, we investigate the case $P = \{1,2\}$ for an arbitrary alphabet
+and then, in~\cref{sec:constr_sync:three_states}, the case $P = \{1,2,3\}$ for $\Sigma= \{a,b\}$.
+
+By choice of notation, $1$ is the start state.
+We assume that~$\mathcal B$ is trim.
+The case that $\mathcal B$ is strongly connected (including the case $P = \{1\}$, see \cref{constr_sync:cor:one-state})
+was already handled in \SEC~\ref{sec:constr_sync:SCC} for general automata.
+So, we also assume that $\mathcal B$ is not strongly connected
+in the following. 
+
+\subsection{Two-State Constraint PDFAs}
+\label{constr_sync:sec:two-state}
+
+\begin{theorem}
+	\label{thm:two-state-classification}
+	Suppose $P = \{1,2\}$, $\mathcal B$ is trim with start state $1$
+	and not strongly connected. Then we have $\Sigma_{1,2} \ne \emptyset$
+	and $\Sigma_{2,1} = \emptyset$.
+	In this case, by trimness we have $2 \in F$
+	and by \cref{constr_sync:prop:final_states,gen_results:cor:factors_etc_complexity} 
+	we can assume $F = \{2\}$
+	since~$1$ is coaccessible for this final state set.
+	Under these assumptions, $L(\mathcal B) = \Sigma_{1,1}^* \Sigma_{1,2} \Sigma_{2,2}^*$ and $\constrsync{L(\mathcal B)}$
+	has the following complexities:
+	\[
+	\begin{cases}
+		\text{\PSPACE-complete} & \text{if } ( \Sigma_{1,1} \cup \Sigma_{1,2} ) \setminus \Sigma_{2,2} \ne \emptyset 
+		\mbox{ and } \max\{ |\Sigma_{1,1}|, |\Sigma_{2,2}| \} \ge 2, \\
+		\text{\NL-complete}        & \text{if } \Sigma_{1,1} \cup \Sigma_{1,2} \subseteq \Sigma_{2,2} \text{ and } |\Sigma_{2,2}|\ge 2, \\ %\max\{ |\Sigma_{1,1}|, |\Sigma_{2,2}| \} \ge 2, \\
+		\text{\LOGSPACE-complete}  & \text{if } \max\{ |\Sigma_{1,1}|, |\Sigma_{2,2}| \} = 1, \\
+		\text{in $\AC^0$} & \text{if } \Sigma_{1,1} = \Sigma_{2,2} = \emptyset.	
+	\end{cases}	
+	\]
+\end{theorem}
+\begin{proof}	
+	Under the assumptions from the statement, clearly 
+	we have $L(\mathcal B) = \Sigma_{1,1}^* \Sigma_{1,2} \Sigma_{2,2}^*$.
+	First, suppose
+	\[
+	(\Sigma_{1,1} \cup \Sigma_{1,2}) \setminus \Sigma_{2,2} \ne \emptyset
+	\text{ and }
+	\max\{|\Sigma_{1,1}|, |\Sigma_{2,2}|\} \ge 2.
+	\]
+	Assume $|\Sigma_{1,1}| \ge 2$.
+	Then we can pick distinct $a,b \in \Sigma_{1,1}$
+    and $c \in \Sigma_{1,2}$ such that $|\{a,b,c\} \cap \Sigma_{2,2}| \le 2$.  
+    We have $\pi_{\{a,b,c\}}(\Sigma_{1,1}^* \Sigma_{1,2} \Sigma_{2,2}^*) = (a+b)^*c\Gamma^*$
+    for some $\Gamma \subseteq \{a,b,c\}$ with $|\Gamma| \le 2$.
+    By \crefitem{constr_sync:thm:introductory_examples}{constrsync:ex:item:abcL}
+    and \cref{thm:hom_lower_bound_complexity} 
+    we find that \constrsync{L(\mathcal B)}
+    is \PSPACE-hard.
+    Next, suppose $|\Sigma_{1,1}| \le 1$ (so that $|\Sigma_{2,2}| \ge 2$).   
+    Set 
+    \[
+    L = \begin{cases}
+    	\Sigma_{1,2}\Sigma_{2,2}^* & \text{if } \Sigma_{1,2} \subseteq \Sigma_{2,2}, \\
+      	\Sigma_{2,2}^* & \text{otherwise}.
+    \end{cases}
+    \]
+    By assumption, we can pick $a \in \Sigma$
+    such that $a \in \Sigma_{1,1} \setminus \Sigma_{2,2}$ if $\Sigma_{1,2} \subseteq \Sigma_{2,2}$
+    or $a \in \Sigma_{1,2} \setminus \Sigma_{2,2}$ otherwise.
+    For each $v \in \pref{\Sigma_{2,2}} \setminus \Sigma_{2,2} = \{\varepsilon\}$
+    the word $va$ is weakly auxiliary state avoiding 
+    w.r.t.~$\Sigma_{2,2}$.
+    We can pick two distinct $v_1, v_2 \in L$
+    and we have $\{v_1, v_2\}^* \subseteq L \subseteq \Sigma_{2,2}^*$.
+    Note that $a \in \Sigma_{1,1}$
+    implies $\Sigma_{1,1} = \{a\}$ by assumption.
+    By \cref{constr_sync:thm:uC}, we find
+    that $\constrsync{a^*aL}$
+    is \PSPACE-hard for $\Sigma_{1,1} = \{a\}$
+    and that $\constrsync{aL}$ is \PSPACE-hard otherwise.
+    In the latter case,
+    we have $\Sigma_{1,1}^* \Sigma_{1,2} \Sigma_{2,2}^* \cap \Sigma^* a \Sigma^* = \Sigma_{1,1}^* a \Sigma_{2,2}^*$
+    where $L = \Sigma_{2,2}^*$. 
+    In this case, since $|\Sigma_{1,1}| \le 1$
+    and $a \notin \Sigma_{1,1}$
+    the problem $\constrsync{\Sigma_{1,1}^* a L}$
+    is \PSPACE-hard by \crefitem{constrsync:cor:UanL}{constrsync:cor:UanL:2}
+    and so $\constrsync{L(\mathcal B)}$
+    is \PSPACE-hard by \cref{constr_sync:gen_results:thm:ideal_separation}.
+%        
+%   Alter Beweis (auch okay). Neu gemacht am 1.03, so dass weniger andere Sätze benutzt werden.
+%    
+%    If there exists $a \in \Sigma_{1,2} \setminus \Sigma_{2,2}$,
+%    then let $b,c \in \Sigma_{2,2}$ be distinct.
+%    As $a \notin \Sigma_{1,1}$,
+%    we have $\pi_{\{a,b,c\}}(L(\mathcal B)) \cap \{a,b,c\}^* a  \{a,b,c\}^*
+%    = \pi_{\{a,b,c\}}(\Sigma_{1,1})^* a \pi_{\{a,b,c\}}(\Sigma_{2,2})^*$
+%    with $\pi_{\{a,b,c\}}(\Sigma_{2,2})^* = \{b,c\}^*$
+%    and $\pi_{\{a,b,c\}}(\Sigma_{1,1}) \subseteq \{x\}$ for some $x \in \{b,c\}$.
+%    By \cref{constrsync:ex:PSPACEhard}, the problem
+%    $\constrsync{ \{\pi_{\{a,b,c\}}(\Sigma_{1,1})^*\} a \{b,c\}^* }$
+%    is \PSPACE-hard.
+%    So, by \cref{thm:hom_lower_bound_complexity},
+%    we find that \constrsync{L(\mathcal B)}
+%    is \PSPACE-hard.
+%    Next, suppose we have $\Sigma_{1,1} = \{a\}$
+%    for some $a \notin \Sigma_{2,2}$ and $\Sigma_{1,2} \subseteq \Sigma_{2,2}$.
+%    Let $L = \Sigma_{1,2}\Sigma_{2,2}^*$ and $v_1, v_2 \in L$ be distinct.
+%    Then $wa$ is weakly auxiliary state avoiding w.r.t.~$\Sigma_{2,2}$
+%    for each $w \in \pref{\Sigma_{2,2}} \setminus \Sigma_{2,2}$.
+%    As $v_1, v_2 \in \Sigma_{2,2}^*$, we have $\{v_1, v_2\}^* \subseteq L \subseteq \pref{\Sigma_{2,2}^*}$.
+%    By \cref{constr_sync:thm:uC}, we find
+%    that \constrsync{a^*aL}
+%    is \PSPACE-hard.
+    Containment in \PSPACE\  follows from~\cref{constr_sync:thm:PSPACE}.    
+    
+    Next, suppose $\Sigma_{1,1} \cup \Sigma_{1,2} \subseteq \Sigma_{2,2}$
+    with $|\Sigma_{2,2}| \ge 2$.
+    Then 
+    $\fact{L(\mathcal B)} = \fact{\Sigma_{2,2}^*}$.
+    By \cref{gen_results:cor:factors_etc_complexity}, 
+    $\constrsync{L(\mathcal B)} \equiv_m^{\AC^0} \constrsync{\Sigma_{2,2}^*}$,
+    and the latter problem is \NL-complete 
+    by \cref{constr_sync:cor:one-state}. 
+    Now, suppose $\max\{ |\Sigma_{1,1}|, |\Sigma_{2,2}| \} = 1$.
+    Then, by \cref{constr_sync:thm:infinite}  and 
+    \cref{constr_sync:thm:sparse_basic_L_cases},
+    the problem is \LOGSPACE-complete.
+    Finally, for $\Sigma_{1,1} = \Sigma_{2,2} = \emptyset$,
+    $L(\mathcal B)$ is finite
+    and containment in $\AC^0$ follows from \cref{constr_sync:thm:finite}. 	
+\end{proof}
+
+
+\begin{corollary}
+	\label{constr_sync:cor:two-state_binary}
+For a two-state constraint automaton $\mathcal B$
+over a binary alphabet, \constrsync{L(\mathcal B)}
+is in \NL.
+\end{corollary}
+\begin{proof}
+	We can assume that $\mathcal B$ is trim with start state $1$. Then we have $\Sigma_{1,2} \ne \emptyset$.
+	So, as $\Sigma_{1,1} \cap \Sigma_{1,2} = \emptyset$,
+	we have  $|\Sigma_{1,1}|\le 1$. Then, for $|\Sigma_{2,2}| \le 1$,
+	by \cref{thm:two-state-classification} 
+	the problem is in \LOGSPACE. 
+	For $|\Sigma_{2,2}| = 2$,
+	we have $\Sigma_{1,1} \cup \Sigma_{1,2}\subseteq \Sigma_{2,2}$
+	and the problem is in \NL\ 
+	by \cref{thm:two-state-classification}.
+\end{proof}
+
+\subsection{Three-State Constraint PDFAs Over a Binary Alphabet}
+\label{sec:constr_sync:three_states}
+
+Here, we prove the complexity classification
+for $P = \{1,2,3\}$ with $\Sigma = \{a,b\}$.
+Broadly, we structure the proof by distinguishing the different cases for the strongly connected components of $\mathcal B$.
+
+\begin{theorem} 
+	\label{constr_sync:thm:three-states}
+	Suppose $P = \{1,2,3\}$, $\mathcal B$ is not strongly connected and $\Sigma = \{a,b\}$.
+	Let $\mathcal B$ be trim with start state $1$. Then
+	we have $\Sigma_{1,2} \cup \Sigma_{1,3} \ne \emptyset$ (and so $|\Sigma_{1,1}| \le 1$ as $\mathcal B$ is deterministic). 
+	%Without loss of generality, assume $a \in \Sigma_{1,2}$.
+	If $L(\mathcal B)$ is finite, then $\constrsync{L(\mathcal B)}$
+	is in $\AC^0$ (\THM~\ref{constr_sync:thm:finite}). So, we assume $L(\mathcal B)$
+	is infinite in the following.
+	
+	\begin{enumerate}		
+		\item Suppose $\{1\}, \{2\}, \{3\}$ are the strongly connected components. Then we must have $\Sigma_{2,3} = \emptyset$
+		or $\Sigma_{3,2} = \emptyset$.
+		Without loss of generality, assume $\Sigma_{3,2} = \emptyset$.
+		Then the following complexities arise (recall that $\mathcal B$ is trim):
+		
+		\begin{center} 
+			\begin{tabular}{l|l}
+				$\max\{ |\Sigma_{2,2}|, |\Sigma_{3,3}| \} = 2$ & \NL-complete \\ \hline 
+				$\max\{ |\Sigma_{2,2}|, |\Sigma_{3,3}| \} \le 1$ & \multirow{ 2}{*}{\NP-complete} \\
+				$\quad\land |\Sigma_{2,2}| = 1 \land \Sigma_{2,3} \ne \emptyset \land (\Sigma_{1,1} \cup \Sigma_{1,2}) \setminus \Sigma_{2,2} \ne \emptyset$ & \\ \hline 
+				$\max\{ |\Sigma_{2,2}|, |\Sigma_{3,3}| \} \le 1$ & \multirow{ 2}{*}{\LOGSPACE-complete} \\
+				$\quad\land ( \Sigma_{2,2} = \emptyset \lor \Sigma_{2,3} = \emptyset \lor (\Sigma_{1,1} \cup \Sigma_{1,2}) \subseteq \Sigma_{2,2} )$ & \\ \hline 
+				%\multicolumn{2}{c}{\itshape \small Complexities in case $\{1\}, \{2\}$, $\{3\}$ are the strongly connected components in $\mathcal B$.}
+			\end{tabular}
+        \end{center}		
+		
+		\item Suppose $\{1,2\}$ is a strongly connected component, or equivalently
+		$\Sigma_{1,2}$ and $\Sigma_{2,1}$ are both non-empty. 
+		Then the following complexities arise:	
+				
+		\begin{center} 
+		\begin{tabular}{l|l}
+			$\Sigma_{3,3} = \{a,b\}$ & \NL-complete \\ \hline
+			$|\Sigma_{3,3}| \le 1$,
+			$\Sigma_{1,1} = \Sigma_{2,2} = \emptyset$,
+			$|\Sigma_{1,2}| = |\Sigma_{2,1}| = 1$ & \LOGSPACE-complete \\ \hline
+			All other cases (for the stated assumptions) & \PSPACE-complete
+		\end{tabular}
+		\end{center}		
+		
+		\item Suppose  $\{2,3\}$ is a strongly connected component, or equivalently
+		 $\Sigma_{2,3}$ and $\Sigma_{3,2}$ are both non-empty.
+		 Then the following complexities arise:		 
+	
+		\begin{tabular}{l|p{6cm}}
+			$|\Sigma_{2,3}| + |\Sigma_{2,2}| + |\Sigma_{3,2}| + |\Sigma_{3,3}| = 2$ & \LOGSPACE-complete \\ \hline 
+			$|\Sigma_{2,3}| + |\Sigma_{2,2}| + |\Sigma_{3,2}| + |\Sigma_{3,3}| = 4$ & \NL-complete \\ \hline 
+			$|\Sigma_{2,3}| + |\Sigma_{2,2}| + |\Sigma_{3,2}| + |\Sigma_{3,3}| = 3$ & All possible constraint automata, up to symmetry, and their complexities
+			are listed in Table~\ref{constr_sync:table:three_states_23} and~\ref{tab:binary_automata_three_states}.		
+		\end{tabular} 
+		
+	\end{enumerate}
+\end{theorem}
+\begin{proof} For $\max\{ |\Sigma_{2,2}|, |\Sigma_{3,3}| \} = 2$, $\mathcal B$ has a trap state.
+	Then, by~\crefitem{constrsync:cor:upperset}{constrsync:cor:upperset:item:trimtrap},
+	we get that $\constrsync{L(\mathcal B)}$
+	is \NL-complete.
+	So, for the remaining proof,
+	we assume $\max\{ |\Sigma_{2,2}|, |\Sigma_{3,3}| \} \le 1$.
+	Also, we  assume that $L(\mathcal B)$ is infinite,
+	which gives \LOGSPACE-hardness by~\cref{constr_sync:thm:infinite},
+	since the cases when~$L(\mathcal B)$ is finite are easy to
+	identify, given by trim PDFAs without any loops.	
+	
+\medskip 
+\noindent\textbf{\texorpdfstring{$\{1\}$, $\{2\}$, $\{3\}$}{\{1\},\{2\},\{3\}} are the Strongly Connected Components.}
+Without loss of generality, suppose $\Sigma_{3,2} = \emptyset$.
+As $\mathcal B$ 
+is trim, the states $2$ and $3$ are reachable from~$1$, 
+i.e., $\Sigma_{1,2} \ne \emptyset \land ( \Sigma_{1,3} \ne \emptyset \lor \Sigma_{2,3} \ne \emptyset)$, which
+implies $|\Sigma_{1,1}|\le 1$.
+Then, by \cref{constr_sync:move_states}
+we can assume $F = \{2,3\}$, so that
+\begin{equation}\label{constrsync:eqn:threestatesSCC}
+	L(\mathcal B) = \Sigma_{1,1}^* \Sigma_{1,2} \Sigma_{2,2}^* \Sigma_{2,3} \Sigma_{3,3}^* \cup \Sigma_{1,1}^* \Sigma_{1,2} \Sigma_{2,2}^*
+	\cup \Sigma_{1,1}^* \Sigma_{1,3} \Sigma_{3,3}^*. 
+\end{equation}
+Hence
+$L(\mathcal B) \subseteq \Sigma_{1,1}^*\Sigma_{1,2}^* \Sigma_{1,3}^* \Sigma_{2,2}^* \Sigma_{2,3}^* \Sigma_{3,3}^*$.
+As $\max\{ |\Sigma_{2,2}|, |\Sigma_{3,3}| \} \le 1$
+the language~$L(\mathcal B)$ is letter-bounded.
+Now, suppose $( \Sigma_{1,1} \cup \Sigma_{1,2} ) \setminus \Sigma_{2,2} \ne \emptyset$
+and there exist $b,c \in \Sigma$ such that 
+$b \in \Sigma_{2,2}$ and $c \in \Sigma_{2,3}$.
+Then $ub^*c \cap L(\mathcal B)$ is infinite for some
+$u \in \Sigma_{1,1}\Sigma_{1,2}$ with $u \notin b^*$.
+By \cref{constr_sync:thm:letter_bounded} 
+the problem \constrsync{L(\mathcal B)} is \NP-complete.
+Otherwise, we have $\fact{L(\mathcal B)} = \fact{L}$
+where (for non-mutually exclusive cases)
+\[
+L = \begin{cases}
+	\Sigma_{2,2}^* \Sigma_{2,3} \Sigma_{3,3}^* \cup \Sigma_{2,2}^* \cup \Sigma_{1,1}^* \Sigma_{1,3} \Sigma_{3,3}^*
+	& \text{if } \Sigma_{1,1} \cup \Sigma_{1,2} \subseteq \Sigma_{2,2}, \\ % , \Sigma_{1,2} \ne \emptyset, \\
+	%\Sigma_{1,1}^* \cup \Sigma_{1,1}^* \Sigma_{1,3} \Sigma_{3,3}^*
+	%& \text{if } \Sigma_{1,2} = \emptyset, \\
+	\Sigma_{1,1}^* \Sigma_{1,2} \Sigma_{2,3} \Sigma_{3,3}^* \cup \Sigma_{1,1}^* \Sigma_{1,2}\cup \Sigma_{1,1}^* \Sigma_{1,3} \Sigma_{3,3}^* & \text{if } \Sigma_{2,2} = \emptyset, \\
+	\Sigma_{1,1}^* \Sigma_{1,2} \Sigma_{2,2}^* \cup \Sigma_{1,1}^* \Sigma_{1,2}\cup \Sigma_{1,1}^* \Sigma_{1,3} \Sigma_{3,3}^* &
+	\text{if } \Sigma_{2,3} = \emptyset.
+\end{cases}
+\]
+As $\max\{ |\Sigma_{1,1}|, |\Sigma_{2,2}|, |\Sigma_{3,3}| \} \le 1$, for the listed cases
+$L$ equals a finite union of languages 
+of the form $u^* v w^*$ for $u,v,w \in \Sigma^*$.
+By \COR~\ref{gen_results:cor:factors_etc_complexity}, \cref{constr_sync:thm:union,constr_sync:thm:sparse_basic_L_cases}
+it follows that \constrsync{L(\mathcal B)} is in \LOGSPACE.   
+
+\medskip
+\noindent\textbf{\texorpdfstring{$\{1,2\}$}{{1,2}} is a Strongly Connected Component.} 
+In this case, since $\{1,2\}$ contains the start state and~$\mathcal B$ is trim,
+we must have $3 \in F$ and that $3$ is reachable from every other state.
+Thus, by \crefitem{constr_sync:move_states}{constr_sync:move_states:2}
+we can assume $F = \{3\}$. 
+Without loss of generality, suppose $\Sigma_{1,3} = \{a\}$
+and $\Sigma_{1,2} = \{b\}$, as for $\Sigma_{1,3} = \emptyset$
+it is $\Sigma_{2,3} \ne \emptyset$ 
+and, by \cref{constr_sync:prop:final_states}, we can consider $2$ as
+the start state. Then $\Sigma_{1,1} = \emptyset$
+and
+\[
+L(\mathcal B) = 
+\begin{cases}
+	(by)^*(a + b\Sigma_{2,3})\Sigma_{3,3}^*  & \text{if } \Sigma_{2,1} = \{y\} \text{ and } \Sigma_{2,2} = \emptyset, \\
+	(bb+ba)^*a\Sigma_{3,3}^*  & \text{if } \Sigma_{2,1} = \{a,b\}, \\
+	(ba^*b)^*a\Sigma_{3,3}^*  & \text{if } \Sigma_{2,2} = \{a\} \text{ and } \Sigma_{2,1} = \{b\}, \\
+	(bb^*a)^*a\Sigma_{3,3}^*    & \text{if } \Sigma_{2,2} = \{b\} \text{ and } \Sigma_{2,1} = \{a\}. 
+\end{cases}
+\]
+As $|\Sigma_{3,3}| \le 1$ by assumption,
+with \cref{constr_sync:cor:u_star_finite_v_star} we find that \constrsync{L(\mathcal B)} is in \LOGSPACE.
+For the remaining cases, as $\fact{(ba^*b)a\Sigma_{3,3}^*} = \fact{(a+bb)ba\Sigma_{3,3}^*}$
+and $\fact{(bb^*a)a\Sigma_{3,3}^*} = \fact{(b+ab)aa\Sigma_{3,3}^*}$,
+\PSPACE-completeness follows from~\cref{constrsync:prop:PSPACE-hard-cases}, \ref{constrsync:Cu:1},\ref{constrsync:Cu:2} \& \ref{constrsync:Cu:3}.
+
+\medskip
+\noindent\textbf{\texorpdfstring{$\{2,3\}$}{{2,3}} is a Strongly Connected Component.} 
+Since~$\mathcal B$ is trim with start state~$1$, we have $F \cap \{2,3\} \ne \emptyset$.
+Thus, by \cref{constr_sync:move_states:1,constr_sync:move_states:2} of \cref{constr_sync:move_states} 
+we can suppose $F = \{3\}$.
+Now, first, let $|\Sigma_{2,3}| + |\Sigma_{2,2}| + |\Sigma_{3,2}| + |\Sigma_{3,3}| = 2$.
+Then $\Sigma_{1,1}=\Sigma_{2,2}=\emptyset$
+and $\Sigma_{2,3}=\{x\}, \Sigma_{3,2}=\{y\}$ for some $x,y \in \Sigma$,
+which gives
+$L(\mathcal B) = \Sigma_{1,1}^* \Sigma_{1,2} (xy)^* \cup \Sigma_{1,1}^*\Sigma_{1,3} (yx)^* = \Sigma_{1,1}^* ( \Sigma_{1,2} \cup \Sigma_{1,3} ) (yx)^*$.
+As $|\Sigma_{1,1}| \le 1$, by \cref{constr_sync:cor:u_star_finite_v_star},
+\constrsync{L(\mathcal B)} is in \LOGSPACE.
+Since the $L(\mathcal B)$ is infinite,
+the problem is \LOGSPACE-hard 
+by \cref{constr_sync:thm:infinite}.
+Next, suppose $|\Sigma_{2,3}| + |\Sigma_{2,2}| + |\Sigma_{3,2}| + |\Sigma_{3,3}| = 4$ and set $S = \{2,3\}$.
+Then $\mu(p, x)$ is defined with $\mu(p, x) \in S$ for each $p \in S$
+and $x \in \Sigma$.
+As $\mathcal B$ is trim, by~\crefitem{constrsync:cor:upperset}{constrsync:cor:upperset:item:S},
+\constrsync{L(\mathcal B)} is \NL-complete.
+Lastly, suppose 
+$|\Sigma_{2,3}| + |\Sigma_{2,2}| = |\Sigma_{3,2}| + |\Sigma_{3,3}| = 3$, or equivalently
+that precisely three transitions are defined between the states in $\{2,3\}$.
+Then, all possible combinations and the resulting complexities
+where, without loss of generality, we assume $a \in \Sigma_{1,2}$
+are listed in \cref{constr_sync:table:three_states_23,tab:binary_automata_three_states}. 
+\Cref{constr_sync:table:three_states_23} 
+gives the proofs. 
+
+\input{../part4/constrlang/tab_threestates}
+\input{../part4/constrlang/fig_threestates}
+
+\Cref{tab:binary_automata_three_states}
+gives graphical depictions of the resulting constraint automata
+for the cases from \cref{constr_sync:table:three_states_23}.
+\end{proof}
+
+With \cref{thm:two-state-classification}, we need at least three states
+to realize \NP-complete constrained synchronization problems.
+Over a binary alphabet, 
+by \cref{constr_sync:cor:two-state_binary,constr_sync:thm:three-states},
+three states are the least number of states to realize \PSPACE-complete
+constrained synchronization problems. 
+

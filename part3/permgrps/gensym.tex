@@ -1,0 +1,79 @@
+%!TEX root = ../../thesis-trier.tex
+
+Here, in \cref{sync_max:thm:abJordan},
+we characterize $\{a,b\}$-primitivity 
+in terms of generating sets for the full symmetric group, thereby generalizing Jordan's theorem (\cref{sync_max:thm:prim_char:jordan}).
+As a consequence, in \cref{sync_max:cor:cycletransgenerateSn},
+we characterize those pairs consisting of a permutation
+and a transposition that generate the full symmetric group.
+Clearly, adding permutations preserves $A$-primitivity.
+\Cref{sync_max:lem:notSn} gives a condition for the preservation of $A$-primitivity when removing permutations.
+
+\begin{lemma}
+\label{sync_max:lem:notSn}	
+	Let $G \le_G \mathcal S_n$ and $t \in \mathcal S_n$ be a permutation. 
+	If $\langle G \cup \{t\} \rangle_G$
+	is $A$-primitive, then $G$ is also $A$-primitive
+	for $A = \move{t}$.
+\end{lemma}
+\begin{proof}
+	Suppose $G$ is not $A$-primitive.
+	Then there exists a non-trivial block $\Delta \subseteq [n]$
+	such that $A \subseteq \Delta$.
+	Let $x \in A$. Then $t(x) \ne x$.
+	Since~$t$ is a permutation, we find $t(t(x)) \ne t(x)$
+	and so $t(x) \in A$. Thus $t(A) \subseteq A$.
+	We also have $t(t^{-1}(x)) = x \ne t^{-1}(x)$,
+	giving $t^{-1}(x) \in A$
+	and then $x \in t(A)$. Thus $A \subseteq t(A)$.
+	As all points outside of $A$ are fixed by $t$,
+	we find  $\applyfunc{\Delta}{t} = \Delta$.
+	This yields that $\Delta$
+	is also a block for $\langle G \cup \{t\} \rangle_G$
+	and so this group is not $A$-primitive.
+\end{proof}
+
+By \cref{sync_max:lem:notSn}, if $g$ and $h$ generate a primitive group,
+then $\langle g \rangle_G$ is $\move{h}$-primitive.
+
+\begin{theorem}\label{sync_max:thm:abJordan}
+	Let $a,b \in [n]$ be distinct.
+	Then $G \le_G \mathcal S_n$ is $\{a,b\}$-primitive
+	if and only if $\langle G \cup \{ (a ~ b) \} \rangle_G = \mathcal S_n$.
+\end{theorem}
+\begin{proof}
+	First, suppose $\langle G \cup \{ (a ~ b) \} \rangle_G = \mathcal S_n$.
+	As the full symmetric group $\mathcal S_n$ is $\{a,b\}$-primitive,
+	by \cref{sync_max:lem:notSn} we find that $G$ is $\{a,b\}$-primitive.		
+	
+	Conversely, suppose $G$ is $\{a,b\}$-primitive.
+	Set $T =  \{ (\applyfunc{a}{g} ~ \applyfunc{b}{g}) \mid g \in G \}$.
+	The graph with vertex set $[n]$ and edge set
+	$
+	\{ \{c,d\} \mid (c ~ d) \in T\}
+	$
+	equals the undirected orbital graph on $\{a,b\}$.
+	By \cref{syncmax:prop:abprim_undirectedorbital} it is connected.
+	So, by \cref{prop:connected_transpositions_gen_Sn},
+	we get $\langle T \rangle_G = \mathcal S_n$.
+	By \cref{prelim:conj}, we have $(\applyfunc{a}{g} ~ \applyfunc{b}{g}) = (a ~ b)^g$,
+	which gives $T \subseteq \langle G \cup \{ (a ~ b) \} \rangle_G$.
+	Hence $\mathcal S_n = \langle G \cup \{ (a ~ b) \} \rangle_G$.		
+\end{proof}
+
+The fact that $(0 ~ 1)$ and $(0 ~ 1 ~ \ldots ~ n - 1)$
+generate $\mathcal S_n$ is well-known, for example, 
+see~\cite{cameron_1999,dixon1996permutation}.
+As a consequence of \cref{sync_max:thm:abJordan,syncmax:prop:cyclic-group-abprim},
+we obtain the following characterization
+of those permutations that, together with
+a transposition, generate the whole symmetric group.
+
+\begin{corollary}\label{sync_max:cor:cycletransgenerateSn}
+	Let $g \in \mathcal S_n$ and $a,b \in [n]$ be distinct.
+	Then $\langle \{ g, (a ~ b)\} \rangle_G = \mathcal S_n$
+	if and only if $g$ induces two cycles of coprime length, one cycle moving~$a$ and the other~$b$,
+	or $g$ cyclically permutes
+	its domain and  $g^i(a) = b$
+	for some $i \ge 0$ coprime to $n$. %for some (and hence all) $i > 0$ with
+\end{corollary}

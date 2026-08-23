@@ -1,0 +1,151 @@
+%!TEX root = ./../../thesis-trier.tex
+
+Here, in \cref{syncmax:cor:SI-2-sets}, we prove that in a synchronizing SI-automaton
+all pairs of distinct $2$-sets are distinguishable.
+This follows from a series of preliminary results 
+regarding mapping properties of equal-sized sets.
+
+\begin{lemma} \label{app:lem:SI}
+	Let~$t \colon X \to X$ be an one-point singular
+	and $A,B \subseteq X$ be finite
+	with $|A| = |B|$ and $t(A) = t(B)$.
+	Then $\move{t} \cap A = \move{t} \cap B$ implies $A = B$.
+\end{lemma}
+\begin{proof} 
+	Let $x \in X$ be such that $\dupl{t} = \{x\}$.
+	Consider $z \in A$ with $z \ne x$.
+	If $t(z) \ne z$, then $z \in B$ by assumption.
+	Next, suppose $t(z) = z$.
+	Since $t(A) = t(B)$,
+	we have $t(z) = t(y)$ for some $y \in B$.
+	As $t$ is a one-point singular
+	and $t(z) \ne x$,
+	we find $t^{-1}(t(z)) = \{z\}$. Therefore $y = z$
+	and so $z \in B$.
+	This gives $A \setminus \{x\} \subseteq B$.
+	Similarly, we obtain the other inclusion
+	and thus $A \setminus \{x\} = B \setminus \{x\}$.
+	Since $|A| = |B|$, 
+	either $x \in A \cap B$ or $x \notin A \cup B$.
+	This gives $A = B$.	
+\end{proof}
+
+\begin{corollary} \label{app:cor:SI}
+		Let $t \colon X\to X$ be a simple idempotent
+		and $A, B \subseteq X$ be finite.
+		Suppose $|A| = |B|$, $\applyfunc{A}{t} = \applyfunc{B}{t}$, 
+		$\applyfunc{A}{t} \ne A$, and $\applyfunc{B}{t} \ne B$.
+		Then $A = B$.	
+\end{corollary}
+\begin{proof}
+Let $\move{t} = \{a\}$.
+Since $t(A) \ne A$ and $t(B) \ne B$, we have $a \in A \cap B$.	
+Thus, the claim follows from \cref{app:lem:SI}.
+\end{proof}
+
+By \cref{app:lem:SI}, if $A \ne B$ with $|A| = |B|$ and $\applyfunc{A}{t} = \applyfunc{B}{t}$,
+then, without loss of generality, $\applyfunc{B}{t} \ne B$
+and $\applyfunc{A}{t} = A$ and so $\applyfunc{x}{t} = x$ for all $x \in A$. 
+
+\begin{lemma}
+\label{app:lem:SIsets}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be an SI-automaton,
+	$A,B,C \subseteq Q$ be $k$-sets, and let $u \in \Sigma^*$
+	be a shortest word such that $\applytrans{\delta}{A}{u} = C$ or $\applytrans{\delta}{B}{u} = C$.
+	If $A \ne B$, then $\applytrans{\delta}{A}{u} \ne \applytrans{\delta}{B}{u}$.
+\end{lemma}
+\begin{proof}
+	Suppose $\applytrans{\delta}{A}{u} = \applytrans{\delta}{B}{u}$.
+	Next, we prove $A = B$
+	by induction on $m = \sum_{a \in \Sigma_I} |u|_a$.
+	If $m = 0$,
+	then $u \in \Sigma_G^*$.
+	So, as $u$ permutes the states, 
+	$\applytrans{\delta}{A}{u} = \applytrans{\delta}{B}{u}$
+	implies $A = B$.
+	Otherwise, write $u = vaw$ with $v \in \Sigma^*$, $a \in \Sigma_I$, and $w \in\Sigma_G^*$.
+	Then $\applytrans{\delta}{A}{va} = \applytrans{\delta}{B}{va}$ since~$w$ permutes the states.
+	As $u$ has shortest length,
+	we must have $\applytrans{\delta}{\applytrans{\delta}{A}{v}}{a} \ne \applytrans{\delta}{A}{v}$
+	and $\applytrans{\delta}{\applytrans{\delta}{B}{v}}{a} \ne \applytrans{\delta}{B}{v}$,
+	as otherwise $vu$ would give a shorter word mapping at least one of $A$ or $B$ onto $C$.
+	Since $|C| \le |\delta(A, v)| \le |A|$ and $|C| \le |\delta(B, v)| \le |B|$ by \cref{eqn:subset-mapped-to-smaller-set},
+	and $|A| = |B| = |C|$
+	by assumption,
+	we have $|\applytrans{\delta}{A}{v}| = |\applytrans{\delta}{B}{v}|$.
+	So, by \cref{app:lem:SI} applied to $\fword{\delta}{a}$,
+	we get $\applytrans{\delta}{A}{v} = \applytrans{\delta}{B}{v}$. 
+	Since~$u$ was chosen minimal such that $\delta(A, u) = C$
+	or $\delta(B, u) = C$, also~$v$ has shortest length
+	such that $\delta(A, v) = C'$ or $\delta(B, v) = C'$
+	for $C' = \delta(A, v) = \delta(B, v)$.	
+	By induction hypothesis, we conclude that $A = B$.
+\end{proof}
+
+\begin{remark}
+	The assumption that the sets $A, B, C$
+	have the same size in \cref{app:lem:SIsets} 
+	can not be dropped.
+	For example, consider the SI-automaton
+	with states $\{1,2,3\}$ and two simple idempotent letters $a$
+	and $b$ that map $1$ to~$2$
+	and $2$ to $3$, respectively.
+	Then the word $ab$ maps the two distinct sets $\{1,2\}$
+	and $\{2,3\}$ to $\{3\}$.	
+\end{remark}
+
+\begin{corollary} \label{app:cor:SIsets}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be an SI-automaton
+	and $p,q \in Q$ be distinct states.
+	Then for a shortest word $u \in \Sigma^*$
+	with $\delta(p, u) = r$ or $\delta(q, u) = r$ for some $r \in Q$
+	we have $\delta(p, u) \ne \delta(q, u)$.	
+\end{corollary}
+\begin{proof}
+	This is \cref{app:lem:SIsets} for the special case $k = 1$.	
+\end{proof}
+
+\begin{proposition}
+\label{app:prop:pairof2sets}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be an SI-automaton
+	and $A, B \subseteq Q$ be two distinct $2$-sets.
+	Then for a shortest word $u \in \Sigma^*$
+	with $|\applytrans{\delta}{A}{u}| = 1$
+	or $|\applytrans{\delta}{A}{u}| = 1$
+	we have $|\applytrans{\delta}{A}{u}| \ge 2$
+	or $|\applytrans{\delta}{A}{u}| \ge 2$.	
+\end{proposition} 
+\begin{proof}
+	Let $q \in Q$ be the unique state with $\applytrans{\delta}{q}{a}\ne q$.
+	As $u$ has shortest length mapping at least one to a singleton
+	subset, we can write $u = va$ with $v \in \Sigma^*$
+	and $a \in \Sigma_I$
+	where $v$ has minimal length such that
+	$\applytrans{\delta}{A}{v} = \{q, \applytrans{\delta}{q}{a}\}$
+	or $\applytrans{\delta}{B}{v} = \{q, \applytrans{\delta}{q}{a}\}$.	
+	Now, suppose $|\applytrans{\delta}{A}{u}| = |\applytrans{\delta}{B}{u}| = 1$.
+	By the minimal choice of $u$,
+	we must have $|\applytrans{\delta}{A}{v}| = |\applytrans{\delta}{B}{v}| = 2$.
+	Since both sets are mapped to a singleton, we find
+	$\applytrans{\delta}{A}{v} = \applytrans{\delta}{B}{v} = \{q, \applytrans{\delta}{q}{a}\}$.
+	Then we have $|A| = |B| = |\delta(A, v)|$.
+	Therefore, by \cref{app:lem:SIsets}, since~$v$ has shortest length mapping
+	at least one to $\{q, \delta(q, a)\}$, we conclude $A = B$.	
+	So, with the assumption $A \ne B$,
+	we find that at least one of 
+	both subsets is mapped to a non-singleton set.
+\end{proof}
+
+\begin{corollary}\label{syncmax:cor:SI-2-sets}
+	In a synchronizing SI-automaton every two distinct $2$-sets
+	are distinguishable.
+\end{corollary}
+\begin{proof}
+ By Proposition~\ref{app:prop:pairof2sets}, a shortest
+ word mapping at least one of two distinct $2$-sets
+ to a singleton set must map the other set to a non-singleton
+ set. Hence, it distinguishes both $2$-sets.
+\end{proof}
+
+Recall that \cref{sync_max:ex:2-sets-not-all-dist} gave synchronizing SI-automata
+that are not completely distinguishable.

@@ -1,0 +1,147 @@
+%!TEX root = ./../../thesis-trier.tex
+
+Here, we discuss the papers~\cite{FernauGHHVW19,DBLP:conf/fct/Hoffmann21,DBLP:conf/cocoon/Hoffmann21,HoffmannCocoonExtended} 
+and how some of the result stated therein relate to the general results stated here.
+
+Much of the general results as complexity-preservation for solid codes, the ideal intersection theorem,
+sufficient conditions for containment in $\AC^0$, \LOGSPACE, or \NL,
+and general \PSPACE-hardness conditions were first presented in~\cite{HoffmannCocoonExtended}. The 
+\PSPACE-hardness conditions were proved differently in \cite{HoffmannCocoonExtended}
+by using the equivalence relation $\eqLn$ and a general automaton constructions called \emph{automata unfolding}.
+The method of proof presented here is more general. We gave proofs using another
+equivalence relation arising from an abstract construction, which included $\eqLn$ as a special case.
+
+Fernau et al.~\cite{FernauGHHVW19} were the first that
+ systematically investigated the constrained synchronization problem on its own (the paper~\cite{Gusev2012} that introduced the constrained synchronization problem only used it as an auxiliary tool).
+Next, we discuss some general results from~\cite{FernauGHHVW19} and their relation to the results from the present section.
+For the convenience of the reader, we first restate each result from~\cite{FernauGHHVW19} before discussing it here.\footnote{In~\cite{FernauGHHVW19} the results were stated with $\lelogm$-reductions but the proofs of the cited statements actually give $\leACZEROm$-reductions.}
+All languages in the statements are assumed to be regular.
+
+\begin{enumerate}
+	\item \cite[Thm.~15]{FernauGHHVW19}: Let $L\subseteq L'\subseteq\Sigma^*$. If  $L'\subseteq\{\,v\in \Sigma^*\mid \exists u,w \in \Sigma^*: uvw\in L\,\}$, then $\constrsync{L} \equiv^{\log}_m \constrsync{L'}$.
+	
+	This statement was generalized in \cref{constr_sync:cor:factors_sets_included,gen_results:cor:factors_etc_complexity}.
+		
+	\item \cite[Thm.~27]{FernauGHHVW19}:
+	Let $L\subseteq\Gamma^*$ and $\varphi : \Sigma^* \to \Gamma^*$
+	be a morphism such that $\varphi(\varphi^{-1}(L))=L$. Then
+	$\constrsync{L} \leq^{\log}_m \constrsync{\varphi^{-1}(L)}$.
+	
+	Theorem~\ref{thm:hom_lower_bound_complexity} of the present work is a slight (but proper) generalization,
+	i.e., Theorem~\ref{thm:hom_lower_bound_complexity} implies \cite[Thm.~27]{FernauGHHVW19}
+	but not vice versa.
+	For suppose $L \subseteq \Gamma^*$ is given and
+	a morphism $\varphi : \Sigma^* \to \Gamma^*$
+	such that $\varphi(\varphi^{-1}(L)) = L$.
+	Set $U = \varphi^{-1}(L)$.
+	Theorem~\ref{thm:hom_lower_bound_complexity}
+	then yields
+	\[
+	\constrsync{\varphi(U)} \le_m^{\log} \constrsync{U}.
+	\]
+	So, as $\applyfunc{U}{\varphi} = L$, it is
+	$\constrsync{L}  \le_m^{\log}
+	\constrsync{\varphi^{-1}(L)}$.
+	However, \cref{thm:hom_lower_bound_complexity} 
+	is more general than~\cite[Thm.~27]{FernauGHHVW19} (even 
+	when stated for $\leACZEROm$-reductions).
+	For $L \subseteq \Sigma^*$ and
+	a morphism $\varphi \colon \Sigma^* \to \Gamma^*$, in general,
+	we only have $\varphi(\varphi^{-1}(L)) \subseteq L$,
+	but not equality.
+	We can apply~\cite[Thm.~27]{FernauGHHVW19}
+	to $\varphi(L)$ as $\varphi(\varphi^{-1}(\varphi(L))) = \varphi(L)$,
+	but this just gives
+	$
+	\constrsync{\varphi(L)} \le_m^{\log} \constrsync{\varphi^{-1}(\varphi(L))}.
+	$
+	
+	\todo[inline]{makros nichts benuttz!}
+	\item \cite[Thm.~31]{FernauGHHVW19}: (We have adjusted this statement slightly to conform to our notations and conventions.) 
+	Let $\mathcal{B} = (P^{\mathcal{B}}, \Sigma^{\mathcal{B}}, 
+	\mu^{\mathcal{B}}, p_0^{\mathcal{B}}, F)$ and 
+	$\mathcal{C}=(P^{\mathcal{C}}, \Sigma^{\mathcal{C}},
+	\mu^{\mathcal{C}}, p_0^{\mathcal{C}}, \emptyset)$ be PDFAs with
+	$P^{\mathcal{B}} \cap P^{\mathcal{C}} = \emptyset$.  For\footnote{Here, 
+		a transition function $\nu$ is identified with the set of tuples $\{ (p, x, q) \mid \applytrans{\nu}{p}{x} = q \}$.} $p_x \in
+	P^{\mathcal{C}}$ let $\nu \subseteq \{p_x\} \times
+	(\Sigma^{\mathcal{B}} \cup \Sigma^{\mathcal{C}}) \times
+	\{p_0^{\mathcal{B}}\}$
+	be such that the following three conditions are satisfied:
+	\begin{enumerate}	
+		\item $(p_x, x, p) \in \mu^{\mathcal C}$ for some $x \in \Sigma^{\mathcal C}$ and $p \in P^{\mathcal C}$
+		implies $(p_x, x, p_0^{\mathcal B}) \notin \nu$,\footnote{In the original formulation
+			this assumption is missing and instead it is equivalently
+			assumed that $\mathcal B'$ is deterministic, but we do not introduce nondeterministic automata here
+			and so reformulated it.}
+		
+		\item the automaton $\mathcal{C}'= (P^{\mathcal{C}} \cup\{p_0^{\mathcal{B}}\}, \Sigma^{\mathcal{B}} \cup \Sigma^{\mathcal{C}}, \mu^{\mathcal{C}} \cup \nu \cup \{p_0^{\mathcal{B}}\} \times (\Sigma^{\mathcal{B}} \cup \Sigma^{\mathcal{C}}) \times \{p_0^{\mathcal{B}}\})$
+		
+		is carefully synchronizing, and 
+		\item there exists a synchronizing\footnote{This is the original formulation, not stating
+			whether an exactly synchronizing word or a carefully synchronizing word is meant
+			here (given assumption~(a), it probably means carefully synchronizing word).}
+		word $v = v_1 \dots v_n$ [where $v_i \in \Sigma$, $i \in \{1,\ldots,n\}$]
+		for $\mathcal{C}'$ such that $v_1 \dots v_{n-1} \in L(\mathcal{C}_{p_0^{\mathcal C}, \{p_x\}})$.
+	\end{enumerate}
+	Then $\constrsync{L(\mathcal B)} \leq_m^{\log} \constrsync{L(\mathcal B')}$
+	for the PDFA\footnote{As often done, functions are viewed here as sets of tuples.}		
+	$\mathcal{B'}=(P^{\mathcal{B}} \cup P^{\mathcal{C}}, \Sigma^{\mathcal{B}}
+	\cup \Sigma^{\mathcal{C}}, 
+	\mu^{\mathcal{B}} \cup \mu^{\mathcal{C}} \cup \nu,
+	p_0^{\mathcal{C}}, F)$.
+		
+	This statement is covered by~\cref{constr_sync:thm:prefix_before}, which can be seen 
+	by considering the language accepted by $\mathcal B'$.
+	Define 
+	\[
+	\overline{\mathcal C} = (P^{\mathcal C} \cup \{p_0^{\mathcal B}\}, \Sigma^{\mathcal B} \cup \Sigma^{\mathcal C}, 
+	\mu^{\mathcal C} \cup \nu, p_0^{\mathcal C}, \{p_0^{\mathcal B}\}).
+	\]
+	Then $L(\mathcal B') = L(\overline{ \mathcal C})  L(\mathcal B)$
+	as 
+	every accepting word has to pass through the transitions in $\nu$ (they form a choke point).
+	As $\overline{\mathcal C}$ has a unique final state with no outgoing transitions,
+	by \crefitem{constr_sync:prop:aut_prefix_free}{constr_sync:prop:aut_prefix_free:item:trim} 
+	it accepts a prefix code.
+	Then \cref{constr_sync:thm:prefix_before} 
+	yields $\constrsync{L(\mathcal B)} \leq_m^{\log} \constrsync{L(\overline{ \mathcal C})  L(\mathcal B)}$.
+\end{enumerate} 
+
+\Cref{constr_sync:thm:union} about the union of constraint languages
+was proven for the special case of \PTIME in~\cite[Lem.~13]{FernauGHHVW19}.
+The formulation for multiple complexity classes 
+appeared in~\cite[Lem.~7]{DBLP:journals/tcs/Hoffmann21} (but without mentioning $\AC^0$, $\NC^1$, $\LOGSPACE$ and~$\NL$).
+
+Hoffmann~\cite{DBLP:conf/cocoon/Hoffmann21} 
+showed the Ideal Intersection Theorem (\cref{constr_sync:gen_results:thm:ideal_separation}),
+the complexity reduction by morphic images (\cref{thm:hom_lower_bound_complexity}),
+and \cref{constr_sync:cor:factors_sets_included}.
+Furthermore, in~\cite[Thm.~4.5]{DBLP:conf/cocoon/Hoffmann21} also appeared  a general \PSPACE-hardness condition
+(called the $uC$-Theorem).
+However, the proof (available in the arXiv version~\cite{DBLP:journals/corr/abs-2005-05907}) 
+contained a mistake (fixed in the extended version~\cite{HoffmannCocoonExtended}).
+The \PSPACE-hardness conditions presented in \cref{constr_sync:sec:PSPACE-hardness}
+extend the condition from~\cite{DBLP:conf/cocoon/Hoffmann21}.
+Our conditions also work with infinite prefix codes, whereas
+the \PSPACE-hardness condition from~\cite{DBLP:conf/cocoon/Hoffmann21} only holds for finite prefix codes.
+
+\IN{strongly self-synchronizing code}
+\label{discussion:strongly-self-sync-codes}
+The fact that coding morphisms of solid codes preserve the computational complexity of constraint languages (Theorem~\ref{thm:constr_sync_hom_strongly_self_sync}) was first stated in~\cite[Thm.~17]{DBLP:conf/fct/Hoffmann21}. However, the connection to solid codes was not made in~\cite{DBLP:conf/fct/Hoffmann21}. Instead, \emph{strongly self-synchronizing codes} were introduced as comma-free codes $C$ satisfying $\pref{C} \setminus C) C \cap \Sigma^* C \Sigma^+ = \emptyset$.
+In the present work, we discovered that strongly self-synchronizing codes and solid codes are in fact identical,
+which follows from \cref{constr_sync:prop:selfsync_implies_avoiding,thm:solidcode}.
+For this reason we do not use the term strongly self-synchronizing codes anymore.\footnote{Self-synchronizing
+	code is another name for comma-free code,
+	see Wikipedia~\cite{FujiwaraTonchev2013,wiki:Self-synchronizing_code}.
+	Since originally introduced as self-synchronizing codes
+	satisfying an additional condition,
+	we called this class strongly self-synchronizing codes; without being aware that
+	this class equals the class of solid codes.
+	We note that the term self-synchronizing does not seem to be used consistently in the literature
+	to denote the same class of codes. For instance, in~\cite{DBLP:journals/tit/FergusonR84}
+	codes admitting a synchronizing word for a canonical decoder (automaton)
+	are called self-synchronizing, which gives an additional reason to avoid the term strongly self-synchronizing codes.}
+We note in passing that~\cite[Remark 2]{DBLP:conf/fct/Hoffmann21} giving a construction procedure for solid codes misses 
+the condition $\Sigma^*\{c\} \cap X = \emptyset$, \crefitem{constrsync:ex:binarysolidcode}{constrsync:ex:constr-solid-code}
+gives the correct formulation with a proof.

@@ -1,0 +1,362 @@
+%!TEX root = ./../../thesis-trier.tex
+
+Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be an $n$-state automaton. Set $F = \{ \{q\} \mid q \in Q \}$.
+We have $\Syn(\mathcal A) = \{ u \in \Sigma^* \mid \applytrans{\delta}{Q}{u} \in F\} = L(\mathcal P(\mathcal A)_{Q, F})$, i.e.,
+the power automaton~$\mathcal P(\mathcal A)_{Q, F}$ accepts $\Syn(\mathcal A)$.
+\Cref{sync_max:fig:C4-poweraut} depicts $\mathcal P(\mathcal C_4)$ for the 
+\v{C}ern\'y automaton~$\mathcal C_4$, excluding the empty set and the singleton subsets except~$\{1\}$,
+with the path traced out by the synchronizing word $abbbabbba$ marked in red.
+
+We get an automaton with at most $2^n - 1 - (n-1) = 2^n - n$ states accepting $\Syn(\mathcal A)$
+by only considering the states reachable from~$Q$ in $\mathcal P(\mathcal A)$
+%which does not include the empty set, 
+and by merging all states in~$F$ to a single
+state. Formally, it is $\Syn(\mathcal A) = L( ( ( \mathcal P(\mathcal A)_{|S} ) / {\sim_F} )_{\pi_{\sim_F}(S), \{F\}} )$
+for $S = \{ A \mid \exists u \in \Sigma \colon \applytrans{\delta}{Q}{u} = A \}$,
+giving the next theorem.\footnote{Note that 
+$S \subseteq \{ A  \mid A \ne \emptyset, A \subseteq Q \}$ for $Q \ne \emptyset$.
+Thus, in this case, we also obtain an automaton by merging all states in~$F$
+and retaining all subsets of states except the empty set.}
+
+\begin{figure}	
+	\begin{subfigure}[c]{0.4\textwidth}
+		\centering
+		\begin{tikzpicture}[shorten >=1pt,->,node distance=2.3cm]
+			%\tikzstyle{vertex}=[circle,color=red!60,fill=black!10,minimum size=25pt,inner sep=1pt,very thick]
+			%\tikzstyle{vertex}=[circle,draw,minimum size=25pt,inner sep=1pt]	
+			\node[state] (0) {$0$};
+			\node[state, right of=0] (1) {$1$};
+			\node[state, below of=1] (2) {$2$};
+			\node[state, left of=2]  (3) {$3$};
+			
+			\path[->] (0) edge [above] node {$a,b$} (1)
+			(1) edge [left, right] node {$b$} (2)
+			(2) edge [loop below] node {$a$} (2)
+			(2) edge [below] node {$b$} (3)
+			(3) edge [left]  node {$b$} (0)
+			(2) edge [loop below] node {$a$} (2)
+			(3) edge [loop below]  node {$a$} (3)
+			(1) edge [loop above] node {$a$} (1);
+		\end{tikzpicture}
+		\caption{The \v{C}ern\'y automaton $\mathcal C_4$.}
+	\end{subfigure}
+	\begin{subfigure}[c]{0.6\textwidth}
+		\newcommand*\pathone{red}
+		\newcommand*\pathtwo{red}
+		\newcommand*\paththree{red}
+		\newcommand*\pathfour{red}
+		\newcommand*\pathfive{red}
+		\newcommand*\pathsix{red}
+		\newcommand*\pathseven{red}
+		\newcommand*\patheight{red}
+		\newcommand*\pathnine{red}
+		\begin{tikzpicture}[shorten >=1pt,->,node distance=1.15cm and 1.5cm]
+			\tikzstyle{vertex}=[]	
+			% \node at (0,-1) (s) {$start$};	
+			\node[vertex] (0123)               {$\{0,1,2,3\}$};
+			\node[vertex, right = of 0123] (012) {$\{1,2,3\}$};
+			\node[vertex, right = of 012]  (123) {$\{0,2,3\}$};
+			\node[vertex, below = of 123]  (023) {$\{0,1,3\}$};
+			\node[vertex, left  = of 023]  (013) {$\{0,1,2\}$};
+			
+			\node[vertex, below = of 013] (01) {$\{1,2\}$};
+			\node[vertex, right = of 01]  (13) {$\{0,2\}$};
+			\node[vertex, below = of 13]  (02) {$\{1,3\}$};
+			\node[vertex, below = of 01]  (12) {$\{2,3\}$};
+			\node[vertex, left  = of 12]   (23) {$\{0,3\}$};
+			\node[vertex, above = of 23]  (03) {$\{0,1\}$};
+			\node[vertex, above = of 03]  (0)  {$\{1\}$};	
+			
+			\path[->] (0123) edge [above, line width=1.2pt, \pathone]   node {$a$} (012);
+			\path[->] (012)  edge [loop above] node {$a$} (012);	
+			\path[->] (123) edge [bend right,above] node {$a$} (012);
+			
+			\path[->] (013) edge [left, line width=1.2pt, \pathfive] node {$a$} (01)
+			(023) edge [bend left,right] node {$a$} (02)
+			(01)  edge [in=30,out=60,loop,above] node {$a$} (01);
+			
+			\path[->] (23) edge [bend right, above] node {$a$} (02);
+			\path[->] (12) edge [in=30,out=60,loop,above] node {$a$} (12);
+			\path[->] (03) edge [left, line width=1.2pt, \pathnine]  node {$a$} (0);
+			\path[->] (13) edge [above] node {$a$} (01);
+			
+			\path[->] (0123) edge [loop above] node {$b$} (0123)
+			(012)  edge [bend right,below, line width=1.2pt, \pathtwo] node {$b$} (123)
+			(123)  edge [right, line width=1.2pt, \paththree] node {$b$} (023)
+			(023)  edge [above, line width=1.2pt, \pathfour] node {$b$} (013)
+			(013)  edge [left] node {$b$} (012);
+			
+			\path[->] (13) edge [bend left,left] node {$b$} (02)
+			(02) edge [bend left,left] node {$b$} (13);
+			
+			\path[->] (03) edge [above] node {$b$} (01)
+			(01) edge [right, line width=1.2pt, \pathsix] node {$b$} (12)
+			(12) edge [above, line width=1.2pt, \pathseven] node {$b$} (23)
+			(23) edge [left, line width=1.2pt, \patheight]  node {$b$} (03);
+		\end{tikzpicture}
+		\caption{Part of the power automaton of $\mathcal C_4$.}
+	\end{subfigure}
+	\caption[$\mathcal C_4$ and its power automaton]{
+		$\mathcal C_4$ and part of its power automaton. The synchronizing word $abbbabbba$ 
+		of~$\mathcal C_4$ is marked by thick red transitions in the power automaton.}
+	\label{sync_max:fig:C4-poweraut}
+\end{figure}
+
+\begin{theorem}\label{sync_max:thm:upper_bound_SynA}
+	For every $n$-state automaton $\mathcal A$, the set of synchronizing words 
+	$\Syn(\mathcal A)$
+	is acceptable by an automaton with $2^n - n$ states.
+\end{theorem}
+
+\Crefitem{prelim:thm:char_minaut}{thm:minaut:item:statesdist} stated two conditions for the minimality of a given automaton as a language acceptor: reachability (or accessibility) of states
+and distinguishability of pairs of states. Motivated by these two requirements
+translated to $\mathcal P(\mathcal A)_{Q, F}$ 
+%the power automaton
+as a language
+acceptor for $\Syn(\mathcal A)$, % with start state~$Q$ and final state set $F = \{ \{q\} \mid q \in Q\}$,
+we introduce the following two notions for subsets of states of the automaton $\semiautomat{A}{Q}{\Sigma}{\delta}$.
+
+ \index{reachable subset!in automaton}
+ \index{distinguishable subsets!in automaton}
+ \index{distinguishing!word}
+ \index{distinguishable pair} 
+\begin{enumerate}
+	\item A subset $A \subseteq Q$
+	is \emph{reachable (in $\mathcal A$)} if there exists a word $u \in \Sigma^*$
+	such that $\applytrans{\delta}{Q}{u} = A$, i.e., the set is reachable from $Q$ 
+	in the power automaton. 
+	
+	\item We call two subsets of states $A, B \subseteq Q$
+	\emph{distinguishable (in $\mathcal A$)}
+	if they are distinguishable 
+	in $\mathcal P(\mathcal A)_{Q, F}$ according to Equation~\eqref{prelim:eqn:distinguish}
+	where $F = \{ \{q\} \mid q \in Q \}$. Equivalently,
+	there exists a word $u \in \Sigma^*$ (called a \emph{distinguishing word}) 
+	such that 
+	\begin{equation}\label{eqn:distininguish}
+		( |\applytrans{\delta}{A}{u}| = 1 \land 
+		|\applytrans{\delta}{B}{u}| \ne 1 ) \lor 
+		( |\applytrans{\delta}{A}{u}| \ne 1 \land 
+		|\applytrans{\delta}{B}{u}| = 1 ).
+	\end{equation}
+	We say the word $u$ \emph{distinguishes} the two subsets $A$ and $B$, or that $u$ \emph{distinguishes the pair of subsets} formed by $A$ and $B$.
+	Note that two singleton subsets are never distinguishable.	
+\end{enumerate} 
+
+\begin{remark}
+	Let $p,q \in Q$ be distinct and $u \in \Sigma^*$.
+	Then $u$ distinguishes all non-empty sets $A \subseteq \delta^{-1}(p, u)$
+	and $B \subseteq Q$ with $\delta^{-1}(p, u) \cap B \ne \emptyset$
+	and $\delta^{-1}(q, u) \cap B \ne \emptyset$.
+\end{remark}
+
+\Cref{sync_max:ex:2-3-sets-not-implying-2-sets-pre} 
+gives an automaton where all pairs of non-disjoint $2$-sets are distinguishable
+and pairs of disjoint $2$-sets are indistinguishable.
+
+\begin{example} \label{sync_max:ex:2-3-sets-not-implying-2-sets-pre}
+	Consider the automaton from
+	\cref{sync_max:fig:2-3-sets-not-implying-2-sets}.	
+	Let $\{p_1, p_2\}, \{p_1, p_3\}$ be two distinct $2$-sets of states
+	with one common state.
+	Then there exists a letter mapping $p_1$ to $p_2$, and $p_3$
+	to another state, so that both subsets are distinguishable.
+	This also implies that every $2$-set is distinguishable from 
+	every set of size at least three. 
+	Next, we have the following pairs of disjoint $2$-sets:
+	\[
+	\{1,2\}, \{3,4\}, \quad 
+	\{1,3\}, \{2,4\}, \quad 
+	\{1,4\}, \{2,3\},
+	\]
+	and it can be easily seen that none of these pairs 
+	is distinguishable.	
+	Furthermore, also all pairs of 
+	$3$-sets are indistinguishable.
+	This can be seen by first noting that 
+	all pairs of distinct $3$-sets have two states in common.
+	So, let $\{p_1, p_2, p_3\}$
+	and $\{p_1, p_2, p_4\}$ be two distinct $3$-sets.
+	Consider some letter.
+	First, suppose it moves one point from $\{p_1, p_2\}$,
+	say $p_1$.
+	If it maps $p_1$ to $p_2$,
+	then it maps, say $p_3$, to $p_4$
+	and we end up at the same $2$-sets.
+	If it maps $p_1$ to, say $p_3$,
+	then it moves $p_2$ to $p_4$ or vice versa
+	and we also end up at the same $2$-set.
+	Otherwise, if it fixes both points $p_1$ and $p_2$,
+	then, without loss of generality, 
+	it moves $p_3$ to $p_1$ and $p_4$ to $p_2$
+	and starting from both sets, we end up 
+	at $\{p_1, p_2\}$.
+		
+	\begin{figure}[ht]
+		\centering 
+		\begin{tikzpicture}[node distance = 2cm and 4cm]
+			\node[state] (1) {1};
+			\node[state, right = of 1] (2) {2};
+			\node[state, below = of 2] (3) {3};
+			\node[state, left  = of 3] (4) {4};				
+			
+			\path[->] (1) edge [above] node {$a$} (2)
+			(4) edge node [below] {$a$} (3)
+			(1) edge [above, pos=.8] node {$b$} (3)
+			(2) edge [above, pos=.8] node {$b$} (4)
+			(1) edge [left]  node {$c$} (4)
+			(2) edge [right] node {$c$} (3);	 		
+		\end{tikzpicture} 
+		\caption[Disjoint and non-disjoint $2$-sets and distinguishability]{Automaton where non-disjoint $2$-sets are distinguishable and pairs of disjoint $2$-sets are indistinguishable. Self-loops omitted.
+		}
+		\label{sync_max:fig:2-3-sets-not-implying-2-sets}
+	\end{figure}
+\end{example}
+
+\begin{example} \label{sync_max:ex:distinguishable-trap}
+	In the automaton from \cref{sync_max:fig:example-trap-state},
+	for a subset of states~$A$ of size at least two,
+	$A$ and $A \cup \{1\}$ are indistinguishable.
+	Pairs of sets $A,B$ with $|A|,|B| \ge 2$ that do not have this form are distinguishable,
+	for example, all pairs of subsets of states of size at three are distinguishable.
+				
+	\begin{figure}[ht]
+		\centering 
+	\begin{tikzpicture}
+		\node[state] (1) {1};
+		\node[state, above = of 1] (2) {2};
+		\node[state, left  = of 2] (3) {3};
+		\node[state, right = of 2] (4) {4};				
+		
+		\path[->] (3) edge [left] node {$a$} (1)
+		(2) edge [right] node {$b$} (1)
+		(4) edge [right] node {$c$} (1)
+		(1) edge [loop below] node {$a,b,c$} (1)
+		(3) edge [loop above] node {$b,c$} (3)
+		(2) edge [loop above] node {$a,c$} (2)
+		(4) edge [loop above] node {$a,b$} (1);
+	\end{tikzpicture}
+			\caption[Distinguishability in different classes of sets]{Sets of the 
+				form~$A$ and $A \cup \{1\}$ with $|A| \ge 2$
+				are indistinguishable. Pairs of sets $A,B$ with $|A|,|B| \ge 2$ that do not have this form are distinguishable.}
+	\label{sync_max:fig:example-trap-state}
+\end{figure}
+\end{example}
+
+\begin{example} \label{sync_max:ex:dist-trap-state}
+	In the synchronizing SI-automaton from \cref{prelim:fig:binarySI-sync-trap},
+	sets of the form $A$ and $A \cup \{t\}$ for $|A| \ge 2$ are indistinguishable
+	and pairs of non-empty and non-singleton subsets that do not have this form
+	are distinguishable.
+\end{example}
+
+Our next examples show that completely distinguishable automata can 
+have a trap state. \Cref{sync_max:ex:dist-trap-state-two} is a modification
+of \cref{sync_max:ex:dist-trap-state} by adding a single letter.
+
+\begin{example}  \label{sync_max:ex:dist-trap-state-two}
+	Consider the SI-automaton $\semiautomat{A}{Q}{\{a,b\}}{\delta}$ from \cref{prelim:fig:binarySI-sync-trap}
+	and add another simple idempotent $c$ letter mapping some $q \in Q \setminus \{t\}$
+	to the state $\delta(q, b)$.
+	Then distinct subsets $A, B \subseteq Q \setminus \{t\}$
+	are distinguishable since the automaton with letters $b$ and $c$
+	acts in the same way as the \Cerny automaton on these states.
+	For $A \subseteq Q$ and $B \subseteq Q \setminus \{t\}$
+	with $t \in A$, we can map $B$ to $\{p\}$ for some $p \in Q \setminus \{t\}$
+	by some $u \in \{b,c\}^*$ for the same reason as before and where
+	$|\delta(A, u)| \ge 2$.
+	For distinct $A, B \subseteq Q$ with $t \in A \cap B$,
+	if, without loss of generality, $q \in A \setminus B$
+	for some $q \in Q$,
+	then we can successively map all states in $B$ to $t$
+	while the state~$q$ is mapped to a state distinct from~$t$
+	to obtain a distinguishing word for both sets.
+	Thus, all pairs of distinct non-empty and non-singleton subsets
+	are distinguishable.	
+\end{example}
+
+\begin{example}
+	Let $\mathcal A = (Q, \Sigma, \delta)$ with a state $t \in Q$
+	and $\Sigma = \{ a_{pq} \mid p,q \in Q \setminus \{t\}, p \ne q\} \cup
+	\{ b_{pt} \mid p \in Q \setminus \{t\}\}$
+	where $a_{pq}$ is a simple idempotent letter mapping $p$
+	to $q$ for distinct $p,q$ not equal to~$t$
+	and $b_{pt}$ is a simple idempotent letter mapping $p$ to $t$
+	for a state $p$ unequal to~$t$.
+	Then~$t$ is a trap state. 
+	Next, we show that~$\mathcal A$ is completely distinguishable.
+	Consider two distinct non-empty and non-singleton
+	subsets $A, B$  with $|A| \le |B|$. 
+	First, suppose $t \notin A$
+	and write $A = \{q_1, \ldots, q_m\}$ with $m = |A|$.
+	Then $\delta(A, u) = \{q_1\}$
+	and $|\delta(B, u)| = 2$ 
+	for $u = a_{q_2 q_1} \cdots a_{q_m q_1}$
+	(note that $B$ cannot be a subset of~$A$
+	since $|A| \le |B|$ and $A \ne B$).
+	Lastly, suppose $t \in A \cap B$, or $t \in A$ and $t \notin B$.
+	Write $A = \{q_1, \ldots, q_m, t \}$ with $m = |A| - 1$.
+	Then $\delta(A, u) = \{t\}$ and $|\delta(B, u)| \ge 2$ for $u = b_{q_1t} \cdots b_{q_mt}$. Note that since $|A| \le |B|$ and $A \ne B$,
+	we have $B \ne \{q_1, \ldots, q_m\}$.	
+\end{example}
+
+\begin{example} An automaton is synchronizing if and only if $\emptyset$
+	is distinguishable from every other non-empty set.
+\end{example}
+
+\begin{remark}
+	Let $q \in Q$ and $u \in \Sigma^*$.
+	Then $u$ distinguishes every non-empty $A \subseteq \delta^{-1}(q, u)$
+	from every $B \subseteq Q$
+	such that $B \cap \delta^{-1}(p, u) \ne \emptyset$ 
+	and $B \cap \delta^{-1}(r, u) \ne \emptyset$
+	for distinct $p, r \in Q$.
+	For example, if $a \in \Sigma$ has defect one
+	with $\delta(p, a) = \delta(q, a)$ for distinct $p,q \in Q$,
+	then $a$ distinguishes $\{p,q\}$ from every other set of size at least two.	
+\end{remark}
+
+\Crefitem{prelim:thm:char_minaut}{thm:minaut:item:statesdist}
+gives the following lower bound for the size of every automaton accepting $\Syn(\mathcal A)$.
+
+\begin{theorem}
+	\label{sync_max:thm:lower_bound_SynA}
+	Let $\mathcal A$ be a synchronizing automaton. Suppose there exist
+	$m$ reachable and pairwise distinguishable subsets of states.
+	Then every automaton for $\Syn(\mathcal A)$ has at least $m$
+	states.	
+	In fact, the size of a minimal automaton
+	for $\Syn(\mathcal A)$ equals
+	the size of a largest family of pairwise distinguishable and reachable subsets of states.
+\end{theorem}
+
+Note that $\mathcal A$ is synchronizing if and only if at least one singleton subset of states is reachable.
+
+\begin{remark}
+	Clearly, the set
+	of synchronizing words equals 
+	$\bigcup_{q \in Q} \bigcap_{p \in Q} L(\mathcal A_{p, \{q\}})$.
+	As shown above, this set can be accepted
+	by the power automaton.
+	
+	Other possibilities to describe 
+	this set are, for example, with
+	an ``inverse power automaton''
+	with state set
+    $\{ \delta^{-1}(q, u) \mid q \in Q, u \in \Sigma^* \} \cup \{ Q \}$
+	and transition function that maps $\delta^{-1}(q, u)$
+	to $\delta^{-1}(q, ua)$ for $a \in \Sigma$.
+	Then it equals the union of all languages
+	that go from some state of the form $\{q\}$
+	to~$Q$. Another possibility
+	derives from \cref{prelim:subclasses:sync:Aiffpairaut}.
+	By this statement, it also equals the set of synchronizing
+	words of the pair automaton $\mathcal A^{\le 2} / {\sim_F}$,
+	and since it has~$F$ as a trap state,
+	this language equals the intersection of all languages accepted
+	with some start state of the form $\{p,q\}$, $p \ne q$,
+    and ending at~$F$ in the pair automaton.
+    Both constructions can be seen as ``multiple-entry acceptor automata'' where we allow a set of starting states rather than a single starting state.
+
+	However, for our purposes, the automaton obtained from the power automaton by merging singleton state sets is the most direct approach, as the notions of reachability and distinguishability directly arise from considering this automaton. Additionally, as we will see later, this automaton sometimes even leads to a minimal automaton.	
+\end{remark}

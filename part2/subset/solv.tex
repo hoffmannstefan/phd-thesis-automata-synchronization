@@ -1,0 +1,391 @@
+%!TEX root = ./../../springer-mono-format/book.tex
+%!TEX root = ./../../thesis-trier.tex
+
+Here, we show the following:
+
+\begin{enumerate}
+	\item \ST, \DST, and \DFAINT are \NP-complete for solvable input automata
+	(\cref{thm:solvable}).
+	
+	\item \SFS is \NP-complete for solvable automata (\cref{thm:SF-solvable}).
+	
+	\item \DFAST, \DFASS, \DFAS, and \SIS are \LOGSPACE-complete
+	for solvable automata even for a unary alphabet (\cref{thm:SYNC-solv}).
+	
+	\item \REACHF and \REACH are \NP-complete for solvable automata
+	in (\cref{prelim:compl:thm:reach-NP,prelim:compl:thm:reachf-NP}).
+\end{enumerate}
+For self-containment, we give a proof of \NP-hardness of \DFAINT 
+for unary permutation automata. The proof is similar to the one given in \cite[Lem.~27]{MartensN07},
+but uses automata instead of regular expressions.
+
+\begin{proposition}
+	\label{compl:prop:dfaint_unary}
+	\DFAINT is \NP-hard for unary permutation automata.
+\end{proposition}
+\begin{proof}	
+	We give a reduction from {\sc 3SAT}, which 
+	is \NP-complete by \cref{prelim:thm:THREESAT}.
+	Let $C_1, \ldots, C_m \subseteq \{x_1, \overline x_1, \ldots, x_n, \overline x_n\}$ 
+	be the clauses of an {\sc 3SAT}-instance over the variables $x_1, \ldots, x_n$.
+	We can assume every variable appears, as a positive or negative literal, in some clause.
+	
+	\medskip 
+	\noindent\underline{Construction:} 
+	Let $p_1 < p_2 < \cdots < p_n$
+	be the first $n$ prime numbers.
+	For each clause $C_j$, $j \in \{1,\ldots,m\}$,
+	we construct 
+	$\automat{A_j}{Q_j}{\{a\}}{\delta_j}{q_j}{F_j}$
+	with
+	\begin{align*}
+		Q_j & = \{0,1,\ldots, N_j - 1\}, \\
+		q_j & = 0, \\
+		F_j & = \{ q \in Q_j \mid \exists i \in \{1,\ldots,n\} : 
+		( x_i \in C_j \land q \equiv_{p_i} 0 ) \lor ( \overline{x}_i \in C_j \land q \not\equiv_{p_i} 0 ) \}, \\
+		%F_j & = \{ q \in Q_j \mid \exists i \in \{1,\ldots,n\} : 
+		%( x_i \in C_j \land q \equiv 0 \pmod{p_i} ) \\ 
+		%& \qquad\qquad\qquad\qquad\qquad\qquad\qquad \lor ( \overline{x}_i \in C_j \land q \not\equiv 0 \pmod{p_i}) \}, \\
+		\applytrans{\delta_j}{q}{a} & = (q + 1) \bmod{ N_j }
+	\end{align*}
+	where $N_j = \left(\prod_{\substack{ i \in \{1,\ldots,n\} \\ x_i \in C_j \lor \overline{x}_i \in C_j}} p_i \right)$,
+	i.e., we multiply those primes that correspond
+	to the variables in~$C_j$.
+	
+	By \cref{prelim:cor:PNT} 
+	there exists $N \ge 1$ such that $p_n < n^2$
+	for all $n \ge N$.
+	We can assume $p_n < n^2$ in the following.
+	Since  $|C_j| \le 3$
+	we get  $|Q_j| \le n^6$.
+	Then, as detecting primality for unary numbers
+	is in~\LOGSPACE~\cite[Thm.~7]{DBLP:journals/tcs/HartmanisB76},
+	the automata $\mathcal A_j$ can be constructed 
+	in deterministic log-space.	
+	
+	\Cref{prelim:compl:fig:intersection-unary-construction} 
+	shows the construction for the clauses $C_1 = \{ x_1, x_2\}$, $C_2 = \{ \overline{x_1}, x_3\}$,
+	and $C_3 = \{ x_2, \overline{x_3}\}$ (shown in their logical interpretation
+	in the figure).
+	If $x_1 = 1$, then $x_3 = 1$ to fulfill $C_2$
+	and thus $x_2 = 1$ to fulfill $C_3$. For $x_1 = 0$,
+	we must have $x_2 = 1$ to fulfill $C_1$
+	and $x_3$ can be arbitrary. Thus we find 
+	three satisfying assignments that correspond to 
+	the words $a^{30}$, $a^3$, and $a^{15}$.	
+	
+	\begin{figure}[ht]
+		\centering	
+		
+		\begin{tikzpicture}[>=Stealth] %[>=Stealth[length=3pt]] %
+			
+			% ---------- Stil & Radius ----------
+			\def\radius{11em}
+			\def\radiusA{0.3*\radius}
+			\def\radiusB{0.44*\radius}
+			\def\radiusC{0.67*\radius}
+			\def\ylabel{\radiusC-2em}
+			
+			\tikzset{
+				smallstate/.style={
+					draw,
+					circle,
+					minimum size=15pt,
+					inner sep=0pt,
+					font=\small
+				}
+			}
+			
+			% ---------- Automat mit 6 Zuständen ----------
+			\begin{scope}
+				\foreach \i in {0,...,5} {
+					% teilbar durch 2 ODER 3
+					\pgfmathtruncatemacro{\isfinal}{(mod(\i,2)==0) || (mod(\i,3)==0)}
+					\ifnum\isfinal=1
+					\node[smallstate,accepting] (q\i) at ({360/6*\i}:\radiusA) {$\i$};
+					\else
+					\node[smallstate] (q\i) at ({360/6*\i}:\radiusA) {$\i$};
+					\fi
+				}
+				\foreach \i in {0,...,5} {
+					\pgfmathtruncatemacro{\j}{mod(\i+1,6)}
+					\draw[->] (q\i) edge (q\j);
+				}
+				\node at (0,-\ylabel) {$\mathcal A_1$ for $C_1 = x_1 \lor x_2$};
+			\end{scope}
+			
+			% ---------- Automat mit 10 Zuständen ----------
+			\begin{scope}[xshift=12em]
+				\foreach \i in {0,...,9} {
+					% ungerade UND durch 3 teilbar
+					\pgfmathtruncatemacro{\isfinal}{(mod(\i,2)==1) || (mod(\i,5)==0)}
+					\ifnum\isfinal=1
+					\node[smallstate,accepting] (p\i) at ({360/10*\i}:\radiusB) {$\i$};
+					\else
+					\node[smallstate] (p\i) at ({360/10*\i}:\radiusB) {$\i$};
+					\fi
+				}
+				\foreach \i in {0,...,9} {
+					\pgfmathtruncatemacro{\j}{mod(\i+1,10)}
+					\draw[->] (p\i) edge (p\j);
+				}
+				\node at (0,-\ylabel) {$\mathcal A_2$ for $C_2 = \overline{x_1} \lor x_3$};
+			\end{scope}
+			
+			% ---------- Automat mit 15 Zuständen ----------
+			\begin{scope}[xshift=28em]
+				\foreach \i in {0,...,14} {
+					% gerade UND NICHT durch 5 teilbar
+					\pgfmathtruncatemacro{\isfinal}{(mod(\i,2)==0) || (mod(\i,5)!=0)}
+					\ifnum\isfinal=1
+					\node[smallstate,accepting] (r\i) at ({360/15*\i}:\radiusC) {${\i}$};
+					\else
+					\node[smallstate] (r\i) at ({360/15*\i}:\radiusC) {${\i}$};
+					\fi
+				}
+				\foreach \i in {0,...,14} {
+					\pgfmathtruncatemacro{\j}{mod(\i+1,15)}
+					\draw[->] (r\i) edge (r\j);
+				}
+				\node at (0,-\ylabel) {$\mathcal A_3$ for $C_3 = x_2 \lor \overline{x_3}$};
+			\end{scope}	
+		\end{tikzpicture}
+		\caption[Example for reduction of \THREESAT to \DFAINT\ on unary automata]{Example for the proof of \cref{compl:prop:dfaint_unary}. States with label~$0$ are start states. Final states are indicated by double circles. The label~$a$ at the transitions is omitted.}
+		\label{prelim:compl:fig:intersection-unary-construction}
+	\end{figure} 
+		
+	\medskip
+	\noindent\underline{Properties:} We have the following two properties:
+	\begin{enumerate}
+		\item \label{prelim:compl:INT-unary:1} $\delta_j(q_j, a^r) \equiv_{N_j} r$ for each $r \ge 0$.
+		
+		\item \label{prelim:compl:INT-unary:2} $(b_1, \ldots, b_n)$ is a satisfying assignment
+		if and only if $a^{\prod_{i=1}^n p_i^{b_i}} \in \bigcap_{j=1}^m L(\mathcal A_j)$.
+	\end{enumerate}	
+	Property~\ref{prelim:compl:INT-unary:1} follows 
+	from the construction of $\mathcal A_j$ whose automaton graph forms a single cycle.	
+	Property~\ref{prelim:compl:INT-unary:2} follows since for $(b_1, \ldots, b_n) \in \{0,1\}^n$,
+	$l = \prod_{i=1}^n p_i^{b_i}$,  $j \in \{1,\ldots,m\}$,
+	and $s_j = \delta_j(q_j, a^l)$ we have $s_j \equiv l \pmod{N_j}$ and then
+	\[
+	\begin{array}{rlr}
+		&\exists i \in I \colon ( ( x_i \in C_j \land b_i = 1 ) \lor ( \overline{x}_i \in C_j \land b_i = 0 ) ) \\
+		& \Leftrightarrow \exists i \in I \colon ( ( x_i \in C_j \land l \equiv_{p_i} 0 ) \lor ( \overline{x}_i \in C_j \land l \not\equiv_{p_i} 0  ) )  & \text{(Def. $l$)} \\
+		& \Leftrightarrow  \exists i \in I \colon( ( x_i \in C_j \land s_j \equiv_{p_i} 0 ) \lor ( \overline{x}_i \in C_j \land s_j \not\equiv_{p_i} 0 ) ) & \text{(Eqn.~\eqref{prelim:eqn:ab_divisor}, Property~(1))} \\
+		& \Leftrightarrow  s_j \in F_j & \text{(Def. $F_j$)}
+	\end{array}
+	\]
+	where $I = \{1,\ldots,n\}$.
+	
+	\medskip 
+	\noindent\underline{Verification:} By Property~\ref{prelim:compl:INT-unary:2},
+	if there exists a satisfying assignment, then we have $\bigcap_{j=1}^m L(\mathcal A_j) \ne \emptyset$.
+	Conversely, suppose $a^l \in \bigcap_{j=1}^m L(\mathcal A_j)$
+	for some $l \ge 0$. Define an assignment $(b_1, \ldots, b_n)$
+	to the variables by setting, for $i \in \{1,\ldots,n\}$,
+	\[
+	b_i = \begin{cases}
+		1 & \text{if } p_i \text{ divides } l, \\ 
+		0 & \text{if } p_i \text{ does not divide } l. 
+	\end{cases}	
+	\] 	
+	Let $l' = \prod_{i=1}^n p_i^{b_i}$.
+	Then $l' \equiv_{p_i} 0$ if and only if $l \equiv_{p_i} 0$ for $i \in \{1,\ldots,n\}$.
+	So $a^{l'} \in L(\mathcal A_j)$ if and only if $a^l \in L(\mathcal A_j)$ for $j \in \{1,\ldots,m\}$.
+	Hence, by Property~\ref{prelim:compl:INT-unary:2}, we obtain that $(b_1, \ldots, b_n)$
+	is a satisfying assignment.
+\end{proof}
+
+\begin{theorem}\label{thm:solvable} \label{compl:thm:comm_ST}
+	\ST, \DST, and \DFAINT are \NP-complete for solvable input automata,
+	where \NP-hardness holds
+	even for the following classes of input automata:
+	\begin{enumerate}
+		\item binary partially ordered input automata,
+		
+		\item ternary partially ordered monotonic automata,
+		
+		\item commutative partially ordered  automata over an unbounded alphabet,
+		
+		\item unary permutation automata.
+	\end{enumerate}
+\end{theorem}
+\begin{proof}
+	That \DFAINT is \NP-complete for the mentioned
+    classes follows from results
+    in the literature mentioned in \cref{compl:sec:subclasses:known-results}, page~\pageref{prelim:classes:intro:INT}.
+    By \cref{compl:prop:reductions:item:DFAINT_DST,compl:prop:reductions:item:DST_ST}
+    from \cref{compl:prop:reductions} 
+    we obtain \NP-hardness for all three problems,
+    and by these statements it is sufficient to establish \NP-membership
+    for \ST, which we do in the following.
+    
+	Let $\Sigma = \{a_1, \ldots, a_k\}$ and 
+	$\semiautomat{A}{Q}{\Sigma}{\delta}$ be a solvable
+	input automaton to \ST with $n$ states and input sets $S, T \subseteq Q$.
+	If there exists a word mapping~$S$ into~$T$,
+	by Proposition~\ref{prop:S-T-bound} there exists a word
+	of the form
+	\[ 
+	v = v_0 x_1 \cdots v_{r-1} x_r v_r
+	\]
+	for some $r \le n^2$
+	where $x_1, \ldots, x_r \in \Sigma$ and $v_i = a_1^{r_{i,1}} \cdots a_k^{r_{i,k}}$
+	for numbers $0 \le r_{i,j} < 2^n$
+	with $i \in \{0,1,\ldots,r\}$ and $j \in \{1,\ldots,k\}$
+	mapping~$S$ into~$T$.
+	By using a binary encoding for the exponents $0 \le r_{i,j} < 2^n$,
+	a word of the above form can be stored using 
+	$O( |\Sigma|n \cdot (n^2 + 1) + \log(|\Sigma|)n^2)$
+	%$(|\Sigma|+1) n^3 + |\Sigma|n$ 
+	bits where each of the $n^2+1$ words $v_i$, $i \in \{0,1,\ldots,r\}$,
+	takes up $|\Sigma|n$ bits and each letter $x_i$, $i \in \{1,\ldots,r\}$,
+	takes $\log( |\Sigma| )$ bits.
+	So, using this encoding, it can be guessed in polynomial time.
+	Next, the transition matrix
+	of $a_j^{r_{i,j}}$ for $0 \le r_{i,j} < 2^n$
+	can be computed in polynomial time by a square-and-multiply algorithm (also known as 
+	exponentiation by squaring) 
+	using the transition matrix of~$a_j$.
+	Hence, the transition matrix of~$v$
+	can be computed in polynomial time by multiplying
+	the transition matrices of $v_0, x_1, \ldots, v_{r-1}, x_r$, and $v_r$ in this order.
+	Then~$v$ maps~$S$ into~$T$
+	if and only if each row in the transition matrix of~$v$ corresponding to a state in~$S$
+	has precisely one~$1$ at a column corresponding to a state in~$T$.
+	So, the above algorithm shows containment in \NP. 
+\end{proof}
+
+\begin{theorem}\label{thm:SF-solvable}
+	\SFS is \NP-complete for solvable input automata even for binary partially ordered automata.
+\end{theorem} 
+\begin{proof}
+	Ryzhikov~\cite[Thm.~4]{Ryzhikov19a} proved the problem to be \NP-complete
+	for partially ordered binary automata, see also page~\pageref{prelim:classes:intro:SFS} 
+	in \cref{compl:sec:subclasses:known-results}.
+	
+	For \NP-membership, we can guess a state $q \in Q$ in an $n$-state solvable 
+	input automaton $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	and then test whether 
+	there exists a word mapping $Q$ to $\{q\}$.
+	As the latter problem is in \NP\  by Theorem~\ref{thm:solvable},
+	we obtain that \SFS is in \NP. 
+	\NP-hardness follows as \SFS
+	is \NP-complete for binary partially ordered automata
+	as proved in~\cite[Thm.~4]{Ryzhikov19a}, 
+	see also Table~\ref{compl:tab:overview}.
+\end{proof}
+
+\begin{theorem} \label{thm:SYNC-solv}
+\DFAST, \DFASS, \DFAS, and \SIS are \LOGSPACE-complete for solvable input automata, even for a fixed unary alphabet.
+\end{theorem}
+\begin{proof}
+	By \cref{compl:prop:reductions} we have
+	\[
+	\SCP \leACZEROm \DFAST \leACZEROm  \DFASS \leACZEROm \SIS,
+	\]
+	and $\DFAST \leACZEROm \DFAS$,
+	where the reductions of an automata-theoretical problem to another automata-theoretical problem given in the proof
+	of \cref{compl:prop:reductions} preserve the alphabet.
+	Since \SCP is \LOGSPACE-complete by \cref{prelim:thm:complexities},
+	and the reduction to \DFAST 
+	works even for unary automata, we obtain the \LOGSPACE-hardness claims even for a fixed unary alphabet.
+	
+	
+	Since the reductions from \cref{compl:prop:reductions} transforming automata preserve
+	the property of being solvable, 
+	by the reductions from above, it is sufficient to prove \LOGSPACE-membership
+	for \DFAS and \SIS to establish it for the other problems as well.
+	
+	For \DFAS, to test synchronizability, by Theorem~\ref{prelim:thm:solvrank_r} 
+	we can simply test whether the word $(a_1 \cdots a_k)^{n-1}$ for $\Sigma = \{a_1, \ldots, a_k\}$
+	synchronizes the $n$-state solvable input automaton, which can be done in deterministic log-space
+	by Theorem~\ref{prelim:thm:finite_list_sync_word}.
+	
+	However, this is not sufficient since we cannot simply construct the word
+	as this would take up more than logarithmic space, i.e.,
+	having a deterministic log-space Turing machine 
+	deciding whether a word synchronizes a given automaton,
+	we cannot simply write $(a_1 \cdots a_k)^{n-1}$ and an encoding of the automaton 
+	on its input tape and then simulate it, as this would
+	take up more than logarithmic space.
+	But we can simulate the machine by letting it read the input automaton
+	from the original input tape
+	and feeding
+	$(a_1 \cdots a_k)^{n-1}$ one symbol at a time to it in log-space without storing the full word similarly as closure of \LOGSPACE
+	is proved for log-space transducers, see~\cite[Lem.~13.2]{HopUll79}; in fact,
+	a log-space transducer that additionally produces 
+	$(a_1 \cdots a_k)^{n-1}$ can also be given to obtain the claim.
+	% (the word \todo{satz in klammern geadded, 20.3}
+	% $(a_1 \cdots a_k)^{n-1}$ cannot be stored in log-space, 
+	% but it can be feed one symbol at a time to the other problem in log-space
+	% similarly as closure of \LOGSPACE
+	% is proved for log-space transducers, see~\cite[Lem.~13.2]{HopUll79}; in fact,
+	% a log-space transducer that additionally produces 
+	% $(a_1 \cdots a_k)^{n-1}$ can also be given to obtain the claim).	
+		
+	To solve \SIS for $\semiautomat{A}{Q}{\Sigma}{\delta}$ and $S \subseteq Q$, 
+	by \crefitem{prelim:classes:solvable:thm}{prelim:prop:solvable-SCC:2}
+	and \cref{prelim:classes:block:cor:Q-into-S}
+we have to test whether~$S$ contains all sink components of~$\mathcal A$.
+We can do this by iterating through all states $q \in Q$,
+test whether it is contained in a sink component
+and if this is the case, test whether $q \in S$.
+By \cref{prelim:classes:block:prop:char-sink-state},
+a state $q \in Q$
+is in a sink component if and only if for all $x \in \Sigma$ 
+we have $\delta(q, x^i) = q$ for some $i \in \{1,\ldots,|Q|\}$.
+This can be checked in deterministic log-space
+by successively applying~$|Q|$ times --- using a counter that counts 
+up to~$|Q|$ and so takes up at most logarithmic space via a binary encoding --- the letter~$x$ to a state stored in 
+a memory cell initialized with~$q$. Then it is easy to give an algorithm running
+in deterministic log-space.
+%and a counter that counts up to~$|Q|$ and, via a binary encoding, uses
+%at most logarithmic space.	
+\end{proof}
+
+\begin{theorem} \label{prelim:compl:thm:reach-NP}
+	\REACH is \NP-complete for solvable automata even for partially ordered binary automata.	
+\end{theorem}
+\begin{proof}
+	The problem is \NP-complete for partially ordered binary
+	automata~\cite[Thm.~5]{Ryzhikov19a}.
+	Furthermore, as in the proof of Theorem~\ref{thm:solvable}
+	by using Proposition~\ref{prop:S-T-bound}
+	we obtain \NP-membership for solvable automata. 
+\end{proof}
+
+\begin{theorem} \label{prelim:compl:thm:reachf-NP}
+	\REACHF is \NP-complete for solvable automata even for commutative partially ordered automata,
+	and also even for partially ordered binary automata.
+\end{theorem}
+\begin{proof}
+	\NP-hardness for partially ordered binary automata
+	follows from \cref{prelim:compl:thm:reach-NP}
+	and \cref{compl:prop:reductions:item:REACH-REACHF} from \cref{compl:prop:reductions}.
+	Next, in~\cite[Thm.~9]{DBLP:journals/iandc/Beaudry88}
+	it has been shown that deciding
+	for commutative partially ordered $\mathcal A = (Q, \Sigma, \delta)$
+	and $t \colon Q \to Q$
+	whether there exists $u \in \Sigma^*$
+	such that $\delta(q, u) = t(q)$
+	for all $q \in Q$ is \NP-complete.\footnote{In~\cite{DBLP:journals/iandc/Beaudry88} this problem was formulated as a problem on transformation monoids, where the 
+		commutative aperiodic transformation monoids used
+		correspond precisely to the commutative partially ordered automata.}
+	This problem can be reduced to \DFAINT 
+	by letting $Q = \{q_1, \ldots, q_n\}$ and $\mathcal A_i = \mathcal A$
+	and $F_i = \{t(q_i)\}$ for $ i \in \{1,\ldots,n\}$.
+	Then when applying the reduction
+	from \crefitem{compl:prop:reductions}{compl:prop:reductions:item:DFAINT_DST}
+	 to obtain an instance of \ST 
+	from this \DFAINT-instance
+    the resulting automaton is a commutative partially ordered automaton 
+	$\mathcal A' = (Q', \Sigma, \delta')$
+	where $\delta'(\{q_1, \ldots, q_n\}, u) \subseteq F_1 \cup \ldots \cup F_n$
+	if and only if $\delta'(\{q_1, \ldots, q_n\}, u) = F_1 \cup \ldots \cup F_n$ for $u \in \Sigma^*$, i.e., we actually have a reduction to \REACHF.
+	
+	As in the proof of Theorem~\ref{thm:solvable},
+	by using Proposition~\ref{prop:S-T-bound},
+	we obtain that \REACHF is in \NP\ 
+	for solvable automata.
+\end{proof}

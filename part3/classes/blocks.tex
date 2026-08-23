@@ -1,0 +1,68 @@
+%!TEX root = ./../../springer-mono-format/book.tex
+%!TEX root = ./../../thesis-trier.tex
+
+In an automaton whose strongly connected components are blocks, a synchronizing state
+is a trap state by \cref{prelim:class:block:cor:sync_trap_state}.
+Thus, by \cref{prelim:subclasses:sync:cor:alg-unique-trap} for these automata
+we can decide synchronizability in linear time and constant space.
+Furthermore, from \cref{prelim:lem:compl_reach_implies_SCC_sync,sync_max:thm:char_sync_max_aut} 
+we obtain that such an automaton is completely reachable if and only if it has a single state,
+and sync-maximal if and only if it has at most two states and is synchronizing with a trap state.
+Recall that this class includes partially ordered, commutative,
+and solvable automata (for partially 
+ordered automata the time bound on deciding synchronizability was given in~\cite[Cor.~6]{DBLP:conf/dlt/Hoffmann21a}).
+
+\begin{theorem} \label{syncmax:thm:solvable-cd}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be an automaton in which every strongly connected component is a block.
+	If~$\mathcal A$ is completely distinguishable,
+	then $|Q| \le 2$.		
+\end{theorem}
+\begin{proof}
+	By \cref{constr_sync:cor:solvable_sync_iff_reach_trap}, $\mathcal A$ is synchronizing
+	and by \cref{prelim:class:block:cor:sync_trap_state} the synchronizing
+	state must be a trap state~$t \in Q$. %, which is reachable from every other state by \cref{prelim:cor:sync_trap_state}.
+	
+	Since $t$ is not the only state of~$\mathcal A$,
+	we can choose some maximal $p \in Q$ w.r.t.~$\lereach$
+	that is not equal to~$t$.
+	This is equivalent to the condition
+	that, for each $x \in \Sigma$, we have $\delta(p, x) = t$
+	or $\delta(p, x) \eqreach p$. Note that in the latter case,
+	$\delta(p,x)$ is also maximal and distinct from~$t$.
+	
+	Now, assume there exists another $q \in Q \setminus \{p,t\}$
+	with this property.
+	Then the sets $\{p,q\}$ and $\{p,q,t\}$ are indistinguishable.
+	For assume $u = u_1 \cdots u_m$ with $u_1, \ldots, u_m \in \Sigma$
+	distinguishes both sets.
+	First, there must exist a minimal $i \in \{1,\ldots,m\}$
+	such that, without loss of generality,
+	$\delta(p, v_i) = t$ for $v_i = u_1 \cdots u_i$. 
+	For assume this is not the case.
+	Then, inductively, $\delta(p, v_i) \eqreach p$
+	and $\delta(q, v_i) \eqreach q$,
+	which also implies that none of these states equals~$t$.
+	Since each strongly connected component is a block,
+	we also have $\delta(p, v_i) \ne \delta(q, v_i)$.
+	Thus $u$ cannot distinguish both sets.
+	However, $\delta(p, v_i) = t$
+	implies  $\delta(\{p,q\}, v_i) = \delta(\{p,q,t\}, v_i)$,
+	and so~$u$ cannot distinguish both sets in this case as well.
+	Thus, there exists no state $q$ as above, which 
+	implies that~$\{p\}$ is a strongly connected
+	component and that every path from every state distinct from~$t$ to~$t$
+	has to pass through the state~$p$.
+	
+	Now, let $q \in Q$ be a state distinct from $p$ and~$t$
+	that is minimal w.r.t.~$\lereach$.
+	A word distinguishing both sets has to map $\{q,t\}$
+	to a singleton, since it is a subset of the other set,
+	which must be $\{t\}$, since~$t$ is a trap state.
+	Now, since a prefix of a word mapping~$q$ to~$t$ has to map~$q$ to~$p$,
+	this prefix maps both sets to the same set
+	and thus cannot distinguish both sets.
+	This yields that both sets are indistinguishable.
+\end{proof}
+
+Recall that, by \cref{syncmax:rem:two-state-compl-dist}, automata with at most two states are 
+always completely distinguishable.

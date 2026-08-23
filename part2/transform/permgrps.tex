@@ -1,0 +1,1714 @@
+%!TEX root = ../../springer-mono-format/book.tex
+%!TEX root = ../../thesis-trier.tex
+
+\IN{symmetric group} 
+\IN{full symmetric group}
+\IN{permutation group}
+\IN{degree of permutation group}
+\IN{domain!of permutation group} 
+\label{def:S_X}
+
+
+Let $G \le_G \mathcal S_X$ be a permutation group.
+
+\begin{enumerate}
+	\item If $X$ is finite, we call $|X|$ the \emph{degree (of $G$)}.
+	For $n\ge 0$, we set $\mathcal S_n = \mathcal S_{[n]}$. \label{def:S_n} 
+	
+	\label{def:block-perm-grp}
+	\IN{block!in permutation group} 
+	\IN{system of blocks} 
+	\IN{trivial block}
+	\item A non-empty subset $\Delta \subseteq X$ is a \emph{block}\footnote{To distinguish them from ordinary sets, blocks for $G$ 
+		are denoted by capital Greek letters. Also, alphabets are denoted by capital
+		Greek letters, but the context should always make it clear
+		whether a specific capital Greek letter denotes a block or an alphabet.} if and only if, for all $g \in G$,
+	the condition $\applyfunc{\Delta}{g} \cap \Delta \ne \emptyset$ implies $\applyfunc{\Delta}{g} = \Delta$.
+	A collection of blocks that forms a partition of~$X$
+	is called a \emph{system of blocks}. 
+	Blocks are precisely the congruence classes of some $G$-congruence on $X$.
+	A block is a \emph{trivial block} if it is a singleton or equals $X$.
+	
+	\begin{comment} 
+		A family blocks $\{ X_i \mid i \in I\}$ such that $|I| \ge 2$ and t
+		\begin{enumerate}
+			\item 
+			
+			
+		\end{enumerate}
+		
+		containing at least two blocks and such that least one block contains at least two elements
+		whose union equals $X$ is called a \emph{system of imprimitivity}.
+	\end{comment}
+
+
+
+
+
+
+\IN{primitive permutation group}
+\IN{imprimitive permutation group} 
+\item A permutation group $G$ over $X$ is \emph{primitive} if the only
+$G$-congruences on~$X$ are the trivial $G$-congruences.
+As the blocks are precisely the $G$-congruence classes
+for some $G$-congruence, 
+$G$ is primitive if and only if it only admits
+the trivial blocks.
+If $G$ is transitive and not primitive, then we call it \emph{imprimitive}.
+		
+	\IN{$G$-orbit} 
+	\IN{orbit|see{$G$-orbit}}
+	\item The \emph{$G$-orbit} (or just \emph{orbit}) of $a \in X$ in $G$ is $\Orbit{a}{G} = \{ \applyfunc{a}{g} \mid g \in G\}$. The orbits $\Orbit{a}{G}$ for $a \in X$ form a system of blocks,
+	and the union of several orbits is a block.
+	\label{def:orbit}
+		
+	\IN{$k$-homogeneous}
+	\IN{$k$-transitive}
+	\IN{intransitive permutation group}
+	\IN{transitive on subset} 
+	\IN{transitive permutation group}
+	\IN{acts transitively}
+	\item Let $k \ge 1$. Then $G$ is called 
+	\emph{$k$-homogeneous} (resp.~\emph{$k$-transitive})
+	if for every two $k$-sets $A, B \subseteq X$ (resp.~$k$-tuples $(a_1, \ldots, a_k)$, $(b_1, \ldots, b_k) \in X^k$)
+	there exists $g \in G$ such that 
+	$B = \applyfunc{A}{g}$ (resp.~$(b_1, \ldots, b_k) = (g(a_1), \ldots, g(a_k))$).
+	Every $k$-transitive group is $k$-homogeneous.
+	The symmetric group~$\mathcal S_{X}$ is $k$-transitive 
+	for each $k \ge 1$.
+	A $1$-homogeneous permutation group is also called \emph{transitive}.
+	Equivalently,~$G$ is transitive  
+	if and only if there exists $a \in X$
+	such that $X = \Orbit{a}{G}$. 
+	%We also say that $G$ \emph{acts transitively} in this case. 
+	For $A \subseteq X$ we also say that~$G$ is \emph{transitive on~$A$}, or \emph{acts transitively on $A$},
+	if $\Orbit{a}{G} = A$ for some (and so each) $a \in A$.	
+	We call $G$ \emph{intransitive} if it is not transitive.
+	
+	\IN{point stabilizer}
+	\item Let $a \in X$. The \emph{point stabilizer subgroup (of $a$ in $G$)} is $\Stab{a}{G} = \{ g \in G \mid \applyfunc{a}{g} = a \}$. \label{def:stabilizer}
+	For $g \in G$ we have 
+	\begin{equation}\label{prelim:coset-point-stab}
+		g\Stab{a}{G} = \{ h \in G \mid \applyfunc{a}{h} = \applyfunc{a}{g} \}.
+	\end{equation}
+			
+	\IN{conjugate transformation}
+	\label{def:conjugation}
+	\item For any transformation $t \colon X \to X$ and permutation $g \colon X \to X$ 
+	the \emph{conjugate of $t$ by $g$} is $t^g \colon X \to X$ given by 
+	$\concat{g^{-1}}{\concat{t}{g}}$. For $a,b \in X$, we have\footnote{Note that by our convention of reading functional composition from right to left, the inverse has to occur on the right hand side in the defining equation of $t^g$ to make \cref{prelim:conj} valid. In the literature, for example in~\cite{Kurzweil04}, 
+	conjugation of~$t$ by~$g$ is also often defined as $g^{-1} t g$ instead.}
+	\begin{equation}\label{prelim:conj}
+		\applyfunc{a}{t} = b \Leftrightarrow 
+		\applyfunc{\applyfunc{a}{g}}{t^g} = \applyfunc{b}{g}.	
+	\end{equation}
+	This equation implies, for $a \in X$ and $g \in G$,
+	\begin{equation}\label{prelim:eqn:stab}
+		\Stab{\applyfunc{a}{g}}{G} = g\Stab{a}{G}g^{-1}.
+	\end{equation}		
+	By \cref{prelim:conj}
+	every permutation $g \colon X \to X$ 
+	is a graph morphism of the functional graphs of $t$
+	and $t^g$ for a transformation $t \colon X \to X$.	
+	
+	\IN{semiregular permutation group} 
+	\item We call $G$ \emph{semiregular}
+	if $\Stab{a}{G}$ is trivial for each $a \in X$.
+	% Equivalently, for all $a \in X$, if $\applyfunc{a}{g} = \applyfunc{a}{h}$
+	% for $g,h \in G$, then $g = h$.
+	This is equivalent to the condition that $\applyfunc{a}{g} = \applyfunc{a}{h}$
+    for $g,h \in G$ and some $a \in X$ implies $g = h$
+    since $g(a) = h(a)$ yields $h^{-1}(g(a)) = a$.
+    By semiregularity, we find $h^{-1}(g) = \operatorname{id}_X$,
+    giving $g = h$.
+	
+	\IN{regular permutation group}
+	\item We call $G$ \emph{regular}  
+	if it is semiregular and transitive.
+	Equivalently, $G$ is transitive and there exists $a \in X$
+	such that $\Stab{a}{G} = \{ \operatorname{id}_{X}\}$.
+		
+	\IN{alternating group}
+	\label{def:A_n}
+	\item The \emph{alternating group} (for a given $n$) 
+	is the unique subgroup $\mathcal A_n \le_G \mathcal S_n$ such that $|\mathcal A_n| = |\mathcal S_n| / 2$. 
+	See~\cite{cameron_1999} for more information.	
+\end{enumerate}
+
+There should be no danger of confusion of $\mathcal A_n$
+or $\mathcal S_n$ with the notation for a point stabilizer, where
+also $n$ as a point might appear in the lower index, or 
+with an automaton from an automaton family indexed by~$n$.
+For the former, this should not arise since 
+groups are not denoted by calligraphic letters in the present work,
+and for the latter the context should make it clear whether
+we refer to an automaton or the alternating group.
+	
+% LATA beweis review nachgucken: als fussnote adden
+\begin{proposition}
+	\label{sync_max:prop:prim_implies_transitive}
+	A primitive permutation group $G$ 
+	on a domain containing at least three points
+	is transitive.
+\end{proposition}
+\begin{proof}
+	Suppose~$G$ is not transitive.
+	Since $X$ contains at least three points,
+	there exist (not necessarily distinct) $a,b \in X$
+	such that the set $\Delta = \Orbit{a}{G} \cup \Orbit{b}{G}$
+	is a proper subset of~$X$ and contains at least two points.
+	Now, $\Delta$ is a block, and so~$G$
+	is not primitive.\footnote{Alternatively, for the trivial group every subset of $[n]$ is a block.
+		So, for $n \ge 3$, a primitive $G$ must be non-trivial.
+		Hence, there exist $a \in [n]$
+		and $g \in G$ with $\applyfunc{a}{g} \ne a$.
+		Then $|\Orbit{a}{G}| > 1$
+		and as $\Orbit{a}{G}$ is a block 
+		we find $\Orbit{a}{G} = [n]$, i.e., $G$ is transitive.}
+\end{proof}
+
+As defined here, every permutation group on $[2]$ is primitive, even 
+the intransitive trivial permutation group. To exclude this special case,
+some authors prefer to include transitivity into the definition of primitivity.
+By \cref{sync_max:prop:prim_implies_transitive} this makes no difference
+for permutation groups on domains containing at least three points.
+
+\begin{example}\label{sync_max:ex:primitivegrps}
+	\begin{enumerate}
+		\item By \cref{prelim:ex:trans-block},
+		for prime $n$ and transitive $G \le_G \mathcal S_n$, each block is trivial
+		and so $G$ is primitive. 
+		
+		\item \label{sync_max:ex:primitivegrps:2} The symmetric group $\mathcal S_n$ is primitive.
+		For suppose $A \subseteq [n]$ is any subset
+		such that $a,b \in A$ and $c \notin A$ for distinct $a,b,c \in [n]$.
+		Then, for $t = (b ~ c)$, we have $a \in \applyfunc{A}{t} \cap A$
+		and $c \in t(A) \setminus A$, which shows that $A$
+		is not a block. 
+	\end{enumerate}
+\end{example} 
+
+If $\sim$ is a $G$-congruence, then we have the following equivalence for all $g \in G$ and $a,b \in X$:
+\begin{equation}\label{eqn:G-congruence}
+	a \sim b \Leftrightarrow \applyfunc{a}{g} \sim \applyfunc{b}{g}.
+\end{equation}
+
+Here, we are exclusively concerned with finite permutation domains.
+So, from now on, in the remaining examples and results of the present work we always take $X = [n]$.
+
+\begin{example}
+	\label{prelim:permgrp:ex:Kleinfourgroup} 
+	The \emph{Klein four-group} $G = \{ (), (0~1)(2~3), (0~2)(1~3), (0~3)(1~2) \}$
+	is a regular subgroup of $\mathcal S_4$	
+	where $\{0,1\}$ and $\{2,3\}$ form a system of blocks. \IN{Klein four-group}
+\end{example} 
+
+\begin{example}\label{prelim:ex:trans-block}
+	Let $G \le_G \mathcal S_n$ be transitive and $\Delta \subseteq [n]$ be some block. 
+	Then the sets $\applyfunc{\Delta}{g}$ for $g \in G$
+	are equal-sized blocks partitioning $[n]$. So,~$n$ is a multiple of~$|\Delta|$.
+\end{example}
+
+First, we characterize the $G$-congruences
+generated by 
+a permutation cyclically permuting its domains.
+% a cycle moving all points.
+A related result appears in~\cite[Lem. 2]{HeathIKS09}.
+
+\begin{lemma}
+	\label{lem:congruence_on_cyclic_group}
+	Set $g = (0 ~ 1 ~ 2 ~ \cdots ~ n - 1)_{[n]}$ and $G = \langle \{ g \} \rangle_G$. Then for every $G$-congruence~$\sim$
+	there exists a divisor $r$ of $n$ such that,  for all $a,b \in [n]$,
+	\begin{equation}\label{sync_max:eqn:circular:cyclic_congruence}
+		a \sim b \Leftrightarrow a \equiv b \pmod{r}.
+	\end{equation}
+	Conversely, each divisor $r$ of $n$ defines a $G$-congruence on $[n]$
+	by \cref{sync_max:eqn:circular:cyclic_congruence}.
+\end{lemma}
+\begin{proof} % oder i < j mit r = j - i minimal wählen und dann zeigen.
+	First, suppose $\sim$ is a $G$-congruence.
+	Let $0 < r \le n$ be the smallest number such that $g^r(0) \sim 0$.
+	Inductively, we find $0 \sim g^{r \cdot i}(0)$ for all $i \ge 0$.
+	Since $g^{i}(0) \equiv i \pmod{n}$ for $i \ge 0$,
+	it is $\{ x \in [n] \mid x \equiv 0 \pmod{r} \} \subseteq [0]_{\sim}$.
+	Assume $0 \sim g^{r \cdot i + d}(0)$ for some $i \ge 0$ and $0 \le d < r$.
+	Since $0 \sim g^{r \cdot i}(0)$ we find $g^d(0) \sim g^{r\cdot i + d}(0)$.
+	So, $g^{d}(0) \sim 0$, which implies $d = 0$ by
+	the minimal choice of~$r$.
+	Hence, $[0]_{\sim} \subseteq \{ x \in [n] \mid x \equiv 0 \pmod{r} \}$.
+	Now, for $0 \le a < b < n$ we get
+	\begin{align*}
+		a \equiv b \pmod{r} 
+		& \Leftrightarrow 0 \equiv b - a \pmod{r} \\
+		& \Leftrightarrow 0 \sim b - a 
+		\Leftrightarrow g^a(0) \sim g^a(b - a) 
+		\Leftrightarrow a \sim b,		
+	\end{align*}
+    which shows \cref{sync_max:eqn:circular:cyclic_congruence}.
+	Conversely, as $g(x) = ( x + 1 ) \bmod{n}$ for $x \in [n]$
+    the relation $a \equiv b \pmod{r}$ yields a $G$-congruence when $n$ is a multiple of $r$. 	
+\end{proof}
+
+Next, we collect some properties of semiregular permutation groups.
+
+\begin{proposition} \label{prelim:groups:prop:semiregular-size}
+	Let $G \le \mathcal S_n$ be semiregular.
+	Then $|G| \le n$, and we have $|G| = n$ if and only if $G$ is regular.
+\end{proposition}
+\begin{proof}
+	Pick any point $a \in [n]$.
+	Consider the map $\varphi \colon G \to [n]$
+	given by $\varphi(g) = g(a)$.
+	Since~$G$ is semiregular, this map is injective.
+	Thus $|G| \le n$.
+	Furthermore, $\varphi$ is surjective
+	if and only if $G$ is transitive,
+	and~$\varphi$ is surjective precisely if $|G| = n$.
+	This yields that $|G| = n$ if and only if~$G$ is
+	regular.
+\end{proof}
+
+%Generalizing \crefitem{prelim:permgrp:ex:singleperm}{prelim:permgrp:ex:singleperm:2}, 
+Next, we characterize semiregularity by cycle lengths.
+%next we state a relation between semiregularity and cycle lengths.
+
+\begin{proposition}
+ Let $G \le_G \mathcal S_n$. Then $G$
+ is semiregular if and only if 
+ for each $g \in G$
+ all cycles contained in $g$ have the same length. %and $g$ has no fixpoints.
+\end{proposition} 
+\begin{proof}
+	First, suppose $G$ is not semiregular.
+	Then there exist $a \in [n]$ and  $g \in \Stab{a}{G} \setminus \{ \operatorname{id}_{[n]}\}$.
+	As $a \in \fix{g}$, $g$ contains a cycle of length one
+	and, as $g \ne \operatorname{id}_{[n]}$,
+	it contains a cycle of length greater than one.	 
+	Conversely, suppose there exists $g \in G$ containing two cycles
+	of different lengths.
+	Then 
+	$g^i(a) = a$ and $g^{j}(b) = b$ with $g(a) \ne a$ and $g(b) \ne b$
+	for minimal $0 < i < j < n$
+	and some $a,b \in [n]$, giving $g^i \in \Stab{a}{G}$ but $g^i \ne \operatorname{id}_{[n]}$
+	as $g^i(b) \ne b$. So, $G$ is not semiregular.
+\end{proof}
+
+For a semiregular $G \le_G \mathcal S_X$ and $a,b \in X$, 
+since  $g(a) = g'(a)$ implies $g(b) = g'(b)$
+for $g \in G$,
+we can define a bijection 
+$h \colon \Orbit{a}{G} \to \Orbit{b}{G}$
+by setting $h(c) = g(b)$ for $g \in G$ with $\applyfunc{a}{g} = c$, i.e.,
+the edges of the orbital 
+digraph $\{(\applyfunc{a}{g}, \applyfunc{b}{g}) \mid g \in G\}$  
+describe a bijection.
+If~$G$ is transitive, $h$ is a permutation on~$X$.
+In this case, since, by \cref{prelim:conj},
+a permutation mapping $a$ to $b$
+maps $g(a)$ to $g(b)$ if and only if $h^g = h$,
+the permutation described by the tuples $\{(\applyfunc{a}{g}, \applyfunc{b}{g}) \mid g \in G\}$ 
+is characterized as the permutation~$h$
+with $h(a) = b$ and $hg = gh$ for all $g \in G$.
+Thus, if~$G$ is regular and commutative,
+it contains a permutation described by
+the tuples $\{(\applyfunc{a}{g}, \applyfunc{b}{g}) \mid g \in G\}$.
+
+\begin{example} \label{prelim:permgrp:ex:singleperm}
+	Let $G = \langle \{ t\} \rangle_G$ for some permutation 
+	$t \colon [n] \to [n]$.	Then,
+	
+	\begin{enumerate}
+		\item The orbits of~$G$ are the sets $\{ t^i(x) \mid i \ge 0\}$,
+		and the non-singleton sets of this form
+		equal the points moved by some non-identity
+		cycle induced by~$t$.
+			
+		\item $t$ is an cycle if and only if $G$
+		has at most one non-singleton orbit,
+		
+		\item \label{prelim:permgrp:ex:singleperm:2} $G$ is semiregular if and only if every cycle in $t$ 
+		has the same length,
+		
+		%\item The following are equivalent: $G$ is regular, $G$ is transitive,
+		%and $t$ cyclically permutes $[n]$.
+		
+		\item $G$ is regular $\Leftrightarrow$ $G$ is transitive $\Leftrightarrow$ $t$ cyclically permutes~$[n]$.
+		
+		%\item $G$ is regular if and only if $t$ cyclically permutes $[n]$.
+	\end{enumerate} 
+\end{example} 
+
+\section{Transitive Permutation Groups}
+\label{prelim:permgrp:sec:transitive}
+
+The following three subsections collect results on permutation groups related to transitivity.
+\Cref{prelim:perm:subsec:sep-sets-idempotents} treats separation of subsets by a transitive
+group and shows which idempotents arise in the transformation semigroup generated by a
+transitive group together with a one-point singular.
+\Cref{prelim:perm:subsec:blocks-stabs} establishes a correspondence between the subgroups
+containing the stabilizer of a point~$a$ and the blocks containing~$a$, under which cosets
+correspond to images of blocks.
+\Cref{prelim:perm:subsec:mapping-orbit} relates conditions on how a group maps $2$-sets to one
+another to the size of orbits, to transitivity, and to $2$-homogeneity.
+
+\subsection{Separating Sets and Idempotents}
+\label{prelim:perm:subsec:sep-sets-idempotents}
+
+In transitive permutation groups we can separate subsets in the following way
+(see~\cite[p.~130]{ArCamSt2017} for related discussion).
+
+\begin{theorem}[\cite{ArCamSt2017,birch2009,neumann75b}]
+	\label{thm:separating_neumann}
+	Let $G \le_G \mathcal S_n$ be transitive and let $A,B \subseteq [n]$ with $|A| \cdot |B| < n$.
+	Then there exists $g \in G$ such that $g(A) \cap B = \emptyset$.
+\end{theorem}
+
+Our next results let us construct certain idempotent one-point singulars.
+
+\begin{proposition} \label{prelim:prop:one-point-singular-power}
+	Let $t \colon [n] \to [n]$ be one-point singular with $\dupl{t} = \{c\}$.
+	Then there exists an idempotent $h \in \langle \{t\} \rangle_S$
+	and we have the following:
+	\begin{enumerate}
+		\item \label{prelim:prop:one-point-singular-power:1} If $t(c) = c$, then~$h$ is one-point
+		singular with $\dupl{h} = \{c\}$ and $t^{-1}(c) \subseteq h^{-1}(c)$.
+		
+		\item \label{prelim:prop:one-point-singular-power:2} If~$t$ has defect one and the point
+		excluded by~$t$ lies in $t^{-1}(c)$, say $\excl{t} = \{a\}$ and $t^{-1}(c) = \{a,b\}$,
+		then~$h$ is the simple idempotent mapping~$a$ to~$b$.
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+	By \cref{prelim:lem:finite-semigrp-idempotent-power} such an~$h$ exists; write $h = t^i$
+	with $i > 0$.
+	
+	\ref{prelim:prop:one-point-singular-power:1}: We show $\dupl{t^j} = \{c\}$ for $j \ge 1$ by
+	induction, the case $j = 1$ being clear.
+	For $j \ge 2$ write $t^j = \concat{t^{j-1}}{t}$, so that \cref{prelim:eqn:dupl0} yields
+	$\dupl{t^j} = \dupl{t_{|t^{j-1}([n])}} \cup t(\dupl{t^{j-1}})$, where the first set is
+	contained in $\dupl{t} = \{c\}$ and the second equals $t(\{c\}) = \{c\}$.
+	Hence $\dupl{h} = \{c\}$.
+	Moreover $t(x) = c$ gives $h(x) = t^{i-1}(c) = c$, so $t^{-1}(c) \subseteq h^{-1}(c)$.
+	
+	\ref{prelim:prop:one-point-singular-power:2}: We have $t([n]) = [n] \setminus \{a\}$, and
+	$t(a) = t(b) = c$ with $b \ne a$ gives $t([n] \setminus \{a\}) = t([n]) = [n] \setminus \{a\}$.
+	So~$t$ maps the finite set $[n] \setminus \{a\}$ onto itself and thus permutes it.
+	Hence~$h$ restricts to an idempotent permutation of $[n] \setminus \{a\}$, that is, to the
+	identity, and $h(a) = t^{i-1}(t(a)) = t^{i-1}(t(b)) = h(b) = b$.
+\end{proof}
+
+\begin{remark}
+	The hypotheses of the two items differ in which point is required to lie in $t^{-1}(c)$:
+	in \cref{prelim:prop:one-point-singular-power:1} it is the duplicated point~$c$ itself, and
+	in \cref{prelim:prop:one-point-singular-power:2} it is the excluded point~$a$.
+	This accounts for the stronger conclusion in the second case.
+	There, $t$ maps $[n] \setminus \{a\}$ onto itself, so no point outside $t^{-1}(c)$ is ever
+	collapsed by a power of~$t$ and we obtain $h^{-1}(c') = t^{-1}(c)$ for the point $c'$ with
+	$\dupl{h} = \{c'\}$.
+	Under \cref{prelim:prop:one-point-singular-power:1} alone, the inclusion
+	$t^{-1}(c) \subseteq h^{-1}(c)$ can be strict, as passing to powers may collapse further
+	points: for $n = 4$ and~$t$ given by $t(0) = t(1) = t(2) = 0$ and $t(3) = 2$ we have
+	$c = 0$ and $t^{-1}(0) = \{0,1,2\}$, whereas $t^2$ is the constant map at~$0$, so that
+	$h^{-1}(0) = [4]$.
+\end{remark}
+
+\begin{corollary} \label{prelim:lem:transitive-grp-one-point-singular}
+	Let $G \le_G \mathcal S_n$ be a transitive permutation group and let $t \colon [n] \to [n]$
+	be one-point singular.
+	Then for each $a \in t^{-1}(\dupl{t})$ there exists an idempotent one-point singular
+	$h \in \langle G \cup \{t\} \rangle_S$ with $\dupl{h} = \{a\}$ and
+	$t^{-1}(\dupl{t}) \subseteq h^{-1}(a)$.
+\end{corollary}
+\begin{proof}
+	Write $\dupl{t} = \{c\}$ and pick $g \in G$ with $g(c) = a$, which is possible as~$G$ is transitive.
+	As~$g$ is a bijection, $\concat{t}{g}$ is one-point singular with
+	$\dupl{\concat{t}{g}} = \{a\}$ and $(\concat{t}{g})^{-1}(a) = t^{-1}(\dupl{t})$.
+	The latter contains~$a$, so $\concat{t}{g}$ fixes~$a$ and
+	\cref{prelim:prop:one-point-singular-power:1} of
+	\cref{prelim:prop:one-point-singular-power}, applied to $\concat{t}{g}$, gives an idempotent
+	$h \in \langle \{\concat{t}{g}\} \rangle_S \subseteq \langle G \cup \{t\} \rangle_S$ as
+	claimed.
+\end{proof}
+
+\begin{corollary}
+	\label{sync_words:lem:idempotent}
+	Let $G \le_G \mathcal S_n$ be a transitive permutation group and let $t \colon [n] \to [n]$
+	be of defect one with $t(a) = t(b)$ for distinct $a,b \in [n]$.
+	Then there exists a simple idempotent $h \in \langle G \cup \{t\} \rangle_S$
+	with $h(a) = h(b) = b$.
+\end{corollary}
+\begin{proof}
+	Write $\excl{t} = \{e\}$ and pick $g \in G$ with $g(e) = a$, which is possible as~$G$ is transitive.
+	As~$g$ is a bijection, $\concat{t}{g}$ has defect one with
+	$\excl{\concat{t}{g}} = \{a\}$ and $(\concat{t}{g})^{-1}(\dupl{\concat{t}{g}}) =
+	t^{-1}(\dupl{t}) = \{a,b\}$.
+	Now \cref{prelim:prop:one-point-singular-power:2} of
+	\cref{prelim:prop:one-point-singular-power}, applied to $\concat{t}{g}$, gives an idempotent
+	$h \in \langle \{\concat{t}{g}\} \rangle_S \subseteq \langle G \cup \{t\} \rangle_S$
+	mapping~$a$ to~$b$.
+\end{proof}
+
+Applying \cref{sync_words:lem:idempotent} to the pair $(a,b)$ and to the pair $(b,a)$ shows that
+for $t$ of defect one with $t(a) = t(b)$ the semigroup $\langle G \cup \{t\} \rangle_S$
+contains \emph{both} simple idempotents identifying $a$ and $b$.
+
+\begin{example}
+	Let $g = (0 ~ 1 ~ 2 ~ 3)$ and let $t \colon [4] \to [4]$ be given by
+	$t(0) = 1$, $t(2) = 3$ and $t(1) = t(3) = 2$.
+	Then $gt$ permutes $\{0,2,3\}$ and $g^3 t$ permutes $\{0,1,2\}$.
+	Here $g^3 t$ is already the simple idempotent mapping $3$ to $1$,
+	and $(gt)^2$ is the simple idempotent mapping $1$ to $3$.
+\end{example}
+
+\subsection{Blocks and Point Stabilizers}
+\label{prelim:perm:subsec:blocks-stabs}
+
+We next establish a correspondence between the subgroups containing the stabilizer of a point~$a$
+and the blocks containing~$a$ in \cref{prelim:thm:blocks-stabs:2} of \cref{prelim:thm:blocks-stabs}. This also appears
+in~\cite[Thm.~1.5A]{dixon1996permutation}.
+
+\begin{theorem}\label{prelim:thm:blocks-stabs}
+	Let $G \le_G \mathcal S_n$ be transitive and $a \in [n]$. Then the following hold.
+	\begin{enumerate}
+		\item \label{prelim:thm:blocks-stabs:2} The maps
+		\[
+		H \mapsto \Orbit{a}{H}
+		\qquad\text{and}\qquad
+		\Delta \mapsto \{ g \in G \mid g(\Delta) = \Delta \}
+		\]
+		are mutually inverse bijections between the subgroups $H$ with $\Stab{a}{G} \le_G H \le_G G$
+		and the blocks $\Delta$ of $G$ with $a \in \Delta$.
+		
+		\item \label{prelim:thm:blocks-stabs:3} For $\Stab{a}{G} \le_G H \le_G G$,
+		$\Delta = \Orbit{a}{H}$ and $g_1,g_2 \in G$ we have
+		\[
+		g_1 H = g_2 H \iff g_1(\Delta) = g_2(\Delta),
+		\]
+		and hence $gH = \{ g' \in G \mid g'(\Delta) = g(\Delta) \}$.
+	\end{enumerate}
+\end{theorem}
+\begin{proof}
+	\ref{prelim:thm:blocks-stabs:2}:
+	Let $\Stab{a}{G} \le_G H \le_G G$ and $\Delta = \Orbit{a}{H}$.
+	We show
+	\begin{equation}\label{prelim:eqn:block-stab-key}
+		\{ g \in G \mid g(\Delta) \cap \Delta \ne \emptyset \} = H .
+	\end{equation}
+	If $g \in H$ then $g(\Delta) = \Delta$, since $\Delta$ is an $H$-orbit; in particular the
+	left-hand side contains $H$.
+	Conversely, suppose $g(h_2(a)) = h_1(a)$ for some $h_1,h_2 \in H$.
+	Then $h_1^{-1} g h_2 \in \Stab{a}{G} \le_G H$ and therefore $g \in h_1 H h_2^{-1} = H$.
+	This proves~\eqref{prelim:eqn:block-stab-key}, and, since $g \in H$ implies $g(\Delta) = \Delta$,
+	it shows both that $\Delta$ is a block and that the second map returns $H$ when applied to $\Delta$.
+	
+	Now let $\Delta$ be a block with $a \in \Delta$ and set $H = \{ g \in G \mid g(\Delta) = \Delta \}$,
+	which is a subgroup.
+	If $g \in \Stab{a}{G}$ then $a \in g(\Delta) \cap \Delta$, so $g(\Delta) = \Delta$ and $g \in H$;
+	hence $\Stab{a}{G} \le_G H$.
+	The inclusion $\Orbit{a}{H} \subseteq \Delta$ is immediate from the definition of $H$.
+	Conversely let $b \in \Delta$. By transitivity $b = g(a)$ for some $g \in G$, so
+	$b \in g(\Delta) \cap \Delta$ and thus $g(\Delta) = \Delta$, i.e.\ $g \in H$ and $b \in \Orbit{a}{H}$.
+	Hence $\Delta = \Orbit{a}{H}$, so the first map returns $\Delta$, and the two maps are
+	mutually inverse.
+	
+	\ref{prelim:thm:blocks-stabs:3}:
+	By~\eqref{prelim:eqn:block-stab-key} we have $g \in H$ if and only if $g(\Delta) = \Delta$. Thus
+	\[
+	g_1 H = g_2 H
+	\iff g_2^{-1} g_1 \in H
+	\iff g_2^{-1} g_1 (\Delta) = \Delta
+	\iff g_1(\Delta) = g_2(\Delta).
+	\]
+	That $gH = \{ g' \in G \mid g'(\Delta) = g(\Delta) \}$
+	follows since $g' \in gH$ precisely if $g'H = gH$.
+\end{proof}
+
+\begin{remark}
+	By \cref{prelim:thm:blocks-stabs:3} of \cref{prelim:thm:blocks-stabs} the map $\varphi(gH) = g(\Delta)$
+	is a well-defined bijection from the cosets of $H$ onto the block system $\{ g(\Delta) \mid g \in G\}$
+	generated by
+	$\Delta = \Orbit{a}{H}$, and $\varphi(h \cdot gH) = h(\varphi(gH))$ for $h \in G$.
+	Thus subgroups containing $\Stab{a}{G}$ together with their cosets correspond to blocks
+	containing $a$ together with their block systems, and,
+	for $g \in G$ and $h \in G$, we have
+	\begin{equation}\label{eqn:congruences-subgroups-blocks}
+		h \in gH \iff h(a) \in g(\Delta).
+	\end{equation}
+	As an example, let $G$ be as in \cref{lem:congruence_on_cyclic_group}.
+	Then $G$ can be identified with the additive group of residues modulo $n$ via
+	$g^{i} \mapsto [i]_{\equiv_n}$.
+	Since every subgroup of that group is the group of multiples of some divisor $r$ of $n$
+	\cite[Sec.~1.4]{Kurzweil04}, \cref{eqn:congruences-subgroups-blocks} 
+	also implies \cref{lem:congruence_on_cyclic_group}.
+\end{remark}
+
+\begin{remark}
+	\Cref{prelim:thm:blocks-stabs} is an instance of the standard correspondence between
+	transitive $G$-actions and actions on the cosets of a subgroup: a system of blocks induces a
+	$G$-action for which~$H$ is a point stabilizer, and the theorem states that the actions
+	arising in this way are precisely those on the cosets of a subgroup containing a point
+	stabilizer.
+	We refer to~\cite{cameron_1999} for the formalisation via $G$-actions, which we do not
+	introduce here, and note that by our conventions permutations act on the left, whereas
+	in~\cite{cameron_1999} they act on the right; accordingly, our statements concern left cosets
+	and multiplication from the left.
+\end{remark}
+
+\IN{orbit-stabilizer property}
+\begin{remark}\label{prelim:rem:orbit-stab}
+	Specialising \crefitem{prelim:thm:blocks-stabs}{prelim:thm:blocks-stabs:3} to $H = \Stab{a}{G}$,
+	the left cosets of $\Stab{a}{G}$ are in bijection with the points of $[n]$.
+	As the cosets partition $G$ and all have size $|\Stab{a}{G}|$, we obtain
+	$|G| = n \cdot |\Stab{a}{G}|$, the \emph{orbit-stabilizer property}
+	\cite{cameron_1999,dixon1996permutation,Kurzweil04,wielandt1964finite}.
+	This implies that a transitive $G \le_G \mathcal S_n$ is regular if and only if $|G| = n$.
+\end{remark}
+
+\begin{corollary}
+	\label{sync_max:cor:point_stabs}
+	Let $G \le_G \mathcal S_n$ be transitive, $a \in [n]$ and $\Stab{a}{G} \le_G H \le_G G$.
+	Set $\Delta = \Orbit{a}{H}$. Then:
+	\begin{enumerate}
+		\item \label{sync_max:cor:point_stabs:1} For $g \in G$ we have $g \notin H$ if and only if $a \notin g(\Delta)$.
+		\item \label{sync_max:cor:point_stabs:Htrans} If $H \ne G$ then $H$ does not act transitively.
+	\end{enumerate}
+\end{corollary}
+\begin{proof}
+	\ref{sync_max:cor:point_stabs:1}: 
+	Since $\Delta$ is a block by \cref{prelim:thm:blocks-stabs}, $a \in g(\Delta)$
+	is equivalent to $g(\Delta) = \Delta$ for $g \in G$.
+	Since $H = \{ g\in G \mid g(\Delta) = \Delta \}$
+	by \cref{prelim:thm:blocks-stabs:2} of \cref{prelim:thm:blocks-stabs},
+	$g \in G \setminus H$ if and only if $a \notin g(\Delta)$.
+	
+	\ref{sync_max:cor:point_stabs:Htrans}: By
+	\crefitem{prelim:thm:blocks-stabs}{prelim:thm:blocks-stabs:2} the assignment
+	$H \mapsto \Orbit{a}{H}$ is injective, and $\Orbit{a}{G} = [n]$ by transitivity of $G$.
+	Hence $\Orbit{a}{H} = [n]$ forces $H = G$.
+\end{proof}
+
+\subsection{Mapping $2$-Sets, Orbit Sizes, and Transitivity}
+\label{prelim:perm:subsec:mapping-orbit}
+
+We now relate mapping properties of $2$-sets to orbit sizes and transitivity.
+Two technical statements do most of the work.
+\Cref{prelim:grp:prop:map-sets-outside-set-A} treats images of the form $\{a,y\} \mapsto \{b,y\}$,
+where a point of the source is retained, and
+\cref{prelim:prop:single-two-set} settles, for a single target $2$-set, when it is the image of a
+$2$-set containing a fixed point~$a$ under a map subject to a side condition.
+Quantifying the latter over all targets yields \cref{prelim:cor:two-set-global}, which relates
+several such mapping properties to the size of $\Orbit{a}{G}$, to transitivity, and to the fixed
+points of the point stabiliser of~$a$.
+From these we obtain characterisations of transitivity in \cref{prelim:thm:trans} and
+sufficient conditions in \cref{prelim:prop:suff-transitive}.
+Finally, \cref{prelim:prop:2homogeneous-pair} determines which mapping properties force
+$2$-homogeneity, i.e., that any two $2$-sets can be mapped to one another.
+Before that we recall a result of Livingstone and Wagner~\cite{Livingstone1965} relating
+$k$-homogeneity to $k$-transitivity.
+
+\begin{theorem}[Livingstone and Wagner~\cite{Livingstone1965}]
+	\label{prelim:thm:livingstone}
+	Let $G \le_G \mathcal S_n$ be $k$-homogeneous with $k \ge 2$ and $2k \le n$.
+	Then $G$ is $(k-1)$-transitive, and for $k \ge 5$ even $k$-transitive.
+\end{theorem}
+
+The argument from the following lemma 
+is taken from~\cite[p.~533]{mcalister1998semigroups}, where it is used to deduce
+that a $2$-homogeneous group is transitive.
+
+\begin{lemma} \label{prelim:grp:lem:three-points-mapping}
+	Let $G \le_G \mathcal S_n$ and $a,b,c \in [n]$.
+	If $g(\{a,b\}) = \{c,b\}$ for some $g \in G$,
+	then $c \in \Orbit{a}{G}$.	
+\end{lemma}
+\begin{proof}
+    We have $g(a) = c$ or $g(a) = b$.
+    In the former case, $c \in \Orbit{a}{G}$.
+    In the latter case, we have  $g(b) = c$ and thus $g^2(a) = c$.
+    So also $c \in \Orbit{a}{G}$. 
+\end{proof}
+
+\begin{proposition} \label{prelim:grp:prop:map-sets-outside-set-A}
+	Let $G \le_G \mathcal S_n$, let $a \in [n]$ and let $A \subseteq [n]$.
+	Suppose that for every $b \in A$ there are $y \in [n]$ and $g \in G$ with
+	$g(\{a,y\}) = \{b,y\}$.
+	Then
+	\[
+	A \cup \{a\} \subseteq \Orbit{a}{G}.
+	\]
+\end{proposition}
+\begin{proof}
+	By \cref{prelim:grp:lem:three-points-mapping}
+	we have $b \in \Orbit{a}{G}$ for every $b \in A$,
+	and $a \in \Orbit{a}{G}$ holds anyway.
+\end{proof}
+
+\begin{remark}
+	The method of proof of \cref{prelim:grp:lem:three-points-mapping}
+	actually established $c \in B$ for
+	\[
+	B = \{g^2(a) \mid g \in G\} \cup
+	\{g(a) \mid g \in G \text{ with } g(b) = b \text{ for some } b \ne a \}.
+	\]
+	Thus $A$ from \cref{prelim:grp:prop:map-sets-outside-set-A} is also contained
+	in this set.
+	For $A = [n]$ this yields that, for fixed $a \in [n]$, for each $c \in [n]$ there exist
+	$b \in [n]$ and $g \in G$ such that $g(\{a,b\}) = \{c,b\}$ if and only if $[n] = B$.
+	As $B \subseteq \Orbit{a}{G}$, this forces $G$ to be transitive.
+	For example, we have $[n] = B$ for transitive groups of odd order.
+	Indeed, on a finite group the squaring map $g \mapsto g^2$ is surjective if and only if
+	it is injective, and it fails to be injective precisely when there is an involution, i.e.,
+	a non-identity element whose square equals the identity.
+	By Cauchy's theorem an involution exists whenever $|G|$ is even, and conversely an
+	involution has order~$2$, so that $2$ divides $|G|$.
+	Hence for odd $|G|$ we get $\{g^2 \mid g \in G\} = G$ and therefore
+	$\{g^2(a) \mid g \in G\} = \Orbit{a}{G} = [n]$.
+	Note also that for transitive $G$ the condition does not depend on the choice of $a$:
+	conjugation by an element $h \in G$ with $h(a) = a'$ carries the two sets
+	for $a$ onto those for $a'$.
+\end{remark}
+
+\begin{remark}
+	We do not need this fact, but it is worth noting
+	that, for fixed $a,b \in [n]$,
+	if, for every $c \in [n]$,
+	we have  $g(\{a,b\}) = \{a,c\}$ or $g(\{a,b\}) = \{b,c\}$ 
+	for some $g \in G$, 
+	then $[n] = \Orbit{a}{G} \cup \Orbit{b}{G}$.
+	This follows since then  $c \in \Orbit{a}{G} \cup \Orbit{b}{G}$ for 
+	each $c \in [n]$.
+\end{remark}
+
+\begin{proposition} \label{prelim:prop:single-two-set}
+	Let $G \le_G \mathcal S_n$, let $a \in [n]$ and let $\{c,d\} \subseteq [n]$ be a $2$-set.
+	\begin{enumerate}
+		\item \label{prelim:prop:single-two-set:T} For $T \subseteq [n]$ there are $g \in G$ and
+		$b \in [n]$ with $g(\{a,b\}) = \{c,d\}$ and $g(a) \in T$ if and only if
+		$\{c,d\} \cap \Orbit{a}{G} \cap T \ne \emptyset$.
+		
+		\item \label{prelim:prop:single-two-set:1} There are $g \in G$ and $b \in [n]$ with
+		$g(\{a,b\}) = \{c,d\}$ and $g(b) \ne b$ if and only if there is $g \in G$ with $g(a) = c$
+		and $g(d) \ne d$, or with $g(a) = d$ and $g(c) \ne c$.
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+	\ref{prelim:prop:single-two-set:T}: Given such $g$ and $b$, we have
+	$g(a) \in g(\{a,b\}) = \{c,d\}$ as well as $g(a) \in \Orbit{a}{G}$ and $g(a) \in T$.
+	Conversely, for $x \in \{c,d\} \cap \Orbit{a}{G} \cap T$ and $y$ the other element of
+	$\{c,d\}$, choose $g \in G$ with $g(a) = x$ and put $b = g^{-1}(y)$;
+	then $g(a) \in T$ and $g(\{a,b\}) = \{x,y\} = \{c,d\}$.
+	
+	\ref{prelim:prop:single-two-set:1}: Given such $g$ and $b$, we have $g(a) \in \{c,d\}$;
+	say $g(a) = c$, so that $g(b) = d$ and $b = g^{-1}(d)$, and $g(b) \ne b$ gives
+	$d \ne g^{-1}(d)$, i.e., $g(d) \ne d$.
+	Conversely, for $g(a) = c$ and $g(d) \ne d$ put $b = g^{-1}(d)$;
+	then $g(\{a,b\}) = \{c,d\}$ and $g(b) = d \ne b$, as $b = d$ would give $g(d) = d$.
+	Interchanging $c$ and $d$ gives the remaining cases.
+\end{proof}
+
+\begin{corollary} \label{prelim:cor:two-set-global}
+	Let $G \le_G \mathcal S_n$ with $n \ge 2$ and $a \in [n]$.
+	\begin{enumerate}
+		\item \label{prelim:cor:two-set-global:1} \label{prelim:lem:2sets-transitive}
+		For every $2$-set $\{c,d\} \subseteq [n]$ there are $g \in G$ and $b \in [n]$ with
+		$g(\{a,b\}) = \{c,d\}$ if and only if $|\Orbit{a}{G}| \ge n - 1$.
+		
+		\item \label{prelim:cor:two-set-global:2} For every $2$-set $\{c,d\} \subseteq [n]$ there are
+		$g \in G$ and $b \in [n]$ with $g(\{a,b\}) = \{c,d\}$ and $g(a) \ne a$ if and only if~$G$ is
+		transitive.
+		
+		\item \label{prelim:cor:two-set-global:3} For every $b \in [n] \setminus \{a\}$ there are
+		$g \in G$ and $c \in [n]$ with $g(\{a,c\}) = \{a,b\}$ and $g(a) \ne a$ if and only if~$G$ is
+		transitive.
+		
+		\item \label{prelim:cor:two-set-global:4} For every $b \in [n] \setminus \{a\}$ 
+		there are
+		$g \in G$ and $c \in [n]$ 
+		with $g(\{a,c\}) = \{a,b\}$ and $g(c) \ne c$ 
+		if and only if every point fixed by all 
+		of $\Stab{a}{G}$ lies in $\Orbit{a}{G}$.
+	\end{enumerate}
+\end{corollary}
+\begin{proof}
+	\ref{prelim:cor:two-set-global:1}: By
+	\cref{prelim:prop:single-two-set:T} of \cref{prelim:prop:single-two-set} with $T = [n]$ the condition
+	states that every $2$-set meets $\Orbit{a}{G}$, which holds if and only if
+	$|[n] \setminus \Orbit{a}{G}| \le 1$, as a $2$-set contained in that complement exists
+	precisely when it has at least two elements.	
+	
+	\ref{prelim:cor:two-set-global:2} and \ref{prelim:cor:two-set-global:3}: By
+	\cref{prelim:prop:single-two-set:T} of \cref{prelim:prop:single-two-set} with
+	$T = [n] \setminus \{a\}$, both conditions state that the $2$-sets in question meet
+	$\Orbit{a}{G} \cap T = \Orbit{a}{G} \setminus \{a\}$.
+	
+	For a target $\{a,b\}$ with $b \ne a$ this says that $b \in \Orbit{a}{G}$, so
+	\cref{prelim:cor:two-set-global:3} implies that $G$ is transitive (For a direct argument,
+	for the target set $\{a,b\}$
+    we have $g(a) \in \{a,b\}$ with $g(a) \ne a$, which gives $g(a) = b$.).
+	If $G$ is transitive, then $\Orbit{a}{G} \setminus \{a\} = [n] \setminus \{a\}$, which is met
+	by every $2$-set, giving \cref{prelim:cor:two-set-global:2}.
+	Finally, \cref{prelim:cor:two-set-global:2} implies \cref{prelim:cor:two-set-global:3}, as the
+	latter only concerns the targets $\{a,b\}$.
+	Hence \cref{prelim:cor:two-set-global:2}, \cref{prelim:cor:two-set-global:3} and transitivity
+	of~$G$ are equivalent, which proves both stated equivalences.
+		
+	\ref{prelim:cor:two-set-global:4}: Consider some $b \in [n] \setminus\{a\}$. By
+	\cref{prelim:prop:single-two-set:1} of \cref{prelim:prop:single-two-set} applied to $\{a,b\}$,
+	such $g$ and $c$ exist if and only if there is $g \in G$ with $g(a) = a$ and $g(b) \ne b$,
+	or with $g(a) = b$, i.e., if and only if some element of $\Stab{a}{G}$ moves~$b$ or
+	$b \in \Orbit{a}{G}$.
+	This is equivalent to the condition that if the considered~$b$
+	is fixed by all elements from $\Stab{a}{G}$,
+	then it must be in $\Orbit{a}{G}$.
+	Demanding this for every $b \in [n] \setminus \{a\}$ says precisely that a point fixed by
+	all of $\Stab{a}{G}$ lies in $\Orbit{a}{G}$.
+\end{proof}
+
+\begin{theorem} \label{prelim:thm:trans}
+	Let $G \le_G \mathcal S_n$ with $n \ge 2$ and $a \in [n]$. Then the following are equivalent.
+	\begin{enumerate}
+		\item \label{prelim:thm:trans:1} $G$ is transitive.
+		
+		\item \label{prelim:thm:trans:2} For distinct $c,d \in [n]$ there is $g \in G$ with
+		$g(a) = c$ and $g(d) \ne d$, or $g(a) = d$ and $g(c) \ne c$.
+		
+		\item \label{prelim:thm:trans:3} Every point fixed by all of $\Stab{a}{G}$ lies in
+		$\Orbit{a}{G}$, and every point of $[n] \setminus \Orbit{a}{G}$ is fixed by all of~$G$.
+	\end{enumerate}
+\end{theorem}
+\begin{proof}
+	$\ref{prelim:thm:trans:1}\Rightarrow\ref{prelim:thm:trans:2}$: Choose $g_0, g_1 \in G$
+	with $g_0(a) = c$ and $g_1(a) = d$.
+	If $g_0(d) \ne d$ or $g_1(c) \ne c$, we are done.
+	Otherwise $h = g_1^{-1}g_0$ satisfies $h(a) = g_1^{-1}(c) = c$ and
+	$h(d) = g_1^{-1}(d) = a \ne d$, the latter since $a = d$ would give
+	$c = g_0(a) = g_0(d) = d$.
+	
+	$\ref{prelim:thm:trans:2}\Rightarrow\ref{prelim:thm:trans:3}$: By
+	\cref{prelim:prop:single-two-set:1} of \cref{prelim:prop:single-two-set}, condition
+	\ref{prelim:thm:trans:2} gives, for every $2$-set $\{c,d\}$, some $g \in G$ and $b \in [n]$
+	with $g(\{a,b\}) = \{c,d\}$ and $g(b) \ne b$.
+	Omitting $g(b) \ne b$ gives $|\Orbit{a}{G}| \ge n - 1$ by
+	\cref{prelim:cor:two-set-global:1} of \cref{prelim:cor:two-set-global}, so at most one point lies
+	outside $\Orbit{a}{G}$, and it forms an orbit and is thus fixed by all of~$G$.
+	Restricting to the targets $\{a,b\}$ gives the remaining condition by
+	\cref{prelim:cor:two-set-global:4} of \cref{prelim:cor:two-set-global}.
+	
+	$\ref{prelim:thm:trans:3}\Rightarrow\ref{prelim:thm:trans:1}$: 
+	Let $b \in [n] \setminus \Orbit{a}{G}$.
+	Then $b$ is fixed by all of~$G$, hence by all of $\Stab{a}{G}$, and so lies in
+	$\Orbit{a}{G}$, a contradiction.
+	Thus $\Orbit{a}{G} = [n]$.
+\end{proof}
+
+Finally, we give some sufficient conditions.
+
+\begin{proposition} \label{prelim:prop:suff-transitive}  
+	\label{prelim:lem:2sets-and-botha-transitive} % das label eigentlich auf 2.te aussage
+	 \label{prelim:lem:2sets-transitive2} % das label eigenltich auf 3.te aussage
+	Let $G \le_G \mathcal S_n$ with $n \ge 2$ and $a \in [n]$.
+	Then~$G$ is transitive if one of the following holds:
+	\begin{enumerate}
+		\item \label{prelim:prop:suff-transitive:1} $|\Orbit{a}{G}| \ge n - 1$ and for
+		$b \in [n] \setminus \{a\}$ we have $g(\{a,c\}) = \{a,b\}$ for some
+		$c \in [n] \setminus \{b\}$ and $g \in G$.
+		
+		\item \label{prelim:prop:suff-transitive:2} For distinct $c,d \in [n]$ we have
+		$g(\{a,b\}) = \{c,d\}$ for some $g \in G$ and $b \in [n] \setminus \{c\}$.
+		
+		\item \label{prelim:prop:suff-transitive:3} For every $c \in [n]$ we have
+		$g(\{a,b\}) = \{c,b\}$ for some $b \in [n]$ and $g \in G$.
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+	\ref{prelim:prop:suff-transitive:1}: Such a $g$ maps $c$ to $a$ or to~$b$ with
+	$c \notin \{a,b\}$, so $g(c) \ne c$, and
+	\cref{prelim:cor:two-set-global:4} of \cref{prelim:cor:two-set-global} gives that every point
+	fixed by all of $\Stab{a}{G}$ lies in $\Orbit{a}{G}$.
+	As $|\Orbit{a}{G}| \ge n - 1$ leaves at most one point outside $\Orbit{a}{G}$, which forms an
+	orbit and is fixed by all of~$G$, \cref{prelim:thm:trans} applies.
+	
+\ref{prelim:prop:suff-transitive:2}: By
+\cref{prelim:cor:two-set-global:1} of \cref{prelim:cor:two-set-global} we have
+$|\Orbit{a}{G}| \ge n - 1$, and the pair $b,a$ gives $g(\{a,c\}) = \{a,b\}$
+for some $c \ne b$,	which is the condition from \cref{prelim:prop:suff-transitive:1}.
+	
+	\ref{prelim:prop:suff-transitive:3}: This follows from \cref{prelim:grp:prop:map-sets-outside-set-A} applied with $A = [n]$.
+\end{proof}
+
+\begin{remark}
+	None of the conditions of \cref{prelim:prop:suff-transitive} is necessary for transitivity:
+	for $n = 4$ the group $G = \langle (0~1~2~3) \rangle_G$ is transitive, but at $a = 0$ and
+	$b = 2$ the equality $g(\{0,c\}) = \{0,2\}$ forces $c = 2$, so that
+	\cref{prelim:prop:suff-transitive:1} fails, and applying
+	\cref{prelim:prop:suff-transitive:2} to the pair $2,0$ would give exactly such a $c \ne 2$.
+	Likewise \cref{prelim:prop:suff-transitive:3} fails for odd~$c$: in $g(\{0,b\}) = \{c,b\}$ we
+	have $c \ne b$, so either $g(0) = c$ and $g(b) = b$, which for a shift forces $g$ to be the
+	identity and hence $c = 0$, or $b = g(0)$ and $c = g(b) = g(g(0)) = 2k$, and both values are
+	even.
+\end{remark}
+
+\begin{remark}
+	The ordered reading matters in \cref{prelim:prop:suff-transitive:2} of \cref{prelim:prop:suff-transitive}.
+	Demanding instead a single witness with $b \notin \{c,d\}$ is strictly stronger and is
+	unsatisfiable for $n = 3$: for the $2$-set $[n] \setminus \{a\}$ there is no $b$ with
+	$b \ne a$ and $b \notin [n] \setminus \{a\}$.
+	By contrast, $\mathcal S_3$ satisfies the hypothesis of \cref{prelim:prop:suff-transitive:2} from \cref{prelim:prop:suff-transitive}.
+	For $n = 4$ the transitive group $G = \langle (0~1~2~3) \rangle_G$ violates it at $a = 0$ and
+	the $2$-set $\{0,2\}$: a witness would need $b \in \{1,3\}$, whereas $g(\{0,b\}) = \{0,2\}$
+	forces $b = 2$.
+\end{remark}
+
+% Diese alternative Aussage mal noch behalten
+%\begin{proposition} \label{prelim:prop:2homogeneous-pair}
+%	Let $G \le_G \mathcal S_n$ with $n \ge 2$. Then the following are equivalent.
+%	\begin{enumerate}
+%		\item \label{prelim:prop:2homogeneous-pair:1} $G$ is $2$-homogeneous.
+%		
+%		\item \label{prelim:prop:2homogeneous-pair:2} There exist distinct $a,b \in [n]$ such
+%		that for all $c,d \in [n]$ with $\{c,d\} \ne \{a,b\}$ there is $g \in G$ with
+%		$g(\{a,c\}) = \{a,d\}$ or $g(\{b,c\}) = \{b,d\}$.
+%		
+%		\item \label{prelim:prop:2homogeneous-pair:3} There exist distinct $a,b \in [n]$ such
+%		that every $2$-set meeting $\{a,b\}$ is of the form $g(\{a,b\})$ for some $g \in G$.
+%	\end{enumerate}
+%\end{proposition}
+%\begin{proof}
+%	%	In \ref{prelim:prop:2homogeneous-pair:2} the points $c$ and $d$ range over all of $[n]$, so
+%	%	degenerate instances are admitted; as $g$ is injective, $g(\{x,x\}) = \{x\}$ is a singleton
+%	%	and thus never a $2$-set.
+%	\ref{prelim:prop:2homogeneous-pair:1}$\Rightarrow$\ref{prelim:prop:2homogeneous-pair:2}:
+%	Let $a,b$ be any two distinct points and consider $\{c,d\} \ne \{a,b\}$.
+%	Without loss of generality, suppose $a \notin \{c,d\}$.
+%	Then $\{a,c\}$ and $\{a,d\}$ are $2$-sets and $2$-homogeneity gives
+%	$g(\{a,c\}) = \{a,d\}$ for some $g \in G$.
+%	
+%	
+%	\ref{prelim:prop:2homogeneous-pair:2}$\Rightarrow$\ref{prelim:prop:2homogeneous-pair:3}:
+%	A $2$-set meeting $\{a,b\}$ is $\{a,b\}$ itself, the image under the identity, or is of the
+%	form $\{a,e\}$ or $\{b,e\}$ with $e \notin \{a,b\}$.
+%	Applying \cref{prelim:prop:2homogeneous-pair:2} to $b,e$ and to $a,e$, which is admissible as
+%	$\{b,e\} \ne \{a,b\} \ne \{a,e\}$, gives $g(\{a,b\}) = \{a,e\}$ or $g(\{b,b\}) = \{b,e\}$,
+%	respectively $g(\{a,a\}) = \{a,e\}$ or $g(\{b,a\}) = \{b,e\}$, where the alternatives with a
+%	singleton source are impossible.
+%	
+%	\ref{prelim:prop:2homogeneous-pair:3}$\Rightarrow$\ref{prelim:prop:2homogeneous-pair:1}:
+%	Let $O$ be the orbit of $\{a,b\}$, which by assumption contains every $2$-set meeting
+%	$\{a,b\}$, and let $\{x,y\}$ be disjoint from $\{a,b\}$.
+%	Choose $g \in G$ with $g(\{a,b\}) = \{a,x\}$. Then put
+%	\[
+%	S = 
+%	\begin{cases}
+%		\{a, g^{-1}(y)\} & \text{if } g(a) = x, \\
+%		\{b, g^{-1}(y)\} & \text{if } g(b) = x.	
+%	\end{cases}
+%	\]
+%	As $g$ maps $a$ and $b$ into $\{a,x\}$ and $y \notin \{a,x\}$, the point $g^{-1}(y)$ is
+%	neither $a$ nor $b$, so $S$ is a $2$-set meeting $\{a,b\}$ and thus lies in $O$.
+%	Now $g(S) = \{x,y\}$ shows $\{x,y\} \in O$, so all $2$-sets form a single orbit.
+%\end{proof}
+
+\begin{proposition} \label{prelim:prop:2homogeneous-pair}
+	Let $G \le_G \mathcal S_n$ with $n \ge 3$. Then the following are equivalent.
+	\begin{enumerate}
+		\item \label{prelim:prop:2homogeneous-pair:1} $G$ is $2$-homogeneous.
+		
+		\item \label{prelim:prop:2homogeneous-pair:2} There exist distinct $a,b \in [n]$ such
+		that for all $c,d \in [n]$ with $\{c,d\} \ne \{a,b\}$ there is $g \in G$ with
+		$g(\{a,c\}) = \{a,d\}$ or $g(\{b,c\}) = \{b,d\}$.
+				
+		\item \label{prelim:prop:2homogeneous-pair:4} There exists $a \in [n]$ such that
+		\begin{enumerate}
+			\item \label{prelim:prop:2homogeneous-pair:4a} for all
+			$b,c \in [n] \setminus \{a\}$ there is $g \in G$ with $g(\{a,b\}) = \{a,c\}$, and
+			
+			\item \label{prelim:prop:2homogeneous-pair:4b} there are
+			$b \in [n] \setminus \{a\}$ and $g \in G$ with $a \notin g(\{a,b\})$.
+		\end{enumerate}
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+\ref{prelim:prop:2homogeneous-pair:1}$\Rightarrow$\ref{prelim:prop:2homogeneous-pair:2}:
+Let $a,b$ be any two distinct points and consider $\{c,d\} \ne \{a,b\}$.
+Then $a \notin \{c,d\}$ or $b \notin \{c,d\}$.
+As the two conditions in \cref{prelim:prop:2homogeneous-pair:2} arise from one another by
+interchanging $a$ and $b$, we may assume $a \notin \{c,d\}$.
+Then $\{a,c\}$ and $\{a,d\}$ are $2$-sets and $2$-homogeneity gives
+$g(\{a,c\}) = \{a,d\}$ for some $g \in G$.
+	
+	\ref{prelim:prop:2homogeneous-pair:2}$\Rightarrow$\ref{prelim:prop:2homogeneous-pair:4}:
+	Let $a,b$ be as in \cref{prelim:prop:2homogeneous-pair:2} and let $O$ be the orbit of
+	$\{a,b\}$.
+	Note that $g(\{x,x\})$ is a singleton and hence never a $2$-set.
+	For $c \ne a$ applying \cref{prelim:prop:2homogeneous-pair:2} to $b,c$, which is admissible
+	as $\{b,c\} \ne \{a,b\}$, thus gives $g(\{a,b\}) = \{a,c\}$, so that $\{a,c\} \in O$.
+	Hence any two $2$-sets containing~$a$ lie in $O$ and are therefore images of one another.
+	Finally, picking $e \notin \{a,b\}$, possible as $n \ge 3$, and applying
+	\ref{prelim:prop:2homogeneous-pair:2} to $a,e$, admissible as $\{a,e\} \ne \{a,b\}$, gives
+	$g(\{b,a\}) = \{b,e\}$ with $a \notin \{b,e\}$.
+
+\ref{prelim:prop:2homogeneous-pair:4}$\Rightarrow$\ref{prelim:prop:2homogeneous-pair:1}:
+By assumption, there exist $b \in [n] \setminus \{a\}$ and $g \in G$
+such that $a \notin g(\{a,b\})$.
+Let $O$ be the orbit of $\{a,b\}$ for the action of~$G$ on the $2$-sets.
+By assumption, every $2$-set containing~$a$ lies in $O$.
+This also implies that every $2$-set containing
+a point from $\Orbit{a}{G}$ is in~$O$
+since each such $2$-set can be mapped to one containing~$a$.
+
+Put $d = g(a)$, so that $d \ne a$. For $z \ne a$
+the $2$-sets $\{a,z\}$ and $\{a,d\}$ lie in~$O$.
+So $h(\{a,d\}) = \{a,z\}$ for some $h \in G$.
+Whence $z = h(a)$ or $z = h(d) = h(g(a))$
+and thus $z \in \Orbit{a}{G}$.
+So $\Orbit{a}{G} = [n]$, and by the above every $2$-set lies in~$O$.
+\end{proof}
+
+\begin{remark}
+	Condition \ref{prelim:prop:2homogeneous-pair:4b} cannot be omitted from
+	\cref{prelim:prop:2homogeneous-pair:4} of \cref{prelim:prop:2homogeneous-pair}:
+	for $G = \langle (1~2~3) \rangle_G$ on $\{0,1,2,3\}$ and $a = 0$ the three $2$-sets
+	containing~$0$ are images of one another, so that
+	\ref{prelim:prop:2homogeneous-pair:4a} holds, yet $G$ is not $2$-homogeneous, and not even
+	transitive.
+\end{remark}
+
+
+The following is immediate but stated for later reference.
+
+\begin{proposition} \label{syncmax:prop:intransitive-subset}
+	Let $G$ be a permutation group on $[n]$ with $n \ge 2$ that is not transitive.
+	Then there exists a proper subset $A \subsetneq [n]$ with $|A| \ge \lceil \tfrac{n}{2} \rceil$
+	such that $g(A) = A$ for all $g \in G$.
+\end{proposition}
+\begin{proof}
+	Let $O$ be an orbit of $G$. Both $O$ and $[n] \setminus O$ are $G$-invariant, and one of them
+	has size at least $\lceil \tfrac{n}{2} \rceil$.
+	As $G$ is not transitive, both are proper subsets of $[n]$.
+\end{proof}
+
+
+
+
+
+
+
+
+%
+%
+%\subsection{}
+%
+%\begin{comment}
+%
+%\subsection{Separating sets and idempotents}
+%
+%In transitive permutation groups we can separate subsets in the following way
+%(see~\cite[p.~130]{ArCamSt2017} for related discussion).
+%
+%\begin{theorem}[\cite{ArCamSt2017,birch2009,neumann75b}]
+%	\label{thm:separating_neumann}
+%	Let $G \le_G \mathcal S_n$ be transitive and let $A,B \subseteq [n]$ with $|A| \cdot |B| < n$.
+%	Then there exists $g \in G$ such that $g(A) \cap B = \emptyset$.
+%\end{theorem}
+%
+%Throughout, for $f \colon [n] \to [n]$ we write $\dupl{f} = \{ y \in [n] \mid |f^{-1}(y)| \ge 2 \}$
+%and $\excl{f} = [n] \setminus f([n])$; the \emph{defect} of $f$ is $n - |f([n])|$.
+%We call $f$ \emph{one-point singular} if $|\dupl{f}| = 1$, and a \emph{simple idempotent}
+%is an idempotent of defect one.
+%Note that every transformation of defect one is one-point singular, but not conversely.
+%
+%We first record that a transitive group together with a transformation of defect one
+%generates at least two simple idempotents.
+%
+%\begin{lemma}
+%	\label{sync_words:lem:idempotent}
+%	Let $G \le_G \mathcal S_n$ be a transitive permutation group and let $t \colon [n] \to [n]$
+%	be of defect one with $t(a) = t(b)$ for distinct $a,b \in [n]$.
+%	Then there exists a simple idempotent $h \in \langle G \cup \{t\} \rangle_S$
+%	with $h(a) = h(b) = b$.
+%\end{lemma}
+%\begin{proof}
+%	Write $\excl{t} = \{c\}$. Since $G$ is transitive there exists $g \in G$ with $g(c) = a$,
+%	and then $\excl{gt} = \{a\}$, i.e.\ $gt([n]) = [n] \setminus \{a\}$.
+%	As $gt$ has defect one and $gt(a) = gt(b)$, the restriction of $gt$ to $[n] \setminus \{a\}$
+%	is injective, and its image is $gt([n]) = [n] \setminus \{a\}$.
+%	Hence $gt$ permutes $[n] \setminus \{a\}$, so there exists $i > 0$ such that
+%	$h = (gt)^i$ acts as the identity on $[n] \setminus \{a\}$.
+%	In particular $h$ is idempotent of defect one, i.e.\ a simple idempotent, and
+%	\[
+%	h(a) = (gt)^{i-1}\bigl(gt(a)\bigr) = (gt)^{i-1}\bigl(gt(b)\bigr) = h(b) = b ,
+%	\]
+%	the last equality because $b \ne a$.
+%\end{proof}
+%
+%Applying \cref{sync_words:lem:idempotent} to the pair $(a,b)$ and to the pair $(b,a)$ shows that
+%for $t$ of defect one with $t(a) = t(b)$ the semigroup $\langle G \cup \{t\} \rangle_S$
+%contains \emph{both} simple idempotents identifying $a$ and $b$.
+%
+%\begin{example}
+%	Let $g = (0 ~ 1 ~ 2 ~ 3)$ and let $t \colon [4] \to [4]$ be given by
+%	$t(0) = 1$, $t(2) = 3$ and $t(1) = t(3) = 2$.
+%	Then $gt$ permutes $\{0,2,3\}$ and $g^3 t$ permutes $\{0,1,2\}$.
+%	Here $g^3 t$ is already the simple idempotent mapping $3$ to $1$,
+%	and $(gt)^2$ is the simple idempotent mapping $1$ to $3$.
+%\end{example}
+%
+%For one-point singular transformations of arbitrary defect we still obtain an idempotent,
+%though no longer a simple one; instead, the whole fibre over the duplicated point is preserved.
+%
+%\begin{lemma} \label{prelim:lem:transitive-grp-one-point-singular}
+%	Let $G \le_G \mathcal S_n$ be a transitive permutation group and let $t \colon [n] \to [n]$
+%	be one-point singular.
+%	Then for each $a \in t^{-1}(\dupl{t})$ there exists an idempotent one-point singular
+%	$h \in \langle G \cup \{t\} \rangle_S$ with $\dupl{h} = \{a\}$ and
+%	$t^{-1}(\dupl{t}) \subseteq h^{-1}(a)$.
+%\end{lemma}
+%\begin{proof}
+%	Write $\dupl{t} = \{b\}$ and fix $a \in t^{-1}(b)$.
+%	Since $G$ is transitive there is $g \in G$ with $g(b) = a$; set $f = gt$.
+%	As $g$ is a bijection we get
+%	\[
+%	\dupl{f} = g(\dupl{t}) = \{a\}, \qquad
+%	f(a) = g(t(a)) = g(b) = a, \qquad
+%	f^{-1}(a) = t^{-1}(g^{-1}(a)) = t^{-1}(b).
+%	\]
+%	
+%	We claim $\dupl{f^j} = \{a\}$ for all $j \ge 1$.
+%	For the inclusion $\subseteq$, let $x \ne y$ with $f^j(x) = f^j(y)$ and let $k \le j$
+%	be minimal with $f^{k}(x) = f^{k}(y)$; then $k \ge 1$ and
+%	$f^{k-1}(x) \ne f^{k-1}(y)$ are two distinct $f$-preimages of $f^{k}(x)$,
+%	whence $f^{k}(x) \in \dupl{f} = \{a\}$.
+%	Since $f(a) = a$ this yields $f^{j}(x) = f^{j-k}(a) = a$.
+%	For the reverse inclusion, pick $x \ne y$ with $f(x) = f(y) = a$;
+%	then $f^{j}(x) = f^{j}(y) = a$, again because $a$ is fixed.
+%	
+%	Moreover $f^{-1}(a) \subseteq (f^{j})^{-1}(a)$ for every $j \ge 1$: if $f(c) = a$ then
+%	$f^{j}(c) = f^{j-1}(a) = a$.
+%	
+%	By \cref{prelim:lem:finite-semigrp-idempotent-power} there is $i > 0$ such that
+%	$h = f^{i}$ is idempotent.
+%	By the above, $\dupl{h} = \{a\}$, so $h$ is one-point singular, and
+%	$t^{-1}(\dupl{t}) = f^{-1}(a) \subseteq h^{-1}(a)$.
+%\end{proof}
+%
+%\begin{remark}
+%	\Cref{sync_words:lem:idempotent} is not a special case of
+%	\cref{prelim:lem:transitive-grp-one-point-singular}:
+%	the latter applies to $t$ of defect one as well, but the idempotent it produces
+%	is only guaranteed to be one-point singular, since preimages may accumulate when passing
+%	to powers of $f$. \Cref{sync_words:lem:idempotent} instead chooses $g$ so that $gt$ excludes
+%	exactly the point it duplicates, which keeps the defect equal to one along all powers.
+%\end{remark}
+%
+%\subsection{Blocks and point stabilisers}
+%
+%We next establish a correspondence between the subgroups containing the stabiliser of a point $a$
+%and the blocks containing $a$.
+%\Crefitem{prelim:thm:blocks-stabs}{prelim:thm:blocks-stabs:2} also appears
+%in~\cite[Thm.~1.5A]{dixon1996permutation}.
+%
+%\begin{theorem}\label{prelim:thm:blocks-stabs}
+%	Let $G \le_G \mathcal S_n$ be transitive and $a \in [n]$. Then the following hold.
+%	\begin{enumerate}
+%		\item \label{prelim:thm:blocks-stabs:2} The maps
+%		\[
+%		H \mapsto \Orbit{a}{H}
+%		\qquad\text{and}\qquad
+%		\Delta \mapsto \{ g \in G \mid g(\Delta) = \Delta \}
+%		\]
+%		are mutually inverse bijections between the subgroups $H$ with $\Stab{a}{G} \le_G H \le_G G$
+%		and the blocks $\Delta$ of $G$ with $a \in \Delta$.
+%		
+%		\item \label{prelim:thm:blocks-stabs:3} For $\Stab{a}{G} \le_G H \le_G G$,
+%		$\Delta = \Orbit{a}{H}$ and $g_1,g_2 \in G$ we have
+%		\[
+%		g_1 H = g_2 H \iff g_1(\Delta) = g_2(\Delta),
+%		\]
+%		and hence $gH = \{ g' \in G \mid g'(\Delta) = g(\Delta) \}$.
+%	\end{enumerate}
+%\end{theorem}
+%\begin{proof}
+%	\ref{prelim:thm:blocks-stabs:2}:
+%	Let $\Stab{a}{G} \le_G H \le_G G$ and $\Delta = \Orbit{a}{H}$.
+%	We show
+%	\begin{equation}\label{prelim:eqn:block-stab-key}
+%		\{ g \in G \mid g(\Delta) \cap \Delta \ne \emptyset \} = H .
+%	\end{equation}
+%	If $g \in H$ then $g(\Delta) = \Delta$, since $\Delta$ is an $H$-orbit; in particular the
+%	left-hand side contains $H$.
+%	Conversely, suppose $g(h_2(a)) = h_1(a)$ for some $h_1,h_2 \in H$.
+%	Then $h_1^{-1} g h_2 \in \Stab{a}{G} \le_G H$ and therefore $g \in h_1 H h_2^{-1} = H$.
+%	This proves~\eqref{prelim:eqn:block-stab-key}, and it shows both that $\Delta$ is a block
+%	and that the second map returns $H$ when applied to $\Delta$.
+%	
+%	Now let $\Delta$ be a block with $a \in \Delta$ and set $H = \{ g \in G \mid g(\Delta) = \Delta \}$,
+%	which is a subgroup.
+%	If $g \in \Stab{a}{G}$ then $a \in g(\Delta) \cap \Delta$, so $g(\Delta) = \Delta$ and $g \in H$;
+%	hence $\Stab{a}{G} \le_G H$.
+%	The inclusion $\Orbit{a}{H} \subseteq \Delta$ is immediate from the definition of $H$.
+%	Conversely let $b \in \Delta$. By transitivity $b = g(a)$ for some $g \in G$, so
+%	$b \in g(\Delta) \cap \Delta$ and thus $g(\Delta) = \Delta$, i.e.\ $g \in H$ and $b \in \Orbit{a}{H}$.
+%	Hence $\Delta = \Orbit{a}{H}$, so the first map returns $\Delta$, and the two maps are
+%	mutually inverse.
+%	
+%	\ref{prelim:thm:blocks-stabs:3}:
+%	By~\eqref{prelim:eqn:block-stab-key} we have $g \in H$ if and only if $g(\Delta) = \Delta$. Thus
+%	\[
+%	g_1 H = g_2 H
+%	\iff g_2^{-1} g_1 \in H
+%	\iff g_2^{-1} g_1 (\Delta) = \Delta
+%	\iff g_1(\Delta) = g_2(\Delta). \qedhere
+%	\]
+%\end{proof}
+%
+%\IN{orbit-stabilizer property}
+%\begin{remark}\label{prelim:rem:orbit-stab}
+%	Specialising \crefitem{prelim:thm:blocks-stabs}{prelim:thm:blocks-stabs:3} to $H = \Stab{a}{G}$,
+%	the left cosets of $\Stab{a}{G}$ are in bijection with the points of $[n]$.
+%	As the cosets partition $G$ and all have size $|\Stab{a}{G}|$, we obtain
+%	$|G| = n \cdot |\Stab{a}{G}|$, the \emph{orbit-stabilizer property}
+%	\cite{cameron_1999,dixon1996permutation,Kurzweil04,wielandt1964finite}.
+%	In particular, a transitive $G \le_G \mathcal S_n$ is regular if and only if $|G| = n$.
+%\end{remark}
+%
+%\begin{corollary}
+%	\label{sync_max:cor:point_stabs}
+%	Let $G \le_G \mathcal S_n$ be transitive, $a \in [n]$ and $\Stab{a}{G} \le_G H \le_G G$.
+%	Set $\Delta = \Orbit{a}{H}$. Then:
+%	\begin{enumerate}
+%		\item \label{sync_max:cor:point_stabs:1} For $g \in G$ we have $g \notin H$ if and only if $a \notin g(\Delta)$.
+%		\item \label{sync_max:cor:point_stabs:Htrans} If $H \ne G$ then $H$ does not act transitively.
+%	\end{enumerate}
+%\end{corollary}
+%\begin{proof}
+%	\ref{sync_max:cor:point_stabs:1}: Since $\Delta$ is a block containing $a$,
+%	the condition $a \in g(\Delta)$ is equivalent to $g(\Delta) \cap \Delta \ne \emptyset$
+%	and hence, by~\eqref{prelim:eqn:block-stab-key}, to $g \in H$.
+%	
+%	\ref{sync_max:cor:point_stabs:Htrans}: By
+%	\crefitem{prelim:thm:blocks-stabs}{prelim:thm:blocks-stabs:2} the assignment
+%	$H \mapsto \Orbit{a}{H}$ is injective, and $\Orbit{a}{G} = [n]$ by transitivity of $G$.
+%	Hence $\Orbit{a}{H} = [n]$ forces $H = G$.
+%\end{proof}
+%
+%\begin{remark}\label{prelim:permgrp:Gactions-rep}
+%	By \crefitem{prelim:thm:blocks-stabs}{prelim:thm:blocks-stabs:3} the map $\varphi(gH) = g(\Delta)$
+%	is a well-defined bijection from the cosets of $H$ onto the block system generated by
+%	$\Delta = \Orbit{a}{H}$, and $\varphi(h \cdot gH) = h(\varphi(gH))$ for $h \in G$.
+%	Thus subgroups containing $\Stab{a}{G}$ together with their cosets correspond to blocks
+%	containing $a$ together with their block systems, compatibly with the actions by left
+%	multiplication and by function application.\footnote{See e.g.~\cite{cameron_1999} for the
+%		formalisation via $G$-actions; note that by our conventions permutations act on the left,
+%		whereas in~\cite{cameron_1999} they act on the right.}
+%	Concretely, for $g \in G$ and $h \in G$,
+%	\begin{equation}\label{eqn:congruences-subgroups-blocks}
+%		h \in gH \iff h(a) \in g(\Delta) .
+%	\end{equation}
+%	Indeed, if $h \in gH$ then $h(\Delta) = g(\Delta)$ and $h(a) \in h(\Delta)$;
+%	conversely, if $h(a) \in g(\Delta) = \Orbit{a}{gH}$ then $g^{-1}h(a) = h'(a)$ for some $h' \in H$,
+%	so $h'^{-1} g^{-1} h \in \Stab{a}{G} \le_G H$ and $h \in gH$.
+%	Consequently $G$-congruences on $[n]$ transfer to $G$-congruences on the cosets of $H$.
+%	
+%	If $G$ is regular, $\varphi$ identifies $G$ with its permutation domain and may be identified
+%	with the map $g \mapsto g(a)$.
+%	Finally, let $G$ be as in \cref{lem:congruence_on_cyclic_group}.
+%	Then $G$ can be identified with the additive group of residues modulo $n$ via
+%	$g^{i} \mapsto [i]_{\equiv_n}$.
+%	Since every subgroup of that group is the group of multiples of some divisor $r$ of $n$
+%	\cite[Sec.~1.4]{Kurzweil04}, \eqref{eqn:congruences-subgroups-blocks} recovers
+%	\cref{lem:congruence_on_cyclic_group}.
+%\end{remark}
+%
+%The following is immediate but stated for later reference.
+%
+%\begin{proposition} \label{syncmax:prop:intransitive-subset}
+%	Let $G$ be a permutation group on $[n]$ with $n \ge 2$ that is not transitive.
+%	Then there exists a proper subset $A \subsetneq [n]$ with $|A| \ge \lceil \tfrac{n}{2} \rceil$
+%	such that $g(A) = A$ for all $g \in G$.
+%\end{proposition}
+%\begin{proof}
+%	Let $O$ be an orbit of $G$. Both $O$ and $[n] \setminus O$ are $G$-invariant, and one of them
+%	has size at least $\lceil \tfrac{n}{2} \rceil$.
+%	As $G$ is not transitive, both are proper subsets of $[n]$.
+%\end{proof}
+%
+%\end{comment}
+
+
+\todo[inline]{noch auskommentiertes}
+
+\begin{comment}
+
+
+\subsection{alt}
+
+
+Next, we establish a correspondence between certain subgroups containing the point stabilizer of a point $a$ and blocks containing~$a$.
+\Crefitem{prelim:thm:blocks-stabs}{prelim:thm:blocks-stabs:2}
+also appears in~\cite[Thm.~1.5A]{dixon1996permutation}. 
+
+\begin{theorem}\label{prelim:thm:blocks-stabs}
+	Let $G \le_G \mathcal S_n$ be transitive and $a \in [n]$. Then the following is true.	
+	
+	\begin{enumerate}
+		%\item \label{prelim:thm:blocks-stabs:1} $\Orbit{a}{H}$ is a block for $\Stab{a}{G} \le_G H \le_G G$.
+		
+		\item \label{prelim:thm:blocks-stabs:2} The maps 
+		\[
+		H \mapsto \Orbit{a}{H}
+		\]
+		for  $\Stab{a}{G} \le_G H \le_G G$,
+		and 
+		\[
+		\Delta \mapsto \{ g \in G \mid g(\Delta) = \Delta \}
+		\]
+		for $\Delta$ a block with $a \in \Delta$,
+		are mutually inverse mappings between the
+		subgroups containing $\Stab{a}{G}$
+		and the blocks of $G$ containing $a$, respectively.
+		%	that respect set inclusion. \todo{genauer als order morphism formulieren}
+		
+		\item \label{prelim:thm:blocks-stabs:3} For
+		$\Stab{a}{G} \le_G H \le_G G$, $\Delta = \Orbit{a}{H}$,
+		and $g_1, g_2 \in G$ we have
+		\[
+		g_1 H = g_2 H \Leftrightarrow g_1(\Delta)  = g_2(\Delta),
+		\]	
+		and so $gH = \{ g' \in G \mid g'(\Delta) = g(\Delta)\}$.
+	\end{enumerate}
+\end{theorem}
+\begin{proof}
+	\ref{prelim:thm:blocks-stabs:2}: First, let $\Stab{a}{G} \le_G H \le_G G$. We show that $\Orbit{a}{H}$ is a block.
+	For $g \in G$, we have
+	\begin{align*}
+		\Orbit{a}{H} \cap \applyfunc{\Orbit{a}{H}}{g} \ne \emptyset
+		& \Leftrightarrow 
+		\exists h_1, h_2 \in H \colon \applyfunc{a}{h_1} = \applyfunc{\applyfunc{a}{h_2}}{g} \\
+		& \Leftrightarrow 
+		a = \applyfunc{\applyfunc{\applyfunc{a}{h_2}}{g}}{h_1^{-1}} \\
+		& \Leftrightarrow \concat{\concat{h_2}{g}}{h_1^{-1}} \in G_a.
+	\end{align*}
+	As $G_a \le_G H$, we find $g \in h_1 H h_2^{-1} = H$.	
+	Thus, $g(\Orbit{a}{H}) = \Orbit{a}{H}$
+	implies $g \in H$, so that 
+	$
+	\{ g \in G \mid g(\Orbit{a}{H}) = \Orbit{a}{H} \} \subseteq H.
+	$
+	Next, clearly we have $H \subseteq \{ g \in G \mid g(\Orbit{a}{H}) = \Orbit{a}{H} \}$
+	and since already $\Orbit{a}{H} \cap \applyfunc{\Orbit{a}{H}}{g} \ne \emptyset$
+	implies $g \in H$, from this we get $g(\Orbit{a}{H}) = \Orbit{a}{H}$
+	so that $\Orbit{a}{H}$ is a block.
+	
+	%As $H \subseteq \{ g \in G \mid g(\Orbit{a}{H}) = \Orbit{a}{H} \}$, $g \in H$
+	%implies $\applyfunc{\Orbit{a}{H}}{g} = \Orbit{a}{H}$.
+	%So, $\Orbit{a}{H}$ is a block containing $a$
+	%and the second map gives $H$ again. 
+	
+	Next, let $\Delta$ be a block with $a \in \Delta$.
+	Set $H = \{ g \in G \mid g(\Delta) = \Delta \}$,
+	which is a subgroup. Consider $g \in \Stab{a}{G}$.
+	Then $a \in g(\Delta) \cap \Delta$
+	and so $g(\Delta) = \Delta$, i.e., $g \in H$.
+	Hence, $G_a \le_G H$.
+	By the definition of $H$, we have $\Orbit{a}{H} \subseteq \Delta$.
+	Let $b \in \Delta$. As $G$ is transitive,
+	we have $b = g(a)$ for some $g \in G$.
+	As $\Delta$ is a block, we find $g(\Delta) = \Delta$, i.e., $g \in H$.
+	Hence $\Delta \subseteq \Orbit{a}{H}$. Now $\Delta = \Orbit{a}{H}$  means that
+	the first map yields $\Delta$ again when applied to the result of the second map.
+	So, both maps are mutually inverse.
+	
+	Thus, we have
+	\[
+	g' \in gH \Leftrightarrow g'H = gH \Leftrightarrow g'(\Delta) = g(\Delta)
+	\]
+	and so $gH = \{ g' \in G \mid g'(\Delta) = g(\Delta) \}$.
+	
+	
+%	Suppose there exists a subgroup $H \le G$
+%	containing $G_x$. Set $\Delta = \{ \applyfunc{x}{h} \mid h \in H \}$. 
+%	
+%	Let $x \in [n]$.
+%	Let $g \in G$. If $x \in \applyfunc{\Delta}{g}$,
+%	then $x = \applyfunc{\applyfunc{x}{h}}{g}$
+%	for some $h \in H$.
+%	So $hg \in G_x$. As $G_x \le H$, we find $g \in h^{-1}H = H$.
+%	Hence for each $g \in G \setminus H$
+%	we have $x \notin \applyfunc{\Delta}{g}$.
+%	
+%	
+%	Furthermore, If $H \ne G$, then $H$ cannot act transitive. For if $\applyfunc{x}{g} = \applyfunc{x}{h}$
+%	for some $g \in G$, then $x = \applyfunc{\applyfunc{x}{h}}{g^{-1}}$.
+%	Hence $hg^{-1} \in G_x \le H$,
+%	implying $g^{-1} \in h^{-1}H = H$.
+	
+	
+	
+	\ref{prelim:thm:blocks-stabs:3}: Let $\Stab{a}{G} \le_G H \le_G G$ and $\Delta = \Orbit{a}{H}$.
+	By \ref{prelim:thm:blocks-stabs:2} for $g \in G$, we have $g \in H$ if and only if $g(\Delta) = \Delta$.
+	So
+	$
+	g_1H = g_2H
+	\Leftrightarrow \exists h \in H \colon g_1 = g_2 h 
+	\Leftrightarrow g_2^{-1} g_1 \in H 
+	\Leftrightarrow g_2^{-1} g_1(\Delta) = \Delta
+	\Leftrightarrow g_1(\Delta) = g_2(\Delta). 
+	$ 
+\end{proof} 
+
+\IN{orbit-stabilizer property}
+\begin{remark}\label{prelim:rem:orbit-stab}
+	By \crefitem{prelim:thm:blocks-stabs}{prelim:thm:blocks-stabs:2} 
+	the blocks $\Delta$ of $G$ with $a \in \Delta$ are in bijective correspondence with the subgroups $H \le_G G$
+	containing $\Stab{a}{G}$.
+	By \crefitem{prelim:thm:blocks-stabs}{prelim:thm:blocks-stabs:3},
+	for $H \le_G G$ containing $\Stab{a}{G}$
+	and $\Delta = \Orbit{a}{H}$,
+	the left cosets of $H$ in $G$ 
+	are in bijective correspondence with the sets $g(\Delta)$, $g \in G$.
+	%\footnote{
+		%	When considering the sets $g^{-1}(\Delta)$ it is also possible
+		%	to establish a correspondence between the action on the right cosets of $H$
+		%	by right multiplication and the action of the inverse elements on the
+		%	sets $g^{-1}(\Delta)$ by multiplication on the left, but as we do not need
+		%	this result here we do not make this more formal.}
+	For the special case of transitive $G \le_G\mathcal S_n$ and
+	$H = \Stab{a}{G}$, we obtain that the left cosets of $\Stab{a}{G}$
+	are in bijection with the points from $[n]$.
+	As the left cosets partition $G$ and all have the same size~$|\Stab{a}{G}|$,
+	we get $|G| = n |\Stab{a}{G}|$, which
+	is known as the \emph{orbit-stabilizer property} in the literature~\cite{cameron_1999,dixon1996permutation,Kurzweil04,wielandt1964finite}.
+	This implies that a transitive group $G \le \mathcal S_n$
+	is regular if and only if $|G| = n$.
+	We note the following corollary to \cref{prelim:thm:blocks-stabs}.
+\end{remark}
+
+\begin{corollary}
+	\label{sync_max:cor:point_stabs}
+	Let $G \le_G \mathcal S_n$ be transitive, 
+	$a \in [n]$ and $\Stab{a}{G} \le_G H \le_G G$.
+	Set $\Delta = \Orbit{a}{H}$.
+	Then the following properties are true:
+	\begin{enumerate}
+		\item \label{sync_max:cor:point_stabs:1}  For each $g \in G$ we have $g \in G \setminus H$ if and only if $a \notin \applyfunc{\Delta}{g}$.
+		
+		\item \label{sync_max:cor:point_stabs:Htrans} If $H \ne G$, then $H$ does not act transitively. 
+	\end{enumerate}
+\end{corollary}
+\begin{proof}
+	\ref{sync_max:cor:point_stabs:1}: Since $\Delta$ is a block by \cref{prelim:thm:blocks-stabs}, $a \in g(\Delta)$
+	is equivalent to $g(\Delta) = \Delta$ for $g \in G$.
+	Since $H = \{ g\in G \mid g(\Delta) = \Delta \}$
+	by \crefitem{prelim:thm:blocks-stabs}{prelim:thm:blocks-stabs:2},
+	$g \in G \setminus H$ if and only if $a \notin g(\Delta)$.
+	
+	\ref{sync_max:cor:point_stabs:Htrans}: Let $a \in [n]$. Now, $G$ is transitive
+	and,  by \crefitem{prelim:thm:blocks-stabs}{prelim:thm:blocks-stabs:2}, $\Orbit{a}{G} = [n]$ gives
+	that  for $H \le_G G$, we have $\Orbit{a}{H} = [n]$
+	if and only if $H = G$. Thus we obtain the claim.
+\end{proof}
+
+%
+% kommutative diagramme zeichnen und G-actions einführen?
+\begin{remark}\label{prelim:permgrp:Gactions-rep}
+	By \crefitem{prelim:thm:blocks-stabs}{prelim:thm:blocks-stabs:3}
+	the map $\varphi$ from the cosets of $H$
+	to the system of blocks for $\Delta = \Orbit{a}{H}$
+	given by $\varphi(gH) = g(\Delta)$
+	is a well-defined bijection such
+	that $\varphi(h(gH)) = h(\varphi(gH))$.
+	Thus, subgroups and their cosets correspond
+	to blocks containing~$a$
+	and their systems of blocks
+	with the respective actions by left multiplication and function application.\footnote{We refer to the literature as e.g.~\cite{cameron_1999} 
+		for details on how these actions are defined via so-called $G$-actions, but note that here
+		by our conventions on function applications the permutations act from the left whereas in~\cite{cameron_1999} 
+		they act on the right.}	
+	Furthermore, for $c,d \in [n]$ and $h_1, h_2 \in gH$ with $h_1(a) = c$ and $h_2(a) = d$ we have
+	\begin{equation}\label{eqn:congruences-subgroups-blocks}
+		h_1, h_2 \in gH \Leftrightarrow c,d \in g(\Delta),
+	\end{equation}
+	and so $G$-congruences transfer to $G$-congruences for the action on the cosets of~$H$.
+	
+	If~$G$ is regular, the~$\varphi$
+	gives a correspondence between the elements in~$G$ and its permutation domain
+	and the map~$\varphi$ can be identified with the map from~$G$
+	to~$[n]$ that maps $g \in G$ to $g(a)$.	
+	
+	Now, consider a group~$G$ as in \cref{lem:congruence_on_cyclic_group}.
+	Then~$G$ can be identified with the abstract group
+	given by addition on the residues modulo~$n$
+	by identifying $g^i$ with $[i]_{\equiv_n}$
+	(we note that also the abstract group of residues modulo~$n$
+	can be identified with the regular permutation
+	group as in  \cref{lem:congruence_on_cyclic_group}
+	by letting~$G$ act on itself via multiplication from left).
+	In this case, since the subgroups of the group of residues
+	can be identified with groups on the residues modulo~$r$
+	for some divisor~$r$ of~$n$, see~\cite[Sec.~1.4]{Kurzweil04},
+	\cref{eqn:congruences-subgroups-blocks}
+	also yields \cref{lem:congruence_on_cyclic_group}.
+\end{remark}
+
+The following is easy to see, but stated for reference since we need it later.
+
+\begin{proposition} \label{syncmax:prop:intransitive-subset}
+	Suppose $G$ is a permutation group on $[n]$ with $n \ge 2$ that is not transitive.
+	Then there exists a proper subset $A \subseteq [n]$
+	with $|A| \ge \lceil \frac{n}{2} \rceil$
+	such that $g(A) = A$ for all $g \in G$.
+\end{proposition}
+\begin{proof}
+	Consider some orbit of~$G$.
+	Then this orbit or its complement 
+	has size at least $\lceil \frac{n}{2} \rceil$
+	and both sets fulfill the statement.
+	Since~$G$ is not transitive, both sets
+	are proper subsets of~$[n]$.
+\end{proof}
+
+
+
+\end{comment}
+
+
+
+
+
+
+
+%Lastly, we give results relating mapping properties between $2$-sets to orbit sizes
+%and transitivity.
+%
+%The following result relating $k$-homogeneity to $k$-transitivity
+%is due to Livingstone and Wagner~\cite{Livingstone1965}.
+%
+%\begin{theorem}[Livingstone and Wagner~\cite{Livingstone1965}]
+%	\label{prelim:thm:livingstone}
+%	Suppose $G \le_G \mathcal S_n$ is a $k$-homogeneous permutation group with $k \ge 2$ and $2k \le n$.
+%	Then $G$ is $(k-1)$-transitive (and so also $(k-1)$-homogeneous)
+%	and, for $k \ge 5$, $G$ is $k$-transitive.	
+%\end{theorem}	
+%
+%\begin{lemma} \label{prelim:permgrp:lem:transitive-abac}
+%	Let $G \le_G \mathcal S_n$ and $a \in [n]$. Then the following are equivalent.
+%	\begin{enumerate}
+%		\item \label{prelim:permgrp:lem:transitive-abac:1} $G$ is transitive.
+%		
+%		\item \label{prelim:permgrp:lem:transitive-abac:2} For distinct $c,d \in [n]$
+%		we have $\applyfunc{\{a,b\}}{g} = \{c,d\}$
+%		for some $b \in [n]$ and $g \in G$
+%		with $g(a) \ne a$.
+%		
+%		\item \label{prelim:permgrp:lem:transitive-abac:3} For $b \in [n] \setminus\{a\}$
+%		we have $g(\{a,c\}) = \{a,b\}$ for some $c \in [n]$ and $g \in G$ with $g(a) \ne a$.
+%	\end{enumerate}
+%\end{lemma}
+%\begin{proof}
+%	$\ref{prelim:permgrp:lem:transitive-abac:1}\Rightarrow\ref{prelim:permgrp:lem:transitive-abac:2}$: Without loss of generality, let $c \ne a$.
+%	Since~$G$ is transitive, we have $g(a) = c$ for some $g \in G$.
+%	Then $g(\{a,b\}) = \{c,d\}$ where $b = g^{-1}(d)$ and $g(a) \ne a$.
+%	
+%	$\ref{prelim:permgrp:lem:transitive-abac:2}\Rightarrow\ref{prelim:permgrp:lem:transitive-abac:3}$: This follows from \cref{prelim:permgrp:lem:transitive-abac:1} by considering $c = a$ and $d = b$.
+%	
+%	$\ref{prelim:permgrp:lem:transitive-abac:3}\Rightarrow\ref{prelim:permgrp:lem:transitive-abac:1}$: Let $b \ne a$.
+%	Then $g(\{a,c\}) = \{a,b\}$ for some $c \in [n]$
+%	and $g\in G$ with $g(a) \ne a$. The latter condition gives $g(a) = b$.
+%\end{proof}
+%
+%\begin{lemma}\label{prelim:lem:2sets-transitive}
+%	Let $G \le_G \mathcal S_n$ and $a \in [n]$.
+%	Then we have $|\Orbit{a}{G}| \ge n - 1$
+%	if and only if for any $2$-set $\{c,d\} \subseteq [n]$
+%	we have $\applyfunc{\{a,b\}}{g} = \{c,d\}$
+%	for some $g \in G$ and $b \in [n]$. 
+%\end{lemma}
+%\begin{proof}
+%	First, suppose $|\Orbit{a}{G}| \ge n - 1$.
+%	Let $\{c,d\} \subseteq [n]$ be a $2$-set.
+%	We have $\{c,d\} \cap \Orbit{a}{G} \ne \emptyset$.
+%	Without loss of generality, let $c \in \Orbit{a}{G}$.
+%	Then $c = g(a)$ for some $g \in G$
+%	and with $b = g^{-1}(d)$
+%	we find $g(\{a,b\}) = \{c,d\}$.
+%	
+%	Next, suppose $|\Orbit{a}{G}| \le n - 2$. Then 
+%	there exist distinct $c,d \in [n]$
+%	with $c,d \notin \Orbit{a}{G}$.
+%	Then $g(a) \notin \{c,d\}$ for all $g \in G$.
+%	This implies $g(\{a,b\}) \ne \{c,d\}$
+%	for all $g \in G$ and $b \in [n]$,
+%	since otherwise $g(a) \notin \{c,d\}$
+%	for some $g \in G$. Thus, the $2$-set mapping condition does not hold.
+%\end{proof}
+%
+%Note that in \cref{prelim:lem:2sets-transitive} we have $a \ne b$.
+%
+%\begin{corollary} \label{prelim:lem:2sets-and-botha-transitive}
+%	Let $G \le_G \mathcal S_n$ and $a \in [n]$.
+%	Suppose $|\Orbit{a}{G}| \ge n - 1$
+%	and for $b \in [n]$ with $b \ne a$
+%	we have $g(\{a,c\}) = \{a,b\}$
+%	for some $g \in G$ and $c \in [n]$ with $c \ne b$.
+%	Then~$G$ is transitive.	
+%\end{corollary}
+%\begin{proof}
+%	We have $[n] = \Orbit{a}{G} \cup \{b\}$
+%	for some $b \in [n]$.	
+%	We can assume $a \ne b$.
+%	By assumption, $g(\{a, c\}) = \{a,b\}$
+%	for some $g \in G$ and $c \in [n]$ 
+%	with $c \ne b$.
+%	This gives $g(b) \ne b$ and thus $g(b) \in \Orbit{a}{G}$.
+%	Hence $b \in \Orbit{a}{G}$
+%	and so~$G$ is transitive.\footnote{For an alternative argument, 
+%		consider some $b \in [n]$ with $a \ne b$.
+%		By assumption $g(\{a, c\}) = \{a,b\}$ for some $c \in [n]$
+%		with $c \ne b$.
+%		For $g(a) \ne a$ we have $g(a) = b$.
+%		Otherwise, $g(a) = a$ gives $g(c) = b$
+%		and since $\{b,c\}$ is a $2$-set, with \cref{prelim:lem:2sets-transitive}, 
+%		we have $h(\{a,d\}) = \{b,c\}$ for some $d \in [n]$ and $h \in G$.
+%		Then $h(a) = b$ or, for $h(a) = c$, we get $g(h(a)) = b$.
+%		Thus, $a$ can be mapped to any other point~$b \in [n]$
+%		and so $G$ is transitive.}
+%	%Thus $c \in \Orbit{a}{G}$. Since $g(a) = b$ or $g(c) = b$, we find $b \in \Orbit{a}{G}$ and so~$G$ is transitive.
+%\end{proof}
+%
+%\begin{corollary}
+%	Let $G \le_G \mathcal S_n$ and $a \in [n]$.
+%	Suppose for any $2$-set $\{c,d\} \subseteq [n]$
+%	we have  $\applyfunc{\{a,b\}}{g} = \{c,d\}$
+%	for some $g \in G$ and $b \in [n]$ with
+%	$b \ne c$. Then~$G$ is transitive.
+%\end{corollary}
+%\begin{proof}
+%	By \cref{prelim:lem:2sets-transitive} 
+%	we have $|\Orbit{a}{G}| \ge n - 1$.
+%	By assumption, for $b \ne a$
+%	we have $g(\{a,c\}) = \{a,b\}$
+%	for some $c \ne b$. Thus, with \cref{prelim:lem:2sets-and-botha-transitive}, $G$ is transitive.
+%\end{proof}
+%
+%\begin{corollary}
+%	Let $G \le_G \mathcal S_n$ and $a \in [n]$.
+%	Suppose for any $2$-set $\{c,d\} \subseteq [n]$
+%	we have $\applyfunc{\{a,b\}}{g} = \{c,d\}$
+%	for some $b \in [n]$ and $g \in G$ with $g(b) \ne b$.
+%	Then~$G$ is transitive.	
+%\end{corollary}
+%\begin{proof}
+%	By \cref{prelim:lem:2sets-transitive}, we have $[n] = \Orbit{a}{G} \cup \{b\}$
+%	for some $b \in [n]$.
+%	We can assume $a \ne b$.
+%	By assumption, $g(\{a,c\}) = \{a,b\}$ for some $c \in[n]$
+%	and $g\in G$ with $g(c) \ne c$.
+%	Then $g(a) = b$
+%	or $g(c) = b$ where $c \in \Orbit{a}{G}$.
+%	Both cases give $b \in \Orbit{a}{G}$
+%	and so~$G$ is transitive.\footnote{Alternatively, let $b \in [n]$ be with $a \ne b$. 
+%		By assumption, there exist $c \in [n]$ and $g \in G$
+%		such that $g(\{a,c\}) = \{b,a\}$ and $g(c) \ne c$.
+%		Suppose $g(a) \ne b$. Then $g(a) = a$ and so $g(c) = b$.
+%		Since $g(c) \ne c$, we have $c \ne b$.
+%		By assumption, there exist $d \in [n]$ and $h \in G$
+%		such that $h(\{a,d\}) = \{b,c\}$.
+%		For $h(a) \ne b$, we have $h(a) = c$.
+%		Then $g(h(a)) = g(c) = b$.
+%		Thus, we can map~$a$ to any other point and so~$G$ is transitive.}
+%\end{proof}
+%
+%\begin{lemma} \label{prelim:permgrp:lem:from-ab-or}
+%	Let $G \le_G \mathcal S_n$
+%	and $a, b\in [n]$ be distinct.
+%	Suppose for $c \in [n]$
+%	we have  $g(\{a,b\}) = \{a,c\}$ or $g(\{a,b\}) = \{b,c\}$ 
+%	for some $g \in G$.
+%	Then $[n] = \Orbit{a}{G} \cup \Orbit{b}{G}$.
+%\end{lemma}
+%\begin{proof}
+%	By assumption, $c \in \Orbit{a}{G} \cup \Orbit{b}{G}$ for $c \in [n]$.
+%	Thus $[n] = \Orbit{a}{G} \cup \Orbit{b}{G}$.
+%\end{proof}
+%
+%\begin{corollary} \label{prelim:permgrp:cor:from-ab-or}
+%	Let $G \le_G \mathcal S_n$ and $a,b \in [n]$ be distinct.
+%	Suppose for $c \in [n]$ with $c \ne a$
+%	we have $g(\{a,b\}) = \{a,c\}$ for some $g \in G$.
+%	Then $|\Orbit{b}{G}| \ge n - 1$.
+%\end{corollary}
+%\begin{proof}
+%	Let $c \in [n]$.
+%	For $c \ne a$ we have $g(\{a,b\}) = \{a,c\}$ for some $g \in G$,
+%	and for $c = a$, the identity maps $\{a,b\}$ to itself.
+%	Thus, by \cref{prelim:permgrp:lem:from-ab-or} ,
+%	we find $[n] = \Orbit{a}{G} \cup \Orbit{b}{G}$.
+%	Suppose $c \in \Orbit{a}{G}$ for some $c \ne a$.
+%	Then $g(\{a,b\}) = \{a,c\}$ for some $g \in G$.
+%	Thus $g(b) \in \{a,c\} \subseteq \Orbit{a}{G}$,
+%	which gives $b \in \Orbit{a}{G}$
+%	and so $[n] = \Orbit{a}{G}$. This gives the claim.	
+%\end{proof}
+%
+%\begin{corollary}
+%	Let $G \le_G \mathcal S_n$ and $a \in [n]$.
+%	Suppose for all $b,c \in [n] \setminus \{a\}$
+%	we have $g(\{a, b\}) = \{a,c\}$ for some $g \in G$.
+%	Then $|\Orbit{b}{G}| \ge n - 1$ for some $b \in [n] \setminus \{a\}$.
+%\end{corollary}
+%\begin{proof}
+%	Fix some $b \in [n] \setminus\{a\}$.
+%	By \cref{prelim:permgrp:cor:from-ab-or} 
+%	we find $|\Orbit{b}{G}| \ge n - 1$.
+%\end{proof}
+%
+%\begin{corollary} \label{prelim:permgrp:cor:from-ab-or2}
+%	Let $G \le_G \mathcal S_n$ with $n \ge 3$ and $a,b \in [n]$ be distinct.
+%	Suppose for $c,d \in [n]$ with $\{c,d\} \ne \{a,b\}$  
+%	we have $g(\{a,c\}) = \{a, d\}$
+%	or $g(\{b,c\}) = \{b,d\}$ for some $g \in G$.
+%	Then $G$ is transitive.
+%\end{corollary}
+%\begin{proof}
+%	Let $c \notin \{a,b\}$. Then $\{b,c\} \ne \{a,b\}$.
+%	By assumption, $g(\{a,b\}) = \{a,c\}$ for some $g \in G$.
+%	Thus $|\Orbit{b}{G}| \ge n - 1$
+%	by \cref{prelim:permgrp:cor:from-ab-or}.
+%	Similarly, by considering $\{a,c\}$,
+%	we find  $|\Orbit{a}{G}| \ge n - 1$.
+%	Since $n \ge 3$, this yields that~$G$ is transitive.\footnote{Alternatively, 
+%		let $c \in [n]$ with $c \notin \{a,b\}$.
+%		Since $\{a,c\} \ne \{a,b\}$
+%		we have $g(\{a\}) = \{a, c\}$
+%		or $g(\{b, a\}) = \{b,c\}$
+%		for some $g \in G$.
+%		Now, since $c \ne a$,
+%		$g(\{a\}) = \{a,c\}$ cannot be the case.
+%		If $g(b) = c$, then $g(a) = b$
+%		and we find $g(g(a)) = c$.
+%		Otherwise, $g(b) = b$ and so $g(a) = c$.
+%		Thus we find $c \in \Orbit{a}{G}$.
+%		Similarly $c \in \Orbit{b}{G}$.
+%		This gives $[n] = \Orbit{a}{G}$.}
+%\end{proof}
+%
+%The argument used in the proof of the following lemma was given in~\cite[p.~533]{mcalister1998semigroups}
+%to deduce that a $2$-homogeneous group is transitive.
+%
+%\begin{lemma} \label{prelim:lem:2sets-transitive2}
+%	Let $G \le_G \mathcal S_n$ with $n \ge 3$ and $a \in [n]$.
+%	Suppose for any $c \in [n]$ there exists $b \in [n]$
+%	such that $g(\{a,b\}) = \{c,b\}$. 
+%	Then $G$ is transitive.
+%\end{lemma} 
+%\begin{proof}
+%	Let $c \in [n]$.
+%	Then $g(\{a,b\}) = \{c,b\}$ for some $b \in [n]$ and $g \in G$.
+%	For $g(a) = b$, we have $g(b) = c$ so that $g(g(a)) = c$.
+%	Otherwise, $g(a) = c$.
+%\end{proof}
+%
+%\begin{remark}
+%	Transitivity does not imply the condition from \cref{prelim:lem:2sets-transitive2}.
+%	For example, $G = \langle \{(0 ~ 1 ~ \cdots ~ n - 1)\} \rangle_G$ does not fulfill it.
+%\end{remark}

@@ -1,0 +1,311 @@
+\label{def:rt} 
+\label{def:Cn}
+\IN{reset length}
+\IN{\v{C}ern\'y automata family}
+The \emph{reset length} of a synchronizing automaton $\semiautomat{A}{Q}{\Sigma}{\delta}$ is 
+\[
+\rt{\mathcal A} = \min\{ |u| : u \in \Syn(\mathcal A) \}.
+\]
+\v{C}ern\'y~\cite{Cer64} proved that, for $n \ge 1$, we have
+\[ 
+(n-1)^2 \le \max\{ \rt{\mathcal A} \mid \mathcal A \text{ has $n$ states and $\Syn(\mathcal A) \ne \emptyset$} \} \le 2^n - n - 1.
+\]
+For the lower bound, he gave the
+\emph{\Cerny family of automata}
+$\mathcal C_n = ([n], \{a,b\}, \delta_n)$
+where $n \ge 2$ and
+\[
+\applytrans{\delta_n}{i}{b} = \begin{cases}
+	i + 1 & \text{if } i < n - 1, \\ 
+	0     & \text{if } i = n - 1,
+\end{cases} 
+\qquad
+\applytrans{\delta_n}{i}{a} = \begin{cases}
+	1  & \text{if } i = 0, \\ 
+	i  & \text{if } i \ne 0,
+\end{cases}
+\]
+see \cref{intro:fig:cerny}. The automaton from the part orientation problem in \cref{intro:fig:part-orient-solution}
+equals $\mathcal C_4$. Below, we give a proof that $\rt{\mathcal C_n} = (n-1)^2$, 
+which also shows that
+$(ab^{n-1})^{n-2}a$ is the only shortest synchronizing word for~$\mathcal C_n$.
+
+\begin{figure}[ht]
+	\centering	
+	\begin{tikzpicture}[shorten >=1pt,->]
+		\foreach \name/\angle/\text in {P-n-2/234/n-2, 
+			P-n-1/162/n-1, 
+			P-0/90/0, 
+			P-1/18/1, 
+			P-2/-54/2}
+		\node[state, minimum size=3.2em] (\name) at (\angle:6em) {$\text$};
+		
+		\path (P-n-2) edge [left] node {$b$} (P-n-1)
+		(P-n-1) edge [above,pos=0.35] node {$b$} (P-0)
+		(P-n-1) edge [loop left] node {$a$} ()
+		(P-0) edge [above] node {$a,b$} (P-1)
+		(P-1) edge [right] node {$b$} (P-2)
+		(P-n-2) edge [loop left] node {$a$} ()
+		(P-1) edge [loop right] node {$a$} ()
+		(P-2) edge [loop right] node {$a$} ();
+		
+		\node [right = of P-n-2, xshift=-2.5em] {\large $\ldots$};
+	\end{tikzpicture}
+	\caption[\Cerny family $\mathcal C_n$]{Automata from the \Cerny family $\mathcal C_n$. See \cref{intro:sec:cerny}.}
+	\label{intro:fig:cerny}
+\end{figure}
+
+%\begin{theorem}%[\Cerny~\cite{Cer64}]
+%	\label{intro:cerny_rt}
+%	For $n \ge 2$, the unique shortest synchronizing word of $\mathcal C_n$
+%	is $(ab^{n-1})^{n-2}a$. Thus $\rt{\mathcal C_n} = (n-1)^2$.
+%\end{theorem}
+\begin{theorem}[\Cerny~\cite{Cer64}]
+	\label{intro:cerny_rt}
+	For $n \ge 2$, we have $\rt{\mathcal C_n} = (n-1)^2$.
+	Moreover, $(ab^{n-1})^{n-2}a$ is the unique shortest synchronizing word
+	of~$\mathcal C_n$.
+\end{theorem}
+\begin{proof}
+	Identify $Q = [n]$ with $\mathbb Z_n$, so that $\applytrans{\delta_n}{p}{b} = p+1$
+	(modulo~$n$) for $p \in Q$, while~$a$ maps~$0$ to~$1$ and fixes all other states.
+	An \emph{interval} is a non-empty set $[p,q] = \{p, p+1, \ldots, q\}$ with $p,q \in Q$.
+	Note that $Q = [p,p-1]$ for every $p \in Q$, and that for $I \ne Q$ the states~$p$
+	and~$q$ with $I = [p,q]$ are determined by~$I$, as~$p$ is the only state in~$I$
+	with $p - 1 \notin I$ and~$q$ the only one with $q + 1 \notin I$.
+	In particular, an interval containing~$1$ but not~$0$ begins at~$1$,
+	and an interval containing~$0$ but not~$1$ ends at~$0$.
+	\IN{interval} \label{def:interval}
+	
+	One verifies inductively that $\applytrans{\delta_n}{Q}{(ab^{n-1})^{j}a} = [1,n-1-j]$
+	for $0 \le j \le n-2$, so $(ab^{n-1})^{n-2}a$ synchronizes $\mathcal C_n$
+	and a shortest synchronizing word exists.
+	Let $w = x_1 \cdots x_m$ with $x_1, \ldots, x_m \in \Sigma$ be one
+	with $\applytrans{\delta_n}{Q}{w} = \{q\}$ and let
+	\[
+	I_j = \{\, p \in Q \mid \applytrans{\delta_n}{p}{x_{j+1} \cdots x_m} = q \,\}
+	\qquad (0 \le j \le m).
+	\]
+	Then $I_m = \{q\}$, $I_0 = Q$ and
+	$I_{j-1} = \{\, p \in Q \mid \applytrans{\delta_n}{p}{x_j} \in I_j \,\}$ for $j \ge 1$.
+	Every state~$p$ satisfies $\applytrans{\delta_n}{p}{x_1 \cdots x_j} \in I_j$;
+	in particular, no~$I_j$ is empty.
+	Moreover $I_j \ne Q$ for $j \ge 1$, as $I_j = Q$ means that
+	$x_{j+1} \cdots x_m$ maps every state to~$q$ and is thus a shorter synchronizing word.
+	
+	Let $1 \le j \le m$ and assume that~$I_j$ is an interval, say $I_j = [p_j, q_j]$,
+	which is possible in a unique way as $I_j \ne Q$.
+	Since $\applytrans{\delta_n}{p}{a} \in I_j$ holds for $p \ne 0$ exactly when
+	$p \in I_j$, and for $p = 0$ exactly when $1 \in I_j$, exactly one of the following
+	cases occurs.
+	\begin{enumerate}%[itemsep=0pt, topsep=2pt, parsep=0pt]
+		\item $x_j = b$; then $I_{j-1} = [p_j - 1, q_j - 1]$, so $|I_{j-1}| = |I_j|$
+		and $p_{j-1} = p_j - 1$.
+		
+		\item $x_j = a$ and $\{0,1\} \subseteq I_j$ or $\{0,1\} \cap I_j = \emptyset$;
+		then $I_{j-1} = I_j$.
+		
+		\item $x_j = a$ and $0 \in I_j$ but $1 \notin I_j$; then $I_j = [p_j,0]$
+		with $p_j \ne 0$ as $I_{j-1} \ne \emptyset$, and
+		$I_{j-1} = I_j \setminus \{0\} = [p_j,n-1]$.
+		
+		\item $x_j = a$ and $1 \in I_j$ but $0 \notin I_j$; then $p_j = 1$,
+		and $I_{j-1} = I_j \cup \{0\} = [0,q_j]$, so $|I_{j-1}| = |I_j| + 1$
+		and $p_{j-1} = 0 = p_j - 1$.
+	\end{enumerate}
+	In each case~$I_{j-1}$ is again an interval. So, starting from $I_m = [q,q]$ and
+	descending, every~$I_j$ is an interval.
+	
+	The cases~(2) and~(3) never occur: in both we have $I_{j-1} \subseteq I_j$,
+	and, since every state~$p$ satisfies
+	$\applytrans{\delta_n}{p}{x_1 \cdots x_{j-1}} \in I_{j-1} \subseteq I_j$ and hence
+	$\applytrans{\delta_n}{p}{x_1 \cdots x_{j-1}x_{j+1} \cdots x_m} = q$,
+	deleting the letter~$x_j$ from~$w$ leaves a shorter synchronizing word
+	in these cases.
+	
+	Since $|I_m| = 1$ and $|I_0| = n$, the word~$w$ contains exactly $n-1$ letters~$a$.
+	Let $j_1 < \cdots < j_{n-1}$ be their positions, so that~$j_1$ is the position of the
+	first letter~$a$ in~$w$ and~$j_{n-1}$ that of the last.
+	Here $j_1 = 1$, as otherwise $x_1 = b$ and $Q = I_0 = [p_1 - 1, q_1 - 1]$,
+	giving $I_1 = Q$, which we excluded;
+	and $j_{n-1} = m$, as otherwise $x_m = b$ and $I_{m-1} = \{q-1\}$ by case~(1),
+	so that $x_1 \cdots x_{m-1}$ maps every state to $q-1$ and is shorter.
+	Now let $2 \le k \le n-1$. The positions~$j$ with $j_{k-1} < j < j_k$ all carry the
+	letter~$b$, and by case~(4) we have $p_{j_k - 1} = 0$ and $p_{j_{k-1}} = 1$.
+	Since each~$b$ decreases the first state by one and these run from
+	$p_{j_k - 1} = 0$ down to $p_{j_{k-1}} = 1$, their number
+	$j_k - j_{k-1} - 1$ is congruent to $-1$ modulo~$n$.
+	It equals $n-1$, since otherwise it is at least $2n-1$ and deleting $n$ consecutive
+	letters~$b$, which changes no transition as $\applytrans{\delta_n}{p}{b^n} = p$,
+	would again shorten~$w$. Hence $j_k - j_{k-1} = n$ for all~$k$ and therefore
+	\[
+	m = \sum_{k=2}^{n-1} (j_k - j_{k-1}) + 1 = (n-2)n + 1 = (n-1)^2 .
+	\]
+	So the letters~$a$ occupy the positions $1, n+1, \ldots, (n-2)n + 1 = m$, while all
+	remaining positions carry the letter~$b$.
+	Thus $\rt{\mathcal C_n} = (n-1)^2$ and $w = (ab^{n-1})^{n-2}a$.
+\end{proof}
+
+Eppstein~\cite{Eppstein90} introduced the notion of an interval for a more general
+class of automata. For a shortest synchronizing word $w = uv$ of $\mathcal C_n$,
+he proved $\rt{\mathcal C_n} = (n-1)^2$ by bounding the length of a shortest interval
+containing $\delta_n([n],u)$~\cite[Thm.~3]{Eppstein90}, whereas the original proof
+by \Cerny~\cite[Lem.~1]{Cer64} considered the length of a largest interval in
+$[n] \setminus \delta_n([n],u)$.
+The proof above instead uses the sets $\{ p \in [n] \mid \delta_n(p,v) = q \}$,
+which are intervals, whenever non-empty, for every word~$v$,
+and this also yields the uniqueness asserted in \cref{intro:cerny_rt}.
+Salomaa~\cite[Sec.~7]{DBLP:conf/birthday/Salomaa12}
+later gave a proof related to \Cerny's
+in the form of a solitaire game
+in which states are marked by stones
+(see also~\cite[Thm.~8]{DBLP:journals/tcs/Salomaa03},
+where the argument is adapted to the case in which all states are mapped to a fixed state).
+A graph-theoretical proof relating the reset length
+to the exponent of certain digraphs was given
+by Ananichev et al.~\cite[Thm.~3]{AnaVolGus2013}
+(see also~\cite[Prop.~3.1]{KariVolkov2021}).
+
+\IN{\Cerny bound}
+\IN{\Cerny conjecture}
+In~\cite{DBLP:journals/kybernetika/CernyPR71,Starke66} the authors conjectured the following bound (the so-called \emph{\v{C}ern\'y bound}).
+
+% https://tex.stackexchange.com/questions/102737/how-to-specify-height-and-width-of-fbox
+\begin{center} 
+	\fbox{\parbox[c]{0.92\textwidth}{\Cerny conjecture: 
+			We have $\rt{\mathcal A} \le (n-1)^2$ for every synchronizing $n$-state $\mathcal A$.
+	}}
+\end{center}
+
+This conjecture, which has remained open for more than five decades, has stimulated extensive research since its formulation.
+The reader might wonder why the conjecture is not named after Starke, even though his paper~\cite{Starke66} predates~\cite{DBLP:journals/kybernetika/CernyPR71}.
+One possible reason is that older papers often referred only to the seminal work~\cite{Cer64} when discussing the conjecture, despite the fact that, although it introduced synchronizing automata and the \Cerny automata, it did not explicitly state the conjecture itself.
+Another possible reason is that \Cerny discussed the conjecture at two conferences shortly after the publication of~\cite{Cer64}.
+In any case, even the term ``\Cerny--Starke conjecture'' was never adopted in the literature; see~\cite{DBLP:journals/jalc/Volkov19} for further discussion  on the origin of this conjecture.
+
+\begin{table}[htb]
+	\centering
+	\caption[Published upper bounds on the reset length]{
+		Published upper bounds for the reset length. Kfoury's bound
+		was communicated to him by Paterson, see~\cite{Kfoury70}.
+		}
+	\label{tab:reset_length_bounds}
+	
+	\begin{tabular}{lll}
+		\toprule
+		Upper Bound & Remark & Reference \\
+		\midrule
+		
+		$2^n - n - 1$ & & (1964, \Cerny~\cite{Cer64}) \\
+		$\tfrac{1}{2}n^3 - \tfrac{3}{2} n^2 + n + 1$ & & (1966, Starke~\cite{Starke66}) \\
+		$\tfrac{1}{2} n^3 - n^2 + \tfrac{1}{2} n$ & & (1970, Kohavi~\cite{Kohavi70}) \\
+		$\tfrac{1}{3} n^3 - n^2 - \tfrac{1}{3} n + 6$ & & (1970, Kfoury~\cite{Kfoury70}) \\
+		$\tfrac{1}{3} n^3 - \tfrac{3}{2} n^2 + \tfrac{25}{6} n - 4$
+		& & (1971, \Cerny et al.~\cite{DBLP:journals/kybernetika/CernyPR71}) \\
+		
+%		$\tfrac{1}{6} n^3 - \tfrac{1}{6} n$
+	%	& & (1971, Kohavi and Winograd) \\
+		
+		$\tfrac{7}{27} n^3 - \tfrac{17}{18} n^2 + \tfrac{17}{6} n - 3$
+		& $n = 3k$
+		& (1977, Pin~\cite{Pin77a}) \\
+		
+		$\left(\tfrac{1}{2} + \tfrac{\pi}{36}\right)n^3 + o(n^3)$
+		& & (1978, Pin~\cite{Pin81a,DBLP:journals/eik/Pin78,Pin83a}) \\
+		
+		$\tfrac{1}{6}n^3 - \tfrac{1}{6}n$
+		& & (1983, Pin/Frankl~\cite{Frankl82,Pin83a}, 1987, Klyachko et al.~\cite{KlyachkoRystsovSpivak87}) \\		
+		$\alpha n^3 + o(n^3)$ & $\alpha \approx 0.1664$ & (2018, Szyku\l a~\cite{szykula2018}) \\
+		$\alpha n^3 + o(n^3)$ & $\alpha \le 0.1654$ & (2019, Shitov~\cite{shitov2019}) \\
+		
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+\Cref{tab:reset_length_bounds} lists the published upper bounds in chronological order.
+Klyachko et al.~\cite{KlyachkoRystsovSpivak87} independently proved the Pin--Frankl bound from \cref{tab:reset_length_bounds} behind the Iron Curtain. Pin~\cite{Pin83a} actually concluded the bound $(n^3 - n)/6 - 1$ for $n \ge 4$
+with Frankl's result~\cite{Frankl82}. 
+The bound $(n^3 - n)/6$ had previously been stated by Kohavi and Winograd~\cite{KOHAVI1971197,DBLP:journals/jcss/KohaviW73}, yet, somewhat mysteriously, their work was never cited in the subsequent literature. Their argument broadly follows the same approach as that of Pin~\cite{Pin83a}, analyzing traces of $2$-sets in shortest synchronizing words. However, their treatment of certain maximal traces appears to lack sufficient justification, which may explain why their work was largely ignored (for this reason we also left
+it out in \cref{tab:reset_length_bounds}).
+Additionally, Salomaa~\cite[Thm.~4]{DBLP:journals/tcs/Salomaa03} proved the bound
+$\frac{1}{2}n^3 - \frac{3}{2}n^2 + 2n$
+for the length of a shortest word mapping all states to a fixed state, rather than merely to some state as required for synchronization.
+
+The \Cerny conjecture~\cite{Cer64} has been confirmed
+for a variety of classes of automata, to name a few of them 
+(without further explanation and with no claim for completeness):
+
+% https://texfaq.org/FAQ-complist
+\begin{enumerate}%[itemsep=-4pt]	
+	\item circular automata~\cite{Dubuc96,Dubuc98,DBLP:conf/icalp/Pin78},
+	
+	\item oriented automata~\cite{Eppstein90}, 
+	
+	\item (weakly generalized) monotonic automata~\cite{AnanichevVolkov04,DBLP:journals/tcs/AnanichevV04,AnanichevV05}
+	and $0$-monotonic automata~\cite{Ananichev2010},
+	
+	\item automata with a trap state~\cite{DBLP:conf/birthday/Babcsanyi09,Rystsov97},
+		
+	\item commutative~\cite{DBLP:journals/actaC/ImrehS95,FernauHoffmann19,Rys96}, partially ordered~\cite{Ryzhikov19a}, solvable~\cite{Rystsov97}, and automata whose transition monoid belongs to the varieties \textbf{DS}~\cite{almeida2009representation} or \textbf{EDS}~\cite{AlmeidaS09},
+		
+	\item strongly reset automata~\cite{Rystsov97}, 
+	
+	\item nilpotent and (reverse and generalized) definite   automata~\cite{DBLP:journals/actaC/ImrehS95,Rystsov97},
+	
+	\item automata whose set of synchronizing words is a shuffle ideal~\cite{DBLP:journals/jalc/PetkovicS01},
+	
+	\item Eulerian automata~\cite{DBLP:journals/tcs/Kari03},
+	
+	\item automata preserving a chain of partial orders~\cite{DBLP:journals/tcs/Volkov09},
+	
+	\item automata whose transition monoid contains a $\operatorname{\mathbb{Q} I}$-group~\cite{ArCamSt2017,ArnoldS06},
+	
+	\item  aperiodic automata~\cite{Trahtman07},
+	
+	\item automata with a blocking state~\cite{DBLP:conf/birthday/Babcsanyi09},
+	%\footnote{\cite[Ex.~4]{DBLP:conf/birthday/Babcsanyi09} should probably read $\delta(n-1,x_n) = n-1$ instead of $\delta(n-1,x_n) = n$.}	
+	
+	\item automata whose transformation semigroup contains a group fulfilling certain representation-theoretical conditions~\cite{Steinberg10},
+		
+	\item one-cluster automata with a cycle of prime length~\cite{Steinberg11a},
+	
+	\item \label{type:genwords} automata $\mathcal A$ with restrictions on generating words for $\Syn(\mathcal A)$~\cite{DBLP:journals/jalc/FrigeriR19,DBLP:journals/iandc/PribavkinaR11},
+		
+	\item automata that cannot recognize $\{a,b\}^*ab\{a,b\}^*$~\cite{AlmeidaS09},
+	
+	\item certain aperiodically $1$-contracting automata~\cite{Don16}, 
+	
+	\item decoder automata for finite maximal prefix codes~\cite{BerlinkovS16},
+	
+	\item automata having letters of a certain rank~\cite{BerlinkovS16},
+	
+	\item automata respecting intervals of a digraph~\cite{DBLP:journals/dmtcs/GrechK13a},	
+
+	\item strongly semisimple automata~\cite{DBLP:journals/ijfcs/AlmeidaR16} (related to~\cref{type:genwords}, see also~\cite{Rodaro2019}),
+	
+	\item automata with two idempotent letters~\cite[Prop.~5]{DBLP:journals/jalc/Volkov19a},
+	
+	\item $2$-junction automata~\cite{DBLP:journals/dam/GrechK20a},
+	
+	\item automata with simple idempotents having no permutational letter
+	or containing a regular permutation group in the transition monoid~\cite{Rystsov2022},
+	
+	\item automata for which their sets of synchronizing words have minimal generating words not containing a word of a certain length~\cite{DBLP:journals/jalc/FrigeriR19}, 
+		
+	\item binary automata with a simple idempotent letter~\cite{volkov2025listresultsvcernyconjecture}, 
+	
+	\item automata with strongly connected restricted Rystsov graph~\cite{CasasVolkov2024Don,volkov2025listresultsvcernyconjecture},
+	
+	\item media automata~\cite{Eppstein2007Algorithms},
+	
+	\item automata without involutions~\cite{Trahtman2008}.
+\end{enumerate}
+
+Furthermore, quadratic upper bounds on the reset length have been obtained for automata whose transition monoid contains every transformation~\cite{DBLP:journals/ijfcs/GonzeGJGV19}, for one-cluster automata~\cite{BeaBerPer2011},
+for quasi-Eulerian and quasi-one-cluster automata~\cite{DBLP:journals/ijfcs/Berlinkov13},
+for regular automata~\cite{Rystsov1995a,Rystsov95a},
+for automata with coinciding cycles~\cite{DBLP:conf/dlt/Ruszil23},
+for automata with simple idempotents~\cite{Rystsov2000}, for automata having a one-point singular and satisfying additional conditions~\cite{Rystsov2024},\footnote{Both~\cite{AnanichevVolkov04} and~\cite{Rystsov2024} also contain more general formulations of the \Cerny conjecture for transformation monoids.} for automata whose transformation monoid contains a transitive group~\cite{DBLP:conf/fsttcs/000124a}, and for completely reachable automata~\cite{DBLP:conf/icalp/FerensS23}, the latter improving and extending the results of~\cite{DBLP:journals/ijfcs/GonzeGJGV19}. 
+For several subclasses of automata, bounds tighter than $(n-1)^2$
+are known. For instance, for solvable automata~\cite{Rystsov97}, the bound is $n - 1$. 
+A comprehensive overview of such bounds and subclasses can be found in the living list~\cite{volkov2025listresultsvcernyconjecture} of results related to the \Cerny conjecture maintained by Mikhail Volkov.

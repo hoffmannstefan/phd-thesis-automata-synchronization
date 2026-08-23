@@ -1,0 +1,116 @@
+%!TEX root = ./../../springer-mono-format/book.tex
+%!TEX root = ./../../thesis-trier.tex
+
+
+\begin{flushright}
+	\itshape %\setstretch{1.0}
+	``It was at this point that Wigner, Hund, Heitler, and Weyl entered the picture with their `Gruppenpest': the pest of the group theory… The authors of the `Gruppenpest' wrote papers which were incomprehensible to those like me who had not studied group theory, in which they applied these theoretical results to the study of the many electron problem. The practical consequences appeared to be negligible, but everyone felt that to be in the mainstream one had to learn about it. Yet there were no good texts from which one could learn group theory. It was a frustrating experience, worthy of the name of a pest.''  \\ \normalfont
+	\vspace{.2em}
+	\rightskip=.8cm---John Slater (1900--1976)
+\end{flushright}
+
+The set $\mathcal S_X$ of all permutations on a set $X$
+with function composition
+and inversion given by $t^{-1} \colon X \to X$ 
+for $t \in \mathcal S_X$ is a group, called the \emph{(full) symmetric group on $X$}.
+%
+%\bigskip 
+%
+%For a set $X$, the \emph{(full) symmetric group on $X$} is the group structure on the set~$\mathcal S_X$ of all permutations on~$X$
+%with function composition as operation
+%and inversion given by $t^{-1} \colon X \to X$ 
+%for $t \in \mathcal S_X$.
+%
+%\bigskip
+%
+%For a set $X$, the set $\mathcal S_X$ of all permutations on $X$,
+%which is a group with function composition
+%and inversion given by $t^{-1} \colon X \to X$ 
+%for $t \in \mathcal S_X$, called the \emph{(full) symmetric group on $X$}.
+A \emph{permutation group~$G$} (over the \emph{(permutation) domain}~$X$) is a subgroup of~$\mathcal S_X$.
+Here, we investigate permutation groups.
+
+\Cref{prelim:sec:basic} introduces basic notions. In \cref{prelim:permgrp:sec:transitive}
+we collect statements related to transitive permutation groups.
+The relation between permutation groups and (abstract) groups
+is discussed in \cref{prelim:sec:perm_grp_abstract_grp}. \Cref{prelim:sec:grp-of-units} investigates
+the group of units in transformation semigroups.
+Lastly, \cref{prelim:sec:graphs-groups} points out some relations between permutation groups and graphs.
+
+\section{Basic Notions}
+\label{prelim:sec:basic}
+
+\input{../part2/transform/permgrps}
+
+\section{Permutation Groups and Abstract Groups}
+\label{prelim:sec:perm_grp_abstract_grp}
+
+\input{../part2/transform/permvsabstract}
+
+\section{Permutation Groups and Non-Permutations}
+\label{prelim:sec:grp-of-units}
+
+\input{../part2/transform/grpofunits}
+
+\section{Graphs and Permutation Groups}
+\label{prelim:sec:graphs-groups}
+
+\input{../part2/transform/permgrpgraphs}
+
+\section{Discussion}
+\label{prelim:permgrp:sec:discussion}
+
+\todo[inline]{diskussion in datei und oben kommentierten teil raus}
+Jordan~\cite{jordan1870} wrote the first textbook on permutation group theory (but with an antique notation and terminology).
+Prior to this, permutation groups in the context of polynomial
+equations (as permutations of their root)
+were investigated by Lagrange, Galois, Abel and Ruffini, see~\cite{Kleiner2007_HistoryAbstractAlgebra,Neumann2011,Wussing1984_GenesisAbstractGroup}.
+At the end of the 19th century, Burnside published his classical textbook~\cite{burnside1911} (1st edition 1897) 
+which collected and contained most results from 19th century group theory with a focus on permutation groups.
+Wielandt~\cite{wielandt1964finite} wrote
+a standard textbook on permutation group theory
+which established some standard terminology.
+Other standard introductions are the textbooks by Dixon \& Mortimer~\cite{dixon1996permutation}
+and by Cameron~\cite{cameron_1999}. 
+Interestingly, permutation group theory, in its historical development, preceded semigroup theory, 
+see~\cite{Hollings2009}.
+
+Before the middle of the 19th century, 
+groups were synonymous to permutation groups on a finite set
+and were simply thought of as non-empty subsets of permutations closed under function composition (called substitution groups back then). The concept of an abstract group slowly emerged.
+Cayley~\cite{Cayley54a,Cayley54b,Cayley59} was the first who
+viewed groups more abstract solely in terms of laws, and not in some permutation representation.
+However, his conceptualization was still far away from our modern view and still relied
+on implicit assumptions. Weber gave an axiom system
+for finite groups~\cite{Weber1882_MathAnn} and for general groups~\cite{Weber1896_LehrbuchAlgebra_Vol2}. 
+During the 19th century many further famous mathematician besides the ones already mentioned 
+were involved into forming
+the abstract theory of groups as, for example, Cauchy, Kronecker, Dyck, Frobenius, and Hölder
+to name a few. The first definition of an abstract group
+in its modern form appears in van der Waerden's textbook~\cite{vanderWaerden_ModernAlgebra_SpringerArchive}, which is based
+on lectures by Artin and Noether from the beginning of the 20th century.
+For more information on the history and genesis of abstract group theory, see~\cite{Kleiner2007_HistoryAbstractAlgebra,Neumann_AbstractGroups_MacTutor,Wussing1984_GenesisAbstractGroup}.
+
+Not all authors use the term $G$-congruence (some just call them equivalence relations preserved by the group), 
+but it is a notion that appears in the literature, for example in~\cite{Burness14}.
+The generalization of it to transformation semigroups is obvious, but I have not
+seen in the literature. In~\cite{KilpKnauerMikhalev2000_MonoidsActs}, in the more general context
+of semigroup actions, the authors introduce the term $S$-act congruences,
+and $G$-congruences are also used in the more general context of group actions, also called $G$-sets,
+for example, in~\cite{NeumannStoyThompson1994GroupsAndGeometry}.
+
+The books~\cite{Seress2003PermutationGroupAlgorithms,Butler1991AlgorithmsPermutationGroups,Holt2005_ComputationalGroupTheory} contains information on algorithms for groups and permutation groups. Beaudry~\cite{Beaudry1989CharacterizationIdempotentTM} 
+investigated the computational complexity of deciding whether all transformations in a 
+given transformation monoid are idempotent.
+
+\IN{point-symmetric graph}
+Vertex-transitive graphs seemed to be introduced
+by Sabidussi~\cite{sabidussi1964vertex}, at least this is the first reference
+that we were able to find where this term was introduced.
+Vertex-transitive graphs are also called \emph{point-symmetric} 
+in~\cite{harary1969graph}.
+The study of symmetry in graphs was initiated 
+by Foster~\cite{foster1932geometrical}.
+More information on vertex-transitive graphs
+can be found in~\cite{BabaiSurvey96,Biggs1993,Cameron2004_AutomorphismsOfGraphs,PraegerLiNiemeyer1997_FiniteTransitivePermutationGroups}.
+

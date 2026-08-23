@@ -1,0 +1,211 @@
+%!TEX root = ./../../springer-mono-format/book.tex
+%!TEX root = ./../../thesis-trier.tex
+
+As follows \cref{sync_max:sec:blocks},
+a commutative automaton that is completely reachable
+has a single state, and if it completely distinguishable
+it has at most two states.\footnote{By \cref{prelim:classes:comm:prop:permSCC-regular},
+	the transformation monoid of a strongly connected commutative $n$-state	automaton has size~$n$.	
+	But as noted in \cref{sync_max:sec:compl_reach} the transformation monoid of a completely reachable automaton
+	has size at least $2^{|Q|} - |Q|$. This also immediately implies $|Q| \le 2$ for completely reachable commutative automata.}
+
+Next, for a fixed alphabet, we give polynomial-time algorithms to compute (i) a partially ordered automaton accepting the intersection of partially ordered commutative automata (\cref{compl:prop:intersection_waa_com}) and (ii) an automaton accepting the set of synchronizing words of a commutative automaton (\cref{prop:aut_for_sync_words}). The latter result implies that there is no exponential blow-up in the size of automata accepting this set. 
+As consequences, stated in \cref{compl:cor:intersection_waa_com,cor:aut_for_sync_words},
+the problems \DFAINT and \DFASWS are solvable in polynomial time for a fixed alphabet.
+Lastly, in \cref{syncmax:prop:unary-sync-words} we give an expression for the set of synchronizing words of a unary automaton.
+
+\Cref{compl:prop:intersection_waa_com,prop:aut_for_sync_words} 
+were first presented in~\cite[Prop.~41 \& Lem.~43]{DBLP:journals/tcs/Hoffmann21} by the author.
+
+\begin{proposition}
+	\label{compl:prop:intersection_waa_com}
+	Let $\mathcal A_i = (Q_i,\Sigma, \delta_i, q_i, F_i)$,
+	$i \in \{1,\ldots,m\}$,
+	be partially ordered commutative automata
+	with at most $n$ states.
+	Then, $\bigcap_{i=1}^m L(\mathcal A_i)$
+	is recognizable by a partially ordered
+	commutative automaton 
+	of size $n^{|\Sigma|}$ % at most
+	computable in time $O(m|\Sigma| n^{|\Sigma|+1})$.
+\end{proposition} 
+\begin{proof} 
+	Fix an ordering $\Sigma = \{a_1, \ldots, a_k\}$ with $k \ge 1$.
+	By~\cref{prelim:classes:cor:com-po} we obtain
+	\begin{equation}\label{compl:eqn:com_pto_int}
+		u \in \bigcap_{i=1}^m L(\mathcal A_i)
+		\Leftrightarrow a_1^{\min\{n-1, |u|_{a_1}\}} \cdots a_k^{\min\{n-1, |u|_{a_k}\}} \in \bigcap_{i=1}^m L(\mathcal A_i)
+	\end{equation}
+	as $n \ge \max\{ |Q_i| : i \in \{1,\ldots,m\} \} - 1$. 
+	Next, set $\automat{A}{Q}{\Sigma}{\delta}{q_0}{F}$
+	where $Q = [n]^k$, $q_0 = (0,\ldots,0)$,
+	\[
+	\applytrans{\delta}{(s_1, \ldots, s_k)}{a_j} = (s_1, \ldots, s_{j-1}, \min\{n-1, s_j+1\}, s_{j+1}, \ldots, s_k),
+	\]
+	and 
+	\[
+	F = \left\{ (s_1, \ldots, s_k) \in Q \mid a_1^{s_1} \cdots a_k^{s_k} \in \bigcap_{i=1}^m L(\mathcal A_i)
+	\right\}.
+	\]
+	Then we have
+	\begin{align*}
+		u \in \bigcap_{i=1}^m L(\mathcal A_i)
+		& \Leftrightarrow  a_1^{\min\{n-1, |u|_{a_1}\}} \cdots a_k^{\min\{n-1, |u|_{a_k}\}} \in \bigcap_{i=1}^m L(\mathcal A_i) 
+		& \tag{Eqn.~\eqref{compl:eqn:com_pto_int}}\\
+		& \Leftrightarrow (\min\{n-1, |u|_{a_1}\}, \ldots, \min\{n-1, |u|_{a_k}\}) \in F 
+		& \tag{Def.~$F$} \\ 
+		& \Leftrightarrow \applytrans{\delta}{q_0}{a_1^{|u|_{a_1}} \cdots a_k^{|u|_{a_k}}} \in F 
+		& \tag{Def.~$\delta$} \\
+		& \Leftrightarrow a_1^{|u|_{a_1}}	\cdots a_k^{|u|_{a_k}} \in L(\mathcal A) 
+		& \tag{Def. $L(\mathcal A)$}\\
+		& \Leftrightarrow u \in L(\mathcal A). \tag{$\mathcal A$ commutative}					
+	\end{align*}
+	So $\bigcap_{i=1}^m L(\mathcal A_i) = L(\mathcal A)$.
+		
+	The automaton, without~$F$, can clearly
+	be computed in time $O(n^k)$. To
+	compute~$F$, 
+	iterate through all $n^k$ words $a_1^{s_1} \cdots a_k^{s_k}$
+	with $(s_1, \ldots, s_k) \in [n]^k$
+	and test for each word whether
+	$a_1^{s_1} \cdots a_k^{s_k} \in L(\mathcal A_i)$
+	for all automata $\mathcal A_i$, $i \in \{1,\ldots,m\}$.
+	For $i \in \{1,\ldots,m\}$, testing a single word  $a_1^{s_1} \cdots a_k^{s_k}$ of length in~$O(kn)$
+	whether it is accepted by $\mathcal A_i$
+	can be done in time~$O(kn)$. So testing 
+	whether it is accepted by all automata $\mathcal A_i$, $i\in \{1,\ldots,m\}$,
+	can be done in time $O(mkn)$. 
+	In total, the algorithm runs in time $O(mkn^{k+1})$. 
+\end{proof}
+
+\begin{remark}
+	The bound from \cref{compl:prop:intersection_waa_com} is tight.
+	For example, set $\Sigma = \{a_1, \ldots, a_m\}$
+	and for $i \in \{1,\ldots,m\}$ consider $\mathcal A_i = ([n], \Sigma, \delta_i, 0, \{n-1\})$
+	with $\delta(j, a_i) = \min\{j+1,n-1\}$ and $\delta(j, a_k) = j$
+	for $k \ne i$ and $j \in [n]$. We have $L(\mathcal A_i) = \{ u \in \Sigma^* : |u|_{a_i} \ge n\}$
+	and $L = \bigcap_{i=1}^m L(\mathcal A_i) =  \{ u \in \Sigma^* : \forall i \in \{1,\ldots,k\} \colon |u|_{a_i} \ge n \}$.
+	Let $0 \le i_1, \ldots, i_k, j_1, \ldots, j_k < n$
+	where $i_r < j_r$ for some $r \in \{1,\ldots,k\}$.
+	Set $u = a_1^{i_1} \cdots a_k^{i_k}$,
+	$v = a_1^{j_1} \cdots a_k^{j_k}$,	
+	and $w = a_1^{n - j_1} \cdots a_k^{n - j_k}$.
+	Then
+	\[
+	uw \notin L \text{ and }
+	vw \in L.
+	\]
+	Thus $u \not\equiv_L v$.
+	This yields that the words $a_1^{i_1} \cdots a_k^{i_k}$
+	for $0 \le i_1, \ldots, i_k < n$
+	induce distinct Myhill-Nerode equivalence classes.
+	Then every automaton accepting~$L$ has at least $n^k$ states
+	and thus the bound from \cref{compl:prop:intersection_waa_com}
+	is reached.	
+	This also follows from results in~\cite{DBLP:journals/iandc/Hoffmann24}
+	where the state complexity on commutative languages is investigated.
+	The above languages were used in the proof of \cite[Thm.~1]{DBLP:journals/ijfcs/BrzozowskiL12},
+	so that this proof established the above in the special case $m = 2$.
+\end{remark}
+
+\begin{corollary}	\label{compl:cor:intersection_waa_com}
+	\DFAINT is solvable in time $O(m|\Sigma|n^{|\Sigma|+1})$
+	for $m$ partially ordered input automata each having at most $n$ states.	
+\end{corollary}
+\begin{proof}
+	The input automata accept a common word if and only if 
+	the final state set in the automaton constructed
+	in the proof of~\cref{compl:prop:intersection_waa_com}
+	is non-empty.
+	So, we can use the same algorithm
+	as in the proof of~\cref{compl:prop:intersection_waa_com}
+	and simply test whether $F \ne \emptyset$
+	at the end.
+\end{proof}
+
+\begin{proposition}
+	\label{prop:aut_for_sync_words}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	be a commutative automaton with $n$ states.
+	Then, the set of synchronizing words
+	is recognizable by a partially ordered commutative automaton
+	of size~$n^{|\Sigma|}$
+ 	computable in time $O(|\Sigma|n^{|\Sigma|+2})$.
+\end{proposition}
+\begin{proof}		
+	By \cref{prelim:classes:comm:cor:collections-of-facts:2}, 
+	for $\Syn(\mathcal A) \ne \emptyset$,
+	$\mathcal A$ must have a unique trap state.
+	So, first check whether $\mathcal A$
+	has a unique trap state $t \in Q$, and compute it if present, 
+	which can be done in time $O(n)$ by \cref{prelim:subclasses:sync:alg-unique-trap}.
+	In case $\mathcal A$
+	has no trap state, then $\Syn(\mathcal A) = \emptyset$
+	so that a one-state automaton with empty final state set
+	accepts $\Syn(\mathcal A)$.
+	Otherwise,  as, by \cref{constr_sync:prop:pto_comm_rho_automata},~$\mathcal A$ is a $\rho$-automaton
+	with a trap state,
+	we find $\Syn(\mathcal A) = \Syn(\mathcal A / {\eqreach})$  by \cref{constr_input:prop:rho_trap_sync_factor}.
+	As a quotient automaton of a commutative automaton,
+	$\mathcal A / {\eqreach} = (Q / {\eqreach}, \Sigma, \delta_{\eqreach})$
+	is commutative, and has the trap state $[t]_{\eqreach} = \{t\}$.
+	By \cref{constr_input:prop:factor_rho_aut_pto}, 
+	$\mathcal A / {\eqreach}$
+	is a partially ordered automaton
+	computable in linear time.	
+	As, by \crefitem{prelim:thm:sync_trap_state}{prelim:subclasses:thm:trap:item:syncunique},~$[t]_{\eqreach}$ must be the unique synchronizing state, we have
+	\[
+	\Syn(\mathcal A / {\eqreach}) = \bigcap_{[q]_{\eqreach} \in Q / {\eqreach}} L(( \mathcal A / {\eqreach} )_{[q]_{\eqreach}, \{[t]_{\eqreach}\}}).
+	\]
+	By \cref{compl:prop:intersection_waa_com} 
+	we can compute a partially ordered commutative
+	automaton of size $n^{|\Sigma|}$ accepting this intersection involving $n$ automata,
+	each having~$n$ states,	in time $O(|\Sigma|n^{|\Sigma|+2})$.
+	
+	The above intersection for $\Syn(\mathcal A / {\eqreach})$
+	equals the same intersection but only over
+	the minimal states $Q / {\eqreach}$, which might give a slightly better running time for the algorithm.
+\end{proof}
+
+We note a direct consequence of the previous result.
+
+\begin{corollary}	\label{cor:aut_for_sync_words}
+	\DFASWS\ is solvable in time $O(|\Sigma|n^{|\Sigma|+2})$
+	for $n$-state commutative input automata $\semiautomat{A}{Q}{\Sigma}{\delta}$.	
+\end{corollary}
+\begin{proof} 
+	By \cref{prop:aut_for_sync_words}, 
+	we can compute an automaton of size $n^{|\Sigma|}$
+	for $\Syn(\mathcal A)$ in time $O(|\Sigma|n^{|\Sigma|+2})$. Then a shortest word accepted
+	by this automaton can be computed in time $O(|\Sigma|n^{|\Sigma|})$
+	as a shortest path from the start state to some final state~\cite{cormen01introduction}.
+\end{proof}
+
+Martyugin~\cite[Prop.~5.2]{Mar2009b} provided a direct algorithm to decide \DFASWS  
+running in time $O(|\Sigma|n^{|\Sigma|}\log n)$ for commutative input automata 
+(he actually omits the factor~$|\Sigma|$ as he assumed a fixed alphabet; 
+however, the proof shows that this is the running time 
+when the alphabet size is taken into account).
+
+Lastly, we note the following improvement for unary languages.
+
+\begin{proposition} \label{syncmax:prop:unary-sync-words}
+	Let $\semiautomat{A}{Q}{\{a\}}{\delta}$
+	be a synchronizing unary automaton.
+	Then $\Syn(\mathcal A) = a^{l} a^*$
+	where $l$ is the length of a longest path traversing distinct states in~$\mathcal A$.
+	In particular, $\Syn(\mathcal A) = a^{l} a^*$
+	is acceptable by an automaton with at most~$l + 1\le |Q|$ states.
+\end{proposition}
+\begin{proof}
+	A synchronizing unary automaton consists of tails all ending at a common state
+	at which the single letter induces a self-loop.
+	Now, it is easy to see that the set of synchronizing words
+	has the form as claimed. Clearly, $l < |Q|$
+	and $a^{l} a^*$ is acceptable by an automaton with $l + 1$ states.
+\end{proof}
+
+The smallest automaton whose set of synchronizing words is $a^la^*$
+equals the minimal automaton accepting this language over $\{a\}$.
+Thus the reset complexity and the state complexity of $a^la^*$ both equal $l+1$.
+This was also stated in~\cite[Prop.~1]{DBLP:journals/corr/Maslennikova14}.

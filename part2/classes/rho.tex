@@ -1,0 +1,182 @@
+%!TEX root = ./../../springer-mono-format/book.tex
+%!TEX root = ./../../thesis-trier.tex
+
+\IN{$\rho$-automaton}
+In general, the equivalence relation~$\eqreach$ induced by the reachability quasiorder is not a $\TS{\mathcal A}$-congruence.
+For example, consider the automaton from \cref{prelim:fig:monotonic}
+where $1 \eqreach 2$, but $\delta(1, a) \not\eqreach \delta(2, a)$.
+An automaton $\mathcal A$ is said to be a \emph{$\rho$-automaton}
+if~$\eqreach$ is a $\TS{\mathcal A}$-congruence. 
+In this case, the strongly connected components are congruence classes.
+Trivially, every strongly connected automaton is a $\rho$-automaton.
+
+\begin{figure}[htb]
+	\centering 	
+	\begin{subfigure}[b]{0.48\textwidth}
+	\centering
+		\begin{tikzpicture}[node distance = 5em, on grid, auto, ->]
+			\node (q1) [state] {$q_1$};
+			\node (q2) [state, above of = q1] {$q_2$};
+			\node (q3) [state, right of = q2] {$q_3$};
+			\node (q4) [state, left of = q2] {$q_4$};
+			
+			\path[->] (q1) edge node {$b$} (q2)
+			(q2) edge [above] node {$b$} (q4)
+			(q3) edge [loop above] node {$a,b$} (q3)
+			(q4) edge [loop above] node {$a,b$} (q4)
+			(q1) edge [bend left] node {$a$} (q4)
+			(q2) edge node {$a$} (q3);
+		\end{tikzpicture}
+	\caption{Here $q_1 \lereach q_2$, but $\applytrans{\delta}{q_1}{a} \not\lereach \applytrans{\delta}{q_2}{a}$.}
+	\label{prelim:fig:rho-aut-left}
+	\end{subfigure}\hfill
+	\begin{subfigure}[b]{0.5\textwidth}
+	\centering
+		\begin{tikzpicture}[node distance = 5em, on grid, auto, ->]
+			%\tikzstyle{every state}=[inner sep = 5pt, minimum size = 0pt];
+			\node (q1) [state] {$q_1$};
+			\node (q2) [state, right of = q1] {$q_2$};
+			\node (q3) [state, right of = q2] {$q_3$};
+			\node (q4) [state, right of = q3] {$q_4$};
+			
+			\path (q1) edge node {$a$} (q2)
+			(q3) edge node {$b$} (q4)
+			(q3) edge [loop above] node {$a$} (q3)
+			(q4) edge [loop above] node {$a,b$} (q4)
+			(q1) edge [bend right, out=320, in = 210, below] node {$b$} (q3)
+			(q2) edge [loop above] node {$a,b$} (q2);
+		\end{tikzpicture}		
+	\caption{Here $q_1 \lereach q_2$, but $\applytrans{\delta}{q_1}{b} \not\lereach \applytrans{\delta}{q_2}{b}$.} 
+	\end{subfigure}
+	\caption[Example $\rho$-automata]{Two $\rho$-automata where~\cref{constr_sync:eqn:reach_compatible}
+		is not true and $\delta(q_1, a) \not\lereach q_1$.}
+	\label{contr_input:fig:rho_aut}
+\end{figure}
+
+First, we give two sufficient conditions to identify $\rho$-automata.
+
+\begin{proposition}\label{prelim:prop:rho-automata}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$.
+	
+	\begin{enumerate}
+	\item \label{prelim:prop:rho-automata:1} Suppose,  for all $p,q \in Q$ and $a \in \Sigma$, we have
+	\begin{equation}\label{constr_sync:eqn:reach_compatible}
+		p \lereach q \Rightarrow \applytrans{\delta}{p}{a} \lereach \applytrans{\delta}{q}{a}.
+	\end{equation}
+	Then $\mathcal A$ is a $\rho$-automaton.
+	
+	\item \label{prelim:prop:rho-automata:2} Suppose, for all $q\in Q$ and $a \in \Sigma$,
+	 we have $\applytrans{\delta}{q}{a} \lereach q$.
+	 Then $\mathcal A$ 
+	 fulfills \cref{constr_sync:eqn:reach_compatible} and so it is a $\rho$-automaton.
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+\ref{prelim:prop:rho-automata:1}: Let $a \in \Sigma$ and $p,q \in Q$. If $p \eqreach q$, 
+then $\applytrans{\delta}{p}{a} \eqreach \applytrans{\delta}{q}{a}$.	
+Hence Equation~\eqref{prelim:eqn:TS-congruence} 
+holds and so $\eqreach$ is a $\TS{\mathcal A}$-congruence.
+	
+\ref{prelim:prop:rho-automata:2}: Let $p,q \in Q$ with $p \lereach q$ and $a \in \Sigma$.
+Then, by assumption and~\cref{prelim:prop:reachability-finest},
+we have $\applytrans{\delta}{p}{a} \lereach p \lereach q \lereach \applytrans{\delta}{q}{a}$.
+Whence~\cref{constr_sync:eqn:reach_compatible}
+is true and the claim follows from~\cref{prelim:prop:rho-automata:1}.
+\end{proof}
+
+Figure~\ref{contr_input:fig:rho_aut} shows
+two $\rho$-automata where both conditions
+from~\cref{prelim:prop:rho-automata} do not hold,
+so that they give proper subclasses of $\rho$-automata.
+Also, the classes of partially ordered
+and permutation automata form proper subclasses
+of $\rho$-automata.
+
+\begin{proposition}
+	\label{constr_sync:prop:pto_comm_rho_automata}
+	Every partially ordered automaton is a $\rho$-automaton
+	and every permutation automaton is a $\rho$-automaton.
+\end{proposition}
+\begin{proof}
+	For a partially ordered automaton $\mathcal A$, the relation
+	$\eqreach$ equals the equality relation, which is a trivial $\TS{\mathcal A}$-congruence. 
+    By \cref{prelim:subclasses:perm:reach}
+	and~\cref{prelim:prop:rho-automata:2} of \cref{prelim:prop:rho-automata}
+	we find that permutation automata are $\rho$-automata.
+\end{proof}	
+
+The reachability order on $\mathcal A / {\eqreach}$
+equals the order induced on the $\eqreach$-classes by the reachability order on $\mathcal A$.
+Since this is a partial order, we find that $\mathcal A / {\eqreach}$
+is a partially ordered automaton.
+See \cref{fig:ex_comm_aut}
+for an example. 
+
+Moreover, constructing $\mathcal A / {\eqreach}$ amounts to contracting the
+strongly connected components of $\mathcal A$.\footnote{In graph theory, the
+	graph obtained by contracting each strongly connected component to a single
+	vertex is called the \emph{condensation} of the graph.} With Tarjan's
+algorithm~\cite{DBLP:journals/siamcomp/Tarjan72} this can be done in time  $O(|Q| + |\Sigma||Q|)$.
+We thus obtain the following statement.
+
+\input{../tikz_ex_comm_aut}
+
+\begin{proposition}
+	\label{constr_input:prop:factor_rho_aut_pto}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be a $\rho$-automaton.
+	Then $\mathcal A / {\eqreach}$ is a partially ordered automaton
+	computable in $O(|Q| + |\Sigma||Q|)$.
+\end{proposition}
+
+Next, we show that for $\rho$-automata with a trap state, the set of synchronizing words is preserved when considering the quotient automaton $\mathcal A / {\eqreach}$.
+
+\begin{proposition}
+	\label{constr_input:prop:rho_trap_sync_factor}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be a $\rho$-automaton
+	with a trap state.
+	Then $\Syn(\mathcal A) = \Syn(\mathcal A / \eqreach)$.
+\end{proposition}
+\begin{proof}
+	For the reachability order,
+	we have $[t]_{\eqreach} = \{t\}$ for each trap state~$t$.
+	Thus the claim follows from \cref{prelim:syncaut:cor:Syncongr}.	
+\end{proof}
+
+The assumption that $\mathcal A$
+has a trap state is crucial. For example,
+for the \Cerny family~$\mathcal C_n$ 
+(Figure~\ref{intro:fig:cerny})
+we have $\Syn(\mathcal C_n) \ne \Sigma^*$
+but $\Syn(\mathcal C_n / {\eqreach}) = \Sigma^*$.
+%(the latter equality, in fact, holds for every strongly
+%connected automaton).
+
+\begin{corollary} \label{constr_input:prop:rho_trap_resetlength}
+	Every synchronizing $\rho$-automaton $\mathcal A$ with $n$ states and a trap state
+	has a synchronizing word of length at most $n-1$,
+	and this bound is tight.
+\end{corollary}
+\begin{proof}
+	Since $\mathcal A / {\eqreach}$ is partially ordered, its strongly connected
+	components form blocks. Hence, by~\cref{prelim:thm:SCCblocks-rank_r}
+	with $r = 1$, there exists a synchronizing word of length at most $n-1$
+	in $\Syn(\mathcal A / {\eqreach})$.
+	The result now follows from
+	$\Syn(\mathcal A / {\eqreach}) = \Syn(\mathcal A)$,
+	which holds by~\cref{constr_input:prop:rho_trap_sync_factor}.
+\end{proof}
+
+\begin{corollary} \label{constr_input:prop:rho_extremal_sync_then_pto}
+	A synchronizing $n$-state $\rho$-automaton $\mathcal A$ with a trap state all of whose
+	synchronizing words have length at least $n - 1$
+	is partially ordered.
+\end{corollary} 
+\begin{proof}
+	If it is not partially ordered, then $\mathcal A / {\eqreach}$
+	has strictly less states. Since it has a trap state,
+	it has a synchronizing word
+	of length less than $n - 1$ by \cref{constr_input:prop:rho_trap_resetlength},
+	which also synchronizes $\mathcal A$
+	by \cref{constr_input:prop:rho_trap_sync_factor}.
+	Thus, $\mathcal A$ must be partially ordered.	
+\end{proof}

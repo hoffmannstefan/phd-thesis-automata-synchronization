@@ -1,0 +1,252 @@
+%!TEX root = ../../springer-mono-format/book.tex
+%!TEX root = ../../thesis-trier.tex
+
+Let $M$ be a transformation monoid. 
+Here, we show the following:
+\begin{enumerate} 
+\item in~\cref{sync_max:prop:G_automorhism_on_graphs} that the group of units of~$M$ (resp.~an automaton $\mathcal A$)
+is contained in the automorphism groups of~$I(M)$ and $\Gamma_1(M)$ (resp.~$\TS{\mathcal A}$, and $I(\mathcal A)$ if
+$\mathcal A$ is an SI-automaton), 
+
+\item in~\cref{sync_max:prop:transitiveIS} that for a transitive group of units,
+for each edge in~$I(M)$ the reversed edge is also in~$I(M)$,
+
+\item in~\cref{sync_max:prop:2hom} that for a $2$-homogeneous group of units
+all pairs of distinct states are connected by an edge.
+\end{enumerate} 
+
+\begin{proposition} \label{sync_max:prop:G_automorhism_on_graphs}	
+	\begin{enumerate}
+	\item \label{sync_max:prop:G_automorhism_on_graphs:1} Let $M \le_M \mathcal T_n$ be a transformation monoid with group of units~$G$.
+	Then we have $G \le_G \operatorname{Aut}(I(M))$	and $G \le_G \operatorname{Aut}(\Gamma_1(M))$.
+	
+	\item \label{sync_max:prop:G_automorhism_on_graphs:2} Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be a semiautomaton, and let
+	$G$ denote the group of units of $\TM{\mathcal A}$.
+	Then we have
+	$
+	G \le_G \operatorname{Aut}(\Gamma_1(\mathcal A)).
+	$
+	Moreover, if $\mathcal A$ is an SI-automaton, then
+	$
+	G \le_G \operatorname{Aut}(I(\mathcal A)).
+	$
+	\end{enumerate}
+\end{proposition}
+\begin{proof} 
+\ref{sync_max:prop:G_automorhism_on_graphs:1}: By \cref{prelim:conj}, for any $t \colon [n] \to [n]$
+and permutation $g \colon [n] \to [n]$
+we have $\excl{t^g} = \applyfunc{\excl{t}}{g}$,
+$\dupl{t^g} = \applyfunc{\dupl{t}}{g}$,
+and $t$ is a simple idempotent mapping $a$ to $b$ ($a \ne b$)
+if and only if $t^g$ is a simple idempotent mapping $\applyfunc{a}{g}$ to~$\applyfunc{b}{g}$.
+These equations yield that if $(a,b)$ is an edge in $I(M)$ (resp.~$\Gamma_1(M)$),
+then $(\applyfunc{a}{g}, \applyfunc{b}{g})$ is an edge in $I(M)$ (resp.~$\Gamma_1(M)$).
+
+\ref{sync_max:prop:G_automorhism_on_graphs:2}: By \cref{sync_max:prop:item:GammaS_equal_GammaA} of \cref{sync_max:prop:Rystsov_graph_vs_SI_graph},
+we have $\Gamma_1(\mathcal A) = \Gamma_1(\TM{\mathcal A})$.
+Then the claim $G \le_G \operatorname{Aut}(\Gamma_1(\mathcal A))$
+follows from \cref{sync_max:prop:G_automorhism_on_graphs:1}.	
+Next, by \cref{sync_max:prop:grp_of_units_TA},
+$G = \{ \delta_u \mid u \in \Sigma_G^* \}$. So~\cref{eqn:acts_automorphism}
+yields $G \le_G \operatorname{Aut}(I(\mathcal A))$.
+\end{proof}
+
+
+\begin{remark}
+	For $g \in G$ and a defect-one transformation $t \in M$
+	with $\excl{t} = \{p\}$ and $\dupl{t} = \{q\}$,
+	the transformation $\concat{t}{g}$ also has defect one, with
+	$
+	\excl{\concat{t}{g}} = \{\applyfunc{p}{g}\}
+	$
+	and
+	$
+	\dupl{\concat{t}{g}} = \{\applyfunc{q}{g}\}.
+	$
+	Hence
+	$
+	G \le_G \operatorname{Aut}(\Gamma_1(M)).
+	$
+	The same argument does not apply to $I(M)$, since the composition
+	$gt$ need not be a simple idempotent.
+\end{remark}
+
+\begin{remark}
+	With similar arguments as in \cref{sync_max:prop:G_automorhism_on_graphs}, 
+	it can also be shown that the group of units~$G$ of $\TS{\mathcal A}$
+	is contained in the automorphism group of each $\Gamma_k(\mathcal A)$
+	for $k \ge 1$.
+	Thus, by \cref{sync_max:prop:BVCgraphs-vertices},
+	the strongly connected components of each $\Gamma_k(\mathcal A)$
+	yield a sequence of $G$-congruences that refine each other.
+\end{remark}
+
+\begin{remark}
+	By~\cref{sync_max:prop:G_automorhism_on_graphs}
+	and as, by~\cref{sync_max:prop:grp_of_units_TA}, for every automaton $\mathcal A$, the set
+	$\{ u \in \Sigma^* \mid \text{$u$ induces a permutation } \}$
+	equals the group of units,
+	we find that~\cref{eqn:acts_automorphism}
+	is true for words $u \in \Sigma^*$
+	that permute the states and each of the graphs $I(\mathcal A)$ (if~$\mathcal A$ is an SI-automaton), $I(\TM{\mathcal A})$, and $\Gamma_1(\TM{\mathcal A}) = \Gamma_1(\mathcal A)$.	
+\end{remark}
+
+\begin{remark}
+	\Cref{sync_max:prop:item:IAsubgraphIS} of \cref{sync_max:prop:Rystsov_graph_vs_SI_graph} 
+	also follows from \cref{sync_max:prop:G_automorhism_on_graphs}
+	in the following way.
+	Let $(q_1,q_2)$ be an edge in~$I(\mathcal A)$.
+	Then there exist $x \in \Sigma_I$ and $u \in \Sigma_G^*$ such that $\applytrans{\delta}{p_1}{x} = p_2$
+	for distinct $p_1, p_2 \in Q$ and $\applytrans{\delta}{p_1}{u} = q_1$
+	and $\applytrans{\delta}{p_2}{u} = q_2$.		
+	By Proposition~\ref{sync_max:prop:grp_of_units_TA},~$\fword{\delta}{u}$ is contained in the group of units of $\TS{\mathcal A}$.
+	As~$\fword{\delta}{x}$ is a simple idempotent, the edge $(p_1, p_2)$ is in $I(\TS{\mathcal A})$.
+	By Proposition~\ref{sync_max:prop:G_automorhism_on_graphs},~$\fword{\delta}{u}$ acts as an automorphism on $I(\TS{\mathcal A})$.
+	So the edge $(q_1, q_2) = (\fword{\delta}{u}(p_1), \fword{\delta}{u}(p_2))$
+	is also in $I(\TS{\mathcal A})$.
+\end{remark}
+
+\begin{proposition}
+	\label{sync_max:prop:transitiveIS}
+	Let $M \le \mathcal T_n$ be a transformation monoid whose group of units acts
+	transitively on $[n]$.
+	Then the graph $I(M)=([n],E)$ is symmetric.
+\end{proposition}
+\begin{proof} 
+	Let $(p,q) \in E$ with $p \ne q$. Then there exists a simple idempotent $t \in M$
+	such that
+	$\applyfunc{q}{t} = \applyfunc{p}{t}$. By \cref{sync_words:lem:idempotent} 
+	there exists another simple idempotent $h \in M$
+	such that $\applyfunc{p}{h} = \applyfunc{q}{h} = p$.
+	So, $(q, p) \in E$.
+\end{proof} 
+
+\begin{remark} \label{rem:transitive-not-symmetric}
+	A transitive group of units does not force $\Gamma_1(\mathcal A)$ to be symmetric.
+	Consider $\semiautomat{A}{Q}{\{a,b\}}{\delta}$ with $Q = \{0,1,2,3,4,5\}$, where
+	$a$ acts as the shift $\delta(i,a)=i+1\pmod 6$ and $b$ fixes $0,1,4$, swaps $2\leftrightarrow 3$, and
+	sends $5\mapsto 3$. Thus $b$ has rank $5$: its image is $Q\setminus\{5\}$, so
+	$\operatorname{excl}(b)=5$, and the pair $\{2,5\}$ is merged onto~$3$, so $\operatorname{dupl}(b)=3$.
+	The group of units $G$ is the cyclic group generated by the $6$-cycle
+	$(0~1~2~3~4~5)$, which acts transitively on the states.
+	
+	\emph{Claim.} For every word $w$ of defect one, the difference
+	$\Delta(w):=\operatorname{dupl}(w)-\operatorname{excl}(w)\pmod 6$ lies in $\{1,3,4\}$; in particular it is
+	never $2$ or $5$.
+	
+	Since $a$ is a bijection, the rank can drop only at an application of $b$, and $b$ drops it precisely
+	when the current image contains both merged states $2$ and $5$. A defect-one word therefore has a unique
+	rank-dropping $b$ (applied to all of $Q$ as the first~$b$ in the word), 
+	after which every further $b$ must preserve the rank.
+	The permutational word before the first $b$ has no excluded and no duplicate state, 
+	so it suffices to follow the pair $(E,D)$ of the excluded and duplicate state through the remaining letters, starting from
+	$(E,D)=(5,3)$ (the value right after the first $b$).
+	
+	Two things happen as we read on (addition modulo~$6$):
+	\begin{itemize}
+		\item \emph{Reading $a$.} The image $Q\setminus\{E\}$ becomes $Q\setminus\{E+1\}$
+		and the duplicate value moves from $D$ to $D+1$, so $(E,D)\mapsto(E+1,D+1)$. Hence $a$ leaves
+		$\Delta=D-E$ unchanged.
+		\item \emph{Reading a rank-preserving $b$.} This requires that $Q\setminus\{E\}$ omit one of
+		$2,5$, i.e.\ $E\in\{2,5\}$. In both cases ($E=5$: image $\{0,1,2,3,4\}$; $E=2$: image
+		$\{0,1,3,4,5\}$) the map $b$ is injective on the image, the new image is again
+		$\mathbb Q\setminus\{5\}$, and the merged value is carried to $\delta(D,b)$. Thus
+		$(E,D)\mapsto(5,\,\delta(D,b)$: after \emph{any} $b$ the excluded state is $5$ again, and the duplicate
+		state is replaced by its $b$-value.
+	\end{itemize}
+	
+	Now record the duplicate states $q_0,q_1,q_2,\dots$ at the successive moments right after each $b$; at all
+	these moments $E=5$. We have $q_0=3$. Between the $j$-th and $(j{+}1)$-th $b$ the word contains a block
+	$a^{k_j}$, which shifts the state $q_j$ (and $E=5$) by $k_j$; for the next $b$ to be rank-preserving we
+	need $E=5+k_j\in\{2,5\}$, that is $k_j\equiv 0$ or $k_j\equiv 3\pmod 6$ (note $5+3\equiv 2$). Applying the
+	rule above then gives
+	\[
+	q_{j+1}=\delta\bigl(q_j+k_j, b\bigr),\qquad k_j\in\{0,3\}.
+	\]
+	So the set of duplicate states reachable at an "$E=5$" moment is the smallest subset of $Q$
+	containing $q_0=3$ and closed under the \emph{two} maps
+	\[
+	q\longmapsto \delta(q, b)\qquad\text{and}\qquad q\longmapsto \delta(q,b).
+	\]
+	(These two maps already absorb the effect of the intervening $a$-block through the offset $+3$; we do
+	\emph{not} claim closure under $a$ itself.) Both maps send $\{0,2,3\}$ into itself,
+	\[
+	\begin{aligned}
+		\delta(0,b)&=0, & \delta(2,b)&=3, & \delta(3,b)&=2,\\
+		\delta(0{+}3,b)&=2, & \delta(2{+}3,b)&=3, & \delta(3{+}3,b)&=0.
+	\end{aligned}
+	\]
+	and $\{0,2,3\}$ contains the seed $3$, so every duplicate value stays in $\{0,2,3\}$. Since $E=5$ at each
+	such moment, this gives that for the duplicate state~$q \in \{0,2,3\}$ we have 
+	$\Delta = q-5\in\{-5,-3,-2\}\equiv\{1,3,4\}$; a possible trailing block
+	$a^{m}$ only shifts $(E,D)$ by $m$ and preserves $\Delta$. This proves the claim.
+	
+	Consequently the edge set of $\Gamma_1(\mathcal A)$
+	is the union of the $G$-orbitals of differences $1,3,4$.
+	It is strongly connected, so $\mathcal A$
+	is completely reachable, but it is \emph{not} symmetric: the letter $b$ forces the edge $(5,3)$ (with
+	$\Delta\equiv 4$), whereas its reverse $(3,5)$ would need $\Delta=2$, which never occurs. Hence
+	$(5,3)\in E_1$ while $(3,5)\notin E_1$; likewise $(5,0)\in E_1$ (difference $1$) but
+	$(0,5)\notin E_1$ (difference $5$).
+\end{remark}
+
+\begin{remark}
+	Later, we will investigate transformation semigroups of the form
+	$\langle G \cup \{t\} \rangle_S$ for some group~$G$ and non-permutation
+	$t$.
+	If~$t$ is a simple idempotent, then not every simple idempotent is of the
+	form $t^g$ for some $g\in G$.
+	For example, let
+	\[
+	G=\langle (0~1~2~3)\rangle_G.
+	\]
+	The simple idempotents of the form $t^g$ are
+	$t$ itself and the three simple idempotents mapping
+	$1$ to~$2$, $2$ to~$3$, and $3$ to~$0$, respectively.
+	By \cref{sync_max:prop:transitiveIS}, $\langle G \cup \{t\} \rangle_S$ also
+	contains the simple idempotent mapping $1$ to~$0$, which is not of this
+	form.
+	%
+	% aber alle als produkte von konjugierten?
+\end{remark}
+
+\IN{regular element}
+\begin{remark}
+  Let $a,b \in [n]$ be distinct.
+  We have 
+  \[
+  \SI{a}{b} \SI{b}{a} \SI{a}{b} = \SI{a}{b}
+  \]
+  An element $s$ in a semigroup is called \emph{regular}~\cite{howie1995fundamentals}
+  if there exists $t$ such that $tst = t$.
+  Thus, if $I(M)$ is symmetric, then each simple idempotent
+  is regular.  
+% funktioniert ja vielleicht doch, siehe Todo-graphs.txt, vielleicht doch nicht falsch  
+%  However, when composing corresponding pairs of simple idempotents,
+%  the defining equation for regularity is not preserved. For example, let $t = \concat{\SI{1}{2}}{\SI{3}{2}}$
+%  and $h = \concat{\SI{2}{3}}{\SI{2}{1}}$.
+%  Then $t(h(t(1))) = t(h(2)) = t(3) = 2$
+%  and $t(1) = 2$.	
+\end{remark}
+
+\begin{proposition}\label{sync_max:prop:2hom}
+	Let $M \le \mathcal T_n$ be a transformation monoid whose group of units is
+	$2$-homogeneous, and set $I(M) = ([n], E)$. If $M$ contains a transformation
+	of defect one, then $E = \{ (p,q) \mid p, q \in [n],\ p \ne q \}$;
+	otherwise $E = \emptyset$.
+\end{proposition}
+\begin{proof}
+	Let $G$ be the group of units of $M$. By definition of $I(M)$, if $M$ contains
+	no transformation of defect one then $E = \emptyset$. So assume there is a
+	transformation $t \in M$ of defect one, and let $p, p' \in [n]$ be the distinct
+	points with $\applyfunc{p}{t} = \applyfunc{p'}{t}$.
+	
+	Let $q, q' \in [n]$ be distinct. Since $G$ is $2$-homogeneous, there exists
+	$g \in G$ with $\applyfunc{\{q,q'\}}{g} = \{p,p'\}$, and hence
+	$\applyfunc{q}{(\concat{g}{t})} = \applyfunc{q'}{(\concat{g}{t})}$. By
+	\cref{prelim:lem:2sets-transitive2}, $G$ is transitive, so
+	\cref{sync_words:lem:idempotent} applied to $\concat{g}{t}$ yields simple
+	idempotents $e, f \in M$ with $\applyfunc{q}{e} = q'$ and $\applyfunc{q'}{f} = q$.
+	Thus $(q, q'), (q', q) \in E$. As $q, q'$ were arbitrary distinct points,
+	$E = \{ (p,q) \mid p, q \in [n],\ p \ne q \}$.
+\end{proof}

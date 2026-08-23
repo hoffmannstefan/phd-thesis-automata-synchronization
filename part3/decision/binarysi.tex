@@ -1,0 +1,166 @@
+%!TEX root = ./../../thesis-trier.tex
+
+Here, in \cref{constrsync:prop2:SI-binary-sync-in-L,syncmax:SI-aut:prop:sync-L-complete}, 
+we prove \LOGSPACE-completeness of deciding each of the properties 
+of synchronizability, complete reachability, 
+complete distinguishability, or sync-maximality
+for binary SI-automata as input. \Cref{constrsync:prop2:SI-binary-sync-in-L}
+is an easy consequence of the following lemma (we note that it was essentially
+proved by Martyugin~\cite[Prop.~6.2]{Mar2009b}
+that the problem from \cref{constrsync:prop:SI-binary-sync-in-L} 
+can be solved in $O(n)$).
+
+\begin{lemma}
+	\label{constrsync:prop:SI-binary-sync-in-L}
+	For $n \ge 4$, which case  from~\cref{prop:structure_simp_idem_binary} 
+	applies and the computation of the respective parameters $s,t \in Q$, $a,b \in \Sigma$, 
+	i.e., which letter is the simple idempotent $a$ and which cyclically permutes the states as~$b$,
+	and $0 < d < n$ can be done in deterministic log-space.
+\end{lemma}
+\begin{proof}
+	We denote by $\mathcal A_t$ the synchronizing 
+	binary SI-automaton from~\cref{prelim:fig:binarySI-sync-trap} with a trap state
+	and by $\mathcal A_c$ the other automaton from~\cref{prelim:fig:binarySI-sync-SCC}
+	where $b$ permutes the states,~$a$ is a simple idempotent,
+	and $s,t \in Q$ and $0 < d < n$
+	are the parameters as in \cref{prop:structure_simp_idem_binary} w.r.t.~$\mathcal A_t$ and $\mathcal A_c$
+	for $n \ge 4$. 
+	We show a scheme to test whether $\mathcal A$
+	equals~$\mathcal A_c$ or~$\mathcal A_t$, which gives the claim by \cref{prop:structure_simp_idem_binary}.
+	By iterating through the states,
+	we search for $t \in Q$
+	with $\delta^{-1}(t, a) = \{s,t\}$
+	for some $a \in \Sigma$ and $s \in Q$.
+	%	with two incoming transitions
+	%	and $\applytrans{\delta}{t}{a} = t$ for some $a \in \Sigma$.
+	% In case we do not find such a state, then $\mathcal A$ is not synchronizing.
+	% Otherwise, let $b \in \Sigma \setminus \{a\}$.
+	Let $b \in \Sigma\setminus \{a\}$.
+	Then, $\mathcal A$ equals~$\mathcal A_c$ or $\mathcal A_t$
+	precisely in the following two cases.
+	\[
+	\mathcal A
+	=
+	\begin{cases}
+		\mathcal A_c & \text{if } \delta(s, b^n) = s, \delta(s, b^d) = t,   \forall i \in \{1,\ldots,n-1\} \colon \delta(s, b^i) \ne s, \\
+		\mathcal A_t & \text{if } \delta(s, b^{n-1}) = s, \delta(t, b) = t, \forall i \in \{1,\ldots,n-1\} \colon \delta(s, b^i) \ne s, 
+	\end{cases}
+	\]
+	for some $d \in \{1,\ldots,n-1\}$ coprime to $n$.
+	By iterating through the states $\delta(s, b^i)$
+	and by \cref{prelim:prop:coprime_in_L} each case can be tested
+	in deterministic log-space.
+	%	
+	%%	\begin{enumerate}
+		%\ifthenelse{\equal{\thing}{CIAA}}
+		%{
+			%	\item For $\applytrans{\delta}{t}{b} \ne t$ 
+			%	iterate through $\applytrans{\delta}{t}{b^i}$
+			%	for $i \in \{1,\ldots,n\}$
+			%	and test whether $\delta(t, b^n) = t$, $\delta(t, b^i) \ne t$ for $i \in \{2,\ldots,n-1\}$,
+			%	$\delta(t, b^{n-d}a) = t$
+			%	for some $d \in \{1,\ldots,n-1\}$
+			%	coprime to $n$
+			%	and $\delta(t, b^{i}a) = \delta(t, b^i)$
+			%	for $i \in \{1,\ldots,n-1\} \setminus \{d\}$.
+			%	This can be done in deterministic log-space and if all these tests are positive,
+			%	then $\mathcal A = \mathcal A_c$.
+			%}
+		%{
+			%\begin{comment} 
+			%	\item For $\applytrans{\delta}{t}{b} \ne t$ (which excludes $\mathcal A_t$) iterate through $\applytrans{\delta}{t}{b^i}$
+			%    for $i \in \{1,\ldots,n\}$
+			%    and test whether $\delta(t, b^i) \ne t$ for $i \in \{2,\ldots,n-1\}$, $\delta(t, b^n) = t$, and
+			%    $\delta(t, b^{n-d}a) = t$
+			%    for some $d \in \{1,\ldots,n-1\}$
+			%    coprime to $n$.
+			%    %and $\delta(t, b^{i}a) = \delta(t, b^i)$
+			%    %for $i \in \{1,\ldots,n-1\} \setminus \{d\}$.
+			%    This can be done in deterministic log-space
+			%    by \cref{prelim:prop:coprime_in_L}. In case all these tests are positive,
+			%    we have $\mathcal A = \mathcal A_c$.
+			%\end{comment} 
+			%}    
+		%\begin{comment} 
+		%    \item For $\applytrans{\delta}{t}{b} = t$, test whether $\mathcal A = \mathcal A_t$ 
+		%    by iterating through  $\delta(s, b^i)$, $i \in \{1,\ldots,n-1\}$,
+		%    and checking $\delta(s, b^i) \ne s$
+		%    for $i \ne n - 1$ and 
+		%    $\delta(s, b^{n-1}) = s$.~\qedhere
+		%%	\end{enumerate}	
+	%\end{comment}        
+\end{proof}
+
+\begin{proposition} \label{constrsync:prop2:SI-binary-sync-in-L}
+	Deciding whether a given binary $n$-state SI-automaton $\semiautomat{A}{Q}{\Sigma}{\delta}$ is synchronizing
+	is in \LOGSPACE. 
+\end{proposition}
+\begin{proof}
+	A binary SI-automaton is synchronizing
+	if and only if it has one of the two forms
+	from \cref{prop:structure_simp_idem_binary}, 
+	and this can be tested in deterministic log-space
+	by \cref{constrsync:prop:SI-binary-sync-in-L}.
+\end{proof}
+
+\begin{theorem} \label{syncmax:SI-aut:prop:sync-L-complete}
+	For a binary SI-automaton it is \LOGSPACE-complete
+	to decide each of the following properties individually: synchronizability,
+	complete reachability, complete distinguishability, sync-maximality.	
+\end{theorem}
+\begin{proof}
+	We can assume the input automaton has at least three states.
+	Containment in \LOGSPACE
+	follows from \cref{constrsync:prop:SI-binary-sync-in-L} 
+	for synchronizability.
+	By \cref{sync_max:prop:binary-SI}, 
+	for a binary SI-automaton
+	the properties of complete reachability, complete distinguishability, and sync-maximality
+	are each equivalent to the fact that the automaton
+	equals the one from \cref{prelim:fig:binarySI-sync-SCC},
+	which can be decided in \LOGSPACE 
+	by \cref{constrsync:prop:SI-binary-sync-in-L}.
+	%	Next, note that for binary SI-automata with at least
+	%	three states, the automaton in \cref{prelim:fig:binarySI-sync-SCC}
+	%	is the only binary SI-automaton that is completely reachable,
+	%	the only binary SI-automaton that is completely distinguishable,
+	%	and the only binary SI-automaton that is sync-maximal,
+	%	as the other synchronizing automaton is not strongly
+	%	connected and two sets $A$, $A \cup \{t\}$
+	%	with trap state $t$ are indistinguishable.
+	%	So, we only have to test whether the input automaton
+	%	equals this automaton, which can be done in \LOGSPACE
+	%	by \cref{constrsync:prop:SI-binary-sync-in-L}.
+	For \LOGSPACE-hardness, we give a reduction from \SCP. Let $f \colon [n] \to [n]$
+	be a permutation with $n \ge 3$.
+	We can assume $f \ne \operatorname{id}_{[n]}$
+	with $f(p) \ne p$ for $p \in [n]$,
+	which can be determined by an $\AC^0$ circuit.
+	Set $\semiautomat{A}{[n]}{\{a,b\}}{\delta}$
+	with $\delta(q, b) = f(q)$ and
+	\[
+	\delta(q, a) = \begin{cases}
+		f(p) & \text{if } q = p, \\
+		q    & \text{if } q \ne p.
+	\end{cases}
+	\]
+	for $q \in [n]$. 
+	Observe that $\mathcal A$ cannot equal the automaton from \cref{prelim:fig:binarySI-sync-trap}, as $a$ moves a point in a cycle of $f$
+	to another point in the same cycle. Now, the following are equivalent:
+	\begin{enumerate}
+		\item $f$ cyclically permutes $[n]$,
+		
+		\item $\mathcal A$ is synchronizing,
+		
+		\item $\mathcal A$ has the form
+		from \crefitem{sync_max:prop:binary-SI}{sync_max:cor:item:form},
+		where $d = 1$ in this case.		
+	\end{enumerate}
+	So, by \cref{sync_max:prop:binary-SI},
+	$f$ cyclically permuting $[n]$
+	is also equivalent to 
+	complete
+	reachability and to sync-maximality.  
+	Hence, the construction gives a valid reduction
+	for all these properties.		
+\end{proof}

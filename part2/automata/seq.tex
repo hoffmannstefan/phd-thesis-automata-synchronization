@@ -1,0 +1,152 @@
+%!TEX root = ./../../thesis-trier.tex
+
+In this section, we investigate sequences of upper sets
+as constructed in \cref{prelim:general:order:sec:seq-upper-sets} for general quasiorders
+in the special case of automata and the reachability order. More specifically, we relate these sequences
+to subautomata and Rees quotient automata as introduced previously in \cref{prelim:sec:aut:sub,prelim:sec:rees}.
+
+\begin{proposition} \label{prelim:prop:composition-series}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$.
+	There exists a sequence of upper sets 
+	\[
+	\emptyset = S_0 \subsetneq S_1 \subsetneq \cdots \subsetneq S_m = Q
+	\]
+	such that the sets $S_i \setminus S_{i-1}$
+	for $i \in \{1,\ldots,m\}$
+	are all the strongly connected components in~$\mathcal A$,
+	$\mathcal A_{|S_1}$ is strongly connected
+	and, for $i \in \{2,\ldots,m\}$,
+	$( \mathcal A_{|S_i} ) / {\sim_{S_{i-1}}}$
+	is strongly trap-connected
+	or $S_i \setminus S_{i-1}$ is a sink component in $( \mathcal A_{|S_i} ) / {\sim_{S_{i-1}}}$ (so that $S_i \setminus S_{i-1}$ 
+	and $\{S_{i-1}\}$
+	are the only sink components in this case).
+\end{proposition}
+\begin{proof}
+	Consider a sequence $\emptyset = S_0 \subsetneq S_1 \subsetneq \cdots \subsetneq S_m = Q$
+	as in \crefitem{prelim:general:order:cor:seq-upper-sets}{prelim:general:order:cor:seq-upper-sets:1},
+	where, according to the statement,
+	the sets $S_i \setminus S_{i-1}$ for $i \in \{1,\ldots,m\}$
+	are all the strongly connected components. Since $S_1$
+	is a strongly connected component,~$\mathcal A_{S_1}$
+	is strongly connected.
+	Next, let $i \in \{2,\ldots,m\}$.
+	Now, suppose $S_i \setminus S_{i-1}$ 
+	is not a sink component.
+	Since the state set of  $( \mathcal A_{|S_i} ) / {\sim_{S_{i-1}}}$
+	is $S_i \setminus S_{i-1} \cup \{S_{i-1}\}$ with $S_{i-1} \ne \emptyset$,
+	if~$S_i \setminus S_{i-1}$ is not a sink component,
+	by \crefitem{prelim:automata:prop:char-strongly-trap}{prelim:automata:prop:char-strongly-trap:1b}
+	the automaton is strongly trap-connected;
+	otherwise $S_i \setminus S_{i-1}$ is a sink component
+	and the claim is proved.	
+\end{proof}
+
+In a sequence as in \cref{prelim:prop:composition-series},
+for $p \in S_i$ and $q \in S_j$ with $p \lereach q$ we have $i \le j$.
+
+\begin{proposition}\label{prelim:cor:composition-series-maximal-states}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$.
+	There exists a sequence of upper sets 
+	\[
+	S_1 \subsetneq \cdots \subsetneq S_m = Q
+	\]
+	such that~$S_1$ equals the set of maximal states in $\mathcal A$, and for $i \in \{2,\ldots,m\}$,
+	$( \mathcal A_{|S_i} )/ {\sim_{S_{i-1}}}$
+	is strongly trap-connected 
+	and $S_{i} \setminus S_{i-1}$
+	are all the strongly connected components in $\mathcal A$ that are not sink components.
+\end{proposition} 
+\begin{proof}
+	Consider a sequence $S_0 \subsetneq S_1 \subsetneq \cdots \subsetneq S_m = Q$
+	as in \crefitem{prelim:general:order:cor:seq-upper-sets}{prelim:general:order:cor:seq-upper-sets:2}
+	where~$S_0$ equals the set of maximal states
+	and $S_{i} \setminus S_{i-1}$
+	for $i \in \{1,\ldots,m\}$ are all the non-sink strongly connected components.
+	Since the state set of  $( \mathcal A_{|S_i} ) / {\sim_{S_{i-1}}}$ for $i \in \{1,\ldots,m\}$ 
+	is $S_i \setminus S_{i-1} \cup \{S_{i-1}\}$ with $S_{i-1} \ne \emptyset$
+	and  $S_i \setminus S_{i-1}$ 
+	is not a sink component,
+	it is strongly trap-connected
+	by \crefitem{prelim:automata:prop:char-strongly-trap}{prelim:automata:prop:char-strongly-trap:1b}.	
+\end{proof}
+
+\begin{remark}
+ The strongly trap-connected quotient automata
+ that arise from a series as in \cref{prelim:prop:composition-series} 
+ are always the same up to isomorphism.
+ However, the remaining quotient automata
+ and the subautomaton $\mathcal A_{S_1}$
+ might be different for different series, where they
+ differ by an isolated, i.e., not reachable, trap state.
+ However, the length of such a series is always the same.
+ A series as in \cref{prelim:cor:composition-series-maximal-states}
+ always has the same length for a given automaton
+ and the resulting quotient automata $( \mathcal A_{|S_i} )/ {\sim_{S_{i-1}}}$
+ for $i \in \{2,\ldots,m\}$
+ are always the same up to isomorphism.
+ However, $\mathcal A_{S_1} / {\sim_{\emptyset}}$
+ might admit further subautomata.
+ For synchronizing automata,
+ series obtained according
+ to \cref{prelim:prop:composition-series} 
+ or \cref{prelim:cor:composition-series-maximal-states}
+ have the same length, isomorphic quotient automata,
+ and $\mathcal A_{|S_1}$ admits no subautomata. 
+ Thus, in this case, we obtain
+ an analog of the Jordan-Hölder theorem
+ from algebra~\cite{lang02}.	
+\end{remark}
+
+\begin{corollary}\label{prelim:automata:cor:composition-series-maximal-states}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$.
+	Then $Q$ equals the set of maximal states
+	or there exists a proper and non-empty upper set $S \subseteq Q$
+	such that $\mathcal A / {\sim_S}$
+	is strongly trap-connected.
+\end{corollary}
+\begin{proof}
+	Consider a sequence $S_1 \subsetneq \cdots \subsetneq S_m = Q$ 
+	as in \cref{prelim:cor:composition-series-maximal-states}.
+	For $m = 1$, $Q$ equals the set of maximal states.
+	Otherwise, the claim is fulfilled with 
+	the upper set $S = S_{m-1}$.	
+\end{proof}
+
+\begin{proposition} \label{prelim:automata:prop:max-states}
+   	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ and $S \subseteq Q$ be the set of maximal states.
+   	Then we have the following.
+   	
+   	\begin{enumerate}
+   	\item \label{prelim:automata:prop:max-states:1} For all $q \in Q$ there exists $u \in \Sigma^*$ such that $\delta(Q, u) \subseteq S$.
+   			
+   	\item \label{prelim:automata:prop:max-states:2} $[q]_{\sim_S} \lereach^{\mathcal A / {\sim_S}} S$ in $\mathcal A / {\sim_S}$ for all $q \in Q$.
+   	\end{enumerate}
+\end{proposition}
+\begin{proof}
+\ref{prelim:automata:prop:max-states:1} \& \ref{prelim:automata:prop:max-states:2}: 
+By finiteness, for each $q \in Q$ there exists a maximal $p \in S$
+such that $q \lereach p$. By the definition of the reachability order,
+this yields $\delta(q, u) = p$ for some $u \in \Sigma^*$, which proves Item~\ref{prelim:automata:prop:max-states:1}.
+Next for the canonical morphism
+$\pi_{\sim_S} \colon Q \to Q / {\sim_S}$  from \cref{prelim:prop:congruence_induces_morphism}
+we have $\pi_{\sim_S}(q) \lereach^{\mathcal A / {\sim_S}} \pi_{\sim_S}(p)$ by \cref{prelim:eqn:morph-reachability-order}
+where $\pi_{\sim_S}(q) = [q]_{\eqreach}$
+and $\pi_{\sim_S}(p) = S$ since $p \in S$.
+\end{proof}
+
+\begin{proposition} \label{prelim:prop:maximal-states-SCC}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$. The set~$S$ of maximal states 
+	is strongly connected if and only if 
+	there exists a unique sink component in~$\mathcal A$ (which then equals~$S$).	
+\end{proposition}
+\begin{proof}
+	First, suppose~$S$ is strongly connected.
+	Since two sink component consist of incomparable 
+	elements, it follows that~$S$ equals
+	a sink component, which is the only sink component in~$\mathcal A$.
+	
+	Conversely, suppose there exists a unique sink component.
+	Since~$S$ is the union of all sink components by \cref{prelim:general:order:set-of-maximal-elements}
+	this unique sink component equals~$S$ and so~$S$ is strongly connected.	
+\end{proof}

@@ -1,0 +1,76 @@
+%!TEX root = ./../../thesis-trier.tex
+
+Consider a constrained synchronization problem \constrsync{L}
+with some regular constraint language $L \subseteq \Sigma^*$.
+
+\begin{remark}
+	\label{constrsync:rem:alphabet}	
+	Every constraint language also specifies an alphabet.
+	As we show next, up to $\eqACZEROm$-reductions,
+	the specific alphabet does not matter and we can always
+	chose a smallest possible alphabet over which to consider the constraint
+	language.
+	For let $\Gamma \subseteq \Sigma$ and $L \subseteq \Gamma^*$ be regular.
+	Then $L \subseteq \Sigma^*$
+	and \constrsync{L} with~$L$ over $\Sigma$
+	and \constrsync{L} with~$L$ over $\Gamma$
+	are equivalent for~$\leACZEROm$-reductions:
+	for $\mathcal A$ over $\Sigma$
+	we can consider~$\mathcal A_{|\Gamma}$
+	and, in the other direction for $\mathcal A$ over~$\Gamma$,
+	we can add self-loops for all letters in $\Sigma \setminus \Gamma$ 
+	to $\mathcal A$ to obtain an automaton over $\Sigma$.
+	Both reductions can be implemented by $\AC^0$-circuits
+	by either ignoring certain input bits
+	or adding the identity matrix as a transition matrix.
+\end{remark}
+
+\IN{constraint PDFA}
+In this context, we call a PDFA $\mathcal B$ accepting $L$
+a \emph{constraint PDFA}.
+%As \constrsync{\emptyset} is solvable in constant time, 
+%as no automaton has a synchronizing word in $\emptyset$.
+%So, we exclude the empty set from consideration
+%as a constraint language, and assume $L \ne \emptyset$
+%and that $\mathcal B$ is trim.
+Since the constraint languages is assumed to be fixed for a given constrained synchronization 
+problem, we can assume $\mathcal B$ is trim.
+Furthermore, with respect to Remark~\ref{constrsync:rem:alphabet},
+%if not said otherwise
+we can choose the alphabet $\Sigma$ 
+as small as possible.
+So, when nothing else is said, we make the following assumptions.
+
+\begin{enumerate}
+	\item The constraint PDFA $\mathcal B$ is trim.
+	
+	\item For a single regular constraint language $L \subseteq \Sigma^*$,
+	every letter is used in $L$, i.e.,
+	$\Sigma^* a \Sigma^* \cap L \ne \emptyset$
+	for each $a \in \Sigma$.
+	
+	% nicht immer sinnvoll, z.B. reduktion b^* auf ab^*
+	%\item When considering two problems
+	%$\constrsync{L_1}$ and $\constrsync{L_2}$
+	%over alphabets $\Sigma_{1}$ and $\Sigma_2$ respectively
+	%that share some letters
+	%and we do not distinguish explicitly the different alphabets,
+	%then both are over a
+	%a common alphabet, i.e., $\Sigma_1 = \Sigma_2$ 
+	%(as we can take $\Sigma_1 \cup \Sigma_2$ otherwise).
+\end{enumerate}
+
+Here, PDFAs are only used to describe constraint languages. 
+%Hence, all other automata and those appearing
+%as inputs to our problems are assumed to be complete. 
+
+Due to \cref{constrsync:rem:alphabet}, we do not specify an alphabet in the problem
+specification of \constrsync{L}.
+%and might choose whatever alphabet  is most convenient.
+Changing the alphabet is actually a (very) special case
+of a more general way to encode
+the input by so-called solid codes, see Remark~\ref{constrsync:rem:alphabet_solid_special_case}.	
+
+
+Later, in \cref{rem:PDFA-for-constraint}, we justify the extension of our model to 
+PDFAs rather than using only the automaton model with a completely defined transition function introduced earlier.

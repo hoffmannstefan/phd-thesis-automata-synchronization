@@ -1,0 +1,211 @@
+
+
+In \cref{constr_sync:sec:pair_aut},
+we generalize the pair criterion (\cref{prelim:thm:pair_sync_condition})
+to constraint languages that are monoids.
+Then, in \cref{constr_sync:monoid-lang:shortest-sync-word}, we derive algorithmic consequences for testing constrained synchronizability and for the computation of synchronizing words of at most cubic length, as well as sufficient conditions for containment in \NL.
+
+\subsection{A Pair Criterion}
+\label{constr_sync:sec:pair_aut}
+
+\Cref{constr_sync:thm:pair_condition} generalizes the pair criterion (\cref{prelim:thm:pair_sync_condition})
+to the case of monoid constraint languages.
+Further, in \cref{constr_sync:prop:pair_bound}, utilizing the pair automaton,
+we give a quadratic upper bound for shortest words in any constraint language, even those that are not monoids,
+mapping two states to a common state (we also give time and space bounds for computing such a word).
+
+\begin{theorem} 
+	\label{constr_sync:thm:pair_condition}
+	Suppose $L \subseteq \Sigma^*$ is a monoid language.
+	An automaton $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	has a synchronizing word in $L$ if and only if
+	for all $p, q \in Q$ there exists a word $u \in L$
+	such that $\applytrans{\delta}{p}{u} = \applytrans{\delta}{q}{u}$.  
+\end{theorem}
+\begin{proof}
+	Set $n = |Q|$. A synchronizing word in $L$
+	maps all pairs of states to the same state.
+    Conversely, assume all pairs of states can be mapped to a single state
+	by a word in~$L$. 
+	Then, set $Q_1 = Q$ and, for $i \in \{1,\ldots,n-1\}$,
+	$Q_{i+1} = \applytrans{\delta}{Q_i}{u_i}$
+	where, 	if $|Q_i| > 1$, let $u_i \in L$ be
+	such that $\applytrans{\delta}{p}{u_i} = \applytrans{\delta}{q}{u_i}$
+	for two distinct $p,q \in Q_i$, and $u_i = \varepsilon$ otherwise.
+	Since $|Q_{i+1}| < |Q_i|$ for $|Q_i| > 1$ and $|Q_1| = n$, 
+	there exists $j \in \{1,\ldots,n-1\}$ such that $|Q_j|=1$.
+	Set $u = u_1 \cdots u_j$.
+	We have $u \in \Syn(\mathcal A)$.
+	Since $L$ is a monoid we get $u \in L$.
+\end{proof}
+
+\begin{remark}
+	We opted to present a direct proof for \cref{constr_sync:thm:pair_condition} above.
+	Another proof along the lines as in the unconstrained case presented in \cref{prelim:sync:pair}
+	is possible
+	by (1) first  showing that a trap-state automaton
+	has a synchronizing word in a monoid language~$L$
+	if and only if there exists for each state
+	a word in~$L$ mapping this state to the trap state
+	and then (2) using
+	that an arbitrary automaton has the same
+	set of synchronizing words as the pair automaton
+	in which the singleton sets are merged into a trap state.	
+\end{remark}
+
+\begin{proposition}
+	\label{constr_sync:prop:pair_bound}
+	Suppose $\automat{B}{P}{\Sigma}{\mu}{p_0}{F}$ is a PDFA.
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be an $n$-state automaton
+	and $p, q \in Q$. In time $O(|P|n^2 + |\Sigma||P|n^2)$
+	and working space $O(|\Sigma||P|n^2)$
+	we can test whether there exists $u \in L(\mathcal B)$ such that $\applytrans{\delta}{p}{u} = \applytrans{\delta}{q}{u}$
+	and, if this is the case,
+	compute a shortest $u$, where we have
+	\[
+	|u| < \binom{n}{2} \cdot |P| + |P|.
+	\]
+\end{proposition} 
+\begin{proof}
+	Consider the product automaton $( \mathcal A^{\le 2} / {\sim_S} ) \times \mathcal B$
+	where $S = \{ \{q\} \mid q \in Q \}$.
+	A shortest word in~$u \in L(\mathcal B)$ mapping two states $p,q \in Q$
+	to a single state corresponds
+	to a path from 
+	$(\{p,q\}, p_0)$ to a state $(S, r)$ with $r \in F$.
+	Since $( \mathcal A^{\le 2} / {\sim_S} ) \times \mathcal B$
+	has  $(\binom{n}{2} + 1) \cdot |P|$ states,
+	we obtain $|u| < \binom{n}{2} \cdot |P| + |P|$.
+	Now, $( \mathcal A^{\le 2} / {\sim_S} ) \times \mathcal B$
+    with $|P| \cdot (\binom{n}{2} + 1)$ states
+	and at most $|\Sigma||P| (\binom{n}{2} + 1)$ transitions
+	can be computed in 	time and space $O(|\Sigma||P|n^2)$.   
+	Then, existence of $u$, and its computation in case it exists, can be done by 
+	a breadth-first search~\cite{cormen01introduction}
+	in  time $O(|P|n^2 + |\Sigma||P|n^2)$
+	and space $O(|P|n^2)$.
+\end{proof}
+
+\subsection{Computing Synchronizing Words and Containment in~\texorpdfstring{$\NL$}{NL}}
+\label{constr_sync:monoid-lang:shortest-sync-word}
+
+\Cref{constr_sync:thm:monoid_compute_sync_word} 
+gives a cubic bound on shortest synchronizing words
+in constraint languages that are monoids
+and time and space upper bound to compute such a word.
+The algorithm is based on the method proofs used for
+\cref{constr_sync:thm:pair_condition,constr_sync:prop:pair_bound}.
+Then, as a consequence of \cref{constr_sync:thm:pair_condition,constr_sync:prop:pair_bound},
+in \cref{thm:reg_monoid} we conclude that for monoid constraint languages, the constrained synchronization problem is in \NL.
+
+\begin{theorem}\label{constr_sync:thm:monoid_compute_sync_word}
+	Let $\automat{B}{P}{\Sigma}{\mu}{p_0}{F}$
+	be a PDFA
+	and $L = L(\mathcal B)$ be a monoid.
+	Suppose $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	is an $n$-state automaton.	
+	In time $O(|\Sigma||P|n^2)$
+	we can test whether $\mathcal A$
+	has a synchronizing word in~$L$.
+	Testing whether~$\mathcal A$ has a synchronizing word
+	and, if this is the case,
+	computing one of length at most 
+	$(n - 1) \cdot (  \binom{n}{2} \cdot |P| + |P| - 1 )$
+	can be done in time $O(|\Sigma||P|n^3)$ and working space $O(|\Sigma||P|n^2)$ (not counting the space the output needs).
+\end{theorem}
+\begin{proof}
+	To test whether the automaton $\mathcal A$ has a 
+	synchronizing word in $L(\mathcal B)$, we construct 
+	$( \mathcal A^{\le 2} / {\sim_S} ) \times \mathcal B$ and check whether, 
+	from every state $({p,q}, p_0)$ with $p,q \in Q$, a state in ${S} \times F$ is reachable.
+	This can be done using a breadth-first search that runs ``backward''  starting from the states in ${S} \times F$.
+	The algorithm runs in time $O(|\Sigma||P|n^2)$ and is correct by \cref{constr_sync:thm:pair_condition}.
+		
+	Next, to give an algorithms that also computes a synchronizing word, 
+	first consider the proof of \cref{constr_sync:thm:pair_condition}.
+	We can compute the sets $Q_i$ using a loop that iterates at most $n - 1$ times.	
+	By \cref{constr_sync:prop:pair_bound}, in each iteration, for $|Q_i| > 1$,
+	we can test whether a word $u_i$
+	with $|\delta(Q_i, u_i)| < |Q_i|$
+	exists in time 
+	$O(|P|n^2 + |\Sigma||P|n^2)$
+	and working space $O(|\Sigma||P|n^2)$,
+	and, moreover, compute a shortest $u_i$ where 
+	\[
+	|u_i| \le \binom{n}{2} \cdot |P| + |P| - 1.
+	\]
+	If there exists no such word in some iteration, then, by \cref{constr_sync:thm:pair_condition},
+	there exists no synchronizing word in $L$.
+	Otherwise, concatenating the $u_i$
+	gives a synchronizing word in~$L$
+	of length at most $(n - 1) \cdot (  \binom{n}{2} \cdot |P| + |P| - 1 )$.
+\end{proof}
+
+The algorithm given in the proof of \cref{constr_sync:thm:monoid_compute_sync_word} is an adaption 
+of a similar algorithm for the unconstrained case~\cite{Eppstein90,Sandberg04,DBLP:conf/lata/Volkov08}.
+ 
+\begin{theorem}
+	\label{thm:reg_monoid}
+	Let $L \subseteq \Sigma^*$ be a regular language that is a monoid.\footnote{We avoided to call 
+		it a regular monoid, as the notion of regularity is also used in semigroup theory with a different meaning (see, for example,~\cite{howie1995fundamentals}).}
+	Then $\constrsync{L}$
+	is in~\NL. 
+\end{theorem} 
+\begin{proof} 
+	Suppose $\automat{B}{P}{\Sigma}{\mu}{p_0}{F}$ is a PDFA with $L = L(\mathcal B)$.
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	and $n = |Q|$.
+	By \cref{constr_sync:thm:pair_condition,constr_sync:prop:pair_bound},
+	the problem can be decided in \NL\ 
+	by cycling through all pairs of states $p,q \in Q$
+	and nondeterministically guess letter-by-letter
+	$u \in \Sigma^*$ with $|u| \le |P|\cdot ( \binom{n}{2} + 1 )$, $u \in L$,
+	and $\delta(p, u) = \delta(q, u)$.
+	If for all state pairs an appropriate word is found,
+	the automaton admits a synchronizing word in $L$, if not, we reject.
+\end{proof} 
+
+Combining Theorem~\ref{thm:reg_monoid} and~\ref{constr_sync:thm:regular_prefix_codes_and_automata},
+we get the next corollary.
+
+\begin{corollary}
+	\label{constr_syn:cor:start_equals_final_state}
+	For $\automat{B}{P}{\Sigma}{\mu}{p_0}{\{p_0\}}$,
+	$\constrsync{L(\mathcal B)}$ is in~\NL.
+\end{corollary}
+
+Next, we derive a sufficient condition on the concatenation with monoid
+languages resulting in problems in \NL.
+
+\begin{corollary}[UVW-Condition]
+	\label{constr_sync:cor:UVW}
+	Let $U,V, W \subseteq \Sigma^*$ be such that 
+	$U \subseteq \suff{V}$, $W \subseteq \pref{V}$
+	and $V$ is a regular language that is a monoid.
+	Then 
+	$
+	\constrsync{UVW} \eqACZEROm \constrsync{V}
+	$
+	and $\constrsync{UVW}$ is in \NL.
+\end{corollary}
+\begin{proof}
+	As $V = V^*$, the assumptions give $\factor{UVW} = \factor{V}$. Then 
+	Corollary~\ref{gen_results:cor:factors_etc_complexity} and Theorem~\ref{thm:reg_monoid} yield the claim.
+\end{proof}
+
+The property that $V$ is a monoid is essential in \cref{constr_sync:cor:UVW}.
+For example, as listed in Theorem~\ref{constr_sync:thm:introductory_examples},
+$\constrsync{ab^*} \in \LOGSPACE$,
+but $\constrsync{ab^*a}$ is \NP-complete.
+
+Lastly, by \cref{constrsync:thm:monoid-sparseregular-or-exp}, a sparse language that is a monoid is either
+an infinite subset of $u^*$ for some $u \in \Sigma^*$
+or equals $\{\varepsilon\}$. The language $\{\varepsilon\}$ is the only finite monoid language (and so, for this language
+an input semiautoamton has a synchronizing word if and only if it has a single state).
+Thus, the constrained synchronization problem with such a constraint language is either solvable in constant
+time or \LOGSPACE-complete by \cref{constr_sync:thm:infinite,constr_sync:cor:in_star_star}.
+
+\subsection{Strongly Connected Constraint Automata}
+\label{sec:constr_sync:SCC} 
+
+\input{../part4/constrlang/scc}

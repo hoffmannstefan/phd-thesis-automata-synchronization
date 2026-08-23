@@ -1,0 +1,28 @@
+%!TEX root = ./../../thesis-trier.tex
+
+\label{def:partial_function} 
+\IN{partial function}
+A \emph{partial function} $f \colon X \nrightarrow Y$
+% is given by a unique set $D \subseteq X \nrightarrow Y$
+%such that $f \colon X \to Y$ is a function
+either associates with $x \in X$ a unique value, written $\applyfunc{x}{f}$, 
+or is undefined for $x \in X$,
+and $f(x) = y$ for $x \in X$ and $y \in Y$ means %denotes the fact
+that $f(x)$ is defined and equals~$y$.
+Correspondingly, $f(x) \ne y$ means 
+that either~$f(x)$ is defined but it does not equal $y$ or that $f(x)$ is undefined.
+% When writing $\applyfunc{x}{f} = y$ for $x \in X$
+%and $y \in Y$ we mean that $\applyfunc{x}{f}$ is defined and equals $y$.
+Setting $D = \{ x \in X \mid \applyfunc{x}{f} \text{ is defined } \}$,
+we obtain a (total) function $f \colon D \to Y$. 
+Every  function can be seen as a partial function defined everywhere.
+Given $f \colon X  \nrightarrow Y$ and $g \colon Y  \nrightarrow Z$,
+their \emph{composition} is $\concat{f}{g} \colon X \nrightarrow Z$
+where
+$\applyfunc{x}{(\concat{f}{g})} = z$ for $x \in X$ and $z \in Z$
+if and only if $\applyfunc{x}{f}$ is defined with $\applyfunc{\applyfunc{x}{f}}{g} = z$,
+%are defined and $\applyfunc{\applyfunc{x}{f}}{g} = z$,
+and otherwise $\applyfunc{x}{(\concat{f}{g})}$ is undefined. Other notions also carry over from functions without difficulty,
+for example the image of a subset $S \subseteq X$
+by setting $\applyfunc{S}{f} = \{ \applyfunc{x}{f} \mid x \in X \text{ and } \applyfunc{x}{f} \text{ is defined } \}$.
+\IN{composition!of partial functions}

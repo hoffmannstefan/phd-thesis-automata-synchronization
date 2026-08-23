@@ -1,0 +1,152 @@
+%!TEX root = ./../../springer-mono-format/book.tex
+%!TEX root = ./../../thesis-trier.tex
+
+\IN{binary relation} \label{def:relation}
+\IN{relation} 
+A \emph{relation} $R$ is a tuple $(R_G, X_1, \ldots, X_n$)
+such that $R_G \subseteq X_1 \times \cdots \times X_n$.
+For $n = 2$, we call $R$ a \emph{binary relation}
+and in this case, for $(x_1, x_2) \in X_1 \times X_2$
+we write $x_1 R x_2$ if and only if $(x_1, x_2) \in R_G$.
+
+\IN{homogeneous relation}
+For $X = X_1 = X_2$ we say that $R$ is a relation over $X$ (such relations are also called \emph{homogeneous}). 
+If~$R$ is a relation over $X$,
+then it is called
+\begin{description}  
+	
+	\IN{reflexive relation}
+	\item[\normalfont{\emph{reflexive}}] if for all $x \in X$ we have $xRx$,
+	
+	\IN{symmetric relation}
+	\item[\normalfont{\emph{symmetric}}] if for all $x,y \in X$ we have that $xRy$ implies $yRx$, 
+	
+	\IN{antisymmetric relation}
+	\item[\normalfont{\emph{antisymmetric}}] if for all $x,y \in X$ we have that $xRy$ and $yRx$ imply $x = y$, 
+	
+	\IN{transitive relation}
+	\item[\normalfont{\emph{transitive}}] if for all $x,y,z \in X$ we have that $xRy$ and $yRz$ imply $xRz$,
+	
+	\IN{equivalence relation}
+	\item[\normalfont{\emph{equivalence relation}}] if it is reflexive, symmetric and transitive. 
+\end{description}
+
+\label{def:eqfactor}
+\IN{equivalence class}
+If $\sim$ denotes an equivalence relation\footnote{Using symbols like $\sim$ for equivalence relations is more common than denoting them by~$R$.}
+on $X$ and $x \in X$,
+the \emph{equivalence class of~$x$} is 
+\[
+[x]_{\sim} = \{ y \in X \mid y \sim x \}. \label{def:equivalenceclasses}
+\]
+It is $[x]_{\sim} = [y]_{\sim}$ if and only if $x \sim y$ for $x,y \in X$.
+We write $X / {\sim} = \{ [x]_{\sim} \mid x \in X \}$ 
+for the set of equivalence classes. The surjective map $\pi_{\sim} \colon X \to X / {\sim}$ given by
+\begin{equation} \label{def:canprojmap}
+ \pi_{\sim}(x) = [x]_{\sim}
+\end{equation}
+for $x \in X$ is called the \emph{canonical projection map (for $\sim$)}. 
+\IN{canonical projection map} 
+
+\IN{equivalence relation induced!by partition}
+The equivalence classes partition the set $X$. Conversely, given a partition $\{ X_i \mid i \in I\}$ of~$X$
+for some index set $I$, the \emph{equivalence relation induced by it} is given by setting $x,y \in X$ to be equivalent
+if $\{x,y\} \subseteq X_i$ for some $i \in I$. 
+
+For a function $f \colon X \to Y$
+the non-empty preimages $\applyfunc{y}{f^{-1}}$, $y \in Y$,
+partition $X$. The equivalence relation $\sim_f$ \label{def:kernel}
+induced by this partition is called the \emph{kernel relation~(of~$f$)}. We have 
+$x \sim_f y$ if and only if $\applyfunc{x}{f} = \applyfunc{y}{f}$.
+The kernel relation of the canonical projection $\pi_{\sim}$ from above is $\sim$.
+\IN{kernel relation}
+
+\IN{saturating a subset}
+We say that an equivalence relation $\sim$ on $X$ \emph{saturates} 
+a subset $A \subseteq X$ if and only
+if $x \sim y$ and $x \in A$ imply $y \in A$, or equivalently $A$ is union of equivalence classes.
+
+\begin{proposition} \label{prelim:prop:equivalence-saturates}
+	Let $f \colon X \to Y$ and $A \subseteq X$. 
+	Then the following are equivalent:
+\begin{enumerate}
+\item \label{equivalence-saturates:item:simf} The kernel relation $\sim_f$ saturates $A$,
+
+\item \label{equivalence-saturates:item:subset} $\applyfunc{\applyfunc{A}{f}}{f^{-1}} \subseteq A$,
+
+\item \label{equivalence-saturates:item:eq} $\applyfunc{\applyfunc{A}{f}}{f^{-1}} = A$.
+	
+\end{enumerate}
+\end{proposition}
+\begin{proof}	
+$\ref{equivalence-saturates:item:simf} \Rightarrow~\ref{equivalence-saturates:item:subset}$: That $\sim_f$ saturates $A$
+ is equivalent to $f^{-1}(f(x)) \subseteq A$ for each $x \in A$.
+ So $f^{-1}(f(A)) = f^{-1}(f(\bigcup_{x \in A} \{x\})) \subseteq A$.
+ 
+
+$\ref{equivalence-saturates:item:subset} \Rightarrow~\ref{equivalence-saturates:item:eq}$: This 
+follows from \cref{prelim:eqn:finvfinclusion}.
+ 
+ 
+$\ref{equivalence-saturates:item:eq} \Rightarrow~\ref{equivalence-saturates:item:simf}$: If $x \sim_f y$ for some $x \in A$ and $y \in X$,
+then $y \in f^{-1}(f(x)) \subseteq f^{-1}(f(A)) = A$.	
+\end{proof} 
+
+\IN{trivial equivalence relations}
+\IN{equality relation}
+\IN{universal relation}
+The \emph{trivial equivalence relations} 
+are $X \times X$ (the \emph{universal relation}) 
+and $\{ (x,x) \mid x \in X\}$ (the \emph{equality relation}).
+
+\IN{finer equivalence relation}
+\IN{coarser equivalence relation}
+\IN{generated!equivalence relation}
+For two equivalence relations $\sim$ and $\approx$ 
+on $X$ such that $x \sim y$ implies $x \approx y$ for all $x,y$, the relation~$\sim$ (resp.~$\approx$)
+is said to be \emph{finer} (resp.~\emph{coarser}) 
+than $\approx$ (resp.~$\sim$).
+The \emph{equivalence relation generated}
+by a given relation $R$ over $X$
+is the finest equivalence relation $\sim$
+such that $xRy$ implies $x \sim y$ for all $x,y \in X$, i.e.,
+the unique relation such that
+\begin{enumerate}
+	\item $xRy$ implies $x \sim y$ for all $x,y \in X$ and
+	
+	\item for each equivalence relation $\equiv$ over $X$ such that 
+	$xRy$ implies $x \equiv y$ for all $x,y \in X$ we have
+	that $x \sim y$ implies $x \equiv y$ for all $x,y \in X$.
+\end{enumerate}
+
+\begin{remark} \label{prelim:rel:rem:def}
+	In the literature, a relation $R$ from $X$ to $Y$ is often just defined
+	as a subset of $X \times Y$. However, as pointed out in~\cite[p.~2]{Eilenberg1974},
+	under the usual identification of $(X \times Y) \times Z$
+	and $X \times (Y \times Z)$,
+	a subset of $X \times Y \times Z$
+	can be interpreted as a relation 
+	from $X \times Y$ to $Z$
+	or from $X$ to $Y \times Z$,
+	and both interpretations may yield
+	relations with quite different properties.	
+	Another reason is that there might be (type- or category-theoretical) contexts
+	when relations $(R, \emptyset, X)$
+	and $(R', \emptyset, Y)$ for $X \ne Y$
+	should be treated differently.
+	Note that for homogeneous relations,
+	these issues do not arise and the relation can indeed
+	be identified with its set of tuples.
+\end{remark}
+
+\begin{remark}
+	In~\cite{Eilenberg1974}	
+	a relation from $X$ to $Y$ 
+	is modeled as a function $f \colon X \to \mathcal P(Y)$,
+	which can be identified with functions $f \colon \mathcal P(X) \to \mathcal P(Y)$
+	with the property $f(\bigcup_{i\in I} S_i) = \bigcup_{i \in I} f(S_i)$
+	for $S_i \in \mathcal P(X)$ with $i \in I$.	
+	Note that, by the identities from \cref{prelim:subsec:func:basic},
+	the extension of a function $X \to Y$ to subsets
+	fulfills this equation.
+\end{remark}

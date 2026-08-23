@@ -1,0 +1,793 @@
+\begin{table}[H] %[htp]
+% \setlength{\tabcolsep}{5mm} % separator between columns
+%\def\arraystretch{1.25} % vertical stretch factor
+    \centering
+ 
+  \addtolength{\leftskip} {-1cm} % increase (absolute) value if needed
+
+ 
+%  \begin{tabular}{r|rr|rr}
+%  & & & &  \\
+%  \\ \hline
+%  &&
+%  &&
+%  \\ \hline
+% \end{tabular}
+ 
+ %type oder name in 1. spalte?
+\begin{tabular}{r|rr|rr|rr}
+ %Name & Two Transitions Above & Name & Two Transitions Below \\ \hline
+ 
+ 
+ $
+\begin{array}{l}
+ 	\cellcolor{green!15} \scalebox{0.7}{\begin{tikzpicture}[>=latex',shorten >=1pt,node distance=1.5cm,on grid,auto,baseline=0,initial text={}]
+ \tikzset{every state/.style={minimum size=1pt}}
+ 
+ 
+ \node[state] (1) {};
+ \node[state, accepting] (2) [right of=1] {};
+ \node[state, initial] (0) [left of=1] {};
+ 
+ 
+ \path[->] (0) edge node {$a$} (1);
+ \path[->] (1) edge [loop above] node {$a$} (1);
+ \path[->] (1) edge [bend left]  node {$b$} (2);
+ \path[->] (2) edge [bend left]  node {$b$} (1);
+\end{tikzpicture}} \\
+ 	\cellcolor{green!15} \scalebox{0.7}{\begin{tikzpicture}[>=latex',shorten >=1pt,node distance=1.5cm,on grid,auto,baseline=0,initial text={}]
+ 		\tikzset{every state/.style={minimum size=1pt}}
+ 		
+ 		\node[state] (1) {};
+ 		\node[state, accepting] (2) [right of=1] {};
+ 		\node[state, initial] (0) [left of=1] {};
+ 		
+ 		\path[->] (0) edge node {$a$} (1);
+ 		\path[->] (1) edge [loop above] node {$a$} (1);
+ 		\path[->] (1) edge [bend left]  node {$b$} (2);
+ 		\path[->] (2) edge [bend left]  node {$a$} (1);
+\end{tikzpicture}} \\
+ 	\cellcolor{red!15}
+ \scalebox{.7}{
+ 	\begin{tikzpicture}[>=latex',shorten >=1pt,node distance=1.5cm,on grid,auto,baseline=0,initial text={}]
+ 		\tikzset{every state/.style={minimum size=1pt}}
+ 		
+ 		\node[state] (1) {};
+ 		\node[state, accepting] (2) [right of=1] {};
+ 		\node[state, initial] (0) [left of=1] {};
+ 		
+ 		\path[->] (0) edge node {$a$} (1);
+ 		\path[->] (1) edge [loop above] node {$b$} (1);
+ 		\path[->] (1) edge [bend left]  node {$a$} (2);
+ 		\path[->] (2) edge [bend left]  node {$b$} (1);
+ \end{tikzpicture}} \\ 
+ 	\cellcolor{green!15} \scalebox{.7}{
+ 	\begin{tikzpicture}[>=latex',shorten >=1pt,node distance=1.5cm,on grid,auto,baseline=0,initial text={}]
+ 		\tikzset{every state/.style={minimum size=1pt}}
+ 		
+ 		\node[state] (1) {};
+ 		\node[state, accepting] (2) [right of=1] {};
+ 		\node[state, initial] (0) [left of=1] {};
+ 		
+ 		\path[->] (0) edge node {$a$} (1);
+ 		\path[->] (1) edge [loop above] node {$b$} (1);
+ 		\path[->] (1) edge [bend left]  node {$a$} (2);
+ 		\path[->] (2) edge [bend left]  node {$a$} (1);
+ \end{tikzpicture}}
+\end{array}$
+
+
+&&
+
+
+ $
+ \begin{array}{l}
+ 		\cellcolor{green!15} \scalebox{0.7}{\begin{tikzpicture}[>=latex',shorten >=1pt,node distance=1.5cm,on grid,auto,baseline=0,initial text={}]
+ 		\tikzset{every state/.style={minimum size=1pt}}
+ 		
+ 		
+ 		\node[state] (1) {};
+ 		\node[state, accepting] (2) [right of=1] {};
+ 		\node[state, initial] (0) [left of=1] {};
+ 		
+ 		\path[->] (0) edge node {$a$} (1)
+ 		(0) edge [loop above] node {$b$} (0);
+ 		\path[->] (1) edge [loop above] node {$a$} (1);
+ 		\path[->] (1) edge [bend left]  node {$b$} (2);
+ 		\path[->] (2) edge [bend left]  node {$b$} (1);
+ \end{tikzpicture}} \\
+ \cellcolor{red!35} \scalebox{.7}{
+ 	\begin{tikzpicture}[>=latex',shorten >=1pt,node distance=1.5cm,on grid,auto,baseline=0,initial text={}]
+ 		\tikzset{every state/.style={minimum size=1pt}}
+ 		
+ 		\node[state] (1) {};
+ 		\node[state, accepting] (2) [right of=1] {};
+ 		\node[state, initial] (0) [left of=1] {};
+ 		
+ 		\path[->] (0) edge node {$a$} (1)
+ 		(0) edge [loop above] node {$b$} (0);
+ 		\path[->] (1) edge [loop above] node {$a$} (1);
+ 		\path[->] (1) edge [bend left]  node {$b$} (2);
+ 		\path[->] (2) edge [bend left]  node {$a$} (1);
+ \end{tikzpicture}} \\
+ \cellcolor{red!35}
+ \scalebox{.7}{
+ 	\begin{tikzpicture}[>=latex',shorten >=1pt,node distance=1.5cm,on grid,auto,baseline=0,initial text={}]
+ 		\tikzset{every state/.style={minimum size=1pt}}
+ 		
+ 		\node[state] (1) {};
+ 		\node[state, accepting] (2) [right of=1] {};
+ 		\node[state, initial] (0) [left of=1] {};
+ 		
+ 		\path[->] (0) edge node {$a$} (1)
+ 		(0) edge [loop above] node {$b$} (0);
+ 		\path[->] (1) edge [loop above] node {$b$} (1);
+ 		\path[->] (1) edge [bend left]  node {$a$} (2);
+ 		\path[->] (2) edge [bend left]  node {$b$} (1);
+ \end{tikzpicture}}  \\
+	\cellcolor{red!35} \scalebox{.7}{
+	\begin{tikzpicture}[>=latex',shorten >=1pt,node distance=1.5cm,on grid,auto,baseline=0,initial text={}]
+		\tikzset{every state/.style={minimum size=1pt}}
+		
+		\node[state] (1) {};
+		\node[state, accepting] (2) [right of=1] {};
+		\node[state, initial] (0) [left of=1] {};
+		
+		\path[->] (0) edge node {$a$} (1)
+		(0) edge [loop above] node {$b$} (0);
+		\path[->] (1) edge [loop above] node {$b$} (1);
+		\path[->] (1) edge [bend left]  node {$a$} (2);
+		\path[->] (2) edge [bend left]  node {$a$} (1);
+\end{tikzpicture}} 
+ \end{array}
+ $ 
+ 
+ &&
+ 
+
+
+
+
+
+ $
+ \begin{array}{l}
+	\cellcolor{green!15} 			\scalebox{0.7}{\begin{tikzpicture}[>=latex',shorten >=1pt,node distance=1.5cm,on grid,auto,baseline=0,initial text={}]
+		\tikzset{every state/.style={minimum size=1pt}}
+		
+		\node[state] (1) {};
+		\node[state, accepting] (2) [right of=1] {};
+		\node[state, initial] (0) [left of=1] {};
+		
+		\path[->] (0) edge node {$a,b$} (1);
+		\path[->] (1) edge [loop above] node {$a$} (1);
+		\path[->] (1) edge [bend left]  node {$b$} (2);
+		\path[->] (2) edge [bend left]  node {$b$} (1);
+\end{tikzpicture}}\\
+			\cellcolor{red!15} \scalebox{.7}{
+	\begin{tikzpicture}[>=latex',shorten >=1pt,node distance=1.5cm,on grid,auto,baseline=0,initial text={}]
+		\tikzset{every state/.style={minimum size=1pt}}
+		
+		\node[state] (1) {};
+		\node[state, accepting] (2) [right of=1] {};
+		\node[state, initial] (0) [left of=1] {};
+		
+		\path[->] (0) edge node {$a,b$} (1);
+		\path[->] (1) edge [loop above] node {$a$} (1);
+		\path[->] (1) edge [bend left]  node {$b$} (2);
+		\path[->] (2) edge [bend left]  node {$a$} (1);
+\end{tikzpicture}} \\
+			\cellcolor{red!15}
+\scalebox{.7}{
+	\begin{tikzpicture}[>=latex',shorten >=1pt,node distance=1.5cm,on grid,auto,baseline=0,initial text={}]
+		\tikzset{every state/.style={minimum size=1pt}}
+		
+		\node[state] (1) {};
+		\node[state, accepting] (2) [right of=1] {};
+		\node[state, initial] (0) [left of=1] {};
+		
+		\path[->] (0) edge node {$a,b$} (1);
+		\path[->] (1) edge [loop above] node {$b$} (1);
+		\path[->] (1) edge [bend left]  node {$a$} (2);
+		\path[->] (2) edge [bend left]  node {$b$} (1);
+\end{tikzpicture}} \\
+		\cellcolor{green!15} 		\scalebox{.7}{
+	\begin{tikzpicture}[>=latex',shorten >=1pt,node distance=1.5cm,on grid,auto,baseline=0,initial text={}]
+		\tikzset{every state/.style={minimum size=1pt}}
+		
+		\node[state] (1) {};
+		\node[state, accepting] (2) [right of=1] {};
+		\node[state, initial] (0) [left of=1] {};
+		
+		\path[->] (0) edge node {$a,b$} (1);
+		\path[->] (1) edge [loop above] node {$b$} (1);
+		\path[->] (1) edge [bend left]  node {$a$} (2);
+		\path[->] (2) edge [bend left]  node {$a$} (1);
+\end{tikzpicture}} \\
+ \end{array}
+ $
+ 
+ 
+ 
+ &&
+ 
+ $
+ \begin{array}{l}
+		\cellcolor{green!45} 		\scalebox{0.7}{\begin{tikzpicture}[>=latex',shorten >=1pt,node distance=1.5cm,on grid,auto,baseline=0,initial text={}]
+		\tikzset{every state/.style={minimum size=1pt}}
+		\node[state, initial] (0) [left of=1] {};
+		\node[state] (1) {};
+		\node[state, accepting] (2) [right of=1] {};
+		
+		\path[->] (0) edge node {$a$} (1)
+		(0) edge [bend right,below] node {$b$} (2);
+		\path[->] (1) edge [loop above] node {$a$} (1);
+		\path[->] (1) edge [bend left]  node {$b$} (2);
+		\path[->] (2) edge [bend left]  node {$b$} (1);
+\end{tikzpicture}}\\
+	\cellcolor{green!45} 			\scalebox{.7}{
+	\begin{tikzpicture}[>=latex',shorten >=1pt,node distance=1.5cm,on grid,auto,baseline=0,initial text={}]
+		\tikzset{every state/.style={minimum size=1pt}}
+		
+		\node[state] (1) {};
+		\node[state, accepting] (2) [right of=1] {};
+		\node[state, initial] (0) [left of=1] {};
+		
+		\path[->] (0) edge node {$a$} (1)
+		(0) edge [bend right,below] node {$b$} (2);
+		\path[->] (1) edge [loop above] node {$a$} (1);
+		\path[->] (1) edge [bend left]  node {$b$} (2);
+		\path[->] (2) edge [bend left]  node {$a$} (1);
+\end{tikzpicture}} \\
+			\cellcolor{red!15}
+\scalebox{.7}{
+	\begin{tikzpicture}[>=latex',shorten >=1pt,node distance=1.5cm,on grid,auto,baseline=0,initial text={}]
+		\tikzset{every state/.style={minimum size=1pt}}
+		
+		\node[state] (1) {};
+		\node[state, accepting] (2) [right of=1] {};
+		\node[state, initial] (0) [left of=1] {};
+		
+		\path[->] (0) edge node {$a$} (1)
+		(0) edge [bend right,below] node {$b$} (2);
+		\path[->] (1) edge [loop above] node {$b$} (1);
+		\path[->] (1) edge [bend left]  node {$a$} (2);
+		\path[->] (2) edge [bend left]  node {$b$} (1);
+\end{tikzpicture}}\\ 
+			\cellcolor{red!15} \scalebox{.7}{
+	\begin{tikzpicture}[>=latex',shorten >=1pt,node distance=1.5cm,on grid,auto,baseline=0,initial text={}]
+		\tikzset{every state/.style={minimum size=1pt}}
+		
+		\node[state] (1) {};
+		\node[state, accepting] (2) [right of=1] {};
+		\node[state, initial] (0) [left of=1] {};
+		
+		\path[->] (0) edge node {$a$} (1)
+		(0) edge [bend right,below] node {$b$} (2);
+		\path[->] (1) edge [loop above] node {$b$} (1);
+		\path[->] (1) edge [bend left]  node {$a$} (2);
+		\path[->] (2) edge [bend left]  node {$a$} (1);
+\end{tikzpicture}}
+ \end{array}$
+ 
+ \\ \hline
+ 
+
+
+
+
+
+
+ $
+ \begin{array}{l}
+	\cellcolor{green!15} \scalebox{.7}{
+	\begin{tikzpicture}[>=latex',shorten >=1pt,node distance=1.5cm,on grid,auto,baseline=0,initial text={}]
+		\tikzset{every state/.style={minimum size=1pt}}
+		
+		\node[state] (1) {};
+		\node[state, accepting] (2) [right of=1] {};
+		\node[state, initial] (0) [left of=1] {};
+		
+		\path[->] (0) edge node {$a$} (1);
+		\path[->] (1) edge [bend left]  node {$a,b$} (2);
+		\path[->] (2) edge [bend left]  node {$a$} (1);
+\end{tikzpicture}} \\
+	\cellcolor{red!15} 
+\scalebox{.7}{
+	\begin{tikzpicture}[>=latex',shorten >=1pt,node distance=1.5cm,on grid,auto,baseline=0,initial text={}]
+		\tikzset{every state/.style={minimum size=1pt}}
+		
+		\node[state] (1) {};
+		\node[state, accepting] (2) [right of=1] {};
+		\node[state, initial] (0) [left of=1] {};
+		
+		\path[->] (0) edge node {$a$} (1);
+		\path[->] (1) edge [bend left]  node {$a,b$} (2);
+		\path[->] (2) edge [bend left]  node {$b$} (1);
+\end{tikzpicture}} \\
+	\cellcolor{green!15} \scalebox{.7}{
+	\begin{tikzpicture}[>=latex',shorten >=1pt,node distance=1.5cm,on grid,auto,baseline=0,initial text={}]
+		\tikzset{every state/.style={minimum size=1pt}}
+		
+		
+		\node[state] (1) {};
+		\node[state, accepting] (2) [right of=1] {};
+		\node[state, initial] (0) [left of=1] {};
+		
+		\path[->] (0) edge node {$a$} (1);
+		\path[->] (2) edge [loop above] node {$a$} (2);
+		\path[->] (1) edge [bend left]  node {$a$} (2);
+		\path[->] (2) edge [bend left]  node {$b$} (1);
+\end{tikzpicture}} \\
+	\cellcolor{green!15} 		\scalebox{.7}{
+		\begin{tikzpicture}[>=latex',shorten >=1pt,node distance=1.5cm,on grid,auto,baseline=0,initial text={}]
+			\tikzset{every state/.style={minimum size=1pt}}
+			
+			\node[state] (1) {};
+			\node[state, accepting] (2) [right of=1] {};
+			\node[state, initial] (0) [left of=1] {};
+			
+			\path[->] (0) edge node {$a$} (1);
+			\path[->] (2) edge [loop above] node {$b$} (2);
+			\path[->] (1) edge [bend left]  node {$a$} (2);
+			\path[->] (2) edge [bend left]  node {$a$} (1);
+	\end{tikzpicture}} \\
+ \end{array}
+$
+ 
+ &&
+
+
+
+
+
+
+
+
+
+ $
+ \begin{array}{l}
+	\cellcolor{red!15} \scalebox{.7}{
+	\begin{tikzpicture}[>=latex',shorten >=1pt,node distance=1.5cm,on grid,auto,baseline=0,initial text={}]
+		\tikzset{every state/.style={minimum size=1pt}}
+		
+		\node[state] (1) {};
+		\node[state, accepting] (2) [right of=1] {};
+		\node[state, initial] (0) [left of=1] {};
+		
+		\path[->] (0) edge node {$a$} (1)
+		(0) edge [loop above] node {$b$} (0);
+		\path[->] (1) edge [bend left]  node {$a,b$} (2);
+		\path[->] (2) edge [bend left]  node {$a$} (1);
+\end{tikzpicture}}  \\
+	\cellcolor{red!35} \scalebox{.7}{
+	\begin{tikzpicture}[>=latex',shorten >=1pt,node distance=1.5cm,on grid,auto,baseline=0,initial text={}]
+		\tikzset{every state/.style={minimum size=1pt}}
+		
+		\node[state] (1) {};
+		\node[state, accepting] (2) [right of=1] {};
+		\node[state, initial] (0) [left of=1] {};
+		
+		\path[->] (0) edge node {$a$} (1)
+		(0) edge [loop above] node {$b$} (0);
+		\path[->] (1) edge [bend left]  node {$a,b$} (2);
+		\path[->] (2) edge [bend left]  node {$b$} (1);
+\end{tikzpicture}} \\
+	\cellcolor{red!35} \scalebox{.7}{
+	\begin{tikzpicture}[>=latex',shorten >=1pt,node distance=1.5cm,on grid,auto,baseline=0,initial text={}]
+		\tikzset{every state/.style={minimum size=1pt}}
+		
+		
+		\node[state] (1) {};
+		\node[state, accepting] (2) [right of=1] {};
+		\node[state, initial] (0) [left of=1] {};
+		
+		\path[->] (0) edge node {$a$} (1)
+		(0) edge [loop above] node {$b$} (0);
+		\path[->] (2) edge [loop above] node {$a$} (2);
+		\path[->] (1) edge [bend left]  node {$a$} (2);
+		\path[->] (2) edge [bend left]  node {$b$} (1);
+\end{tikzpicture}} \\
+	\cellcolor{green!15} \scalebox{.7}{
+	\begin{tikzpicture}[>=latex',shorten >=1pt,node distance=1.5cm,on grid,auto,baseline=0,initial text={}]
+		\tikzset{every state/.style={minimum size=1pt}}
+		
+		\node[state] (1) {};
+		\node[state, accepting] (2) [right of=1] {};
+		\node[state, initial] (0) [left of=1] {};
+		
+		\path[->] (0) edge node {$a$} (1)
+		(0) edge [loop above] node {$b$} (0);
+		\path[->] (2) edge [loop above] node {$b$} (2);
+		\path[->] (1) edge [bend left]  node {$a$} (2);
+		\path[->] (2) edge [bend left]  node {$a$} (1);
+\end{tikzpicture}} 
+ \end{array}
+ $
+ 
+
+
+
+&&
+
+
+
+ 
+ $
+ \begin{array}{l}
+			\cellcolor{red!15} \scalebox{.7}{
+	\begin{tikzpicture}[>=latex',shorten >=1pt,node distance=1.5cm,on grid,auto,baseline=0,initial text={}]
+		\tikzset{every state/.style={minimum size=1pt}}
+		
+		\node[state] (1) {};
+		\node[state, accepting] (2) [right of=1] {};
+		\node[state, initial] (0) [left of=1] {};
+		
+		\path[->] (0) edge node {$a,b$} (1);
+		\path[->] (1) edge [bend left]  node {$a,b$} (2);
+		\path[->] (2) edge [bend left]  node {$a$} (1);
+\end{tikzpicture}}  \\
+			\cellcolor{red!15} \scalebox{.7}{
+	\begin{tikzpicture}[>=latex',shorten >=1pt,node distance=1.5cm,on grid,auto,baseline=0,initial text={}]
+		\tikzset{every state/.style={minimum size=1pt}}
+		
+		\node[state] (1) {};
+		\node[state, accepting] (2) [right of=1] {};
+		\node[state, initial] (0) [left of=1] {};
+		
+		\path[->] (0) edge node {$a,b$} (1);
+		\path[->] (1) edge [bend left]  node {$a,b$} (2);
+		\path[->] (2) edge [bend left]  node {$b$} (1);
+\end{tikzpicture}}  \\
+		\cellcolor{green!15} 		\scalebox{.7}{
+	\begin{tikzpicture}[>=latex',shorten >=1pt,node distance=1.5cm,on grid,auto,baseline=0,initial text={}]
+		\tikzset{every state/.style={minimum size=1pt}}
+		
+		\node[state, initial] (0) [left of=1] {};
+		\node[state] (1) {};
+		\node[state, accepting] (2) [right of=1] {};
+		
+		\path[->] (0) edge node {$a,b$} (1);
+		\path[->] (2) edge [loop above] node {$a$} (2);
+		\path[->] (1) edge [bend left]  node {$a$} (2);
+		\path[->] (2) edge [bend left]  node {$b$} (1);
+\end{tikzpicture}} \\
+			\cellcolor{red!15} \scalebox{.7}{
+	\begin{tikzpicture}[>=latex',shorten >=1pt,node distance=1.5cm,on grid,auto,baseline=0,initial text={}]
+		\tikzset{every state/.style={minimum size=1pt}}
+		
+		\node[state] (1) {};
+		\node[state, accepting] (2) [right of=1] {};
+		\node[state, initial] (0) [left of=1] {};
+		
+		\path[->] (0) edge node {$a,b$} (1);
+		\path[->] (2) edge [loop above] node {$b$} (2);
+		\path[->] (1) edge [bend left]  node {$a$} (2);
+		\path[->] (2) edge [bend left]  node {$a$} (1);
+\end{tikzpicture}}
+ \end{array}
+ $
+ 
+ &&
+ 
+ $
+ \begin{array}{l}
+		\cellcolor{green!45} 		\scalebox{.7}{
+	\begin{tikzpicture}[>=latex',shorten >=1pt,node distance=1.5cm,on grid,auto,baseline=0,initial text={}]
+		\tikzset{every state/.style={minimum size=1pt}}
+		
+		\node[state] (1) {};
+		\node[state, accepting] (2) [right of=1] {};
+		\node[state, initial] (0) [left of=1] {};
+		
+		\path[->] (0) edge node {$a$} (1)
+		(0) edge [bend right,below] node {$b$} (2);
+		\path[->] (1) edge [bend left]  node {$a,b$} (2);
+		\path[->] (2) edge [bend left]  node {$a$} (1);
+\end{tikzpicture}}  \\
+			\cellcolor{red!15} \scalebox{.7}{
+	\begin{tikzpicture}[>=latex',shorten >=1pt,node distance=1.5cm,on grid,auto,baseline=0,initial text={}]
+		\tikzset{every state/.style={minimum size=1pt}}
+		
+		\node[state] (1) {};
+		\node[state, accepting] (2) [right of=1] {};
+		\node[state, initial] (0) [left of=1] {};
+		
+		\path[->] (0) edge node {$a$} (1)
+		(0) edge [bend right,below] node {$b$} (2);
+		\path[->] (1) edge [bend left]  node {$a,b$} (2);
+		\path[->] (2) edge [bend left]  node {$b$} (1);
+\end{tikzpicture}} \\
+			\cellcolor{red!35} \scalebox{.7}{
+	\begin{tikzpicture}[>=latex',shorten >=1pt,node distance=1.5cm,on grid,auto,baseline=0,initial text={}]
+		\tikzset{every state/.style={minimum size=1pt}}
+		
+		
+		\node[state] (1) {};
+		\node[state, accepting] (2) [right of=1] {};
+		\node[state, initial] (0) [left of=1] {};
+		
+		\path[->] (0) edge node {$a$} (1)
+		(0) edge [bend right,below] node {$b$} (2);
+		\path[->] (2) edge [loop above] node {$a$} (2);
+		\path[->] (1) edge [bend left]  node {$a$} (2);
+		\path[->] (2) edge [bend left]  node {$b$} (1);
+\end{tikzpicture}}  \\ 
+	\cellcolor{green!15} 			\scalebox{.7}{
+	\begin{tikzpicture}[>=latex',shorten >=1pt,node distance=1.5cm,on grid,auto,baseline=0,initial text={}]
+		\tikzset{every state/.style={minimum size=1pt}}
+		
+		\node[state] (1) {};
+		\node[state, accepting] (2) [right of=1] {};
+		\node[state, initial] (0) [left of=1] {};
+		
+		\path[->] (0) edge node {$a$} (1)
+		(0) edge [bend right,below] node {$b$} (2);
+		\path[->] (2) edge [loop above] node {$b$} (2);
+		\path[->] (1) edge [bend left]  node {$a$} (2);
+		\path[->] (2) edge [bend left]  node {$a$} (1);
+\end{tikzpicture}} 
+ \end{array}$
+
+ \\ \hline
+ 
+
+%\end{tabular}
+
+%\begin{tabular}{c|cc|cc}
+
+ 
+ $
+ \begin{array}{l}
+			\cellcolor{red!15} \scalebox{.7}{
+	\begin{tikzpicture}[>=latex',shorten >=1pt,node distance=1.5cm,on grid,auto,baseline=0,initial text={}]
+		\tikzset{every state/.style={minimum size=1pt}}
+		
+		\node[state] (1) {};
+		\node[state, accepting] (2) [right of=1] {};
+		\node[state, initial] (0) [left of=1] {};
+		
+		\path[->] (0) edge node {$a$} (1);
+		\path[->] (2) edge [loop above] node {$a$} (2);
+		\path[->] (1) edge [bend left]  node {$b$} (2);
+		\path[->] (2) edge [bend left]  node {$b$} (1);
+\end{tikzpicture}} \\
+	\cellcolor{green!15} 	\scalebox{.7}{
+	\begin{tikzpicture}[>=latex',shorten >=1pt,node distance=1.5cm,on grid,auto,baseline=0,initial text={}]
+		\tikzset{every state/.style={minimum size=1pt}}
+		
+		\node[state] (1) {};
+		\node[state, accepting] (2) [right of=1] {};
+		\node[state, initial] (0) [left of=1] {};
+		
+		\path[->] (0) edge node {$a$} (1);
+		\path[->] (2) edge [loop above] node {$b$} (2);
+		\path[->] (1) edge [bend left]  node {$b$} (2);
+		\path[->] (2) edge [bend left]  node {$a$} (1);
+\end{tikzpicture}} \\
+ 		\cellcolor{green!15} 	\scalebox{.7}{
+ 		\begin{tikzpicture}[>=latex',shorten >=1pt,node distance=1.5cm,on grid,auto,baseline=0,initial text={}]
+ 			\tikzset{every state/.style={minimum size=1pt}}
+ 			
+ 			\node[state] (1) {};
+ 			\node[state, accepting] (2) [right of=1] {};
+ 			\node[state, initial] (0) [left of=1] {};
+ 			
+ 			\path[->] (0) edge node {$a$} (1);
+ 			\path[->] (1) edge [bend left]  node {$a$} (2);
+ 			\path[->] (2) edge [bend left]  node {$a,b$} (1);
+ 	\end{tikzpicture}}  \\
+ 	\cellcolor{green!15} 	\scalebox{.7}{
+ 	\begin{tikzpicture}[>=latex',shorten >=1pt,node distance=1.5cm,on grid,auto,baseline=0,initial text={}]
+ 		\tikzset{every state/.style={minimum size=1pt}}
+ 		
+ 		\node[state] (1) {};
+ 		\node[state, accepting] (2) [right of=1] {};
+ 		\node[state, initial] (0) [left of=1] {};
+ 		
+ 		\path[->] (0) edge node {$a$} (1);
+ 		\path[->] (1) edge [bend left]  node {$b$} (2);
+ 		\path[->] (2) edge [bend left]  node {$a,b$} (1);
+ \end{tikzpicture}} \\
+ \end{array}
+$
+ 
+ &&
+ 
+ 
+  $
+ \begin{array}{l}
+\cellcolor{red!35} \scalebox{.7}{
+	\begin{tikzpicture}[>=latex',shorten >=1pt,node distance=1.5cm,on grid,auto,baseline=0,initial text={}]
+		\tikzset{every state/.style={minimum size=1pt}}
+		
+		\node[state] (1) {};
+		\node[state, accepting] (2) [right of=1] {};
+		\node[state, initial] (0) [left of=1] {};
+		
+		\path[->] (0) edge node {$a$} (1)
+		(0) edge [loop above] node {$b$} (0);
+		\path[->] (2) edge [loop above] node {$a$} (2);
+		\path[->] (1) edge [bend left]  node {$b$} (2);
+		\path[->] (2) edge [bend left]  node {$b$} (1);
+\end{tikzpicture}}  \\
+	\cellcolor{green!15}  \scalebox{.7}{
+ \begin{tikzpicture}[>=latex',shorten >=1pt,node distance=1.5cm,on grid,auto,baseline=0,initial text={}]
+ \tikzset{every state/.style={minimum size=1pt}}
+
+ \node[state] (1) {};
+ \node[state, accepting] (2) [right of=1] {};
+ \node[state, initial] (0) [left of=1] {};
+ 
+  \path[->] (0) edge node {$a$} (1)
+            (0) edge [loop above] node {$b$} (0);
+ \path[->] (2) edge [loop above] node {$b$} (2);
+ \path[->] (1) edge [bend left]  node {$a$} (2);
+ \path[->] (2) edge [bend left]  node {$a$} (1);
+\end{tikzpicture}} \\
+			\cellcolor{red!35}
+\scalebox{.7}{
+	\begin{tikzpicture}[>=latex',shorten >=1pt,node distance=1.5cm,on grid,auto,baseline=0,initial text={}]
+		\tikzset{every state/.style={minimum size=1pt}}
+		
+		\node[state] (1) {};
+		\node[state, accepting] (2) [right of=1] {};
+		\node[state, initial] (0) [left of=1] {};
+		
+		\path[->] (0) edge node {$a$} (1)
+		(0) edge [loop above] node {$b$} (0);
+		\path[->] (1) edge [bend left]  node {$a$} (2);
+		\path[->] (2) edge [bend left]  node {$a,b$} (1);
+\end{tikzpicture}} \\
+	\cellcolor{green!15} 			\scalebox{.7}{
+	\begin{tikzpicture}[>=latex',shorten >=1pt,node distance=1.5cm,on grid,auto,baseline=0,initial text={}]
+		\tikzset{every state/.style={minimum size=1pt}}
+		
+		\node[state] (1) {};
+		\node[state, accepting] (2) [right of=1] {};
+		\node[state, initial] (0) [left of=1] {};
+		
+		\path[->] (0) edge node {$a$} (1)
+		(0) edge [loop above] node {$b$} (0);
+		\path[->] (1) edge [bend left]  node {$b$} (2);
+		\path[->] (2) edge [bend left]  node {$a,b$} (1);
+\end{tikzpicture}} \\
+ \end{array}
+  $
+
+
+&&
+
+
+
+ $
+ \begin{array}{l}
+			\cellcolor{red!15} \scalebox{.7}{
+	\begin{tikzpicture}[>=latex',shorten >=1pt,node distance=1.5cm,on grid,auto,baseline=0,initial text={}]
+		\tikzset{every state/.style={minimum size=1pt}}
+		
+		\node[state] (1) {};
+		\node[state, accepting] (2) [right of=1] {};
+		\node[state, initial] (0) [left of=1] {};
+		
+		\path[->] (0) edge node {$a,b$} (1);
+		\path[->] (2) edge [loop above] node {$a$} (2);
+		\path[->] (1) edge [bend left]  node {$b$} (2);
+		\path[->] (2) edge [bend left]  node {$b$} (1);
+\end{tikzpicture}} \\ 
+		\cellcolor{green!15} 		\scalebox{.7}{
+	\begin{tikzpicture}[>=latex',shorten >=1pt,node distance=1.5cm,on grid,auto,baseline=0,initial text={}]
+		\tikzset{every state/.style={minimum size=1pt}}
+		
+		\node[state] (1) {};
+		\node[state, accepting] (2) [right of=1] {};
+		\node[state, initial] (0) [left of=1] {};
+		
+		\path[->] (0) edge node {$a,b$} (1);
+		\path[->] (2) edge [loop above] node {$b$} (2);
+		\path[->] (1) edge [bend left]  node {$b$} (2);
+		\path[->] (2) edge [bend left]  node {$a$} (1);
+\end{tikzpicture}} \\ 
+	\cellcolor{green!15} 			\scalebox{.7}{
+	\begin{tikzpicture}[>=latex',shorten >=1pt,node distance=1.5cm,on grid,auto,baseline=0,initial text={}]
+		\tikzset{every state/.style={minimum size=1pt}}
+		
+		\node[state] (1) {};
+		\node[state, accepting] (2) [right of=1] {};
+		\node[state, initial] (0) [left of=1] {};
+		
+		\path[->] (0) edge node {$a,b$} (1);
+		\path[->] (1) edge [bend left]  node {$a$} (2);
+		\path[->] (2) edge [bend left]  node {$a,b$} (1);
+\end{tikzpicture}} \\ 
+		\cellcolor{green!15} 		\scalebox{.7}{
+	\begin{tikzpicture}[>=latex',shorten >=1pt,node distance=1.5cm,on grid,auto,baseline=0,initial text={}]
+		\tikzset{every state/.style={minimum size=1pt}}
+		
+		\node[state] (1) {};
+		\node[state, accepting] (2) [right of=1] {};
+		\node[state, initial] (0) [left of=1] {};
+		
+		\path[->] (0) edge node {$a,b$} (1);
+		\path[->] (1) edge [bend left]  node {$b$} (2);
+		\path[->] (2) edge [bend left]  node {$a,b$} (1);
+\end{tikzpicture}}
+ \end{array}
+ $ 
+
+&&
+
+
+$
+\begin{array}{l}
+			\cellcolor{red!15} \scalebox{.7}{
+	\begin{tikzpicture}[>=latex',shorten >=1pt,node distance=1.5cm,on grid,auto,baseline=0,initial text={}]
+		\tikzset{every state/.style={minimum size=1pt}}
+		
+		\node[state] (1) {};
+		\node[state, accepting] (2) [right of=1] {};
+		\node[state, initial] (0) [left of=1] {};
+		
+		\path[->] (0) edge node {$a$} (1)
+		(0) edge [bend right,below] node {$b$} (2);
+		\path[->] (2) edge [loop above] node {$a$} (2);
+		\path[->] (1) edge [bend left]  node {$b$} (2);
+		\path[->] (2) edge [bend left]  node {$b$} (1);
+\end{tikzpicture}} \\
+			\cellcolor{green!15} \scalebox{.7}{
+	\begin{tikzpicture}[>=latex',shorten >=1pt,node distance=1.5cm,on grid,auto,baseline=0,initial text={}]
+		\tikzset{every state/.style={minimum size=1pt}}
+		
+		\node[state] (1) {};
+		\node[state, accepting] (2) [right of=1] {};
+		\node[state, initial] (0) [left of=1] {};
+		
+		\path[->] (0) edge node {$a$} (1)
+		(0) edge [bend right,below] node {$b$} (2);
+		\path[->] (2) edge [loop above] node {$b$} (2);
+		\path[->] (1) edge [bend left]  node {$b$} (2);
+		\path[->] (2) edge [bend left]  node {$a$} (1);
+\end{tikzpicture}} \\
+			\cellcolor{red!15}
+\scalebox{.7}{
+	\begin{tikzpicture}[>=latex',shorten >=1pt,node distance=1.5cm,on grid,auto,baseline=0,initial text={}]
+		\tikzset{every state/.style={minimum size=1pt}}
+		
+		\node[state] (1) {};
+		\node[state, accepting] (2) [right of=1] {};
+		\node[state, initial] (0) [left of=1] {};
+		
+		\path[->] (0) edge node {$a$} (1)
+		(0) edge [bend right,below] node {$b$} (2);
+		\path[->] (1) edge [bend left]  node {$a$} (2);
+		\path[->] (2) edge [bend left]  node {$a,b$} (1);
+\end{tikzpicture}} \\ 
+	\cellcolor{green!15} 			\scalebox{.7}{
+	\begin{tikzpicture}[>=latex',shorten >=1pt,node distance=1.5cm,on grid,auto,baseline=0,initial text={}]
+		\tikzset{every state/.style={minimum size=1pt}}
+		
+		\node[state] (1) {};
+		\node[state, accepting] (2) [right of=1] {};
+		\node[state, initial] (0) [left of=1] {};
+		
+		\path[->] (0) edge node {$a$} (1)
+		(0) edge [bend right,below] node {$b$} (2);
+		\path[->] (1) edge [bend left]  node {$b$} (2);
+		\path[->] (2) edge [bend left]  node {$a,b$} (1);
+\end{tikzpicture}} 
+\end{array}$
+
+ \\ \hline
+
+\end{tabular}
+ \caption[3-state binary constraint automata pictures case \{2,3\}]{Pictorial depiction of
+ of all cases of $3$-state partial automata with at least one undefined transition and strongly connected component $\{2,3\}$.
+ The table uses the same arrangement and color coding as Table~\ref{constr_sync:table:three_states_23}.}
+ \label{tab:binary_automata_three_states}
+  \vspace{-8mm}
+\end{table}
+
+
+
+\todo{kein rr für spalten,  um tabelle schmaler zu machen.}
+
+

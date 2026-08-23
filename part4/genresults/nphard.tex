@@ -1,0 +1,291 @@
+%!TEX root = ../../thesis-trier.tex
+
+Here, we give two sufficient condition to deduce \NP-hardness
+in \cref{constrsync:thm:NP-hardness,constrsync:letterbounded:lem:NPhard}.
+The latter uses two lemmas: \Cref{constrsync:left-ideal-uvw}
+on non-equivalent words w.r.t.~the Myhill-Nerode relation
+for special left ideal languages,
+\cref{constrsync:letter-bounded:lem:uabi}
+on the Levenshtein-Romanov mapping for a language.
+
+%A condition using the notions of auxiliary state avoiding words similarly as for \NL\
+%and \PSPACE in the previous sections, generalizing the \NP-hardness results
+%for constraint languages of the form $ab^*a$, can also be developed, but we do not give
+%such a result since the construction would be very similar to the ones given before.
+%
+% uv^*w und sigma_{\{v\}}(u) = eps
+
+\begin{theorem} \label{constrsync:thm:NP-hardness}
+	Let $u, v \in \Sigma^*$ and $L \subseteq \Sigma^+$ be non-empty and regular
+	with $|v| > 0$ such that
+	$
+	u \notin \factor{v^*}$ and 
+	$
+	v \notin \factor{L}.
+	$
+	Then $\constrsync{uv^+L}$ and $\constrsync{uv^*L}$ are \NP-hard.
+\end{theorem}
+\begin{proof}
+	Since $v \notin \factor{L}$
+	we have $\Sigma^* v \Sigma^* \cap uv^*L = uv^+L$
+	and thus, by \cref{constr_sync:gen_results:thm:ideal_separation},
+	it is sufficient to show the claim for $\constrsync{uv^+L}$.
+	
+	We give a reduction from \DST
+	over a unary alphabet, which is \NP-complete by Theorem~\ref{compl:thm:comm_ST}.
+	Let $(\mathcal A, S, T)$ be an instance
+	with $\semiautomat{A}{Q}{\{b\}}{\delta}$ and $S, T \subseteq Q$
+	such that $S \cap T = \emptyset$.
+	Pick some $\hat s \in S$
+	and let $\overline{S} \colon ( Q \setminus T ) \to S$
+	be given by $\overline{S}(q) = \hat{s}$ if $q \in Q \setminus (S \cup T)$
+	and $\overline{S}(q) = q$ otherwise. 	
+	Let $\semiautomat{A'}{\Sigma}{ ( Q \times \pref{uv'} ) \cup \{t\}}{\delta'}$
+	where, for $w \in \pref{uv'}$ and $x \in \Sigma$ we set
+	\[ 
+	\delta'((q, w), x)
+	= \begin{cases}
+		(\delta(q, b), u)    & \text{if } wx = uv, \\
+		t                    & \text{if } wx \notin \pref{uv'} \text{ and } q \in T, \\
+		(\overline{S}(q), u) & \text{if } \sigma_{\{u\}}(wx) = u, \\
+		(q, \sigma_{\{uv'\}}(wx)) & \text{otherwise,}
+	\end{cases}
+	\]
+	for $q \in Q$ and $\delta'(t, x) = t$. Next, we show
+	that there exists $i \ge 0$ such that $\delta(q, b^i) \in T$
+	for all $q \in S$ if and only if $\mathcal A'$ admits a synchronizing word in $uv^+L$.
+	
+	First, suppose we have $\delta(q, b^i) \in T$ for all $q \in S$
+	and for some $i \ge 0$. Since $S\cap T = \emptyset$ we must have $i > 0$.
+	Let $(q, w)$ with $q \in Q$ and $w \in \pref{uv'}$.
+	Then we have $\delta'((q, w), u) \in S \times \{u\} \cup \{t\}$.
+	This follows by the definition of the third case,
+	since if we still read a prefix of $uv'$, but have encountered
+	the $u$ as a suffix along this prefix, we move into a state with~$u$
+	as it second component. This also works if we read~$u$
+	but encounter the suffix~$u$ before having finished with reading~$u$ as input 
+	by \crefitem{constr_sync:prop:sigma_L_properties}{constr_sync:sigme_L:item:concatenation}.
+	Next, let $q \in S$.
+	Then $\delta'((q, u), v^i) = (\delta(q, b^i), u)$.
+	Consider $w' \in L$.
+	Since~$v \notin \factor{w'}$,
+	there is a smallest prefix $w''$ of $w'$ and $x \in \Sigma$
+	such that $uw'' \in \pref{uv'}$
+	and $uw''x \notin \pref{uv'}$.
+	Since $\delta(q, b^i) \in T$
+	we then find $\delta'( (\delta(q, b^i), u), w'x ) = t$.
+	Combining everything, the word $uv^iw'$ maps
+	all states to~$t$.
+	
+	Conversely, let $uv^iw$ with $i \ge 1$ and $w' \in L$
+	be a synchronizing word for $\mathcal A'$.
+	Since~$t$ is a trap state, it must be the synchronizing state.
+	Consider a state $q \in S$.
+	We have $\delta'((q, \varepsilon), uv^i) = (\delta(q, b^i), uv^i)$.	
+	Assume $\delta(q, b^i) \notin T$.
+	Write $w = w_1 \cdots w_m$ with $w_1, \ldots, w_m \in \Sigma$.
+	We have $\delta'((\delta(q, b^i), u), w_1 \cdots w_i) \in ( Q \setminus T ) \times \{ \sigma_{\{uv'\}}(w_1 \cdots w_i) \}$
+	for $i \in \{0, 1,\ldots,m\}$ (we set $w_1 \cdots w_0$ equal to $\varepsilon$).
+	This follows inductively. For $i = 0$ the claim clearly holds.
+	Next, let $i \in \{1,\ldots,m\}$.
+	For $\sigma_{\{uv'\}}(w_1 \cdots w_{i-1}) = uv'$
+	we have $uv'w_{i} \ne uv$ since $v \notin \factor{w}$,
+	and thus only the last two cases of the transition function can apply,
+	which gives the claim.
+	For $\sigma_{\{uv'\}}(w_1 \cdots w_{i-1}) \ne uv'$,
+	we also have $uv'w_i \ne uv$
+	and also only the last two cases of the transition function can apply.
+	Thus, we do not end up in the state~$t$
+	and so we must have $\delta(q, b^i) \in T$
+	for all $q \in S$.
+\end{proof}
+
+\begin{remark}
+	\Cref{constrsync:thm:NP-hardness} 
+	was given in~\cite[Prop.~8]{DBLP:conf/ictcs/Hoffman20}
+	but with the additional assumption $\pref{v^*}\cap L = \emptyset$
+	(and the assumption $|v| > 0$ was missing, which was a mistake).
+\end{remark}
+
+\begin{lemma} \label{constrsync:left-ideal-uvw}
+	Let $I = \Sigma^* u v^* w$ for $u,v,w \in \Sigma^*$
+	and $x,y \in \pref{uw}$
+	with $x \ne y$.
+	Then we have $x \not\equiv_I y$.
+\end{lemma}
+\begin{proof}
+	Without loss of generality, let $|x| < |y|$.
+	There exists $z \in \suff{u}$
+	such that $yz = uw$.
+	Thus we have $yz \in I$.
+	Since $|xz| < |uw|$ and~$uw$ is the shortest word in~$I$,
+	we have $xz \notin I$.
+	This gives $x \not\equiv_I y$.		
+\end{proof}
+
+\begin{lemma} \label{constrsync:letter-bounded:lem:uabi}
+	Suppose that $a, b, c \in \Sigma$ with $a \ne b$ and $c \ne b$ (while $a = c$ is allowed). 
+	Let $u,v \in\Sigma^*$, $i > |u| + |v|$, and $p \ge 0$.	
+	Set $L = uab^i(b^p)^*cv$.
+	Then for $w \in \Sigma^*$ we have $\sigma_L(wuab^i) = uab^i$.
+\end{lemma}
+\begin{proof}
+	Since $uab^i \in \pref{L}$ for $w \in \Sigma^*$
+	we have $\sigma_L(w uab^i) = y uab^i$ for some $y \in \Sigma^*$
+	such that $y uab^i \in \pref{L}$.
+	The factor $ab^i$ appears in a word from~$L$ precisely once
+	after the prefix~$u$ as $i > |u| + |v|$. 
+	This yields that the only prefix of a word from~$L$
+	ending with $ab^i$ is $uab^i$.
+	Thus $y uab^i \in \pref{L}$
+	gives $y = \varepsilon$.
+\end{proof}
+
+\begin{proposition} \label{constrsync:letterbounded:lem:NPhard}
+	Suppose that $a, b, c \in \Sigma$ with $a \ne b$ and $c \ne b$ (while $a = c$ is allowed). 
+	Let $L \subseteq \Sigma^*$ be regular such that
+	\[
+	uab^i(b^p)^*cv
+	\subseteq
+	L
+	\subseteq 
+	x^* uab^i(b^p)^*cv y^*
+	\]
+	for $x, y \in \Sigma$
+	with $i > |u| + |v|$ and $p > 0$.
+	Then $\constrsync{L}$ is \NP-hard.
+\end{proposition} % Todo: Bild zu der Konstruktion.
+\begin{proof}
+	We give a reduction from \ST on unary automata,
+	which is \NP-complete by \cref{compl:thm:comm_ST}.
+	Set $I = \Sigma^* U$ for $U = uab^i(b^p)^*cv$.
+	For short, in this proof we write $[w]$ for $[w]_{\equiv_I}$ and $w \in \Sigma^*$.
+	
+	\noindent\underline{Construction:} 
+	Let $(\mathcal A, S, T)$ be an instance of \ST 
+	where $\semiautomat{A}{Q}{\{b\}}{\delta}$.
+	Our reduction first checks whether $S \subseteq T$,
+	and if this is the case, $(\mathcal A, S, T)$
+	is a \rYES-instance.
+	Next, assume $S \not\subseteq T$.	
+	Then pick some state $\hat q \in S$
+	and let $\overline S \colon Q \to S$
+	be given by $\overline{S}(q) = q$ if $q \in Q$
+	and $\overline{S}(q) = \hat{q}$ if $q \notin S$.	
+	Set $\semiautomat{A'}{Q'}{\Sigma}{\delta'}$
+	with $Q' = (Q \cup \{t\}) \times P$ for $P = \{ [w] \mid w \in \Sigma^* \}$ and
+	\[
+	\delta'((q, [w]), x)
+	=
+	\begin{cases}
+		(\delta(q, b), [wx]) & \text{if } wx \equiv_I uab^i, \\ %\text{ and } w \equiv_I uab^{i + p - 1}, \\
+		(t, [wx])            & \text{if } w  \equiv_I uab^i \text{ and } x = c \text{ and } q \in T, \\
+		(\overline{S}(q), [wx])	& \text{otherwise.}
+	\end{cases}
+	\]
+	By~\cref{prelim:eqn:Nerodecongruence}, $\delta'$ is well-defined.
+	Note that $P = \{ [w] \mid w \in \pref{uab^icv} \}$
+	by \cref{prelim:formlang:cor:left-ideal}
+	and since $w \in \pref{U}$ with $w = uab^i w'$ for some $w' \in \Sigma^*$
+	is $\equiv_I$-equivalent to each word from $uab^i (b^p)^*w'$.	
+		
+	\noindent\underline{Verification:} Next, we show that $\mathcal A'$
+	has a synchronizing word in $L$ if and only if
+	there exists $j \ge 0$ such that $\delta(S, b^j) \subseteq T$
+	in~$\mathcal A$.
+	
+	First, suppose $x^r u a b^{i + l\cdot p} c v y^s \in L$ for $l,r, s \ge 0$
+	is a word synchronizing~$\mathcal A'$.
+	Since the states in $\{t\} \times P$ form an upper set,
+	the synchronizing state must belong to this set.
+	Let $q \in Q$.
+	Consider a prefix $u' \in \pref{x^r ua b^{i-1}}$.
+	Assume $u'cv \in I$.
+	Then $u'$ must have a word from $uab^i(b^p)^*$ as a suffix,
+	in particular, it must have $ab^i$ as a factor.
+	This implies that $b^i$ must be a factor of $u$,
+	which is not possible since $i > |u|$.
+	Thus we have $u'cv \notin I$.
+	As $uab^icv \in I$, we find $u' \not\equiv_I uab^i$.
+	Next, write $x^r ua b^{i-1} = z u'$ for some $z \in \Sigma$ and $u' \in \Sigma^*$.
+	By the definition of~$\delta'$,
+	we then find $\delta'((q, [\varepsilon]), z) = (\overline{S}(q), [z])$.
+	Since $\overline{S}^2 = \overline{S}$,
+	and no prefix of $x^ruab^{i-1}$ is $\equiv_I$-equivalent to $uab^i$,
+	we obtain $\delta'((\overline{S}(q), [z]), u') = (\overline{S}(q), [zu'])$.
+	By \cref{constrsync:letter-bounded:lem:uabi} 
+	we have $\sigma_U(zu'b) = uab^i$.
+	With \cref{prelim:formlang:prop:left-ideal} this gives
+	$zu'b \equiv_I uab^i$.
+	By the definition of~$\delta'$, we then obtain
+	\[
+	\delta'((\overline{S}(q), [zu']), b)
+	= (\delta(\overline{S}(q), b), [uab^i]).
+	\]
+	Thus, for $q \in S$,
+	we find $\delta'((q, [\varepsilon]), z^r u a b^i)) = (\delta(q,b), [uab^i])$.
+	Next, we have 
+	\[
+	\delta'((\delta(q,b), [uab^i]), b^{l\cdot p}) = (\delta(q, b^{l+1}), [uab^i]).
+	\]
+	Now, assume $\delta(q, b^{l+1}) \notin T$.
+	Then, since $uab^ic \not\equiv_I uab^i$ and by the definition of $\delta'$,
+	we find	
+	\[ 
+	\delta'((\delta(q, b^{l+1}), [uab^i]), c) = (\overline{S}(\delta(q, b^{l+1})), [uab^ic]).
+	\]
+	Since the state $(\overline{S}(\delta(q, b^l)), [uab^ic])$
+	is mapped to a state in $\{t\} \times P$ by $vy^s$, by the definition of~$\delta'$
+	we must have $uab^ic w \equiv_I uab^i$ for some $w \in \pref{vy^s}$.
+	By \cref{constrsync:left-ideal-uvw}
+	we have $uab^icw \not\equiv_I uab^i$ for $w \in \pref{v}$.
+	Thus, there exists $j > 0$ such that $uab^icvy^j \equiv_I uab^i$ where we 
+	choose~$j$ to be minimal.
+	This gives $y = b$, since for $y \ne b$
+	we have $uab^icvycv\notin I$ since the word has no suffix from~$U$, 
+	but $uab^icv\in I$.	
+	Next, by the definition of~$\delta'$,
+	since $uab^ic w \not\equiv_I uab^i$ for $w \in \pref{v}$, we have
+	\[
+	\delta'((\overline{S}(\delta(q, b^{l+1})), [uab^ic]), v) = (p, [uab^icv]))
+	\]
+	for some $p \in S$.
+	Then with $y = b$ we find
+	\[
+	\delta'((\overline{S}(\delta(q, b^{l+1})), [uab^ic]), vy^s) \in Q \times \{ [uab^icvy^s] \}.
+	\]
+	Thus, the state $(\overline{S}(\delta(q, b^l)), [uab^ic])$
+	cannot be mapped into $\{t\} \times P$.
+	Hence, we have $\delta(q, b^{l+1}) \in T$
+	for all $q \in S$.	
+	
+	Conversely, suppose there exists $l \ge 0$ such that $\delta(q, b^l) \in T$
+	for all $q \in S$. Since $S \not\subseteq T$, we have $l > 0$.
+	Consider the word $u a b^{i + (l-1)\cdot p} c v$ from~$L$.
+	Let $q \in Q$ and $[w] \in P$ with $w \in \pref{uab^icv}$.
+	By \cref{constrsync:letter-bounded:lem:uabi},
+	we have $\sigma_U(wuab^i) = uab^i$.
+	With \cref{prelim:formlang:prop:left-ideal} 
+	we get $wuab^i \equiv_I uab^i$.
+	If we have
+	$\delta'((q, [w], uab^i) = \delta'((q, [\varepsilon]), wuab^i) = (t, [uab^i])$,
+	then $\delta'((q, [w], uab^icv) = (t, [uab^icv])$.
+	Otherwise, similarly as above, we find
+	\[
+	\delta'((q, [w], uab^i) \in \delta(S, b) \times [uab^i].
+	\]
+	Next, we have	
+	\[ 
+	\delta'(\delta(S, b) \times [uab^i], b^{(l-1)\cdot p}) \in \delta(S, b^l) \times [uab^i]).
+	\]
+	Since $\delta(S, b^l) \subseteq T$,
+	we find $\delta'( \delta(S, b^l) \times [uab^i]), c) \subseteq \{t\} \times \{[uab^ic]\}$.
+	Since $\delta'((t, [uab^ic], v) = (t, [uab^icv])$,
+	we find that $(q, [w])$ is mapped to $(t, [uab^icv])$
+	by $u a b^{i + (l-1)\cdot p} c v$.
+	Since we also have $\delta'((t, [w]), u a b^{i + (l-1)\cdot p} a v) = (t, [uab^icv])$
+	for each $w \in \Sigma^*$,
+	we find that $u a b^{i + l\cdot p} c v$
+	maps all states of~$\mathcal A'$
+	to $(t, [uab^iav])$.
+\end{proof}

@@ -1,0 +1,85 @@
+%!TEX root = ../../thesis-trier.tex
+
+Davies~\cite[Cor.~3.3]{DBLP:journals/mst/Davies18}
+observed (see also~\cite[Cor.~4.2.4]{DBLP:phd/basesearch/Davies19}) 
+that for a permutation automaton $\semiautomat{A}{Q}{\Sigma}{\delta}$, $\mathcal A_{q, F}$
+is minimal for each $q \in Q$ and $\emptyset \ne F \subsetneq Q$
+if and only if $\TM{\mathcal A}$ is a primitive permutation group.
+Here, in \cref{sync_max:thm:prim_min}, 
+we state and prove her result, also with a corresponding statement related
+to morphisms.
+Similarly as in \cref{syncmax:rem:square-brackets},
+we use square brackets
+to combine two related statements, one making
+a statement on all  automata with $G \subseteq \TS{A}$ 
+and the other on all  automata with $G = \TS{A}$.
+
+\begin{theorem}[Davies~\cite{DBLP:journals/mst/Davies18,DBLP:phd/basesearch/Davies19}]
+	\label{sync_max:thm:prim_min}
+	Let $G$ be a permutation group on the finite set $Q$ 
+	with $|Q| \ge 3$. Then the following are equivalent.	
+	\begin{enumerate}
+		\item \label{sync_max:appl:prim} $G$
+		is a primitive permutation group.		
+	
+		\item \label{sync_max:appl:hom}
+		For every $\semiautomat{A}{Q}{\Sigma}{\delta}$
+		with $G \subseteq \TS{\mathcal A}$ [with $G = \TS{\mathcal A}$]
+		there exists no morphism $\varphi \colon Q \to S$
+		into an automaton  $\semiautomat{B}{S}{\Sigma}{\mu}$
+		such that $1 < |\applyfunc{Q}{\varphi}| < |Q|$.
+				
+		\item \label{sync_max:appl:min} 
+		For every $\semiautomat{A}{Q}{\Sigma}{\delta}$
+		with $G \subseteq \TS{\mathcal A}$ [with $G = \TS{\mathcal A}$]
+		the automaton $\mathcal A_{q, F}$ is minimal for all $F \subseteq Q$ with $F \notin \{\emptyset, Q\}$ and all $q \in Q$.		
+	\end{enumerate}	
+\end{theorem}
+\begin{proof}
+$\ref{sync_max:appl:prim} \Rightarrow \ref{sync_max:appl:hom}$: 
+As every $\TS{\mathcal A}$-congruence
+is a $G$-congruence for automata $\semiautomat{A}{Q}{\Sigma}{\delta}$
+with $G \subseteq \TS{\mathcal A}$ (resp.~$G = \TS{\mathcal A}$),
+primitivity of $G$
+yields the absence of any non-trivial $\TS{\mathcal A}$-congruences
+for all $\semiautomat{A}{Q}{\Sigma}{\delta}$
+with $G \subseteq \TS{\mathcal A}$ (resp.~$G = \TS{\mathcal A}$).
+By \crefitem{prelim:thm:homtheorem}{prelim:thm:homtheorem:2},
+the kernel relation of every morphism is trivial,
+which gives~\cref{sync_max:appl:hom}.
+
+%The kernel relation $\sim_{\varphi}$ of the morphism $\varphi \colon Q \to S$ is a $\TS{\mathcal A}$-congruence
+%by \crefitem{prelim:thm:homtheorem}{prelim:thm:homtheorem:2}.	
+%By primitivity, as every $\TS{\mathcal A}$-congruence
+%is also a $G$-con\-gru\-ence, $\sim_{\varphi}$ equals either the universal
+%or the equality relation, i.e.,
+%we have $|\applyfunc{Q}{\varphi}| = 1$
+%or $|\applyfunc{Q}{\varphi}| = |Q|$.
+
+$\ref{sync_max:appl:hom} \Rightarrow \ref{sync_max:appl:min}$: 
+By \crefitem{prelim:thm:homtheorem}{prelim:thm:homtheorem:2},
+all $\semiautomat{A}{Q}{\Sigma}{\delta}$
+with $G \subseteq \TS{\mathcal A}$ (resp.~$G = \TS{\mathcal A}$)
+do not admit any non-trivial $\TS{\mathcal A}$-congruence.
+Consider $\mathcal A$ with $G = \TS{\mathcal A}$.
+Then $\mathcal A$ is a permutation automaton not admitting any non-trivial $\TM{\mathcal A}$-congruences.
+Since in a permutation automaton a trap state is not reachable from any other state, from
+\cref{prelim:cor:simpleaut} 
+we obtain that $\mathcal A$ must be strongly connected,
+which yields that $G$ is transitive.
+Then, every $\mathcal A$ with $G \subseteq \TS{\mathcal A}$
+is strongly connected. 
+So, by \cref{prelim:cor:uniform-min}, from \cref{sync_max:appl:hom} we obtain \cref{sync_max:appl:min}.
+
+$\ref{sync_max:appl:min} \Rightarrow \ref{sync_max:appl:prim}$: 
+By assumption and  \cref{prelim:cor:uniform-min} every automaton $\mathcal A$
+with $G = \TS{\mathcal A}$ does not admit any non-trivial $\TS{\mathcal A}$-congruence,
+which is equivalent to primitivity of $G$.
+\end{proof}
+
+\crefitem{sync_max:thm:prim_min}{sync_max:appl:min} fails for $|Q| = 2$, 
+as witnessed by the two-state automaton in which all letters induce self-loops. 
+This automaton is not minimal for any choice of start state and subset of final states
+and its transformation monoid is a primitive group.
+Note that \crefitem{sync_max:thm:prim_min}{sync_max:appl:hom} does not exclude
+the possibility of a non-trivial isomorphism.

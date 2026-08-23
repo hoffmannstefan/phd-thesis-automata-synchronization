@@ -1,0 +1,44 @@
+%!TEX root = ./../../springer-mono-format/book.tex
+%!TEX root = ../../thesis-trier.tex
+
+Here, we investigate how 
+applying operations to 
+constraint languages
+affects the computational complexities of resulting constrained problems. Specifically, we investigate the following operations: 
+the prefix/suffix/factor operations (\SEC~\ref{constr_sync:subsec:factor}),
+set union (\cref{constr_sync:subsec:union}),
+intersection with a regular
+ideal language (Section~\ref{constr_sync:subsec:ideal}), applying morphism (Section~\ref{constr_sync:subsec:morphisms}),
+and concatenating specific languages to an arbitrary constraint language (Section~\ref{constr_sync:subsec:concat}).
+The operations from \cref{constr_sync:subsec:factor} 
+preserve the complexity,
+those from \cref{constr_sync:subsec:union,constr_sync:subsec:ideal,constr_sync:subsec:morphisms}
+mostly decrease the complexity,
+and those from \cref{constr_sync:subsec:concat}
+increase the complexity.
+
+\subsection{Factor Sets and Constraint Languages}
+\label{constr_sync:subsec:factor}
+
+\input{../part4/constrlang/manipulating/factor}
+
+\subsection{The Union of Constraint Languages}
+\label{constr_sync:subsec:union}
+
+\input{../part4/constrlang/manipulating/union}
+
+\subsection{The Ideal Intersection Theorem}
+\label{constr_sync:subsec:ideal}
+
+\input{../part4/constrlang/manipulating/ideal}
+
+%\subsection{Homomorphic Mappings}
+\subsection{Applying Morphisms and Solid Codes}
+\label{constr_sync:subsec:morphisms}
+
+\input{../part4/constrlang/manipulating/morphism}
+
+\subsection{Concatenation and Complexity Lower Bounds}
+\label{constr_sync:subsec:concat}
+
+\input{../part4/constrlang/manipulating/concat}

@@ -1,0 +1,34 @@
+%!TEX root = ./../../thesis-trier.tex
+
+\todo[inline]{hier kann ich nicht automat-kommando nehmen in Definition von Produktautomaten.}
+
+\IN{product (semi-)automaton}
+\label{def:product_aut} 
+Given $\semiautomat{A_i}{Q_i}{\Sigma}{\delta_i}$
+for $i \in \{1,\ldots,m\}$,  
+their \emph{product (semi\mbox{-)}automaton}~\cite{HopUll79,DBLP:journals/ibmrd/RabinS59} 
+is $\mathcal A_1 \times \ldots \times \mathcal A_m = (Q_1 \times \ldots \times Q_m,\Sigma, \delta_{\mathcal A_1 \times \ldots \times \mathcal A_m})$ with 
+\[ 
+\applytrans{\delta}{(q_1, \ldots, q_m)}{x}
+= (\applytrans{\delta_1}{q_1}{x}, \ldots, \applytrans{\delta_m}{q_m}{x})
+\]
+for $q_1 \in Q_1, \ldots, q_m \in Q_m$ and $x \in \Sigma$.
+If $\mathcal A_1 = \cdots = \mathcal A_m$, then
+we also write $\mathcal A_1^m$
+for~$\mathcal A_1 \times \cdots \times \mathcal A_m$.
+For the set of synchronizing words we have
+\begin{equation}\label{prelim:eqn:product_aut_sync_words}
+	\Syn(\mathcal A_1 \times \cdots \times \mathcal A_m)
+	= \bigcap_{i=1}^m \Syn(\mathcal A_i).
+\end{equation}
+
+For upper sets $S_1 \subseteq Q_1, \ldots, S_m \subseteq Q_m$,
+the set $S = S_1 \times \cdots \times S_m$ is an upper set
+and since $(q_1, \ldots, q_m) \in S$ if and only if $q_1 \in S_1, \ldots, q_m \in S_m$
+we have
+\begin{align}
+	(\mathcal A_1 \times \cdots \times \mathcal A_m)_{|S} & \cong 
+	( \mathcal A_1 )_{|S_1} \times \cdots \times ( \mathcal A_m )_{|S_m} \label{prelim:automata:prod:eqn:sub} \\
+	(\mathcal A_1 \times \cdots \times \mathcal A_m) / {\sim_S} 
+	& \cong ( \mathcal A_1 / {\sim_{S_1}} ) \times \cdots \times ( \mathcal A_m / {\sim_{S_m}} ) \label{prelim:automata:prod:eqn:quot}
+\end{align}

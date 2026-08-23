@@ -1,0 +1,132 @@
+%!TEX root = ./../../springer-mono-format/book.tex
+%!TEX root = ./../../thesis-trier.tex
+
+\IN{cardinality}
+\IN{set membership}
+If $X$
+is a set, by $|X|$ we denote its \emph{cardinality}  and $x \in X$ denotes \emph{set membership}, i.e., the fact that $x$
+is an element in $X$. 
+We use standard \emph{set builder notation} $\{ x \mid P(x)\}$ 
+or 
+$\{ x : P(x)\}$ for the set of all elements $x$ satisfying a predicate $P(x)$.
+%\footnote{We prefer $\mid$, but use ''$:$'' in case $P$ involves
+	%starts with a vertical bar.}
+The \emph{empty set} is denoted by $\emptyset$. 
+For sets $X,Y$, we write $f \colon X \to Y$
+for a \emph{(total) function} (also called a \emph{map} or \emph{mapping}) with \emph{domain} $X$ and 
+\emph{codomain} $Y$, assigning to each $x \in X$ an element $\applyfunc{x}{f} \in Y$.
+\label{def:emptyset}
+\label{def:function-application}
+\IN{empty set}
+\IN{set builder notation}
+\label{def:total_function}
+
+
+\IN{domain!of function}
+\IN{codomain!of function}
+\IN{function}
+\index{total function|see{function}}
+\index{map|see{function}}
+\label{def:n-times-concat}
+\IN{concatenation product}
+\index{language|see{formal language (over $\Sigma$)}}
+\IN{formal language (over $\Sigma$)}
+\IN{empty word}
+\label{def:Sigmastar}
+\index{finite alphabet|see{alphabet}} 
+\IN{alphabet} 
+\IN{symbol} 
+\index{letter|see{symbol}}
+\label{def:Sigma}
+\IN{word}
+\IN{length of word}
+\label{def:length_of_word}
+\label{def:empty-word} 
+Let $\Sigma$ denote a \emph{finite alphabet}, i.e., a set of \emph{symbols} or \emph{letters} (we always use $\Sigma$ to denote an alphabet in the present work). 
+A \emph{word (over $\Sigma$)}, also called a \emph{string}, is a finite sequence of elements from~$\Sigma$.
+By $\Sigma^*$ we denote the \emph{set of all words} over $\Sigma$.
+We identify each symbol in $\Sigma$ with the corresponding word of length one. In this way, we have $\Sigma \subseteq \Sigma^*$.
+For $u,v \in \Sigma^*$ we write $u\cdot v$, or $uv$ for short, for the \emph{concatenation (product)} of both words.\footnote{For a more formal	construction of $\Sigma^*$ and concatenation, see, for example, the textbook~\cite[p.~5]{Eilenberg1974}.}
+We denote the \emph{length} of $u \in \Sigma^*$ by~$|u|$. 
+The \emph{empty word}, i.e., the word of length zero,  
+is denoted by $\varepsilon$. For $u \in \Sigma^*$, we set $u^0 = \varepsilon$ and $u^n = u\cdots u$ ($n$ times) for $n > 0$. 
+Subsets of $\Sigma^*$ are called \emph{(formal) languages (over $\Sigma$)}. 
+
+\IN{natural numbers} 
+\label{def:N0} 
+\label{def:finite_set_n}  
+\label{def:min} 
+\label{def:max} 
+By $\mathbb N_0 = \{ 0,1,2,\ldots \}$
+we denote the \emph{set of natural numbers}, including zero,
+with the usual orders $\le$ and $<$ on $\mathbb N_0$.
+For $n \in \mathbb N_0$ we set $[n] = \{ m \in \mathbb N_0 \mid m < n \}$.
+For a non-empty  subset $M$ of $\mathbb N_0$, 
+by $\min(M)$, or $\min M$ for short, (resp.~$\max(M)$, or $\max M$, for finite $M$) 
+we denote the \emph{smallest} (resp.~\emph{largest}) \emph{number} in~$M$ w.r.t.~the usual order.
+We also set $\min(a_1, \ldots, a_n) = \min\{a_1, \ldots, a_n\}$ (resp.~$\max(a_1, \ldots, a_n) = \max\{a_1, \ldots,a_n\}$)
+for $a_1, \ldots, a_n \in \mathbb N_0$ with $n \ge 1$.
+We also denote the integers and the real numbers by $\mathbb Z$ and $\mathbb R$, respectively.
+\IN{real numbers}
+\IN{integers}
+\label{def:integers}
+\label{def:realnumbers}
+
+\label{def:automaton}
+\index{deterministic and complete finite automaton|see{deterministic and complete finite semiautomaton}}
+\index{automaton|see{deterministic and complete finite semiautomaton}}
+\index{semiautomaton|see{deterministic and complete finite semiautomaton}}
+\IN{deterministic and complete finite semiautomaton}
+\IN{state set!of an automaton} 
+\IN{input alphabet!of an automaton}
+\IN{transition function!of an automaton}
+\index{finite state set|see{state set}} 
+\IN{image of subset!of transition function} % attribute/adjective/modifier
+A \emph{(deterministic and complete) finite semiautomaton} over~$\Sigma$ (or just \emph{automaton} for short) is a tuple $\semiautomat{A}{Q}{\Sigma}{\delta}$
+where $Q$ is the \emph{finite state set}, $\Sigma$ the \emph{finite input alphabet},
+and $\delta \colon Q \times \Sigma \to Q$ the \emph{(totally defined) transition function}.\footnote{\emph{Deterministic} means that $\delta$ is a function rather than a
+	relation, and \emph{complete} means that it is total. Both modifiers are
+	redundant here, as we consider no other kind of automaton, but we state
+	them as a reminder for readers used to the nondeterministic setting. In
+	\cref{part:constrsync}, we also introduce partial automata, where the
+	transition function may be partially defined.%	
+	}
+We extend $\delta$ to a function $\hat\delta \colon Q \times \Sigma^* \to Q$
+by setting $\applytrans{\hat\delta}{q}{\varepsilon} = q$
+and $\applytrans{\hat\delta}{q}{ux} = \applytrans{\delta}{\applytrans{\hat\delta}{q}{u}}{x}$
+for $q \in Q$, $u \in \Sigma^*$, and $x \in \Sigma$. For simplicity, we denote the extension $\hat\delta$ 
+by $\delta$ as well. Given $S \subseteq Q$ and~$u \in \Sigma^*$ the \emph{image (of $S$ under $u$)} is $\applytrans{\delta}{S}{u} = \{ \applytrans{\delta}{q}{u} \mid q \in S \}$. 
+\label{def:image-delta}
+
+\IN{state diagram}
+Automata are often specified graphically as \emph{state diagrams}, where states are represented as points or circles, and a transition $\delta(p, a) = q$ for $p, q \in Q$ and $a \in \Sigma$ is depicted by an arrow from $p$ to $q$ labeled by $a$. Multiple transitions between the same pair of states are typically combined into a single arrow labeled with the corresponding set of input symbols. See \cref{intro:ex:automaton} for an example of an automaton together with its state diagram.
+
+\begin{example} \label{intro:ex:automaton}
+	Consider \cref{intro:fig:cernyfour} for the state diagram
+	of the automaton $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	with state set $Q = \{0,1,2,3\}$,
+	two letters $\Sigma = \{a,b\}$ and where $\delta \colon Q \times \Sigma \to Q$
+	is given by $\delta(q, b) = q + 1$ for $q \in \{0,1,2\}$, $\delta(3, b) = 0$,
+	$\delta(0, a) = 1$, and $\delta(q, a) = q$ for $q \in \{1,2,3\}$.
+\end{example}
+
+\begin{figure}[ht]
+	\centering
+	\begin{tikzpicture}[shorten >=1pt,->,node distance=2.3cm]
+		\node[state] (0) {$0$};
+		\node[state, right of=0] (1) {$1$};
+		\node[state, below of=1] (2) {$2$};
+		\node[state, left of=2]  (3) {$3$};
+		
+		\path[->] (0) edge [above] node {$a,b$} (1)
+		(1) edge [right] node {$b$} (2)
+		(2) edge [loop right] node {$a$} (2)
+		(2) edge [below] node {$b$} (3)
+		(3) edge [left]  node {$b$} (0)
+		(2) edge [loop right] node {$a$} (2)
+		(3) edge [loop left]  node {$a$} (3)
+		(1) edge [loop right] node {$a$} (1);
+	\end{tikzpicture}
+	\caption[Example automaton]{The state diagram of the automaton from \cref{intro:ex:automaton}.}
+	\label{intro:fig:cernyfour}
+\end{figure}

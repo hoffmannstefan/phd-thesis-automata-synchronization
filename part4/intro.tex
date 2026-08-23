@@ -1,0 +1,39 @@
+\Cref{part:constrsync} deals with the constrained synchronization problem and is based on the works~\cite{FernauGHHVW19,
+	DBLP:conf/cocoon/Hoffmann20,
+	DBLP:conf/ictcs/Hoffman20,
+	DBLP:conf/fct/Hoffmann21,
+	DBLP:journals/tcs/Hoffmann21,
+	DBLP:conf/cocoon/Hoffmann21,
+	DBLP:conf/wia/Hoffmann22,
+	HoffmannCocoonExtended}.
+The results from~\cite{DBLP:conf/cocoon/Hoffmann20,DBLP:conf/fct/Hoffmann21,DBLP:journals/tcs/Hoffmann21,DBLP:conf/cocoon/Hoffmann21,HoffmannCocoonExtended}
+were revisited with an emphasis on a more streamlined, coherent, and simplified presentation.
+This was achieved primarily through the use of general methods introduced in~\cite{DBLP:conf/cocoon/Hoffmann21,HoffmannCocoonExtended}.
+
+In \cref{constr_sync:sec:motivation}, we give motivational examples for the constrained synchronization problem.
+
+\Cref{constr_sync:chap:further_notions} introduces additional notions that we will need in \cref{part:constrsync}. We also present a new characterization of solid codes that, to the best of our knowledge, has not been published before.
+
+\Cref{constr_sync:chap:gen_results} presents general results on manipulating constraint languages while preserving
+the complexity or to deduce complexity lower bounds. Furthermore, we give sufficient conditions for \NP- and \PSPACE-hardness. 
+Some of these results
+were presented in~\cite{DBLP:conf/cocoon/Hoffmann21,HoffmannCocoonExtended},
+which generalized results from~\cite{FernauGHHVW19},
+and some results are new.
+
+The central question investigated in \cref{constr_sync:chap:classes_constraint_languages}
+is the computational complexity of \constrsync{L} for different classes of regular
+constraint languages $L \subseteq \Sigma^*$.
+While a complete classification remains an \emph{open problem},
+we present several partial results by giving complete classifications for the following classes of constraint languages:
+letter-bounded languages, languages accepted by partial automata (PDFAs, introduced in
+\cref{constr_sync:chap:further_notions}) with at most two states over an arbitrary alphabet and at most three states over a binary alphabet, and commutative languages.
+We also obtain results for infinite, sparse, and monoid languages, as well as
+for languages accepted by strongly connected PDFAs.
+The classification for commutative constraint languages appeared
+in~\cite{DBLP:conf/cocoon/Hoffmann20,DBLP:journals/tcs/Hoffmann21}.
+Here, we present a simplified formulation and proof.
+The results for sparse and letter-bounded languages appeared
+in~\cite{DBLP:conf/ictcs/Hoffman20,DBLP:conf/fct/Hoffmann21}.
+
+Lastly, motivated by the question of what features are needed in input automata to realize certain computational complexities, in \cref{constr_sync:chap:constr_input} we investigate specific types of input automata. Some of the results from this chapter appeared in~\cite{DBLP:conf/wia/Hoffmann22}, and some mistakes from this paper have been corrected.

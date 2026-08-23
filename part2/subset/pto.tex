@@ -1,0 +1,66 @@
+
+
+
+
+Here, supplementing Ryzhikov's~\cite[Prop.~9 \& Thm.~4]{Ryzhikov19a} \NP-completeness results for \DFAINT and \SFS on partially ordered automata, 
+we show the following results for partially ordered input automata in \cref{compl:thm:sync_into_pto,compl:thm:pto_sync_in_AC0}:
+\SIS, \DFAS, \DFAST, and \DFASS  are in $\AC^0$. Later, in \cref{thm:solvable}, we will also prove that \ST is \NP-complete for solvable automata,
+where \NP-hardness remains even for partially ordered automata.
+
+\begin{theorem}
+	\label{compl:thm:sync_into_pto}
+	\SIS\  is in $\AC^0$ for partially ordered input automata.
+\end{theorem}
+\begin{proof}
+	Let $(\mathcal A, S)$ be an $n$-state input instance where $\semiautomat{A}{Q}{\Sigma}{\delta}$ is partially ordered and $S \subseteq Q$.
+	For an ordering from $1$ to $n$ of the states, 
+	we assume $\mathcal A$ is given by a bit-wise encoding of its  transition matrices $[a]_{\mathcal A} 
+	= (m^{(a)}_{ij})_{i,j \in \{1,\ldots,n\}}$, $a \in \Sigma$,
+	and $S$ by a bit-vector $(s_1, \ldots, s_n)$ encoding the characteristic vector of $S$.	
+	By \cref{cor:pto-trap-states},
+	we have to check whether~$S$ contains every trap state of~$\mathcal A$.
+	The state $i \in \{1,\ldots,n\}$
+	is a trap state if and only if $\bigwedge_{a \in \Sigma} m_{ii}^{(a)}$
+	is true. So, an~$\AC^0$ circuit implementing the following formula
+	checks that $S$ contains every trap state:
+	\[
+	\bigwedge_{i=1}^n \left[ \neg \left( \bigwedge_{a \in \Sigma} m^{(a)}_{ii} \right) \lor s_i \right] \qquad
+	\left( \text{equivalent to } 	\bigwedge_{i=1}^n \left[ \left( \bigwedge_{a \in \Sigma} m^{(a)}_{ii} \right) \rightarrow s_i \right]  \right).
+	\qedhere
+	\]
+\end{proof}
+
+\begin{theorem}
+	\label{compl:thm:pto_sync_in_AC0}
+	\DFAS, \DFAST and \DFASS are in $\AC^0$ for partially ordered input automata.
+\end{theorem}
+\begin{proof}
+	Let  $\semiautomat{A}{Q}{\Sigma}{\delta}$ be an $n$-state partially ordered
+	input automaton encoded
+	by its set of transition matrices
+	$[a]_{\mathcal A} = (m_{ij}^{(a)})_{i,j\in \{1,\ldots,n\}}$
+	for each letter $a \in \Sigma$.
+	By Corollary~\ref{compl:cor:pto_sync_trap},~$\mathcal A$ is synchronizing
+	if and only if it has a unique trap state.
+	This condition can be checked by an $\AC^0$ circuit
+	implementing the following formula:\footnote{Alternatively,
+		the partially ordered automaton $\mathcal A$ has a synchronizing word
+		if and only if there exists a trap state $t$ such that $(\mathcal A, \{t\})$ is a \rYES-instance of \SIS.
+		This can be used to give an $\leACZEROm$-reduction
+		from \DFAS\ to \SIS. However, this reduction has to compute a trap state, and so the proof
+		would not be simpler than the direct proof given here.
+	}
+	\[
+	\bigvee_{i=1}^n \left[ \left( \bigwedge_{a \in \Sigma} m_{ii}^{(a)} \right) 
+	\land 
+	\bigwedge_{\substack{j=1 \\ j \ne i}}^n \left( \bigvee_{a \in \Sigma} \neg m_{jj}^{(a)}  \right) \right].
+	\]
+	This shows the claim for \DFAS. 
+	As $\DFAST \leACZEROm \DFAS$
+	and 
+	$\DFASS \leACZEROm \SIS$
+	by \crefitem{compl:prop:reductions}{compl:prop:reductions:item:st-ss} \& \ref{compl:prop:reductions:item:DFASS_SIS}
+	and these reductions preserve the property of being partially ordered,
+	the claim follows for \DFAST, and for \DFASS 
+	by \cref{compl:thm:sync_into_pto}.	
+\end{proof}

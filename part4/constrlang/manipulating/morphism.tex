@@ -1,0 +1,350 @@
+%!TEX root = ../../../thesis-trier.tex
+
+Here, in \cref{thm:hom_lower_bound_complexity},
+we show that transforming a constraint language
+yields a problem whose complexity is
+at most that of the original problem w.r.t.~$\leACZEROm$-reductions.
+In \cref{thm:constr_sync_hom_strongly_self_sync}
+we show that for coding morphisms of solid codes
+the complexity is preserved.
+
+\begin{theorem}
+	\label{thm:hom_lower_bound_complexity}
+	Let $\varphi \colon \Sigma^* \to \Gamma^*$ be a fixed morphism
+	and $L \subseteq \Sigma^*$.
+	Then \[ \constrsync{\varphi(L)} \le_m^{\AC^0} \constrsync{L}. \]
+\end{theorem}
+\begin{proof}
+	For the $\leACZEROm$-reduction,
+	let $\semiautomat{A}{Q}{\Gamma}{\delta}$ be an input automaton. 
+	We want to know if $\mathcal A$ is synchronizing with respect to~$\varphi(L)$.
+	
+	\medskip
+	\noindent\underline{Construction:} Let $\semiautomat{A'}{Q}{\Sigma}{\delta'}$
+	with $\applytrans{\delta'}{q}{x} = \applytrans{\delta}{q}{\applyfunc{x}{\varphi}}$ for $q \in Q$ and $x \in \Sigma$.
+	We obtain a representation of $\mathcal A'$
+	by transition matrices by multiplying
+	for each $x \in \Sigma$
+	the respective transition matrices
+	of the letters in~$\applyfunc{x}{\varphi}$,
+	which is doable by a \LOGSPACE-uniform circuit family in $\AC^0$ as $\varphi$ is fixed and matrix multiplication for a fixed number of matrices is in $\AC^0$ by \cref{prelim:circuit:ex:AC0mtx}.
+		
+	\medskip 
+	\noindent\underline{Verification:} We have
+	\begin{align*}
+		                  \exists u \in \varphi(L) \colon |\delta(Q, u)| = 1 
+		& \Leftrightarrow \exists v \in L \colon |\delta(Q, \varphi(v))| = 1 \tag{$\varphi(v) = u$} \\
+		& \Leftrightarrow \exists v \in L \colon |\delta'(Q, v)| = 1  \tag{$\delta'(Q, v) = \delta(Q, \varphi(v))$}.  
+	\end{align*}
+So $\mathcal A'$ has a synchronizing word in $L$ if and only if
+$\mathcal A$ has a synchronizing word in $\applyfunc{L}{\varphi}$.
+\end{proof}
+
+\begin{example}
+	Let $L = \{a,b\}^* \cup \{a,c\}^* \cup \{b,c\}^*$.
+	Then $\pi_{\{a,b\}}(L) = \{a,b\}^*$,
+	so that $\constrsync{L}$ is \NL-hard
+	with \cref{thm:hom_lower_bound_complexity}
+	and \crefitem{constr_sync:thm:introductory_examples}{constrsync:ex:item:ab}.
+	With \cref{constr_sync:thm:union} 
+	we also get membership in \NL.
+\end{example}	
+
+For coding morphisms of solid codes,
+we have a stronger statement than 
+Theorem~\ref{thm:hom_lower_bound_complexity}.
+
+\begin{theorem}
+	\label{thm:constr_sync_hom_strongly_self_sync}
+	Let $\varphi \colon \Sigma^* \to \Gamma^*$
+	be a coding morphism such that\footnote{Recall that $\Sigma$ is finite, and so $C$ is finite. Also coding morphism
+		are injective by definition.}
+	$C = \varphi(\Sigma)$ 
+	is a solid code.
+	Then, for each regular $L \subseteq \Sigma^*$ we have 
+	$
+	\constrsync{L} \eqACZEROm \constrsync{\varphi(L)}.
+	$
+\end{theorem}
+\begin{proof}
+	By Theorem~\ref{thm:hom_lower_bound_complexity}, we have 
+	$\constrsync{\varphi(L)} \leACZEROm \constrsync{L}$.
+	Next, we show $\constrsync{L} \leACZEROm \constrsync{\applyfunc{L}{\varphi}}$
+	by utilizing the Levenshtein-Romanov mappping from \cref{constr_sync:subsec:levenshtein-romanov-map}
+    w.r.t.~the language~$C$.
+	Now, let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be an input automaton.
+	Suppose $\Sigma = \{a_1, \ldots, a_k\}$
+	and set $u_i = \applyfunc{a_i}{\varphi}$ for $i \in \{1,\ldots,k\}$.
+	Then $C = \{u_1, \ldots, u_k\}$.	
+	
+	\begin{figure}[htbp]
+		\centering		
+		\begin{subfigure}{0.33\textwidth}
+			\centering
+	\begin{tikzpicture}[>=stealth,shorten >=1pt,auto]
+	\node[state] (q0) at (90:2.5cm) {$q_0$};
+	\node[state] (q1) at (210:2.5cm) {$q_1$};
+	\node[state] (q2) at (330:2.5cm) {$q_2$};
+	
+	\path[->]
+	(q0) edge[bend left=10] node[right] {$a_1$} (q2)
+	(q2) edge[bend left=10] node[below] {$a_1$} (q1)
+	(q1) edge[bend left=5]  node[left] {$a_1$}  (q0);
+	
+	\path[->] (q1) edge[bend left=10] node {$a_2$} (q2)
+	(q2) edge[bend left=10] node {$a_2$} (q0)
+	(q0) edge [loop above] node {$a_2$} (q0);
+\end{tikzpicture}
+			\caption{A base automaton~$\mathcal A$}
+		\end{subfigure}
+		\hfill
+		\begin{subfigure}{0.55\textwidth}
+		\centering
+	\begin{tikzpicture}[>=stealth,shorten >=1pt, node distance=0.97cm, auto]
+	
+	%\tikzset{state/.style={}}
+	\tikzset{state/.style={inner sep=2pt}}
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	% TOP LAYER (epsilon)
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\node[state] (q0e) at (90:2.7cm) {$(q_0,\varepsilon)$};
+	\node[state] (q1e) at (210:2.7cm) {$(q_1,\varepsilon)$};
+	\node[state] (q2e) at (330:2.7cm) {$(q_2,\varepsilon)$};
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	% MIDDLE LAYER (a)
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\node[state] (q0a) [below=of q0e] {$(q_0,a)$};
+	\node[state] (q1a) [below=of q1e] {$(q_1,a)$};
+	\node[state] (q2a) [below=of q2e] {$(q_2,a)$};
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	% LOWER LAYER (aa)
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\node[state] (q0aa) [below=of q0a] {$(q_0,aa)$};
+	\node[state] (q1aa) [below=of q1a] {$(q_1,aa)$};
+	\node[state] (q2aa) [below=of q2a] {$(q_2,aa)$};
+	
+	\path[->]
+	(q0e) edge (q0a)
+	(q0a) edge (q0aa)
+	(q0aa) edge[in=230,out=260, looseness=9] (q0aa)
+	(q0aa) edge[dotted, in=280, out=310, looseness=9] (q0aa)
+	
+	(q1e) edge  (q1a)
+	(q1a) edge  (q1aa)
+	(q1aa) edge[loop below] ()
+	
+	(q2e) edge  (q2a)
+	(q2a) edge  (q2aa)
+	(q2aa) edge[loop below] ();		
+	
+	\path[->]
+	(q0e)  edge[dashed, in=80, out=50, looseness=9] (q0e)
+	(q0e)  edge[dotted, in=130, out=100, looseness=9] (q0e)
+	(q0a)  edge[dotted, bend left=20] (q0e)
+	(q0aa) edge[dashed, bend right=10] (q2e);
+	
+	\path[->]
+	(q1e)  edge[dashed, in=80, out=50, looseness=9] (q1e)
+	(q1e)  edge[dotted, in=130, out=100, looseness=9] (q1e)
+	(q1a)  edge[dotted, bend left=20] (q1e)
+	(q1aa) edge[dashed, bend left=65] (q0e);
+	
+	\path[->]
+	(q2e)  edge[dashed, in=80, out=50, looseness=9] (q2e)
+	(q2e)  edge[dotted, in=130, out=100, looseness=9] (q2e)
+	(q2a)  edge[dotted, bend right=20] (q2e)
+	(q2aa) edge[dashed, bend left=30] (q1e);		
+	
+	\path[->] 
+	(q0a) edge[dashed, bend right=10] (q2e)
+	(q2a) edge[dashed,bend left=30] (q1e)
+	(q1a) edge[dashed,bend left=55] (q0e);	
+	
+	\path[->]
+	(q1aa) edge[dotted, bend right=10] (q2e)
+	(q2aa) edge[dotted, bend right=50] (q0e);		
+\end{tikzpicture}
+			\caption{Constructed automaton as in the proof.}
+		\end{subfigure}		
+		\caption[Construction from proof of \cref{thm:constr_sync_hom_strongly_self_sync}.]{Construction from the proof of \cref{thm:constr_sync_hom_strongly_self_sync}
+		    for the solid code $\{ab, aac\}$
+			and base automaton shown on the left side. Solid, dashed, and dotted lines represent transitions
+			labeled with $a$, $b$, and~$c$, respectively.}
+	\label{constrsync:fig:construction-solid-code}
+	\end{figure}	
+	
+	\medskip
+	\noindent\underline{Construction:} Define $\semiautomat{A'}{Q \times (\pref{C} \setminus C)}{\Gamma}{\delta'}$
+	where, for $(q, u) \in Q \times \pref{C} \setminus C$
+	and $x \in \Sigma$,
+	\begin{equation}\label{constr_sync:eqn:aut_solid_code}
+		\applytrans{\delta'}{(q,u)}{x} = \begin{cases}
+			(q, \sigma_C(ux)) & \text{if } \sigma_C(ux) \notin C, \\
+			(\applytrans{\delta}{q}{a_i}, \varepsilon) & \text{if } \exists i \in \{1,\ldots,k\} : \sigma_C(ux) = u_i. 
+		\end{cases}
+	\end{equation}
+	By encoding the proper prefixes in the second component
+	we keep track of the prefix scanned in the input so far.	
+	See \cref{constrsync:fig:construction-solid-code} for an example construction
+	for the solid code $C = \{ab,aac\}$.
+	Note that in the example $\delta'((q, a), b) = \delta'((q,aa), b) = (\delta(q, a_1), \varepsilon)$
+	since $\sigma_C(ab) = \sigma_C(aab) = ab$.
+		
+	
+	\noindent\underline{Properties:} We give the proofs for Properties~\ref{constr_sync:solid_code_morphism:apply_codeword_proper_prefix} and~\ref{constr_sync:solid_code_morphism:apply_codeword},
+	Property~\ref{constr_sync:solid_code_morphism:wordsvarphi} follows from Property~\ref{constr_sync:solid_code_morphism:apply_codeword} by induction
+	as $\applyfunc{v}{\varphi} \in C^+$ for $v \in \Sigma^+$.
+	\begin{enumerate}
+		\item \label{constr_sync:solid_code_morphism:apply_codeword_proper_prefix}
+		For $(q, u) \in Q \times ( \pref{C} \setminus C )$ and $v \in \pref{C} \setminus C$
+		we have $\sigma_C(uv) \in \pref{C} \setminus C$ and $\applytrans{\delta'}{(q,u)}{v}  = (q, \sigma_C(uv))$.		
+		
+		\begin{proofitem}{\ref{constr_sync:solid_code_morphism:apply_codeword_proper_prefix}} 
+		We show the claim by induction on $v$.
+		As $\sigma_C(u) = u$, the claim is true for $v = \varepsilon$.
+		Now, suppose $v = wx$ for $w \in \Sigma^*$ and $x \in \Sigma$.		
+		As $C$ is overlap-free, 
+		$wx \in \pref{C} \setminus C$ implies 
+		$\sigma_C(uwx) \notin C$ and so $\sigma_C(uwx) \in \pref{C} \setminus C$;
+		this implication is noted in \crefitem{constrsync:prop:sigma-solid-code-char}{constrsync:prop:sigma-solid-code-char:2}.
+		By~\crefitem{constr_sync:prop:sigma_L_properties}{constr_sync:sigme_L:item:concatenation}
+		we have $\sigma_C(\sigma_C(uw)x) = \sigma_C(uwx)$.
+		So, for $q \in Q$, we obtain		
+		\begin{align*}
+			& \delta'((q,u), wx) \\
+			& = \delta'(\delta'((q,u), w), x) & \tag{Def.~of $\delta'$} \\
+			& = \delta'((q, \sigma_C(uw)), x) & \tag{Induction hypothesis} \\
+			& = (q, \sigma_C(\sigma_C(uw)x)). & \tag{Eqn.~\eqref{constr_sync:eqn:aut_solid_code} as $\sigma_C(\sigma_C(uw)x) \notin C$} 
+		\end{align*}
+		Hence, we get $ \delta((q,u), wx) = (q, \sigma_C(uwx))$
+        and the claim follows by induction.
+     	\end{proofitem}
+		
+		\item \label{constr_sync:solid_code_morphism:apply_codeword}
+		For $(q, u) \in Q \times ( \pref{C} \setminus C )$ and $i \in \{1,\ldots,k\}$ we have
+		\[
+		\applytrans{\delta'}{(q,u)}{u_i} = (\applytrans{\delta}{q}{a_i}, \varepsilon) 
+		\]
+		
+		\begin{proofitem}{\ref{constr_sync:solid_code_morphism:apply_codeword}}
+		Let $u_i = vx$ for $v \in \Sigma^*$ and $x \in \Sigma$.
+		As $C$ is a prefix code, we have $v \in \pref{C} \setminus C$.		
+		By \crefitem{constr_sync:prop:sigma_L_properties}{constr_sync:sigme_L:item:concatenation}
+		we have $\sigma_C(\sigma_C(uv)x) = \sigma_C(uvx)$.
+		By \crefitem{constrsync:prop:sigma-solid-code-char}{constrsync:prop:sigma-solid-code-char:3}
+		as $vx \in C$, we find $\sigma_C(uvx) = vx = u_i$. Then
+		\begin{align*}
+			\delta'((q, u), vx) & = \delta'(\delta'((q,u), v), x)  & \tag{Def.~of $\delta'$} \\
+			& = \delta'((q, \sigma_C(uv)), x) & \tag{Property~\ref{constr_sync:solid_code_morphism:apply_codeword_proper_prefix}} \\
+			& = (\applytrans{\delta}{q}{a_i}, \varepsilon). & \tag{Eqn.~\eqref{constr_sync:eqn:aut_solid_code} as $\sigma_C(\sigma_C(uv)x)  = u_i$}
+		\end{align*}
+	    So, $\applytrans{\delta'}{(q,u)}{u_i} = (\applytrans{\delta}{q}{a_i}, \varepsilon)$.
+		\end{proofitem}
+		
+		\item  \label{constr_sync:solid_code_morphism:wordsvarphi} For every $v \in \Sigma^+$ and $(q,u) \in Q \times (\pref{C} \setminus C)$,
+		\begin{equation}\label{constr_sync:eqn:solid_code3}
+			\applytrans{\delta'}{(q,u)}{\applyfunc{v}{\varphi}} = (\applytrans{\delta}{q}{v}, \varepsilon).
+		\end{equation}
+	\end{enumerate}	
+	
+	\medskip 
+	\noindent\underline{Verification:} That the reduction is correct follows by the following
+	equivalences:
+	\begin{align*}
+		& \exists w \in \varphi(L) \colon |\applytrans{\delta'}{Q \times (\pref{C}\setminus C)}{w}|  = 1 \\
+		& \Leftrightarrow \exists v \in L \colon |\applytrans{\delta'}{Q \times (\pref{C}\setminus C)}{\varphi(v)}|  = 1 \\
+		& \Leftrightarrow \exists v \in L \colon |\applytrans{\delta}{Q}{v} \times \{\varepsilon\}| = 1 \tag{Eqn.~\eqref{constr_sync:eqn:solid_code3}} \\
+		& \Leftrightarrow \exists v \in L \colon |\applytrans{\delta}{Q}{v}| = 1. \qedhere
+	\end{align*}
+\end{proof}
+
+\begin{remark} \label{constrsync:rem:alphabet_solid_special_case}
+	The construction from \cref{constrsync:rem:alphabet} is a special case 
+	of \cref{thm:constr_sync_hom_strongly_self_sync}
+	as for $\Gamma, \Sigma$ with $\Gamma \subseteq \Sigma$
+	the inclusion map $i \colon \Gamma \to \Sigma$
+	given by $i(x) = x$ for $x \in \Gamma$
+	is a coding morphism where $i(\Gamma) \subseteq \Sigma$ is a solid code.
+\end{remark} 
+
+\begin{remark}
+	The construction from the proof of \cref{thm:constr_sync_hom_strongly_self_sync}
+	with the transition function given by \cref{constr_sync:eqn:aut_solid_code}
+	can be applied to any prefix code~$C$
+	and yields a well-defined automaton~$\semiautomat{A'}{Q \times \pref{C}\setminus C}{\Sigma}{\delta'}$.	
+	Can the assumption for~$C$ to be a solid code
+	be weakened? 
+	The crucial property for the reduction
+	to work is that $\delta'(Q \times \pref{C} \setminus C, u_i) = \delta(Q, a_i) \times \{\varepsilon\}$
+	for $i \in \{1,\ldots,k\}$ and $C = \{u_1, \ldots, u_k\}$.
+	However, this is not guaranteed to hold if~$C$
+	is merely a comma-free code.
+	For example, consider $C = \{ u_1, u_2 \}$ with $u_1 = aab$ and $u_2 = bba$,
+	which is a comma-free code, but not a solid code since $u_1$ and $u_2$ have a
+	non-empty proper overlap.
+	Then we have
+	$
+	\delta'(Q \times \{aa\}, u_2) = \delta(Q, a_1) \times \{a\}  	
+	$
+	and so $\delta(Q, a_1) \times \{a\} \subseteq \delta'(Q \times \pref{C} \setminus C, u_2)$.
+	However, there are codes that are not solid codes for which it does hold.
+	For example, for $C = \{ a_1, \ldots, a_{k-1}, a_k^m a_{k-1}\}$ for distinct $a_1, \ldots, a_k \in \Sigma$
+	and $m \ge 1$.
+\end{remark}
+
+\begin{remark}
+	Solid codes and the construction from the proof of  \cref{thm:constr_sync_hom_strongly_self_sync}
+	can also be used to give an alternative proof of \cref{prelim:prop:sync_NL_complete}
+	by first giving an automaton derived from the digraph
+    by labeling the edges with letters and using an additional letter
+    to realize the transitions going back to the start state.
+    Then using a binary solid code
+    and the construction from the proof of \cref{thm:constr_sync_hom_strongly_self_sync}
+    we can reduce the alphabet to a binary alphabet.
+    However, note that the words $bb,a,ba$ actually used in the proof of \cref{prelim:prop:sync_NL_complete}
+    do not form a solid code.
+\end{remark}
+
+\begin{remark}
+	We actually have $\Syn(\mathcal A') \cap \varphi(\Sigma^*) = \varphi(\Syn(\mathcal A))$
+	in the construction from the proof of \cref{thm:constr_sync_hom_strongly_self_sync}.
+\end{remark}
+
+Coding morphism of solid codes are not the only morphisms
+that preserve the complexity, as shown in the following remark.
+
+\begin{remark}
+	Consider the coding morphism $\varphi \colon \{a,b\}^* \to \{c,d, e\}^*$
+	given by $\varphi(a) = cd$ and $\varphi(b) = ec$.
+	Now $\varphi(\{a,b\}) = \{cd, ec\}$ is not a solid code.
+	For $\semiautomat{A}{Q}{\{a,b\}}{\delta}$
+	let 
+	$\semiautomat{A'}{Q'}{\{c,d\}}{\delta'}$
+	with $Q' = Q \times \{\varepsilon, c, e\}$
+	where, for $q \in Q$, $u \in \{\varepsilon,c,d\}$, and $x \in \Sigma$,
+	\[
+	\delta'((q, u), x)
+	= 
+	\begin{cases}
+		(\delta(q, a), \varepsilon)  & \text{if } u \in \{\varepsilon,c\} \text{ and } x = d, \\
+		(\delta(q, b), \varepsilon)  & \text{if } u = e \text{ and } x = c, \\
+		(q,x)                        & \text{if } u \in \{\varepsilon,c,e\} \text{ and } x \in \{c,e\} \text{ and } ux \ne ec \\
+		%(q,e)                       & \text{if } u \in \{\varepsilon,e\} \text{ and } x = e,
+		(q,u)                        & \text{if } u = e \text{ and } x = d.
+	\end{cases}
+	\]
+	Then we have $\delta'((q, u), \varphi(v)) = (\delta(q, v), \varepsilon)$
+	for $v \in \{a,b\}^+$ with $u \in \{\varepsilon, c, e\}$
+	and $q \in Q$.
+	This yields 
+	\begin{align*}
+		\delta'(Q', \varphi(a)) = \delta(Q, a) \times \{\varepsilon\}, \\
+		\delta'(Q', \varphi(b)) = \delta(Q, b) \times \{\varepsilon\},	
+	\end{align*}
+	and	that for $|Q| \ge 2$ and regular $L \subseteq \{a,b\}^*$,
+	the automaton~$\mathcal A$ has a synchronizing word in~$L$
+	if and only if~$\mathcal A'$ has a synchronizing word in~$\varphi(L)$.
+\end{remark}

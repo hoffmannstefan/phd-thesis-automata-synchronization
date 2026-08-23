@@ -1,0 +1,155 @@
+%!TEX root = ../../springer-mono-format/book.tex
+%!TEX root = ../../thesis-trier.tex
+
+\IN{abstract group}
+Often groups are given by some representation. For example, by sets of permutations as permutation groups. We call a group an \emph{abstract group}\footnote{In the same vein, we can talk about abstract monoids or abstract semigroups when solely referring to their axiomatic properties.}	
+if we want to emphasize that 
+we do not assume some internal structure or a \mbox{(re-)}~presentation beyond the axiomatic definition of a group.
+
+\IN{left regular (Cayley) representation}
+\IN{diagonal action}
+Now, let $(G, \cdot, ^{-1}, 1)$ be an abstract group. Next, we describe one possibility on
+how to represent $G$ as a permutation group. For each $g \in G$
+let $\lambda_g \colon G \to G$ be the permutation
+defined by $\lambda_g(h) = gh$ for $h \in G$.
+The map $\Pi \colon G \to \mathcal S_G$ given by $\Pi(g) = \lambda_g$
+is injective, and we have $\Pi(gg') = \lambda_{gg'} = \concat{\lambda_{g'}}{\lambda_g}$, $\Pi(1) = \operatorname{id}_G$,
+and $\Pi(g^{-1}) = \lambda_{g^{-1}} = \lambda_g^{-1}$ for $g,g' \in G$, i.e., it is a group morphism.
+This yields that $G$
+can be uniquely identified with the permutation group $\{ \lambda_g \mid g \in G\} \le_G \mathcal S_G$,
+giving a permutation representation of $G$ that is called 
+the \emph{left regular (Cayley) representation}.
+This is not the only way 
+to represent an abstract group as a permutation group, 
+the interested reader can find more information in the discussion (\cref{prelim:permgrp:sec:discussion}).
+
+\begin{remark}
+	Every regular permutation group arises in the form of the 
+	left regular representation on itself
+	in the following way.
+	Let $G \le \mathcal S_n$ be a regular permutation group
+	and $a \in [n]$.
+	The map $\varphi \colon [n] \to G$ given by $\varphi(b) = g$ for the unique $g \in G$
+	with $\applyfunc{a}{g} = b$ is a bijection.
+	Since for $h,g \in G$ and $b \in [n]$ with $g(a) = b$ we have $(h \circ g)(a) = h(g(a)) = h(b)$,
+	we find
+	\[
+	\applyfunc{\applyfunc{b}{h}}{\varphi} = h \circ \applyfunc{b}{\varphi} = \applyfunc{\applyfunc{b}{\varphi}}{\lambda_h}
+	\] 
+	where $\lambda_h \colon G \to G$ is the left regular representation introduced above.
+	Thus $h = \varphi^{-1} \lambda_h \varphi$
+	and $h$ maps $b$ to $c$ for $b,c \in [n]$
+	if and only if $\lambda_h$ maps 
+	$\applyfunc{b}{\varphi}$ to $\applyfunc{c}{\varphi}$.
+	Hence the map $\varphi$ identifies the permutation domains $[n]$ and~$G$ in a way
+	so that~$G$ and~$\overline{G}$ act in the same way on each.
+	As an example, applying this construction to the right regular representation $\overline{G} = \{ \rho_g \mid g \in G \}$, which is a subgroup of $\mathcal S_G$, and some $g \in G$,
+	we obtain  $\varphi \colon G \to \overline{G}$
+	such that for $h \in G$  
+	we have $\varphi(h) = \rho_{h^{-1}g}$
+	since $\rho_{h^{-1}g}(g) = g(h^{-1}g)^{-1} = h$.
+\end{remark}
+
+\IN{diagonal action}
+Next, we show how to obtain a representation of $G \times G$
+as a subgroup of $\mathcal S_G$ for abstract groups~$G$
+with trivial center, called the \emph{diagonal action (on $G$)}.\footnote{This is actually a more general
+construction related to so-called group actions, see~\cite[Example~2.6]{ArCamSt2017} or~\cite[Exercise~1.6]{cameron_1999}.} 
+
+\label{def:diagonal-action}
+\begin{proposition}
+\label{prelim:prop:diagonal_action}
+Let $G$ be an abstract group with identity $1 \in G$ and $Z(G) = \{1\}$.
+For $x,y \in G$ let $\delta_{x,y} \colon G \to G$
+be given by $\delta_{x,y}(g) = xgy^{-1}$.
+	
+\begin{enumerate}
+\item \label{prelim:prop:diagonal_action:1} The map $(x,y) \mapsto \delta_{x,y}$, $x,y \in G$, 
+ is an injective morphism from $G\times G$
+ into $\mathcal~S_G$.
+
+\item \label{prelim:prop:diagonal_action:2} $G^D = \{ \delta_{x,y} \mid (x,y) \in G\}$ is a transitive permutation group (the representation of $G \times G$ by the diagonal action) on $G$ that is primitive if and only if $G$ is simple.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+\ref{prelim:prop:diagonal_action:1} 
+ Let $x_1 x_2, y_1, y_2 \in G$.
+ As 
+ \[
+ \delta_{x_1 x_2, y_1 y_2}(g) = (x_1 x_2) g (y_1 y_2)^{-1} = x_1( x_2 g y_2^{-1}) y_1^{-1} = ( \delta_{x_1,y_1} \delta_{x_2,y_2} )(g),
+ \]
+ for $g \in G$ we obtain a morphism.
+ For injectivity, suppose $\delta_{x_1,y_1} = \delta_{x_2, y_2}$.
+ Then $x_2^{-1} x_1 g y_1^{-1} y_2 = g$
+for all $g\in G$. For $g = 1$,
+we get $x_2^{-1} x_1 y_1^{-1} y_2 = 1$,
+which yields $x_2^{-1} x_1 = y_2^{-1} y_1$.
+Now, $x_2^{-1} x_1 g (x_2^{-1} x_1)^{-1} = g$ for all $g \in G$
+if and only if $x_2^{-1} x_1 \in Z(G)$.
+As $Z(G) = \{1\}$, $x_1 = x_2$
+and $y_1 = y_2$.
+	
+\ref{prelim:prop:diagonal_action:2} As $\applyfunc{g}{\delta_{hg^{-1},1}} = hg^{-1}g = h$
+for $g,h \in G$, we find that $G^D$ is transitive.
+Next, we show that blocks of $G^D$ containing $1$
+are precisely the normal subgroups of~$G$, which gives the claim.
+Let $\Delta \subseteq G$ be a block of $G^D$ with $1 \in \Delta$ and $x,y \in \Delta$.
+As $x = xyy^{-1}$ we have $x \in \Delta \cap x\Delta y^{-1}$.
+So $x\Delta y^{-1} = \Delta$.
+As $1 \in \Delta$ this yields $xy^{-1} \in \Delta$.
+Hence $\Delta$ is a subgroup of $G$.
+Now, let $g \in G$.
+Then $1 \in \Delta \cap g\Delta g^{-1}$.
+So $\Delta = g\Delta g^{-1}$
+and $\Delta$ is a normal subgroup.
+Conversely, let $N$ be a normal subgroup of $G$.
+Suppose $x,y \in G$. We have $\applyfunc{N}{\delta_{x,y}} = 
+x N y^{-1} = x y^{-1} y N y^{-1} = x y^{-1} N$, which is a left coset.
+Since these cosets partition $G$, $\applyfunc{N}{\delta_{x,y}} \cap N \ne \emptyset$
+implies $\applyfunc{N}{\delta_{x,y}} = N$.
+So,~$N$ is a block of~$G^D$.
+\end{proof}
+
+\IN{right regular (Cayley) representation}
+Next, more generally, suppose we have given a subgroup $H$ of~$G$ such that
+\footnote{In general,
+	$\bigcap_{g \in G} gHg^{-1}$
+	is called the \emph{core} of $G$
+	and~$H$ is called \emph{core-free} if \cref{prelim:eqn:core} holds.}	
+\begin{equation}\label{prelim:eqn:core}
+	\bigcap_{g \in G} gHg^{-1} = \{1\}
+\end{equation}
+Then we can construct a
+permutation group on the left cosets $X = \{ hH \mid h \in G\}$
+by $\overline{G} = \{ \lambda_g \mid g \in G \}$
+where $\lambda_g \colon X \to X$ is a permutation
+on $X$ given by $\applyfunc{hH}{\lambda_g} = (gh)H$.
+\cref{prelim:eqn:core} ensures that $\lambda_{g} \ne \lambda_{g'}$
+if and only if $g \ne g'$.
+Further, we have $\lambda_{gg'} = \concat{\lambda_{g'}}{\lambda_{g}}$
+for $g, g' \in G$. So, $g \mapsto \lambda_g$ 
+is an isomorphism of abstract groups between $G$ and $\overline G$.
+In this way, we have realized~$G$ as a permutation group on $X$.
+For $H = \{1\}$ (in this case we identify~$X$ and~$G$)
+we obtain the left regular representation. 
+There is also a corresponding construction on the right cosets 
+by considering the mappings $\rho_g \colon Y \to Y$
+given by $\applyfunc{Hh}{\rho_g} = H(hg^{-1})$
+for $Y = \{ Hh \mid h \in H\}$. The inversion entered by our choice
+on the order of function composition,
+so that the equation $\rho_{gg'} = \concat{\rho_{g'}}{\rho_{g}}$
+is valid (see the related discussion in \cref{prelim:sec:remarks_func_comp}).\footnote{Note that when 
+	the convention is adopted that in a function composition the left-most
+	function is applied first, we have to use an inversion for the left regular action
+	instead, see, for example,~\cite{cameron_1999}.}
+The permutation representation obtained here
+for $H = \{1\}$ is also called the \emph{right regular (Cayley) representation}.
+
+By considering those subgroups~$H$ that fulfill \cref{prelim:eqn:core} 
+we, in fact, obtain all permutation representations of~$G$.
+This follows since~$H$ precisely equals the point stabilizer
+of the permutation group constructed above, and
+that, by \cref{prelim:thm:blocks-stabs}, every permutation group
+can be realized as a permutation group on the left cosets for some 
+point stabilizer subgroup.
+A form of these representations without \cref{prelim:eqn:core} seems to have been first observed by Burnside in~\cite{Burnside1901_representation_permutation}, where he also refers to Dyck (without citing a source).

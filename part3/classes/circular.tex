@@ -1,0 +1,367 @@
+%!TEX root = ./../../thesis-trier.tex
+
+\IN{circular automaton}
+An automaton $\semiautomat{A}{Q}{\Sigma}{\delta}$ is \emph{circular}
+if there exists a letter $b \in \Sigma$ 
+that cyclically permutes the states, i.e., $Q = \{ \delta(q, b^i) \mid i \ge 0 \}$
+and $\delta(q, b^{|Q|}) = q$ for some state $q \in Q$ (and hence all states $q \in Q$).
+The automata from the \Cerny family (see Figure~\ref{intro:fig:cerny}) are circular.
+Dubuc~\cite{Dubuc98} confirmed the \Cerny conjecture for circular automata.
+
+In \cref{syncmax:classes:thm:circular}, we first give a condition implying complete reachability,
+complete distinguishability, and bounds on the lengths of shortest words reaching non-empty subsets.
+This result was stated by Don~\cite[Prop.~15]{Don16} for the special case of a single
+letter of defect one and without concluding complete distinguishability.
+We then derive several consequences and give examples.
+
+\begin{theorem} \label{syncmax:classes:thm:circular} \label{sync_max:prop:don}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be an $n$-state automaton with $\Sigma = \{a_1, \ldots, a_k, b\}$
+	where $b \in \Sigma$ cyclically permutes the states and
+	$a_1, \ldots, a_k \in \Sigma$ are letters of defect one
+	with $0 < d_1, \ldots, d_k < n$	such that
+	\begin{enumerate}
+	\item for all $i \in \{1,\ldots,k\}$ we have $\dupl{a_i} = \delta(\excl{a_i}, b^{d_i})$ and
+	
+	\item the greatest common divisor of $d_1, \ldots, d_k$ and $n$ is one.
+	\end{enumerate}
+	Then $\mathcal A$ is completely distinguishable,
+	every non-empty subset of size~$r$ is reachable by a word of length $n(n - r)$,
+	and a shortest synchronizing word has length at most $(n - 1)^2$.
+\end{theorem}
+\begin{proof}
+	Consider the digraph $\Gamma_{1,n}(\mathcal A)$ defined on page~\pageref{def:Gamma1i-graph}.
+	First, we show that the group of units~$G$ of $\TM{\mathcal A}$ is contained in the 
+	automorphism group of $\Gamma_{1,n}(\mathcal A)$.
+	Since~$G$ is generated 
+	by the action of the letter~$b$, this follows if for every edge $(p,q)$ in $\Gamma_{1,n}(\mathcal A)$
+	also the edge $(\delta(p, b), \delta(q, b))$ is in $\Gamma_{1,n}(\mathcal A)$.	
+	Let $(p, q)$ be an edge in $\Gamma_{1,n}(\mathcal A)$.
+	Then it is induced by a word of the form $a_i b^{j}$
+	for some $i \in \{1,\ldots,k\}$ and $j \in \{0,1,\ldots,n-1\}$.
+	For the word $u = a_i b^{(j+1) \bmod n}$
+	we have $\excl{u} = \{ \delta(p, b)\}$
+	and $\dupl{u} = \{ \delta(q, b) \}$.
+	Thus, $u$ induces the edge $(\delta(p, b), \delta(q, b))$ in $\Gamma_{1,n}(\mathcal A)$.
+		
+	Next, assume $\Gamma_{1,n}(\mathcal A)$ is not strongly connected.
+	An automorphism maps a path to another path.
+	Thus, since the elements from~$G$ act as automorphisms, 
+	the weakly connected components form the congruence classes of
+	a $G$-congruence on~$Q$.
+	Then, by \cref{lem:congruence_on_cyclic_group} there exists a divisor $d$ of~$n$ such that
+	two states $p,q \in Q$ are in a common weakly connected component
+	if and only if $\delta(p, b^j) = q$
+	for some multiple~$0 \le j < n$ of~$d$.
+	Note that since~$d$ divides~$n$, the numbers
+	$j$ and $n - j$ are either both divisible by~$d$
+	or neither is divisible by~$d$.	
+	For $i \in \{1,\ldots,k\}$,
+	let $\excl{a_i} = \{p_i\}$
+	and $\dupl{a_i} = \{q_i\}$.
+	Since $(p_i, q_i)$ is an edge in $\Gamma_{1,n}(\mathcal A)$,
+	the states~$p_i$ and~$q_i$ are in the same weakly connected component.
+	Thus $\delta(p_i, b^j) = q_i$ for some multiple $0 \le j < n$ of~$d$.
+	Since $\delta(p_i, b^{d_i}) = q_i$,
+	we find $j = d_i$.
+	This yields that~$d$ is a common divisor
+	of $d_1, \ldots, d_k$ and~$n$.
+	By assumption, we find $d = 1$. This implies that all states
+	are congruent, i.e., $\Gamma_{1,n}(\mathcal A)$ is weakly connected.
+	Since the group $G$ is transitive, $\Gamma_{1,n}(\mathcal A)$ is vertex transitive.
+	Thus, by \cref{prelim:thm:vertex_transitive_finite_graph}, it is strongly connected.
+	Then, by \cref{syncmax:thm:Gamma1-SCC-subgraph}, 
+	$\mathcal A$ is completely reachable,
+	each non-empty subset of size $r$ is reachable by a word of length $n(n - r)$,
+	and a shortest synchronizing word has length at most $1 + n(n-2) = (n-1)^2$.
+	By \cref{thm:defectatmostone}, we find that~$\mathcal A$ is completely distinguishable.
+\end{proof}
+
+The following corollary was stated in~\cite[Thm.~13]{HoffmannCircularExtended} in the special case $k = 1$.
+
+\begin{corollary}  \label{sync_max:thm:circular_sync_max} \label{sync_max:cor:circular}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be an $n$-state automaton where $b \in \Sigma$ cyclically permutes the states.
+	Suppose $a_1, \ldots, a_k \in \Sigma$ are letters of defect one
+	and $0 < d_1, \ldots, d_k < n$
+	are such that for all $i \in \{1,\ldots,k\}$ we have $\delta(q_i, a_i) = \delta(q_i, b^{d_i} a_i)$
+	for some $q_i \in Q$.
+	If the greatest common divisor of $d_1, \ldots, d_k$ and $n$
+	is one, then $\mathcal A$ is completely reachable and completely distinguishable. % (and so sync-maximal).	
+\end{corollary}
+\begin{proof}
+	Since $\TM{\mathcal A}$ contains the transitive permutation group $G = \langle \{ \fword{\delta}{u} \} \rangle_G$,
+	by \cref{sync_words:lem:idempotent}, for each $i \in \{1,\ldots,k\}$
+	there exist simple idempotent words $u_i$
+	mapping $q_i$ to $\delta(q_i, b^{d_i})$.
+	We have $\excl{u_i} = \{q_i\}$
+	and $\dupl{u_i} = \{ \delta(q_i, b^{d_i}) \}$.
+	Considering a new automaton with state set~$Q$ with the letter~$b$
+	acting in the same way and where we consider the words $u_1, \ldots, u_k$ as letters,
+	from \cref{syncmax:classes:thm:circular} 
+	we get that
+	this automaton is completely reachable and completely distinguishable.
+	This also yields that~$\mathcal A$ is completely reachable and completely distinguishable.
+\end{proof}
+
+We will apply \cref{sync_max:thm:circular_sync_max} 
+in \cref{sync_max:sec:slowly_sync} (see \cref{sync_max:thm:families}) to show
+sync-maximality for a variety of automata families (among them one for which this was 
+previously only conjectured).
+
+Since in the proof of \cref{sync_max:thm:circular_sync_max} we have applied \cref{syncmax:classes:thm:circular} 
+when considering certain words as letters, the bounds from \cref{sync_max:prop:don}
+do not hold (but they transfer when multiplied by the maximum of the lengths
+of these words).
+
+Recall that, by \cref{cor:char-bin-compl-reach}, for binary automata with at least three states,
+complete reachability is equivalent to sync-maximality.
+However, Complete distinguishability in itself does not imply complete reachability
+for binary circular automata. For example, \cref{sync_max:fig:compl_dist_not_compl_reach:1} 
+gave a binary circular automaton that is completely distinguishable, but not completely reachable.
+
+\Cref{sync_max:cor:circular} can be used to construct sync-maximal circular automata. We give a few
+examples in the following statement. See also \cref{syncmax:fig:binary-circular-sync-maximal} which
+depicts some cases from this statement.
+
+\begin{figure}[htbp]
+	\centering
+	\begin{tikzpicture}
+		
+		\matrix (m) [matrix of nodes,
+		column sep=1.5cm,
+		row sep=0.01cm] {
+			% nodes={anchor=center}
+			
+			\begin{tikzpicture}[inner sep=2pt, minimum size=0pt, scale=0.65, transform shape, ->, >=stealth]
+				\foreach \i in {0,...,6} {
+					\node[state] (q\i) at ({360/7 * \i}:3cm) {$\i$};
+				}
+				
+				\foreach \i [evaluate=\i as \j using {int(mod(\i+1,7))}] in {0,...,6} {
+					\path[->] (q\i) edge[bend right=15, dashed] (q\j);
+				}
+				
+				\path[->] (q0) edge (q2);
+				\draw (q3) edge (q0); % choose odd i=3				
+			\end{tikzpicture}
+			
+			&
+			%	\begin{tikzpicture}[scale=0.75, transform shape, ->, >=stealth, shorten >=1pt, shorten <=1pt]
+				\begin{tikzpicture}[scale=0.65, transform shape, ->, >=stealth, node distance=2.2cm, on grid, auto]
+					\foreach \i in {0,...,6} {
+						\node[state] (q\i) at ({360/7 * \i}:3cm) {$\i$};
+					}
+						
+					\draw (q0) edge[dashed] (q1);
+					\draw (q1) edge[bend left=8, dashed] (q2);
+					\draw (q2) edge[bend left=8, dashed] (q3);
+					\draw (q3) edge[dashed] (q4);
+					\draw (q4) edge[bend left=8, dashed] (q5);
+					\draw (q5) edge[bend left=8, dashed] (q6);
+					\draw (q6) edge[bend left=8, dashed] (q0);
+					
+					\draw (q0) edge[bend left=20] (q3);
+					\draw (q3) edge[bend right=10] (q1); % odd i=3
+					
+					\foreach \i in {1,2,4,5,6} {
+						\pgfmathtruncatemacro{\j}{mod(\i+1,7)}
+						\draw (q\i) edge[bend right=8]  (q\j);
+					}
+				\end{tikzpicture}	
+			\\			
+			{Automaton as in \crefitem{prop:more_families}{prop:more_families:1}}
+			&
+			{Automaton as in \crefitem{prop:more_families}{prop:more_families:2}}
+			\\
+			
+			\begin{tikzpicture}[inner sep=5pt, minimum size=0pt, scale=0.65, transform shape, ->, >=stealth, node distance=2.2cm, on grid, auto]
+				\foreach \i in {0,...,7} {
+					\node[state] (q\i) at ({360/8 * \i}:3cm) {$\i$};
+				}
+				
+				\foreach \i [evaluate=\i as \j using {int(mod(\i+1,8))}] in {0,...,7} {
+					\draw (q\i) edge[bend right=15, dashed] (q\j);
+				}
+				
+				\draw (q0) edge (q3);
+				\draw (q5) edge (q0);
+				
+			\end{tikzpicture}
+			&
+			\begin{tikzpicture}[inner sep=5pt, minimum size=0pt, scale=0.65, transform shape, ->, >=stealth, node distance=2.2cm, on grid, auto]
+				\foreach \i in {0,...,7} {
+					\node[state] (q\i) at ({360/8 * \i}:3cm) {$\i$};
+				}
+				
+				\foreach \i [evaluate=\i as \j using {int(mod(\i+1,8))}] in {0,...,7} {
+					\draw (q\i) edge[bend right=15, dashed] (q\j);
+				}
+				
+				\draw (q0) edge[bend left=10]  (q1);	
+				
+				\draw (q5) edge[bend left=15]  (q6);
+				\draw (q6) edge[bend left=15]  (q7);
+				\draw (q7) edge[bend right=30] (q5);
+			\end{tikzpicture}
+			\\
+			
+			{Automaton as in \crefitem{prop:more_families}{prop:more_families:3}}
+			&
+			{Automaton as in \crefitem{prop:more_families}{prop:more_families:4}}
+			\\
+		};		
+	\end{tikzpicture}
+	\caption[Example sync-maximal circular automata]{Solid and dashed edges show the actions 
+		of~$a$ and, resp., $b$; self-loop omitted.}
+	\label{syncmax:fig:binary-circular-sync-maximal}
+\end{figure}
+
+
+
+
+\begin{proposition}
+	\label{prop:more_families}
+	Let $\semiautomat{A}{Q}{\{a,b\}}{\delta}$
+	with $Q = [n]$ and $\delta(i, b) = (i + 1) \bmod n$.
+	Then~$\mathcal A$ is sync-maximal if~$a$ is defined in the following way:
+	\begin{enumerate}
+		\item \label{prop:more_families:1} $\delta(0, a) = 2$, precisely one odd $i \in \{1,3,\ldots,n-2\}$
+		such that $\delta(i, a) = 0$ and $\delta(j, a) = j$ for $j \in [n] \setminus\{0,i\}$ with $n > 2$ being odd,
+		
+		\item \label{prop:more_families:2} $\delta(0, a) = 3$, precisely one odd $i \in \{1,3,\ldots,n-2\}$
+		such that $\delta(i, a) = 1$ and $\delta(j, a) = (j+1) \bmod n$ for $j \in [n] \setminus\{0,i\}$ with $n > 2$ being odd,
+		
+		\item \label{prop:more_families:3} $\delta(0, a) = 3$, precisely one $i \in \{1,3,\ldots,n-2\}$
+		not divisible by $3$ such that $\delta(i, a) = 0$ and $\delta(j, a) = j$ for $j \in [n] \setminus\{0,i\}$ where $n \not\equiv 0 \pmod{3}$ with $n > 3$,
+		
+		\item \label{prop:more_families:4} $\delta(0,a) = 1$, $\delta(i, a) = i$ for $i \in \{1,\ldots,\lfloor n / 2 \rfloor\}$,
+		and $a$ acts injectively on $\{\lfloor n/2 \rfloor + 1, \ldots, n - 1 \}$
+		i.e., $\delta(j, a) = \delta(j', a)$ implies $j = j'$ for $j,j' \in \{\lfloor n/2 \rfloor + 1, \ldots, n - 1 \}$.
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+	All these automata are circular with~$a$ having defect one.
+	Then the claims follow from \cref{sync_max:cor:circular} due to the following 
+	reasons:
+	
+	\ref{prop:more_families:1}: We have $\delta(0, a) = \delta(0, b^2a)$ and $n$ is odd.
+	
+	\ref{prop:more_families:2}: We have $\delta(0, a) = \delta(0, b^2a)$ and $n$ is odd.
+	
+	\ref{prop:more_families:3}: We have $\delta(0, a) = \delta(0, b^3a)$ and $n$ is not a multiple of~$3$.
+	
+	\ref{prop:more_families:4}: We have $\delta(0, a) = \delta(0, ba)$.
+\end{proof}
+
+As the next example shows, \cref{syncmax:classes:thm:circular} applies to a wider 
+class of automata than \cref{sync_max:thm:circular_sync_max}.
+
+\begin{example} 
+	\label{ex:thm_not_usable}
+	Consider the automaton from \cref{ex:I_vs_Gamma1} (see \cref{fig:thm_not_usable}).
+	Let~$w$ be a word of defect one. As can be read off
+	from  Table~\ref{tab:rank_3_words},
+	for $d > 0$ and $q \in [4]$, 
+	if 
+	$\applytrans{\delta}{q}{w} = \applytrans{\delta}{\applytrans{\delta}{q}{b^d}}{w}$,
+	then $d$ is a multiple of two.
+	So \cref{sync_max:thm:circular_sync_max}
+	does not apply here.
+	We have  $\excl{a} = \{0\}$, $\dupl{a} = \{1\}$,
+	and $\delta(0, a) = 1 = \delta(0, b)$.
+	Thus \cref{sync_max:prop:don} yields that the automaton
+	is completely reachable (which also can be seen in \cref{fig:thm_not_usable}).
+\end{example}
+
+Next, we give examples of completely reachable binary automata for which complete reachability does not follow directly from \cref{sync_max:prop:don}. In \cref{syncmax:ex:circular-compl-reach-one}, by considering certain words as letters, it becomes possible to apply \cref{sync_max:prop:don}. However, it is unclear whether such an argument can also be applied in \cref{syncmax:ex:circular-compl-reach-two}.
+
+\begin{example} \label{syncmax:ex:circular-compl-reach-one}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	where $Q = [n]$ for some $n \ge 3$
+	and $\delta(q, b) = (q + 1) \bmod n$ for $q \in Q$,
+	$\delta(0, a) = 2$, and $\delta(q, a) = q + 1$
+	for $q \in \{1,2,\ldots,n-2\}$
+	and $\delta(n-1,a) = 1$.
+	For even~$n$, \cref{sync_max:prop:don}
+	is not applicable.
+	However, we have	
+	$\delta(0, a^{n}) = 1$,	
+	$a^{n}$ has defect one,
+	and $0$ and~$1$ are the excluded and duplicate
+	state of~$a^{n}$, respectively. Thus, regarding $a^{n}$
+	as an alphabet letter, from \cref{sync_max:prop:don}
+	we get that~$\mathcal A$ is completely reachable.
+\end{example}
+
+\begin{example} \label{syncmax:ex:circular-compl-reach-two}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	where $Q = [9]$, $\delta(q, b) = (q + 1) \bmod 9$ for $q \in Q$
+	and $\delta(0, a) = 3$, $\delta(a, 6) = 7$, $\delta(7, a) = 6$,
+	and $\delta(q, a) = q$ for $q \in Q \setminus\{0,6,7\}$, see \cref{syncmax:fig:example-cr-circular}.
+	Next, we show that~$\mathcal A$ is completely reachable.
+	Since $\excl{a} = \delta(\dupl{a}, b^3)$,
+	this does not follow from \cref{sync_max:prop:don},
+	and it is also not clear to us how to find words
+	acting in a way to apply \cref{sync_max:prop:don}.
+	Next, let $S \subseteq Q$ be a non-empty subset of~$Q$.
+	We show, by induction on $|Q \setminus S|$,
+	that~$S$ is reachable in $\mathcal A$.
+	The claim holds for $S = Q$.
+	Next, let $S \ne Q$.	
+	
+	\begin{enumerate}
+	\item Suppose we have $\delta(p, b^3) \in S$ for some $p \in Q \setminus S$.
+	
+	In this case, there exists $i \ge 0$ such that
+	$0 \notin \delta^{-1}(S, b^i)$ and $3 \in \delta^{-1}(S, b^i)$.
+	This gives $|\delta^{-1}(S, ab^i)| = |S| + 1$
+	and $\delta( \delta^{-1}(S, ab^i), ab^i ) = S$.
+	Inductively, we have $\delta(Q, u) = \delta^{-1}(S, ab^i)$
+	for some $u \in \Sigma^*$.
+	Then $\delta(Q, uab^i) = S$.	
+	
+	\item Otherwise, each residue class modulo three is either contained in $S$ or in its complement.
+		
+	Let $q \in Q \setminus S$ be such that $\delta(q, b) \in S$.
+	Then we have $6 \notin \delta^{-1}(S, b^i)$ and $7 \in \delta^{-1}(S, b^i)$
+	for some $i \ge 0$. 
+	Since $6 \notin \delta^{-1}(S, b^i)$
+	we also find that $0$ and $3$ are not contained in $\delta^{-1}(S, b^i)$.
+	For $T = \delta^{-1}(S, ab^i)$,
+	this gives $T = ( \delta^{-1}(S, b^i) \setminus \{ 7  \} ) \cup \{ 6\}$
+	and $\delta(T, ab^i) = S$.
+	We have $0 \notin \delta^{-1}(T, b^3)$
+	since $3 \notin T$ and $3 \in \delta^{-1}(T, b^3)$
+	since $6 \in T$.
+	We also have $7 \in \delta^{-1}(T, b^3)$ since $1 \in T$
+	and $6 \notin \delta^{-1}(T, b^3)$ since $0 \notin T$.
+	Thus we find
+	\[
+	\delta^{-1}(T, ab^3) = ( \delta^{-1}(T, b^3) \setminus \{ 7 \} ) \cup \{ 0,6 \}
+	\]
+	and $\delta(\delta^{-1}(T, ab^3), ab^3) = T$.
+	Since $|\delta^{-1}(T, ab^3)| = |T| + 1 = |S| + 1$, inductively,
+	we have $\delta^{-1}(T, ab^3) = \delta(Q, u)$ for some $u \in \Sigma^*$.
+	Then we find $\delta(Q, uab^3ab^i) = S$.	
+	\end{enumerate}
+	
+	\begin{figure}[htbp]
+		\centering
+		\begin{tikzpicture} %[->, >=Stealth, semithick]
+			
+			\foreach \i in {0,...,8} {
+				\node[state] (q\i) at ({40*\i}:3cm) {$\i$};
+			}
+			
+			\foreach \i/\j in {0/1,1/2,2/3,3/4,4/5,5/6,6/7,7/8,8/0} {
+				\draw (q\i) edge[dashed] (q\j);
+			}
+			
+			\draw (q0) to (q3);
+			\draw (q6) to[bend left=25] (q7);
+			\draw (q7) to[bend left=25] (q6);
+		\end{tikzpicture}
+		\caption[Example completely reachable circular automaton]{Automaton from \cref{syncmax:ex:circular-compl-reach-two}. Solid and dashed edges show the actions 
+			of~$a$ and, resp., $b$; self-loop omitted.}
+		\label{syncmax:fig:example-cr-circular}
+	\end{figure}
+\end{example}

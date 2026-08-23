@@ -1,0 +1,338 @@
+%!TEX root = ./../../springer-mono-format/book.tex
+%!TEX root = ./../../thesis-trier.tex
+
+Here, in \cref{compl:prop:reductions}, we state various $\leACZEROm$-reductions that work for any fixed alphabet. 
+Omitting the $\AC^0$-equivalent problems,
+the problems and the reductions from \cref{compl:prop:reductions}
+are depicted in the form of a Haase diagram in \cref{prelim:classes:fig:reductions}.
+\Cref{compl:prop:reductions_trap,compl:prop:reductions_comm,compl:prop:reductions_unary-SWS-SW}
+give some further reductions for classes of automata.
+\Cref{prelim:compl:prop:unary-binary} shows that in \DFASWS,
+it does not matter whether we encode the length parameter in unary or binary
+up to $\leACZEROm$-equivalence.
+
+\begin{remark}
+The reductions in \cref{compl:prop:reductions,compl:prop:reductions_trap,compl:prop:reductions_comm} 
+involving automata do not change the alphabet.
+So, they can be used when we investigate problem 
+variants where the alphabet is fixed (as in some statements in~\cref{compl:sec:subclasses}).
+Furthermore, because they do not require
+that the alphabet is held fixed, they can also be used
+for complexity upper bounds when the alphabet is part of the input.
+\end{remark}
+
+\begin{figure}[ht]
+	\centering
+\begin{tikzpicture}[node distance = 0.5cm and 1.5cm]
+	\node (scp) {\SCP};
+	\node (stp) [above = of scp] {\DFAST};
+	\node (syc) [above right = of stp] {\DFAS};
+	\node (dss) [above left = of stp]  {\DFASS};
+	\node (dsf) [above left = of syc, xshift=1.2cm] {\SFS};
+	%\node (sws) [above right = of stp] {\DFASWS};
+	\node (sis) [above left  = of dss, xshift=1.2cm] {\SIS};
+	\node (rea) [above right = of dss, xshift=-1.2cm] {\REACH};
+	\node (dst) [above = of sis] {\ST};
+	\node (ref) [above = of rea] {\REACHF}; 
+	\node (dws) [above right = of syc, xshift=-1.2cm] {\DFASWS};
+	
+	\draw[-] (scp) -- (stp);
+	\draw[-] (stp) -- (dss) -- (sis) -- (dst);
+	\draw[-] (dss) -- (rea) -- (ref);
+	\draw[-] (stp) -- (syc) -- (dsf);	
+	\draw[-] (syc) -- (dws);
+\end{tikzpicture}
+	\caption[Haase diagram for reductions]{Haase diagram of the reductions from \cref{compl:prop:reductions}; those equivalent to \ST omitted.}
+	\label{prelim:classes:fig:reductions}
+\end{figure}
+
+\begin{proposition}
+	\label{compl:prop:reductions}
+	Fix a non-empty alphabet $\Sigma$. 
+	Then the following statements hold:
+	\begin{enumerate}				
+		\item \label{compl:prop:reductions:item:SCP_DFAST} $\SCP \leACZEROm \DFAST$,
+		\item \label{compl:prop:reductions:item:DFAST_DFAS} $\DFAST \leACZEROm \DFAS$,
+		\item \label{compl:prop:reductions:item:st-ss} $\DFAST \leACZEROm \DFASS$,	
+		\item \label{compl:prop:reductions:item:DFAS_DFASWS} $\DFAS \leACZEROm \DFASWS$,
+		\item \label{compl:prop:reductions:item:DFAS_SFS} $\DFAS \leACZEROm \SFS$,
+		\item \label{compl:prop:reductions:item:DFASS_SIS} $\DFASS \leACZEROm \SIS$ and $\DFASS \leACZEROm \REACH$,		
+		\item \label{compl:prop:reductions:item:REACH-REACHF} $\REACH \leACZEROm \REACHF$,		
+		\item \label{compl:prop:reductions:item:SIS_ST} $\SIS \le_m^{\AC^0} \ST$,		
+		\item \label{compl:prop:reductions:item:DFAINT_DST}	\label{compl:prop:reductions:item:DFAINT_ST} $\DFAINT \eqACZEROm \ST$, 		
+		\item \label{compl:prop:reductions:item:DST_ST} $\DST \eqACZEROm \ST$.
+	\end{enumerate} 
+	Furthermore, besides preserving the alphabet, the reductions used in \crefrange{compl:prop:reductions:item:DFAST_DFAS}{compl:prop:reductions:item:DST_ST}  
+	transform a commutative (resp.~partially ordered, solvable, permutation) automaton
+	into a commutative (resp.~partially ordered, solvable, permutation) automaton.
+\end{proposition}
+\begin{proof}  	
+	The following reductions given in \crefrange{compl:prop:reductions:item:SCP_DFAST}{compl:prop:reductions:item:DST_ST}
+	below can be easily implemented by \LOGSPACE-uniform circuit families
+	in $\AC^0$. Further, for each reduction involving automata, the alphabet is not altered and 
+	it is readily seen that when it is applied to a commutative (resp.~partially ordered)
+	automaton it yields a commutative (resp.~partially ordered) automaton.
+		
+	\ref{compl:prop:reductions:item:SCP_DFAST}: 
+	Let $g \colon [n] \to [n]$ be a input permutation to \SCP. 
+	Set~$\semiautomat{A}{[n]}{\Sigma}{\delta}$
+	where, for $x \in \Sigma$,
+	$\applytrans{\delta}{0}{x} = 0$
+	and $\applytrans{\delta}{i}{x} = \applyfunc{i}{g}$
+	for $i \in [n] \setminus \{0\}$.
+	Then~$\mathcal A$ has $0$ as a unique synchronizing trap state if and only if~$g$ has a single cycle.	
+	
+	Note that~$\mathcal A$ has the form of a single tail with a trap state at the end
+	if it is synchronizing. But this is not the case 
+	if~$g$ has multiple cycles, since then
+	the automaton also has at least one cycle.
+		
+	\ref{compl:prop:reductions:item:DFAST_DFAS}: This is obvious.	 
+	
+	\ref{compl:prop:reductions:item:st-ss}:	
+	We assume the $n$-state input $\mathcal A$ to \DFAST is given as a list 
+	of transition matrices $(m_{ij}^{(a)})_{i,j \in \{1,\ldots,n\}}$
+	for each $a \in \Sigma$,
+	and the input to \DFASS  
+	is supplied as a list of transition
+	matrices and a vector
+	with a one indicating the state to which we want to synchronize
+	and zero at all other positions.
+	The state~$i$ is a trap state if and only if $m_{ii}^{(a)} = 1$
+	for all $a \in \Sigma$.
+	Let 
+	\[
+	b_i = \left( \bigwedge_{a \in \Sigma} m_{ii}^{(a)} \right) 
+	\land 
+	\left(\bigwedge_{j=1}^{i-1} \bigvee_{a \in \Sigma} \neg m_{jj}^{(a)} \right).
+	\]
+	Each $b_i$ can be computed by a circuit family in $\AC^0$ 
+	by directly implementing the defining formula.
+	We have $b_i = 1$ if and only if $i$ is a trap state
+	and the other states are not trap states. 
+	%Hence $(b_1, \ldots, b_n)$
+	%contains at most a single one and zero everywhere else.
+	For $b_1 = \cdots = b_n = 0$ we feed a fixed non-synchronizing two-state automaton
+	with some state to \DFASS. 
+	Otherwise, $(b_1, \ldots, b_n)$ contains the entry~``$1$'' precisely once at a position corresponding to a unique trap state.	
+	Then, the transition matrices together with $(b_1, \ldots, b_n)$ 
+	are an encoding of an input instance for \DFASS
+	that is an \rYES-instance if and only if the original automaton
+	is synchronizing.	
+		
+	\ref{compl:prop:reductions:item:DFAS_DFASWS}:  Let $\mathcal A$ be an $n$-state input automaton to \DFAS. 
+	A shortest synchronizing word has length at most $(n^3 - n) / 6$, see \cref{tab:reset_length_bounds} in \cref{intro:sec:cerny}. 
+	So, $\mathcal A$ has a synchronizing word
+	if and only if $(\mathcal A, n^3)$ is a \rYES-instance
+	of \DFASWS. 
+	The number of states~$n$ can be readily computed from the input~$\mathcal A$
+	and~$n^3$ can be easily computed by circuits constructible by deterministic log-space Turing transducers. 
+	Thus the input $(\mathcal A, n^3)$ can be computed
+	by a \LOGSPACE-uniform family of circuits in~$\AC^0$ (where the encoding of $n^3$
+	does not matter by \cref{prelim:compl:prop:unary-binary}).
+				
+	\ref{compl:prop:reductions:item:DFAS_SFS}: This follows as an automaton $\mathcal A$ is synchronizing 
+	if and only if $(\mathcal A, Q)$ is a \rYES-instance of \SFS.	
+	
+	\ref{compl:prop:reductions:item:DFASS_SIS}: An input instance $(\mathcal A, q)$ of \DFASS can be converted
+	readily to an equivalent input $(\mathcal A, \{q\})$
+	to \SIS, which is also an equivalent input for \REACH.
+	
+	\ref{compl:prop:reductions:item:SIS_ST}: The \SIS-instance $(\mathcal A, S)$ 
+	is equivalent to the \ST-instance $(\mathcal A, Q, S)$, giving a reduction doable by an \LOGSPACE-uniform circuit family in~$\AC^0$.
+			
+	\ref{compl:prop:reductions:item:DFAINT_DST}: 
+	Let $\semiautomat{A_i}{Q_i}{\Sigma}{\delta_i}$,
+	$q_i \in Q_i$, and $F_i\subseteq Q_i$ for $i \in \{1,\ldots,k\}$
+	be an input instance for \DFAINT.
+	We can assume the state sets $Q_i$ are pairwise disjoint.
+	Set $\semiautomat{A}{Q}{\Sigma}{\delta}$ with $Q = Q_1 \cup \cdots \cup Q_k$
+	and 
+	$
+	\applytrans{\delta}{q}{x} = \applytrans{\delta_i}{q}{x} 
+	$
+	if $q \in Q_i$.
+	Then, for $u \in \Sigma^*$, we have $\applytrans{\delta}{\{ q_1, \ldots, q_k\}}{u} \subseteq F_1 \cup \ldots \cup F_k$
+	if and only if $\delta_i(q_i, u) \in F_i$ for all $i \in \{1,\ldots,k\}$, giving a reduction
+	preserving the alphabet and the mentioned automata types.
+	
+	Next, let $(\mathcal A, S, T)$ with $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	and $S,T \subseteq Q$ be a \ST-instance. 
+	Write $S = \{s_1, \ldots, s_m\}$.
+	Then, for $i \in \{1,\ldots,m\}$,
+	with $\mathcal A_i = \mathcal A$, $q_i = s_i$,
+	and $F_i = T$ we obtain an instance of \DFAINT 
+	that has a solution if and only if there exists a word
+	in $\mathcal A$ mapping $S$ into $T$.        
+		
+	\ref{compl:prop:reductions:item:DST_ST}: It is sufficient to show
+	$\ST \leACZEROm \DST$. Let $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	and $S, T \subseteq Q$. We can assume $S \not\subseteq T$.
+	Set $\semiautomat{\overline{\mathcal A}}{Q \cup \{0\} \times S}{\Sigma}{\overline{\delta}}$
+	where, for $x \in \Sigma$,
+	we let $\applytrans{\overline{\delta}}{(0, s)}{x} = \applytrans{\delta}{s}{x}$
+	for $s \in S$
+	and $\applytrans{\overline{\delta}}{q}{x} = \applytrans{\delta}{q}{x}$
+	for $q \in Q$.
+	This construction can be implemented by a \LOGSPACE-uniform circuit family in $\AC^0$ as we only add states
+	and transitions according to a fixed scheme. 
+	For a non-empty word $u \in \Sigma^+$
+	we have $\applytrans{\delta}{S}{u} \subseteq T$
+	if and only if $\applytrans{\overline{\delta}}{\{0\} \times S}{u} \subseteq T$
+	and as $\{0\} \times S$ and $T$ are disjoint this gives a valid reduction.
+\end{proof}
+
+\begin{proposition}  \label{compl:prop:reductions_trap}
+	For automata whose synchronizing states are trap states
+	as, for example, solvable automata,
+	we have
+	$\DFAS \eqACZEROm \DFASS$ and
+	$\DFASS \eqACZEROm \DFAST$.
+\end{proposition}
+\begin{proof}	
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	be an input automaton and $n = |Q|$.
+	We assume $\mathcal A$ is supplied 
+	as a list of transition matrices $(m_{ij}^{(a)})_{i,j \in \{1,\ldots,n\}}$, $a \in \Sigma$,
+	w.r.t.~to an identification of the states with $\{1,\ldots,n\}$.	
+	By \crefitem{compl:prop:reductions}{compl:prop:reductions:item:st-ss}, 
+	$\DFAST \leACZEROm \DFASS$.
+	Thus, it is sufficient to show
+	$
+	\DFASS \leACZEROm 
+	\DFAS \leACZEROm 
+	\DFAST.
+	$
+	
+	\medskip 
+	\noindent\underline{$\DFASS \leACZEROm \DFAS$}: Since a trap state must be a unique synchronizing state,
+	with the assumption we obtain that a state $q$ in 
+	$\mathcal A$
+	is synchronizing if and only if $\mathcal A$ is synchronizing
+	and~$q$ a trap state.
+	So, we first check whether $q$ is a trap
+	state by implementing the formula $\bigwedge_{a \in \Sigma} m_{qq}^{(a)}$
+	and, if~$q$ is a trap state,
+	pass $\mathcal A$ to \DFAS.
+	Otherwise, we pass some fixed \rNO-instance
+	to \DFAS.
+	
+	\medskip 
+	\noindent\underline{$\DFAS \leACZEROm \DFAST$}:
+	Since by assumption a synchronizing state is a trap state,
+	$\mathcal A$ is synchronizing if and only if it has a trap 
+	state and is synchronizing. Existence of a trap state 
+	can be checked by the formula $\bigvee_{i = 1}^n \bigwedge_{a \in \Sigma} m_{ii}^{(a)}$.
+	If this check succeeds,	we pass $\mathcal A$ to \DFAST. 
+	Otherwise, we pass some fixed \rNO-instance to \DFAST.
+\end{proof}
+
+\begin{proposition}  \label{compl:prop:reductions_comm}
+	For commutative input automata
+	we have $\DFAS \leACZEROm \DFASW$.
+\end{proposition}
+\begin{proof}
+	Let $\Sigma = \{a_1, \ldots, a_k\}$ and $\semiautomat{A}{Q}{\Sigma}{\delta}$ 
+	be commutative.
+	By \cref{prelim:classes:comm:cor:words-SIS-SFS},
+	$\mathcal A$
+	is synchronizing if and only if $(\mathcal A, a_1^{n-1} \cdots a_k^{n-1})$
+	is a \rYES-instance of \DFASW. 
+	This yields an $\leACZEROm$-reduction.	
+\end{proof}
+
+The length of a shortest synchronizing word is polynomially bounded 
+in the number of states of the automaton, see \cref{tab:reset_length_bounds} in \cref{intro:sec:cerny}.
+Hence, for an input instance~$(\mathcal A, l)$ to \DFASWS 
+we can assume that $l$ is polynomially bounded in the number of states of $\mathcal A$.
+%Hence, the size of an input instance
+%to \DFASWS, including the space taken up by the length parameter,
+%can be assumed to be polynomially bounded
+%in the size of the alphabet and the number of states.
+As a consequence, as we show next, it does not matter, 
+up to~$\eqACZEROm$-equivalence, whether the length parameter is encoded
+in unary or binary.
+
+
+%This yields that the overall size 
+%of an input instance to \DFASWS
+%can be measured polynomially 
+%in the size of the alphabet and the number of states
+%without considering the space taken up by the length parameter in the input.
+
+
+\begin{proposition}
+	\label{prelim:compl:prop:unary-binary}
+	\DFASWS with length parameter encoded in thermometer or one-hot unary
+	encoding is $\eqACZEROm$-equivalent to \DFASWS 
+	with length parameter encoded in binary.
+\end{proposition}
+\begin{proof}
+	Let $(\mathcal A, l)$ be an input to \DFASWS
+	with an $n$-state automaton $\mathcal A$.
+	Suppose~$l$ is encoded in unary together with an encoding of $\mathcal A$.
+	Whether it is encoded as $1^l$, in one-hot, or thermometer
+	representation  with some delimiting bits
+	to the rest of the input, similarly as done in 
+	in the proof of \cref{prelim:AC0converters-numbers}
+	we can convert it to a binary encoding of $l$  by $\LOGSPACE$-uniform $\AC^0$-circuit families.
+	%By~\cref{prelim:AC0converters-numbers}, \ref{prelim:AC0converters-numbers:item:onehotbin} and~\ref{prelim:AC0converters-numbers:item:onehottherm}, 
+	%we can convert each unary encoding of $l$ to 
+	%the binary encoding by $\LOGSPACE$-uniform $\AC^0$-circuit families.
+	
+	Next, suppose $l$ is given in binary encoding.
+	If~$\mathcal A$ is synchronizing,
+	then a shortest synchronizing word has length at most
+	$\frac{n^3 - n}{6}$, see \cref{tab:reset_length_bounds} in \cref{intro:sec:cerny}.
+	Hence, it is sufficient to consider 
+	only $O(\log(n))$ least-significant bits
+	of the binary encoding of $l$.
+	Then, by~\crefitem{prelim:AC0converters-numbers}{prelim:AC0converters-numbers:item:binonehot}, 
+	there exists an~$\AC^0$ circuit of size $O(n)$
+	computing the one-hot unary encoding of
+	the number encoded by these bits.
+	Inspection of the proof of~\crefitem{prelim:AC0converters-numbers}{prelim:AC0converters-numbers:item:binonehot}
+	yields that these circuits 
+	are constructible in deterministic log-space,
+	so that we obtain a \LOGSPACE-uniform circuit family in~$\AC^0$
+	converting the binary encoding to the one-hot unary encoding of~$l$.
+\end{proof}
+
+By \cref{prelim:compl:prop:unary-binary},
+we can use the most convenient encoding of the length parameter. 
+In the following, we will often do this without special mentioning.
+
+Lastly, we state an $\AC^0$-equivalence that is valid for a fixed unary alphabet.
+
+\begin{proposition} \label{compl:prop:reductions_unary-SWS-SW}
+	For unary input automata we have $\DFASWS \eqACZEROm \DFASW$
+	which is true for the unary and the binary encoding of the length parameter
+	in \DFASWS.
+\end{proposition}
+\begin{proof}
+	Let $\semiautomat{A}{Q}{\{a\}}{\delta}$ be a unary input automaton
+	and $n = |Q|$.
+	By \cref{prelim:compl:prop:unary-binary}, we can assume
+	the length parameter is supplied in unary encoding.
+	
+	\medskip 
+	\noindent\underline{$\DFASW \leACZEROm \DFASWS$}: By \cref{prelim:thm:sync_words_is_ideal}, 
+	the unary automaton $\mathcal A$ 
+	has a synchronizing word of length at most~$L$ where $L = \max\{l_1, \ldots, l_m\}$
+	for $l_1, \ldots, l_m \ge 0$
+	if and only if it has a synchronizing word 
+	among the words $a^{l_1}, \ldots, a^{l_m}$.
+	Thus, an input $(\mathcal A, a^{l_1}, \ldots, a^{l_m})$ to \DFASW
+	is a \rYES-instance
+	if and only if  $(\mathcal A, L)$
+	is a \rYES-instance of the problem \DFASWS for $L = \max\{l_1, \ldots, l_m\}$, giving an $\leACZEROm$-reduction.
+				
+	\medskip 
+	\noindent\underline{$\DFASWS \leACZEROm \DFASW$}:
+	An input $(\mathcal A, l)$ for $l \ge 0$
+	is a \rYES-instance of \DFASWS if and only if 
+	$(\mathcal A, a^l)$ is a \rYES-instance 
+	of \DFASW. If~$l$ is given in unary,
+	we can easily transform $l$ into the word $a^l$
+	by an $\AC^0$ circuit, which gives a reduction.
+\end{proof}

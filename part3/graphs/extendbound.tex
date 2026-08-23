@@ -1,0 +1,304 @@
+%!TEX root = ./../../springer-mono-format/book.tex
+%!TEX root = ./../../thesis-trier.tex
+
+Here, we extend the bound $2(n-1)^2$ on a shortest synchronizing 
+word from~\cite{Rystsov2000} (also mentioned in \cref{prelim:subclasses:SI})
+from SI-automata to OI-automata. We do this by adapting the methods
+of proof from \cite{Rystsov2000}. Rystsov already noted in the last paragraph 
+of~\cite{Rystsov2000} that this is possible.
+
+For an OI-automaton $\semiautomat{A}{Q}{\Sigma}{\delta}$ and $i \ge 1$
+we define digraphs $I_i^{OI}(\mathcal A) = (Q, E_i)$
+with vertex set~$Q$ and edge sets
+\[
+E_i = 
+\begin{cases}
+	\{ (p, q) \mid \exists a \in \Sigma_I : p \ne q \land \applytrans{\delta}{p}{a} = q\} & \text{ if } i = 1, \\
+	E_{i-1} \cup \{ (\applytrans{\delta}{p}{a}, \applytrans{\delta}{q}{a}) \mid a \in \Sigma_G \land (p,q) \in E_{i-1} \} & \text{ if } i \ge 2.
+\end{cases}
+\]
+We then let $I^{OI}(\mathcal A) = (Q, E)$ with $E = \bigcup_{i \ge 1} E_i$.
+It is clear that for an SI-automaton $\mathcal A$
+we have $I_i^{OI}(\mathcal A) = I_i(\mathcal A)$
+and $I^{OI}(\mathcal A) = I(\mathcal A)$. 
+We do not add these and other new notions from this section to the notation index
+since they are only used in this section and nowhere else.
+
+
+First, in \cref{sync_max:graph:bound:lem:I-and-orbitals}, we show that an edge from the orbital digraph
+of two states, where one is mapped to the other by some idempotent one-point singular,
+is contained in a cycle of $I_n^{OI}(\mathcal A)$.
+As a consequence, stated in \cref{sync_max:graph:bound:cor:I-and-orbitals,sync_max:graph:bound:lem:cycle-graph-stabilizes}, 
+this gives a method to construct the graph $I^{OI}(\mathcal A)$ by sequences of graphs
+where every edges is contained in a cycle.
+\Cref{thm:ISCCaugmentative,cor:ISCCaugmentative} relate strong connectedness, synchronizability, and augmentative sets.
+Lastly, in \cref{sync_max:graphs:bound:thm:bound} we give
+a bound on the length of shortest synchronizing words in OI-automata.
+
+
+\begin{lemma} \label{sync_max:graph:bound:lem:I-and-orbitals}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	be a strongly connected $n$-state OI-automaton and~$G$ be the group of units of $\TM{\mathcal A}$.	
+	Suppose  for distinct $p_0, q_0 \in Q$
+	we have $\delta(p_0, a_0) = q_0$
+	for $a_0 \in \Sigma_I$.
+	Then the orbital digraph of $(p_0,q_0)$
+	w.r.t.~$G$
+	contains an edge from $I_{n}^{OI}(\mathcal A)$
+	inside a strongly connected component
+	of $I_{n}^{OI}(\mathcal A)$.
+\end{lemma}
+\begin{proof}
+	Let $a_0 \in \Sigma$ be an idempotent one-point singular
+	with $\delta(p_0, a_0) = q_0$
+	for distinct $p_0,q_0 \in Q$.
+	Since~$\mathcal A$ is strongly connected,
+	we have $\delta(q_0, u) = p_0$
+	for some $u \in \Sigma^*$. Write $u = u_0 a_1 u_1 \cdots u_{m-1} a_m u_m$
+	with idempotent one-point singulars $a_1,\ldots,a_m \in \Sigma_I$
+	and permutational words $u_0, u_1,\ldots, u_m$
+	where we choose~$m$ minimal.	
+	
+	Let $i \in \{0,1,\ldots,m\}$.
+	Set $p_i = \delta(q_{i-1}, u_{i-1})$
+	and $q_i = \delta(p_i, a_i)$ if $i \ge 1$. 	
+	We have
+	\begin{enumerate}
+	\item $\delta(q_m, u_m) = p_0$, 
+		
+	\item $\Orbit{q_i}{G} = \Orbit{p_{(i+1) \bmod (m+1)}}{G}$,
+	
+	\item $\Orbit{p_0}{G}, \ldots, \Orbit{p_m}{G}$
+	are all distinct, and thus disjoint, by the minimal choice of~$m$.
+	\end{enumerate}
+	
+	Next, define a digraph $(V, K)$
+	with $V = \Orbit{p_0}{G} \cup \cdots \cup \Orbit{p_m}{G}$ 
+	and $K = \bigcup_{i=0}^m K_i$
+	where 
+	\[
+	K_i = \{ (\delta(p_i, w), \delta(q_i, w)) \mid \text{$w$ a permutational word with $|w| < n$} \}.
+	\]
+	For $i \in \{0,1,\ldots,m\}$
+	we have $K_i \subseteq \Orbit{p_i}{G} \times \Orbit{p_{(i+1) \bmod (m+1)}}{G}$ and
+	\begin{equation} \label{syncmax:eqn:edgesKi}
+		(p,q) \in K_i \land (q, s) \in K \Rightarrow (q, s) \in K_{(i+1) \bmod (m+1)}
+	\end{equation}
+	
+	Now, for each $q \in V$
+	there exists a unique $i \in \{0,1,\ldots,m\}$
+	such that $q \in \Orbit{p_i}{G}$.
+	Thus $q = \delta(p_i, w)$ for some permutational word~$w$.
+	By finiteness, for a shortest such word~$w$,
+	we have $|w| < n$.
+	This yields that~$q$ has an outgoing 
+	edge $(q, \delta(q_i, w)) \in K_i$.
+	So every vertex has an outgoing edges.
+	This yields that there exists a cycle
+	\[
+	(s_0, s_1), (s_1, s_2), \ldots, (s_{l-1}, s_l)
+	\]
+	in $(V,K)$. 
+	Suppose $(s_0, s_1) \in K_i$ for some $i \in \{0,1,\ldots,m\}$.
+	By \cref{syncmax:eqn:edgesKi} we find
+	\[
+	(s_1, s_2) \in K_{(i + 1) \bmod (m+1)}, \ldots, (s_{m-1}, s_m) \in K_{(i + m) \bmod (m+1)}.
+	\] 
+	Since all orbits are disjoint, this implies $l \ge m$ and 
+	that there exists $j \in\{1,\ldots,m\}$ such that $(s_{j-1}, s_j) \in K_0$.
+
+	Clearly, $(V,K)$
+	is a subgraph of $I_n^{OI}(\mathcal A)$
+	and $K_0$ is contained in the edge set of the orbital subgraph
+	of $(p_0, q_0)$.
+	Thus the edge $(s_{j-1}, s_j)$ is contained in the orbital subgraph of $(p_0, q_0)$
+	and is also in a strongly connected component of $I_n^{OI}(\mathcal A)$.	
+\end{proof}
+
+\begin{corollary} \label{sync_max:graph:bound:cor:I-and-orbitals}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	be a strongly connected $n$-state OI-automaton.
+	Denote by $C_1(\mathcal A) = (Q, K_1)$
+	the digraph that results from $I_n^{OI}(\mathcal A)$
+	by only retaining those edges that are contained 
+	in some strongly connected component. %\footnote{The notation $C_i(\mathcal A)$ is only used in the present section. So we do not include	it in the notation index.}
+	For $i > 1$, set $C_i(\mathcal A) = (Q, K_i)$
+	where 
+	\[
+	K_i = K_{i-1} \cup \{ (\delta(p, x), \delta(q, x)) \mid x \text{ is a permutational letter and } (p,q) \in K_{i-1} \}.
+	\]
+	Then $\bigcup_{i \ge 1} K_i$ equals the edge set of $I^{OI}(\mathcal A)$.
+\end{corollary}
+\begin{proof}
+	The edge set of $I^{OI}(\mathcal A)$
+	equals the union of all orbital digraphs
+	of pairs $(p,q)$ such that $\delta(p, a) = q$
+	for some idempotent one-point singular $a \in \Sigma$
+	and $p \ne q$.
+	By \cref{sync_max:graph:bound:lem:I-and-orbitals},
+	for each such pair $(p,q)$, its orbital digraph
+	contains an edge from $I_n^{OI}(\mathcal A)$ in a strongly connected component.
+	Thus, such an orbital digraph contains an edge from~$K_1$.
+	Hence, by definition $\bigcup_{i \ge 1} K_i$
+	also equals the union of all such orbital digraphs,	which gives the claim.
+\end{proof}
+
+\begin{lemma} \label{sync_max:graph:bound:lem:cycle-graph-stabilizes}
+	With the notation from \cref{sync_max:graph:bound:cor:I-and-orbitals},
+	we have $C_{n - 1}(\mathcal A) = I^{OI}(\mathcal A)$.
+\end{lemma}
+\begin{proof}
+	Since $K_i \subseteq K_{i+1}$ for all $i \ge 1$, the sequence
+	$(K_i)_{i \ge 1}$ stabilizes by finiteness. Hence, by
+	\cref{sync_max:graph:bound:cor:I-and-orbitals}, there exists a minimal
+	$m \ge 1$ such that
+	\[
+	C_m(\mathcal A)=I^{OI}(\mathcal A).
+	\]
+	
+	Since each permutational letter acts as an automorphism of
+$I^{OI}(\mathcal A)$, it permutes the strongly connected components of
+$I^{OI}(\mathcal A)$ and maps cycles to cycles. It follows that every
+edge of $C_i(\mathcal A)$ for $i \ge 1$ lies on a cycle, since this holds for
+$C_1(\mathcal A)$.
+	
+	Suppose $K_i \ne K_{i+1}$ for some $i \ge 1$.
+	Then some permutational letter fails to permute the strongly connected components of $C_i(\mathcal A)$,
+	since otherwise $K_i$ would be preserved by each permutational letter, which
+	would yield $K_i = K_{i+1}$.
+	So, there exists an edge in $K_i$
+	whose endpoints are mapped to different strongly connected components
+	in~$C_i(\mathcal A)$.
+	Since this edge lies on a cycle in $K_i$, it also lies on a
+	cycle in $K_{i+1}$.
+	Hence, the two different strongly connected components from $C_i(\mathcal A)$
+	are merged into a single strongly connected component in $C_i(\mathcal A)$.
+			
+	Let $p, q \in Q$ be distinct with $\delta(q, a) = q$ for some $a \in \Sigma_I$.
+	By \cref{sync_max:graph:bound:lem:I-and-orbitals},
+	there exists a permutational letter $u \in \Sigma_G^*$
+	such that $(\delta(p, u), \delta(q, u))$
+	is contained in a strongly connected component of $I_n^{OI}(\mathcal A)$.
+	Thus, $(\delta(p, u), \delta(q, u))$ is an edge in $C_1(\mathcal A)$.
+	By the
+	construction of $C_1(\mathcal A)$, every edge belongs to a strongly
+	connected component, so $C_1(\mathcal A)$ has a strongly connected
+	component containing at least two vertices. Hence,
+	$C_1(\mathcal A)$ has at most $n-1$ strongly connected components.	
+	
+	Each strict inclusion $K_i \subsetneq K_{i+1}$ merges at least two
+	strongly connected components. Since $C_1(\mathcal A)$ has at most
+	$n-1$ strongly connected components, there can be at most $n-2$ such
+	strict inclusions. Therefore $m \le n-1$, and
+	\[
+	C_j(\mathcal A)=C_m(\mathcal A)=I^{OI}(\mathcal A)
+	\]
+	for all $j \ge m$. In particular,
+	$
+	C_{n-1}(\mathcal A)=I^{OI}(\mathcal A).
+	$
+\end{proof}
+
+\begin{theorem}\label{thm:ISCCaugmentative}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	be an OI-automaton and $i \ge 1$.
+	Then the graph~$I_i^{OI}(\mathcal A) = (Q, E_i)$ 
+	is strongly connected if and only if $\Sigma_I \Sigma_G^{< i}$
+	is augmentative for $\mathcal A$. 
+\end{theorem}
+\begin{proof}
+	First, assume $I_i^{OI}(\mathcal A)$ is strongly connected for $i \ge 1$.
+	Let $S \subseteq Q$ be some non-empty and proper subset of $Q$.	
+	By \cref{prelim:lem:partition_SCC}
+	there exists an edge $(\applytrans{\delta}{p}{u},\applytrans{\delta}{q}{u}) \in E_i$	
+	such that
+	\[
+	\applytrans{\delta}{p}{u} \notin S \text{ and } \applytrans{\delta}{q}{u} \in S.
+	\]
+	for a word $u \in \Sigma_G^{< i}$ and distinct $p, q \in Q$
+	where $\delta(p, x) = q$ for some $x \in \Sigma_I$.
+	Then we have $p \notin \applytrans{\delta^{-1}}{S}{u}$
+	and $q \in \applytrans{\delta^{-1}}{S}{u}$. Since~$x$ is an idempotent one-point singular with duplicate 
+	state~$p$, this gives
+	\[
+	\applytrans{\delta^{-1}}{S}{u} \cup \{p\} \subseteq \applytrans{\delta^{-1}}{S}{xu}
+	\]
+	and $|\applytrans{\delta^{-1}}{S}{xu}| > |S|$.
+	As $S$ was chosen arbitrarily, 	
+	we find that $\Sigma_I \Sigma_G^{< i}$
+	is augmentative for $\mathcal A$.	
+	
+	Conversely, suppose $\Sigma_I \Sigma_G^{< i}$
+	is augmentative for $\mathcal A$.
+	Let $S \subseteq Q$ be a proper and non-empty subset of $Q$.
+	Then there exist $x \in \Sigma_I$
+	and $u \in \Sigma_G^*$ with $|u| < i$
+	such that $|\applytrans{\delta^{-1}}{S}{xu}| > |S|$.
+	As the letters in $\Sigma_G$ permute $Q$,
+	this is equivalent
+	to $|\applytrans{\delta^{-1}}{T}{x}| > |T|$
+	where $T = \applytrans{\delta^{-1}}{S}{u}$.
+	Let $q \in Q$
+	be the unique state with $|\applytrans{\delta^{-1}}{q}{x}| \ge 2$.
+	Since $|\applytrans{\delta^{-1}}{T}{x}| > |T|$
+	and $x$ induces a one-point singular on $Q$
+	we have $q \in T$
+	and there must exist $p \in \applytrans{\delta^{-1}}{q}{x} \setminus T$.
+	The edge set $E_1$ contains precisely those edges 
+	consisting of two distinct states where the start is mapped to the end by some idempotent one-point singular.
+	Therefore, we have $(p,q) \in E_1$.
+	Then $(\applytrans{\delta}{p}{u}, \applytrans{\delta}{q}{u}) \in E_i$.
+	Since $\applytrans{\delta}{p}{u} \notin \applytrans{\delta}{T}{u} = S$
+	and $\applytrans{\delta}{q}{u} \in S$,
+	by \cref{prelim:lem:partition_SCC} it follows that $I_i^{OI}(\mathcal A)$ is strongly connected.
+\end{proof}
+
+The previous theorem yields a generalization of \cref{sync_max:thm:rystsov_SI}.
+
+\begin{corollary} \label{cor:ISCCaugmentative}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be an OI-automaton.
+	Then~$\mathcal A$ is strongly connected and synchronizing if and only if $I^{OI}(\mathcal A)$
+	is strongly connected.
+\end{corollary}
+\begin{proof}
+	First, suppose~$\mathcal A$ is strongly connected and synchronizing.
+	By \cref{sync_max:thm:augmentative}, $\mathcal A$ admits an augmentative set of words.
+	By \cref{sync_max:cor:augmentative_subset_IG} there exists an augmentative set
+	in $\Sigma_I\Sigma_G^*$.
+	By finiteness, there exists $m \ge 1$ such that $\Sigma_I\Sigma_G^{< m}$
+	is augmentative.
+	By \cref{thm:ISCCaugmentative}, $I_m^{OI}(\mathcal A)$
+	is strongly connected. This yields that $I^{OI}(\mathcal A)$ is strongly connected.
+	
+	Conversely, suppose $I^{OI}(\mathcal A)$ is strongly connected.
+	By finiteness, $I_m^{OI}(\mathcal A)$ is strongly connected for some $m \ge 1$.
+	By \cref{thm:ISCCaugmentative}, the set $\Sigma_I \Sigma_G^{< m}$
+	is augmentative.
+	By \cref{sync_max:thm:augmentative}, $\mathcal A$
+	is strongly connected and synchronizing.	
+\end{proof}
+
+\begin{theorem} \label{sync_max:graphs:bound:thm:bound}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be a strongly connected and synchronizing $n$-state OI-automaton.
+	Then~$\mathcal A$ has a synchronizing word of length at most $2n^2 - 6n + 5$.
+\end{theorem}
+\begin{proof}
+	We can assume $n \ge 2$. 
+	The digraphs $C_i(\mathcal A)$
+	from \cref{sync_max:graph:bound:cor:I-and-orbitals}
+	are subgraphs of $I_{n + i - 1}^{OI}(\mathcal A)$ for $i \ge 1$.
+	Since $\mathcal A$ is synchronizing,
+	it has an idempotent one-point singular letter.
+	By \cref{sync_max:graph:bound:lem:cycle-graph-stabilizes}
+	we have $C_{n - 1}(\mathcal A) = I^{OI}(\mathcal A)$.	
+	The graph $I_{n + i - 1}^{OI}(\mathcal A)$ is a subgraph of $I^{OI}(\mathcal A)$.
+	Therefore, we find $I_{2n - 2}^{OI}(\mathcal A) = I^{OI}(\mathcal A)$.
+	Since~$\mathcal A$ is strongly connected and synchronizing,
+	by \cref{cor:ISCCaugmentative}, $I^{OI}(\mathcal A)$ is strongly connected.
+	Hence, by \cref{thm:ISCCaugmentative}, 
+	the set $\Sigma_I\Sigma_G^{< 2n-2}$ is augmentative.
+	Then, by \cref{sync_max:eqn:rt_bound}, a shortest synchronizing word has length at most
+	$
+	(2n-2) (n - 2) + 1.
+	$
+\end{proof}

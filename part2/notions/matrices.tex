@@ -1,0 +1,183 @@
+%!TEX root = ./../../thesis-trier.tex
+
+
+%An $n \times m$ \emph{matrix (over $\mathbb N_0$)} 
+%$A$ 
+%is a mapping $\{1,\ldots,n\} \times \{1,\ldots,m\} \to \mathbb N_0$,
+%written $A = (a_{ij})$ with $a_{ij} = a(i)(j)$.
+%Here, we do not consider matrices over other sets 
+%(in the literature such matrices are called nonnegative integer matrices 
+%to distinguish them from more general matrices).
+%A \emph{vector (over $\mathbb N_0$)} $\vec{v}$ 
+%is a matrix with $n = 1$
+%If $A = (a_{ij})$
+% [S][w]^T betrachte ich ja nicht, also genügen boolesche
+
+% operationen mit min/max defieren
+
+
+
+
+% index begriffe einführen.
+% vector notation im notation index
+
+
+
+\begin{comment}
+% in the speical case I = . J = ....
+% und componenwise ordnung auf matrizen am ende definieren
+
+For $\vec{x},\vec{y} \in \{0,1,\ldots,n\}^{\Sigma}$
+we define $\vec{x} +_n \vec{y} \in \{0,1,\ldots,n\}^{\Sigma}$
+by $(\vec{x} +_n \vec{y})(a) = \min\{ \vec{x}(a) + \vec{y}(a), n \}$
+and $\vec{x} \le_n \vec{y}$ if $\vec{x}(a) \le \vec{y}(a)$ for all $a \in \Sigma$.
+Recall that~$\mathbb N_0^{\Sigma}$ was equipped with the component-wise addition and component-wise order \todo{im index definiert?}
+and $\psi \colon \Sigma^* \to \mathbb N_0^{\Sigma}$
+denotes the Parikh map.
+
+\todo{or points?}
+Later, we consider elements from $\mathbb N_0^{\Sigma}$ or $[n]^{\Sigma}$ \todo{component-wise order/addition definiert}
+as vectors, as the concrete ordering of the finite set $\Sigma$ is irrelevant,
+equipped with the component-wise order
+and the component-wise addition 
+
+
+Let $R$ be a semiring and $I$ be some index set.
+Then the set of function $R^I$ is a semiring
+with addition 
+
+We call elements from $R^I$ also \emph{vectors}
+
+
+A mapping $\vec{v} \colon I \to R$ where $I$ is some index set, also written as $\vec{v} = (v_i)_{i \in I}$,
+is called a \emph{vector}. For vectors $\vec{v}, \vec{u} \in R^I$ \todo{ist ja eigentlich direktes product}
+the \emph{component-wise addition} is the vector 
+
+
+%Let $M_i$ be monoid for some index set $I$.
+%In \SECT~\ref{} we defined the direct product monoid. 
+\end{comment}
+
+
+
+\begin{comment} 
+An $|I|$-dimensional \emph{vector}  is an element $\vec{v} \in M^I$
+for the partially ordered monoids $M = \mathbb N_0$ or $M = [n]$ \todo{with the usual order sagen?}
+and some finite set~$I$.
+The identity element $\vec{0} \in M^I$ 
+will be called the \emph{zero vector}. 
+\end{comment} 
+
+
+
+% a matrix for index set I x J, here only th case I = J
+
+
+% https://www.reddit.com/r/learnmachinelearning/comments/l8ft6e/m_x_n_vs_n_x_m_which_is_really_more_standard_in/
+
+
+Let $R$ be a semiring and $m,n\ge 0$.
+An $m \times n$ \emph{matrix} $A$  (over $R$) is \IN{matrix over semiring} \label{def:matrix}
+a mapping~$A \colon \{1,\ldots,m\} \times \{1,\ldots,n\} \to R$, 
+also written as $A = (a_{ij})_{i \in \{1,\ldots,m\}, j \in \{1,\ldots,n\}}$
+with $a_{ij} = a(i)(j)$.
+When the ranges of $i$ and $j$ are clear from the context,
+we also write $A = (a_{ij})$ for short. 
+% A matrix $A = (a_{ij})_{i \in \{1,\ldots,n\}, j \in \{1,\ldots,m\}}$ is often denoted by a table of the form
+% \[
+%  \begin{pmatrix}
+	%  	a_{11} & a_{12} & \cdots & a_{1m} \\
+	%  	a_{21} & a_{22} & \cdots & a_{2m} \\
+	%  	\vdots & \vdots & \ddots & \vdots \\
+	%  	a_{n1} & a_{n2} & \cdots & a_{nm}
+	%  \end{pmatrix} 
+% \]
+%An $n$-dimensional \emph{vector (over $\mathbb N_0$)} $v$
+The elements $a_{i1}, \ldots, a_{in}$ for some $i \in \{1,\ldots,m\}$ constitute
+the $i$-th \emph{row} of $A$ \IN{row of matrix}
+and the elements $a_{1j} \ldots, a_{mj}$ for some $j \in \{1,\ldots,n\}$ constitute
+the $j$-th \emph{column} of $A$. \IN{column of matrix}
+%The \emph{rows} of $A$ are the vectors 
+% nicht als row/column vector einführen
+%$(a_{ij})_{j\in \{1,\ldots,m\}}$ for some fixed $i \in \{1,\ldots,n\}$
+%and the \emph{columns} of $A$ are the vectors $(a_{ij})_{i \in \{1,\ldots,n\}}$ for some fixed $j \in \{1,\ldots,m\}$.
+Correspondingly, the first index (here~$i$) is called the \emph{row index} 
+and the second index (here~$j$) is called the \emph{column index}. 
+See \cref{prelim:sync_max:matrixscheme} for a schematic depiction of an $m \times n$ matrix $A = (a_{ij})_{i\in \{1,\ldots,m\}, j\in \{1,\ldots,n\}}$.
+\IN{row index}
+\IN{column index}
+
+\begin{figure}[ht]
+\centering 
+\def\matriximg{%
+	\begin{array}{cccc}
+		a_{11} & a_{12} & \cdots & a_{1n}\\
+		a_{21} & a_{22} & \cdots & a_{2n}\\
+		\vdots & \vdots & \ddots & \vdots\\
+		a_{m1} & a_{m2} & \cdots & a_{mn}\\
+	\end{array}
+}%
+\[
+A = \left(\vphantom{\matriximg}\right.\kern-2\nulldelimiterspace
+\overbrace{\matriximg}^{\text{\small{$n$ columns}}}\kern-\nulldelimiterspace\left.\left.\vphantom{\matriximg}\right)\right\}\text{\small{$m$ rows}}
+\]
+\caption[Scheme of an $m\times n$ matrix]{Scheme of an $m \times n$ matrix $A = (a_{ij})_{i\in \{1,\ldots,m\}, j\in \{1,\ldots,n\}}$.}
+\label{prelim:sync_max:matrixscheme}
+\end{figure}
+
+\IN{matrix product}
+Let $A = (a_{ij})_{i \in \{1,\ldots, m\}, j \in \{1,\ldots, n\}}$ 
+be an  $m \times n$ matrix
+and 
+$B = (b_{ij})_{i \in \{1,\ldots,n\}, j \in \{1,\ldots,l\}}$ 
+be an $n \times l$ matrix where $l,m,n \ge 1$.
+The \emph{(matrix) product}, denoted by $A\cdot B$ or simply $AB$,
+is the $m \times l$ matrix $C$, i.e, $C = AB$, where $C = (c_{ij})_{i\in \{1,\ldots, m\}, j \in \{1,\ldots,l\}}$ is given by
+\[
+c_{ij} = a_{i1}b_{1j} + a_{i2}b_{2j} + \cdots + a_{in}b_{nj} %\bigvee_{r=1}^m ( a_{ir} \land b_{rj} ) 
+\]
+for $i \in \{1,\ldots,m\}$ and $j \in \{1,\ldots, l\}$. The \emph{(matrix) sum} 
+of two $m \times n$ matrices  
+$A = (a_{ij})_{i \in \{1,\ldots, m\}, j \in \{1,\ldots, n\}}$ 
+and
+$B = (b_{ij})_{i \in \{1,\ldots, m\}, j \in \{1,\ldots, n\}}$ 
+is the $m \times n$
+matrix  $C = (c_{ij})_{i\in \{1,\ldots,n\}, j \in \{1,\ldots,m\}}$, written
+$C = A + B$, given by $c_{ij} = a_{ij} + b_{ij}$ for $i \in \{1,\ldots,m\}$ and $j \in \{1,\ldots,n\}$.
+
+\IN{identity matrix}  \IN{zero matrix} 
+Let $n \ge 1$.
+The $n \times n$ \emph{identity matrix (over $R$)} 
+is $I_n = (a_{ij})$ defined
+by $a_{ij} = 1$ if $i = j$ and $a_{ij} = 0$ if $i \ne j$. \label{def:identitymtx}
+The $n \times n$ \emph{zero matrix} (over $R$) is $O_n = (o_{i,j})$ \label{def:zeromtx} 
+defined by $o_{ij} = 0$ for all $i,j \in \{1,\ldots,n\}$.
+
+The set of $n \times n$ matrices over a semiring forms a semiring
+with the product and sum operations, and the identity and zero matrices.
+
+\IN{Boolean matrix}
+A \emph{Boolean matrix} % (resp.~\emph{Boolean vector})
+is a matrix % (resp.~vector)  \IN{Boolean vector} 
+over the Boolean semiring $(\{0,1\}, \land, \lor, 0, 1)$.
+
+\IN{Boolean transition matrix}
+\index{transition matrix|see{Boolean transition matrix}}
+Next, we show how to describe a transformation
+$t \colon X \to X$ on a finite set of size~$n$
+by a matrix. 
+Fix some order $X = \{x_1, \ldots, x_n\}$ (where we take $X = [n]$ with $x_i = i - 1$ for $i \in [n]$ if nothing else is said).
+Then, to~$t$ we associate a
+\emph{(Boolean) transition matrix}
+$A = (a_{ij})_{i,j \in \{1,\ldots,n\}}$ by setting
+\[
+a_{ij} = \begin{cases}
+	1 & \text{if } t(x_i) = x_j, \\
+	0 & \text{otherwise }.
+\end{cases} 
+\]
+Intuitively, point $x_i$ is mapped to $x_j$ 
+if and only if in the $i$-th row of~$A$
+the unique one appears at position $j$, i.e., in the $j$-th column of $A$.
+When the specific ordering of the states is not important, we
+assume some order to be taken without explicitly mentioning it.

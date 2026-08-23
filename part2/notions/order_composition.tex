@@ -1,0 +1,177 @@
+%!TEX root = ./../../thesis-trier.tex
+
+Our convention for function composition deviates from the one adopted in permutation group theory
+or in some approaches to the algebraic theory of automata. As this can be confusing at times, we feel the urge to justify and comment on that.
+The notation and terminology introduced in the present section 
+will not be included in the notation index or the index of terminology,
+as it is only used here.
+
+\IN{right action}
+\IN{left action}
+\IN{Leibniz order}
+\IN{anti-Leibniz order} 
+\IN{diagrammatic order}
+When applying a function $f \colon X \to Y$ to some $x \in X$,
+we can write the argument to the right, i.e., $f(x)$, and $f$ acts on the left (left action),
+or we can write the argument to the left, i.e., $(x)f$ ($xf$ for short), and $f$ acts from the right (right action).
+In the present work, we use the left-action convention (introduced on page~\pageref{def:function-application}).
+Furthermore, when defining the composition of two functions
+$f \colon X \to Y$ and $g \colon Y \to Z$, either the function on the right-hand side
+can be applied first (right-most first, as defined here, see page~\pageref{def:fun_comp}), also
+called the \emph{Leibniz order}, or the function on the left-hand side, i.e.,
+define a composition operator by $(f ; g)(x) = g(f(x))$ for $x \in X$ (left-most first), also called the \emph{anti-Leibniz} or \emph{diagrammatic order}.
+
+In~\cite{nlab:composition} also the notation $f^{\ast}g$ for $g \circ f$
+was mentioned as pulling back~$g$ along~$f$ to the composite. Here,
+the asterik operator makes $f \colon X \to Y$
+into a function $f^{\ast} \colon Z^Y \to Z^X$
+defined by $(f^{\ast}(g))(x) = g(f(x))$ for $x \in X$.
+So, conceptually, rather than regarding composition as a binary operation
+on functions, here we rather consider each function as an operator
+acting via composition (this is reminiscent of letting each element of a monoid
+act via multiplication from left or right, see~\cite[Prop.~4.25]{Pin2022}).
+In the wild we have never seen anyone using this notation solely
+for the purpose of having a notation for function composition,
+but either in rather specialized contexts as operators on special
+function spaces as, for example, in differential geometry~\cite[p.~77 \& p.~89]{spivak1971calculus},
+as the composition operator in functional analysis~\cite{DAnielloMaiuriello2020_surveyCompositionOperators},
+or in the context of Koopman Operator Theory~\cite{DograRedman2020_OptimizingNNsKoopman}.
+
+Now, the following combinations of conventions are conceivable.
+
+\begin{enumerate}
+	
+	\item Right-action and left-most first (also called ``postfix convention'').
+	
+    With these conventions, %$f$ applied to $x$ is often denoted by $xf$	so that
+	we have $x(f ; g) = (xf)g$. This combination of conventions was
+	in wide use in the early days of the theory of automata, 
+	for example in the books~\cite{Eilenberg1974,Eilenberg1976,Ginzburg68,Pin86}. 
+	It has the advantage of being
+	in harmony with reading 
+	a diagram $X \xrightarrow{f} Y \xrightarrow{g} Z$
+	for the composition from left to right.
+	In~\cite[p.~1]{Eilenberg1974},
+	it is even noted that $x \in X$ can be interpreted as a function
+	from some singleton set into~$X$ with value~$x$
+	and then application of~$f$ to~$x$ can be written as function composition
+	and modeled by diagrams depicting compositions. 
+	However, these conventions seemed to be out of fashion in automata theory
+	at least since the mid-nineties.
+	In permutation group theory, this combination of conventions 
+	is often used~\cite{cameron_1999,dixon1996permutation,wielandt1964finite}, even taken a step further by using
+	the \emph{exponential notation} for function application, i.e., writing $x^f$
+	for $f$ applied to $x$, see for example~\cite{Kurzweil04}.
+		
+	\item Left-action and right-most first.
+	
+	This is the combination of conventions we adopted (see pages~\pageref{def:function-application} 
+	and~\pageref{def:fun_comp}). Outside of specialized areas of mathematics such 
+	as the algebraic theory of automata or permutation group theory (or other branches of algebra as for example~\cite{Ferri2025_SplitLemmaGroupoids}), this seems
+	to be the prevalent notion. For example, three famous textbooks from diverse fields: Lang's \emph{Algebra}~\cite{lang02},
+	Spivak's \emph{Calculus on Manifolds}~\cite{spivak1971calculus} 
+	or Königsberger's \emph{Analysis I}~\cite{koenigsberger2003analysis} (the latter being a standard text for first year math students in Germany, at least it was during the author's time) all use these conventions.
+		
+	\item Left-action and and left-most first.
+		
+	\label{prelim:discussion:Rrelation-fun-comp}
+    The textbook by Almeida~\cite{Almeida95} from 1995 uses this convention,
+	the survey article by Pin~\cite{DBLP:reference/hfl/Pin97} and, for example, a randomly sampled
+	article by Diekert et al.~\cite{DBLP:journals/ijfcs/DiekertGK08}.
+	Interestingly, function composition
+	is not explicitly defined in these works.
+	However, they have to use this convention, for otherwise, some cited results from this field
+	have to be formulated differently. For example,
+	partially ordered automata 
+	%(this was first shown
+	%\footnote{The used convention
+		% 	is obvious from the proof of~\cite[Prop]{DBLP:journals/jcss/BrzozowskiF80}; we note that it contains
+		% 	a typo, $\underline{x} = h$ should probably be $\underline{z} = h$. 
+		%}
+	%in~\cite{DBLP:journals/jcss/BrzozowskiF80})
+	are precisely those automata
+	having an $\mathcal R$-trivial transition monoid~\cite{DBLP:journals/jcss/BrzozowskiF80}  (we refer to the cited literature for definitions).
+	But this result is only valid, due to the definition of the $\mathcal R$-relation via right ideals,
+	when the left-most function is applied first in a composition (otherwise, it would correspond
+	to $\mathcal L$-triviality).
+	
+	A recent (work-in-progress, available online) textbook by Pin~\cite{Pin2022} solved this by
+	using two composition operations. To cite~\cite[Sect.~II.4.2]{Pin2022}: 
+	% A recent (work-in-progress) textbook by Pin~\cite{} solved this by, basically,
+	% mixing the conventions\footnote{Implicitly, we also mixed these conventions by letting words, via 
+		% 	the function $\delta \colon Q \times \Sigma^* \to Q$, act on the right, whereas
+		% 	elements of the transformation monoid, as functions, act on the left. But we 
+		%    do not use two composition operations in the full transformation semigroup.\todo{monoid?}
+		%}
+	\begin{quote}
+		[...] the reader should be warned that the product $\alpha\beta$ is not equal to $\alpha \circ\beta$,
+		but to $\beta \circ \alpha$. In other word, the operation in $\mathcal T(P)$
+		is reverse composition. [...]
+	\end{quote}   
+	
+	% Pin is working on a textbook~\cite{} and we note that in its current version (available as a preprint online, 
+	% so might be fixed
+	% in the final version) it confuses both notions: in the beginning (via composition of relations)
+	% the left-action/right-most first convention is adapted but later, when the mentioned result related $\mathcal R$-trivial
+	% transition monoids is proven, by using words which act on the right (as is done here as well) 
+
+	Another reason to adopt this convention
+	is that it uses the common way of writing functions on the left, i.e., $f(x)$,
+	while retaining compatibility with the \emph{composition of relations} 
+	when defined in the following way: for a relation~$R$ from $X$ to $Y$ and a relation $S$ from $Y$ to $Z$,
+	the composition is the relation $RS$ defined,
+	for all $x \in X$ and $z \in Z$, by
+	\[
+	x(RS)z \Leftrightarrow \exists y \in Y \colon xRy \land ySz.
+	\] 
+		
+	Now, when associating with $f \colon X \to Y$ the relation~$R_f$ from $X$ to $Y$
+	by $xR_fy$ if and only if $\applyfunc{x}{f} = y$
+	we have $R_{(f ; g)} = R_f R_g$
+	for functions $f \colon X \to Y$, $g \colon Y \to Z$.	 
+	This is, in particular, better suited when functions are defined 
+	as relations (which we have not done in the present work since we introduced function
+	before as the more primitive notion as in~\cite{Eilenberg1974}),
+	or when representing relations by matrices, as this convention 
+	fits with matrix multiplication.
+	For example, in teaching first-year computer science students at Trier University~\cite{HenningDSSkript} 
+	these conventions are adopted, as relations are introduced
+	as a more primitive concept and (partial) functions are defined as special relations.
+		
+	Of course, one can define the composition of relations by reversing
+	the order (this is done in~\cite[Sect.~I.1.2]{Pin2022}). However, in this case compatibility
+	with matrix multiplication mentioned in the previous paragraph
+	is lost (and, to the best of our knowledge, matrix multiplication is defined in the same way in all of mathematics)
+	and a correct formula would involve additional matrix transpositions.
+		
+	\item Right-action and right-most first. We have never seen this combination in use.
+\end{enumerate}
+
+Furthermore, given an automaton $\semiautomat{A}{Q}{\Sigma}{\delta}$,
+some authors choose to suppress 
+mentioning~$\delta$ explicitly in the specification and application
+of the transition function,
+writing $q.u$ for $\applytrans{\delta}{q}{u}$ with $q \in Q$ and $u \in \Sigma^*$.
+This dot-notation actually fits well with the right-action and left-most first conventions,
+as then $q.u = (q) \fword{\delta}{u} = (q) (\fword{\delta}{v} ; \fword{\delta}{w}) = ((q) \fword{\delta}{v}) \fword{\delta}{w}$
+for $u = vw$, $u,v,w \in \Sigma^*$, $q \in Q$.
+However, we have opted against this dot-notation mainly because in \cref{part:constrsync}
+often two transition functions (of a constraint automaton
+and of an input automaton) appear in the same context. %concurrently, 
+Hence we felt the need to distinguish them notation-wise.
+Then, in our opinion, when applying
+a transition function $\delta \colon Q \times \Sigma^* \to Q$ explicitly,
+the left action convention seems to fit better.
+Also, our convention adopted for composition was motivated by what
+we feel is most often used in all of theoretical computer science and formal language theory (apart from specialized areas such as the algebraic theory of automata).
+
+Note that ``operators'' such as $\Syn(\mathcal A)$ or $Z(G)$, which are never composed with other ``operators'', 
+are almost always written as acting from the left, resulting in a mix of both conventions
+in some works as for example in~\cite{DBLP:journals/tcs/AraujoBC13,Kurzweil04}.
+
+Since \cref{part:aut} of the present thesis involves permutation group theory, we
+were faced with the choice what convention to adopt. In face of \cref{part:constrsync}, which
+does not involve any permutation group theory at all and is a more classical formal language theory topic,
+we opted to the left-action convention that is more common in formal language theory.		
+This convention has implications on how we define conjugation later. For more discussion on the two conventions of composition, 
+see~\cite{nlab:composition} (the notation $f ; g$ is taken from this article).

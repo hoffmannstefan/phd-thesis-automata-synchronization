@@ -1,0 +1,1125 @@
+%!TEX root = ./../../springer-mono-format/book.tex
+%!TEX root = ./../../thesis-trier.tex
+
+We already introduced (total) functions  in \cref{intro:sec:basic}. 
+Here, \cref{prelim:subsec:func:basic} introduces more basic notions and states some equations.
+We investigate the duplicate set of the composition of two functions
+in \cref{prelim:sec:dupl}. We need these results when we later investigate the composition
+of certain classes of functions.
+\Cref{prelim:subsec:func:finite} investigates functions on finite sets.
+
+
+
+\clearpage
+
+\subsection{Basic Notions} 
+\label{prelim:subsec:func:basic}
+
+
+\begin{comment} 
+	
+	
+\label{def:function-space}
+\IN{empty function}
+Given sets $X, Y$ we set $Y^X = \{ f \mid \text{$f \colon X \to Y$ is a function} \}$.
+For $n \ge 0$, $X^{\{1,\ldots,n\}}$ can be identified with the Cartesian
+product~$X^n$ by identifying $f \colon \{1,\ldots,n\} \to X$ for $n \ge 1$ with
+the tuple $(f(1), \ldots, f(n))$ and the unique \emph{empty function}
+$\emptyset \to X$ with the empty tuple over~$X$.
+Occasionally, we use the notation $(f(x))_{x \in X}$ to denote or specify a
+function $f \colon X \to Y$.
+
+\label{def:preimage}
+\label{def:f_set_ext}
+\IN{extension of a function to subsets}
+\IN{image of subsets!of a function}
+\IN{function extended to subsets}
+\IN{inverse image of a function}
+\index{preimage|see{inverse image}}
+\IN{restriction of function to subset}
+Let $f \colon X \to Y$.
+We extend~$f$ to subsets by setting $f(S) = \{ f(x) : x \in S \}$ for
+$S \subseteq X$, called the \emph{image of~$S$ under~$f$} (for $S = X$ just the
+\emph{image of~$f$}), and we write
+$f^{-1}(T) = \{ x \in X \mid \applyfunc{x}{f} \in T \}$ for $T \subseteq Y$,
+called the \emph{inverse image} (or \emph{preimage}) \emph{of~$T$ under~$f$}.
+For $y \in Y$ we set $\applyfunc{y}{f^{-1}} = \applyfunc{\{y\}}{f^{-1}}$ and
+call it the \emph{fibre} of~$f$ over~$y$.
+As the fibres over $y \notin f(X)$ are empty, we have
+$f^{-1}(T) = f^{-1}(T \cap f(X))$ for $T \subseteq Y$.
+The \emph{restriction of~$f$} to a subset $S \subseteq X$ is
+$f_{\vert S} \colon S \to Y$ given by $f_{\vert S}(x) = \applyfunc{x}{f}$ for
+$x \in S$; it satisfies $f_{\vert S}^{-1}(T) = f^{-1}(T) \cap S$ for
+$T \subseteq Y$.
+
+\label{def:dupl_t}
+\label{def:excl_t}
+\IN{duplicate set!{of a function}}
+\IN{excluded set!{of a function}}
+\IN{set of excluded states!{of a function}}
+\IN{set of duplicate states!{of a function}}
+The \emph{excluded set} and the \emph{duplicate set} of~$f$ (the sets of
+excluded resp.~duplicate elements) are
+\[
+\excl{f} = \{ y \in Y \mid f^{-1}(y) = \emptyset \},
+\qquad
+\dupl{f} = \{ y \in Y \mid |f^{-1}(y)| \ge 2 \},
+\]
+so that $\excl{f} = Y \setminus f(X)$, $\dupl{f} \subseteq f(X)$, and
+\begin{equation} \label{prelim:eqn:fibre-trichotomy}
+	Y = \excl{f} \uplus ( f(X) \setminus \dupl{f} ) \uplus \dupl{f}
+\end{equation}
+is the partition of~$Y$ according to whether the fibre over an element has
+size zero, size one, or size at least two.
+More generally, for $S \subseteq X$ and $y \in Y$ we have
+\begin{equation}\label{prelim:eqn:dupl-restrict}
+	y \in \dupl{f_{|S}} \Leftrightarrow f^{-1}(y) \cap S \text{ contains at least two distinct elements,}
+\end{equation}
+i.e., $y \in \dupl{f_{|S}}$ if and only if
+$y = \applyfunc{x_1}{f} = \applyfunc{x_2}{f}$ for distinct $x_1, x_2 \in S$;
+in particular $\dupl{f_{|S}} = \emptyset$ for $|S| = 1$, and
+\begin{equation} \label{prelim:eqn:duplfS-in-image}
+	\dupl{f_{|S}} \subseteq f(S).
+\end{equation}
+Next, for $S \subseteq T \subseteq X$ we get
+\begin{equation} \label{prelim:func:eqn:duplicate-partition}
+	\dupl{f_{|T}} = \dupl{f_{|S}} \cup \dupl{f_{|T \setminus S}} \cup ( f(S) \cap f(T \setminus S) ).
+\end{equation}
+
+\IN{bijective}
+\IN{surjective}
+\IN{injective}
+\IN{constant function}
+\IN{inverse function}
+By \cref{prelim:eqn:fibre-trichotomy}, the two extreme cases of the partition
+correspond to the classical notions: we call~$f$ \emph{surjective} if
+$\excl{f} = \emptyset$, \emph{injective} if $\dupl{f} = \emptyset$, i.e., if
+$\applyfunc{x}{f} = \applyfunc{y}{f}$ for $x,y \in X$ implies $x = y$, and
+\emph{bijective} if it is surjective and injective, which holds if and only if
+every fibre of~$f$ is a singleton.
+The function~$f$ is said to be \emph{constant} if $f^{-1}(f(x)) = X$ for some
+$x \in X$.
+For bijective~$f$ we write $f^{-1}$ also for the \emph{inverse function}
+$f^{-1} \colon Y \to X$ sending $y \in Y$ to the unique element of its fibre.
+This is consistent with the notation for inverse images: the image of
+$S \subseteq Y$ under the inverse function and the inverse image of~$S$
+under~$f$ are both $\{ x \in X \mid f(x) \in S \}$.
+
+\IN{identity transformation}
+The \emph{identity transformation (on $X$)} is
+$\operatorname{id}_X \colon X \to X$ (or just $\operatorname{id} \colon X \to X$)
+given by $\applyfunc{x}{\operatorname{id}_X} = x$ for all $x \in X$.
+
+\index{function composition|see{composition}}
+\IN{composition!{of total functions}}
+\label{def:fun_comp}
+Given $f \colon X \to Y$ and $g \colon Y \to Z$, the \emph{(function)
+	composition} of~$f$ followed by~$g$ is
+$\concatcirc{f}{g} \colon X \to Z$ (or $\concat{f}{g} \colon X \to Z$ for
+short) given by
+$(\concat{f}{g})(x) = \applyfunc{\applyfunc{x}{f}}{g}$ for each $x \in X$.
+Obviously, we have ${\concat{f}{g}} = {\concat{f}{g_{|f(X)}}}$.
+For $T \subseteq Z$ we have $(\concat{f}{g})^{-1}(T) = f^{-1}(g^{-1}(T))$,
+which gives
+\begin{equation} \label{prelim:eqn:invcomp}
+	(\concat{f}{g})^{-1} = \concat{g^{-1}}{f^{-1}}.
+\end{equation}
+
+For families $(S_j)_{j \in J}$ of subsets of~$X$ and $(T_i)_{i \in I}$ of
+subsets of~$Y$, the image commutes with unions and the inverse image with
+unions and intersections, whereas for images of intersections we only have
+$f(\bigcap_{j \in J} S_j) \subseteq \bigcap_{j \in J} f(S_j)$ in general.
+In particular, both $f$ and~$f^{-1}$ are monotone with respect to inclusion.
+Furthermore, for $T \subseteq Y$ and $S \subseteq X$ we have
+\begingroup
+\allowdisplaybreaks
+\begin{align}
+	f(f^{-1}(T)) & = T \cap f(X) \label{prelim:eqn:ffinvinclusion} \\
+	T \setminus f(f^{-1}(T)) & = T \cap \excl{f} \label{prelim:eqn:exclA} \\
+	f^{-1}(f(S)) & = S \cup f^{-1}(f(S) \cap \dupl{f}) \label{prelim:eqn:finvfinclusion} \\
+	f^{-1}(f(S)) & = ( S \setminus f^{-1}(\dupl{f}) ) \uplus f^{-1}(f(S) \cap \dupl{f}) \label{prelim:eqn:fSinv}
+\end{align}
+\endgroup%
+
+\Cref{prelim:eqn:ffinvinclusion,prelim:eqn:finvfinclusion} are readily
+verified, and \cref{prelim:eqn:exclA} follows from
+\cref{prelim:eqn:ffinvinclusion} with
+$T \setminus ( T \cap f(X) ) = T \cap \excl{f}$.
+For \cref{prelim:eqn:fSinv}, split $f(S)$ into $f(S) \cap \dupl{f}$ and
+$f(S) \cap ( Y \setminus \dupl{f} )$, whose inverse images are disjoint.
+So it remains to note that
+$f^{-1}(f(S) \cap ( Y \setminus \dupl{f} )) = S \setminus f^{-1}(\dupl{f})$,
+where~$\supseteq$ is clear and, conversely, $f(x) \in f(S)$ gives
+$f(x) = f(x')$ for some $x' \in S$, while $f(x) \notin \dupl{f}$ gives
+$f^{-1}(f(x)) = \{x\}$, so that $x = x' \in S \setminus f^{-1}(\dupl{f})$.
+
+By \cref{prelim:eqn:ffinvinclusion}, we have $f(f^{-1}(T)) = T$ if and only if
+$T \subseteq f(X)$.
+Thus~$f$ is surjective (resp.~injective) if and only if $f(f^{-1}(T)) = T$ for
+each $T \subseteq Y$ (resp.~$f^{-1}(f(S)) = S$ for each $S \subseteq X$) by
+\cref{prelim:eqn:ffinvinclusion} (resp.~\cref{prelim:eqn:fSinv}).
+Removing~$S$ on both sides of \cref{prelim:eqn:fSinv} yields
+$f^{-1}(f(S)) \setminus S = f^{-1}( f(S) \cap \dupl{f} ) \setminus S$.
+In the following, we will often use these relations and the above equations
+and inclusions without special mention.
+
+\begin{proposition} \label{prelim:prop:surj-inj-inverses}
+	A function $f \colon X \to Y$ is surjective (resp.~injective for
+	$X \ne \emptyset$) if and only if $\concat{g}{f} = \operatorname{id}_Y$
+	(resp.~$\concat{f}{g} = \operatorname{id}_X$) for some $g \colon Y \to X$.
+\end{proposition}
+\begin{proof}
+	If~$f$ is surjective, then choosing $g(y) \in f^{-1}(y)$ for each
+	$y \in Y$, which is possible as no fibre is empty, gives
+	$\concat{g}{f} = \operatorname{id}_Y$.\footnote{Here, we need the axiom of choice.}
+	Conversely, $\concat{g}{f} = \operatorname{id}_Y$ gives
+	$Y = f(g(Y)) \subseteq f(X)$, so $\excl{f} = \emptyset$.
+	
+	Now let~$f$ be injective and $X \ne \emptyset$.
+	Let $g \colon Y \to X$ map $y \in Y$ to the unique element of $f^{-1}(y)$ if
+	$f^{-1}(y) \ne \emptyset$, and to an arbitrary element of~$X$ otherwise.
+	Then $\concat{f}{g} = \operatorname{id}_X$.
+	Conversely, if $\concat{f}{g} = \operatorname{id}_X$ and $f(x) = f(x')$ for
+	$x, x' \in X$, then $x = g(f(x)) = g(f(x')) = x'$, so $\dupl{f} = \emptyset$.
+\end{proof}
+
+For bijective~$f$, the functions from \cref{prelim:prop:surj-inj-inverses} are
+uniquely determined and equal to~$f^{-1}$.
+In fact, the inverse function for bijective~$f$ is characterized as the unique
+function $f^{-1}$ with $\concat{f}{f^{-1}} = \operatorname{id}_X$ and
+$\concat{f^{-1}}{f} = \operatorname{id}_Y$.
+
+\subsection{alt} 
+
+\end{comment}
+
+\label{def:BraisedA} 
+\IN{empty function}
+Given sets $X, Y$
+we set $Y^X = \{ f \mid \text{$f \colon X \to Y$ is a function} \}$.
+For $n \ge 0$, $X^{\{1,\ldots,n\}}$
+can be identified with the Cartesian product $X^n$
+by identifying $f \colon \{1,\ldots,n\} \to X$ for $n \ge 1$ with the tuple $(f(1), \ldots, f(n))$
+and the unique \emph{empty function} $\emptyset \to X$ with the empty tuple over~$X$.
+Occasionally, we use the notation $(f(x))_{x \in X}$
+to denote or specify a function $f \colon X \to Y$.
+
+\label{def:preimage}
+\label{def:f_set_ext} 
+\IN{extension of a function to subsets}
+\IN{image of subsets!of a function}
+\IN{function extended to subsets}
+\IN{inverse image of a function}
+\index{preimage|see{inverse image}}
+\IN{restriction of function to subset}
+Let $f \colon X \to Y$.
+The \emph{extension of~$f$ to subsets}
+is the function $\hat{f} \colon \mathcal P(X) \to \mathcal P(Y)$ given
+by $\hat{f}(S) = \{ f(x) : x \in S \}$ for $S \subseteq X$.
+In the following, we denote $\hat{f}$ also by~$f$. 
+We call~$\applyfunc{S}{f}$ the \emph{image of~$S$ under~$f$} (for $S = X$ just the \emph{image of $f$}).
+The function~$f$ also induces a function $f^{-1} \colon \mathcal P(Y) \to \mathcal P(X)$ given by
+$f^{-1}(T) = \{ x \in X \mid \applyfunc{x}{f} \in T \}$ for $T \subseteq Y$. We call $f^{-1}(T)$
+the \emph{inverse image} (or \emph{preimage}) \emph{of $T \subseteq Y$ under $f$}.
+We have $f^{-1}(T) = f^{-1}(T \cap f(X))$ for $T \subseteq Y$.
+For $y \in Y$, we set $\applyfunc{y}{f^{-1}} = \applyfunc{\{y\}}{f^{-1}}$.
+The \emph{restriction of~$f$} 
+to a subset $S \subseteq X$
+is $f_{\vert {S}} \colon S \to Y$
+given by $f_{\vert S}(x) = \applyfunc{x}{f}$ for $x \in S$.
+We have $f_{\vert S}^{-1}(T) = f^{-1}(T) \cap S$ for $T \subseteq Y$.
+
+\label{def:dupl_t} 
+\label{def:excl_t}
+\IN{duplicate set!{of a function}}
+\IN{excluded set!{of a function}}
+\IN{set of excluded states!{of a function}}
+\IN{set of duplicate states!{of a function}}
+
+The \emph{excluded set of~$f$} (the set of excluded elements)
+is 
+\[ \excl{f} = Y \setminus \applyfunc{X}{f}.
+\] 
+The \emph{duplicate set of $f$} (the set of duplicate elements)
+is the subset of $f(X)$ given by
+\[ 
+\dupl{f} = \{ f(x) \mid x \in X \land f^{-1}(f(x)) \ne \{x\} \}.
+\] 
+For $S \subseteq X$ and $y \in Y$ we have
+\begin{equation}\label{prelim:eqn:dupl-restrict}
+	y \in \dupl{f_{|S}} \Leftrightarrow f^{-1}(y) \cap S \text{ contains at least two distinct elements,}
+\end{equation}
+i.e., $y \in \dupl{f_{|S}}$ if and only if $y = \applyfunc{x_1}{f} = \applyfunc{x_2}{f}$
+for distinct $x_1, x_2 \in S$.
+Thus, for $|S| = 1$ we get $\dupl{f_{|S}} = \emptyset$.
+We also have 
+\begin{equation} \label{prelim:eqn:duplfS-in-image}
+	\dupl{f_{|S}} \subseteq f(S).
+\end{equation}
+Next, for $S \subseteq T \subseteq X$ we get
+\begin{equation} \label{prelim:func:eqn:duplicate-partition}
+	\dupl{f_{|T}} = \dupl{f_{|S}} \cup \dupl{f_{|T \setminus S}} \cup ( f(S) \cap f(T \setminus S) ).
+\end{equation}
+
+\IN{bijective}
+\IN{surjective} 
+\IN{injective}
+\IN{constant function}
+We call~$f$ \emph{surjective} if $\excl{f} = \emptyset$, 
+\emph{injective} 
+if $\dupl{f} = \emptyset$, 
+i.e., if $\applyfunc{x}{f} = \applyfunc{y}{f}$ for $x,y \in X$ implies $x = y$,
+and \emph{bijective} if it is surjective and injective.
+The function $f$ is said to be \emph{constant}
+if $f^{-1}(f(x)) = X$ for some $x \in X$.
+
+\IN{inverse function}
+The function $f$ is bijective if and only if the preimage $f^{-1}(y)$ is a
+singleton for every $y \in Y$. For bijective~$f$, we identify the map that
+sends each $y \in Y$ to the unique element in $f^{-1}(y)$ with $f^{-1}$,
+that is, we regard the set-valued map
+$f^{-1} \colon Y \to \mathcal P(X)$ as a function
+$f^{-1} \colon Y \to X$, called the \emph{inverse function} of~$f$.
+We note that, for every $S \subseteq Y$, there is no ambiguity in the notation
+$f^{-1}(S)$: whether interpreted as the preimage of $S$ under~$f$ or as the
+image of $S$ under the inverse function~$f^{-1}$, i.e., the set 
+$\{ \applyfunc{x}{f^{-1}} \mid x \in S \}$, we obtain the same set
+$
+\{ x \in X \mid f(x) \in S \}.
+$
+
+\IN{identity transformation}
+The \emph{identity transformation (on $X$)}
+is $\operatorname{id}_X \colon X \to X$ (or just $\operatorname{id} \colon X \to X$) given by $\applyfunc{x}{\operatorname{id}_X} = x$
+for all $x \in X$. 
+
+\index{function composition|see{composition}}
+\IN{composition!{of total functions}}
+\label{def:fun_comp}
+Given $f \colon X \to Y$ and $g \colon Y \to Z$, the \emph{(function) composition} of $g$ and $f$
+is $\concatcirc{f}{g} \colon X \to Z$ (or $\concat{f}{g} \colon X \to Z$ for short) given by $(\concat{f}{g})(x) = \applyfunc{\applyfunc{x}{f}}{g}$
+for each $x \in X$. 
+Obviously, we have
+${\concat{f}{g}} = {\concat{f}{g_{|f(X)}}}$. For $T \subseteq Z$
+we have $(\concat{f}{g})^{-1}(T) = f^{-1}(g^{-1}(T))$. This gives
+\begin{equation} \label{prelim:eqn:invcomp}
+	(\concat{f}{g})^{-1} = \concat{g^{-1}}{f^{-1}}.
+\end{equation}
+
+Let $I$ and~$J$ be index sets. For sets $T_i \subseteq Y$ and $S_j \subseteq X$
+where $i \in I$, $j \in J$ we have
+\begin{align*}
+	f\left(\bigcup_{j \in J} S_j \right) & = \bigcup_{j \in J} f(S_j), &
+	f^{-1}\left(\bigcup_{i \in I} T_i \right) &= \bigcup_{i \in I} f^{-1}(T_i), \\
+	f^{-1}\left( \bigcap_{i \in I} T_i \right) & = \bigcap_{i \in I} f^{-1}(T_i), &
+	f\left(\bigcap_{j \in J} S_j \right) & \subseteq \bigcap_{j \in J} f(S_j).
+\end{align*}
+This also yields that for $S_1, S_2 \subseteq X$ with $S_1 \subseteq S_2$
+we have $f(S_1) \subseteq f(S_2)$ and $f^{-1}(S_1) \subseteq f^{-1}(S_2)$.
+
+Furthermore, for $T \subseteq Y$ and $S \subseteq X$ we have
+\begingroup
+\allowdisplaybreaks 
+\begin{align}
+	f(f^{-1}(T)) & = T \cap f(X) \label{prelim:eqn:ffinvinclusion} \\
+	T \setminus f(f^{-1}(T)) & = T \cap \excl{f}	\label{prelim:eqn:exclA} \\
+	f^{-1}(f(S)) & = S \cup f^{-1}(f(S) \cap \dupl{f}) \label{prelim:eqn:finvfinclusion} \\
+	f^{-1}(f(S)) & = ( S \setminus f^{-1}(\dupl{f}) ) \uplus f^{-1}(f(S) \cap \dupl{f}) \label{prelim:eqn:fSinv}
+\end{align} 
+\endgroup%
+
+\Cref{prelim:eqn:ffinvinclusion,prelim:eqn:exclA,prelim:eqn:finvfinclusion} 
+are easy to verify.
+For \cref{prelim:eqn:fSinv}, split $f(S)$ into $f(S) \cap \dupl{f}$ and
+$f(S) \cap ( Y \setminus \dupl{f} )$ whose inverse images are
+disjoint. So it remains to note that
+$f^{-1}(f(S) \cap ( Y \setminus \dupl{f} )) = S \setminus f^{-1}(\dupl{f})$,
+where~$\supseteq$ is clear and, conversely, $f(x) \in f(S)$ gives $f(x) = f(x')$
+for some $x' \in S$, while $f(x) \notin \dupl{f}$ gives $f^{-1}(f(x)) = \{x\}$,
+so that $x = x' \in S \setminus f^{-1}(\dupl{f})$.
+
+By \cref{prelim:eqn:ffinvinclusion}, we have
+$f(f^{-1}(T)) = T$ if and only if $T \subseteq f(X)$.
+The function $f$ is surjective (resp.~injective)
+if and only if $f(f^{-1}(T)) = T$ 
+for each $T \subseteq Y$ (resp.~$f^{-1}(f(S)) = S$ for each $S \subseteq X$)
+by \cref{prelim:eqn:ffinvinclusion} (resp. \cref{prelim:eqn:fSinv}).
+Note that, by removing~$S$ on both sides in \cref{prelim:eqn:fSinv}, we find 
+$f^{-1}(f(S)) \setminus S = f^{-1}\left( f(S) \cap \dupl{f} \right) \setminus S$.
+
+In the following, we will often use these relations and the above equations and inclusions without special mention.
+
+\begin{proposition} \label{prelim:prop:surj-inj-inverses}
+	A function $f \colon X \to Y$ is surjective (resp.~injective for $X \ne \emptyset$)
+	if and only if $\concat{g}{f} = \operatorname{id}_Y$ (resp.~$\concat{f}{g} = \operatorname{id}_X$)
+	for some $g \colon Y \to X$.
+\end{proposition}
+\begin{proof}
+	Suppose $f$ is surjective.
+	Since $f^{-1}(y)$ is non-empty
+	for $y \in Y$,
+	we can find a function $g \colon Y \to X$
+	such that $\concat{g}{f} = \operatorname{id}_Y$
+	by choosing $g(y) \in f^{-1}(y)$
+	for each $y \in Y$.\footnote{Here, we need the axiom of choice.}
+	If $f$ is not surjective, equivalently
+	$f(X)$ is a proper subset of~$Y$,
+	then $f(g(Y))$ is a proper subset of~$Y$
+	for each $g \colon Y \to X$.
+	This yields that $\concat{g}{f} \ne \operatorname{id}_Y$
+	since $\operatorname{id}_Y(Y) = Y$.
+	
+	Now, suppose~$f$ is injective.	
+	Let $g \colon Y \to X$
+	where $g(y)$ for $y \in Y$ equals the unique element in $f^{-1}(y)$
+	if $f^{-1}(y) \ne \emptyset$,
+	and $g(y) \in X$
+	is arbitrary otherwise, which is possible as $X \ne \emptyset$.
+	Then $\concat{f}{g} = \operatorname{id}_X$. 
+	Next, suppose $f$ is not injective.
+	Then we have $f(x) = f(y)$ for distinct $x,y \in X$.
+	Let $g \colon Y \to X$.
+	We have $g(f(x)) = g(f(y))$.
+	Since $\operatorname{id}_X(x) \ne \operatorname{id}_X(y)$
+	we find $\concat{f}{g} \ne \operatorname{id}_X$.
+\end{proof}
+
+For bijective $f$, the functions from \cref{prelim:prop:surj-inj-inverses} 
+are uniquely determined and equal to~$f^{-1}$.
+In fact, the inverse function for bijective~$f$
+is characterized as the unique function $f^{-1}$
+such that $\concat{f}{f^{-1}} = \operatorname{id}_X$
+and $\concat{f^{-1}}{f} = \operatorname{id}_Y$.
+
+
+\subsection{The Duplicate Set and Function Composition} 
+\label{prelim:sec:dupl} 
+
+In \cref{prelim:prop:dupl} we present
+identities for the duplicate set of a composition of two functions.
+\Cref{prelim:func:prop:inv-dupl} gives an identity
+for the inverse image of the duplicate set of a composition.
+\Cref{prelim:func:fig:duplcomp} given an illustration for these identities.
+We also note some corollaries and give examples.
+
+\begin{proposition} \label{prelim:prop:dupl}
+  Let $f \colon X \to Y$ and $g \colon Y \to Z$.
+  Then the following equations hold:
+  \begin{align}
+  	\dupl{\concat{f}{g}} & = \dupl{g_{|f(X)}} \cup g(\dupl{f}) \label{prelim:eqn:dupl0} \\
+  	\dupl{\concat{f}{g}} & =	\dupl{g_{|f(X) \setminus \dupl{f}}}	\cup g(\dupl{f}) \label{prelim:eqn:dupl} \\
+  	\dupl{\concat{f}{g}} & = \{ z \in Z \mid g^{-1}(z) \cap \dupl{f} \ne \emptyset \text{ or } | g^{-1}(z) \setminus \excl{f} | \ge 2 \} \label{prelim:eqn:dupl2}
+  \end{align} 
+\end{proposition}
+\begin{proof}
+\ref{prelim:eqn:dupl0}: Clearly, we have $\dupl{g_{|f(X)}} \cup g(\dupl{f}) \subseteq \dupl{\concat{f}{g}}$.
+Next, let $y \in \dupl{\concat{f}{g}}$.
+Then $y = g(f(x_1)) = g(f(x_2))$ for distinct $x_1, x_2 \in X$.
+If $f(x_1) \ne f(x_2)$ then $y \in \dupl{g_{|f(X)}}$,
+and $f(x_1) = f(x_2)$ implies $y \in g(\dupl{f})$.
+So, $\dupl{\concat{f}{g}} \subseteq \dupl{g_{|f(X)}} \cup g(\dupl{f})$.
+
+\ref{prelim:eqn:dupl}: Set $S = f(X) \setminus \dupl{f}$. 
+By \cref{prelim:func:eqn:duplicate-partition} we have
+\[
+\dupl{g_{|f(X)}} = \dupl{g_{|\dupl{f}}} \cup \dupl{g_{|S}} \cup ( g(\dupl{f}) \cap g(S) ).
+\]
+Since $g(\dupl{f}) \cap g(S) \subseteq g(\dupl{f})$ and, by \cref{prelim:eqn:duplfS-in-image},
+$\dupl{g_{|\dupl{f}}} \subseteq g(\dupl{f})$, we obtain the claim
+from \cref{prelim:eqn:dupl0}.
+
+\ref{prelim:eqn:dupl2}:  We have $g^{-1}(z) \cap \dupl{f} \ne \emptyset$
+if and only if $z \in g(\dupl{f})$,
+and $| g^{-1}(z) \setminus \excl{f} | \ge 2$
+if and only if $z \in \dupl{g_{|f(X)}}$.
+Hence, the formula follows from \cref{prelim:eqn:dupl0}.
+\end{proof}
+
+Volkov and Casas~\cite{DBLP:conf/latin/CasasV22} gave \cref{prelim:eqn:dupl2} 
+formulated for words and automata.
+
+For finite sets, \cref{prelim:eqn:dupl} gives
+\begin{equation} \label{prelim:prop:item:duplcomp}
+	\max\{ |\dupl{g_{|f(X)}}|, |g(\dupl{f})| \} \le |\dupl{\concat{f}{g}}|.
+\end{equation}
+
+\begin{figure}[htb] \centering
+	\begin{tikzpicture}[
+		every node/.style={on grid},
+		el/.style={draw,circle,inner sep=2pt},
+		every fit/.style={draw,rectangle,minimum width=5pt},
+		>=latex
+		]
+		
+		\node[el] (1) {};
+		\node[el,below = of 1] (2) {};
+		\node[el,below = of 2] (3) {};
+		\node[el,below = of 3] (4) {};
+		\node[el,below = of 4] (5) {};
+		\node[el,below = of 5] (6) {};
+		\node[el,below = of 6] (7) {};
+		
+		\node[el,right = 2.75cm of 1] (1a) {};
+		\node[el,below = of 1a] (2a) {};
+		\node[el,below = of 2a] (3a) {};
+		\node[el,below = of 3a] (4a) {};
+		\node[el,below = of 4a] (5a) {};
+		\node[el,below = of 5a] (6a) {};
+		\node[el,below = of 6a] (7a) {};
+		\node[el,below = of 7a] (8a) {};
+		
+		\node[el,right = 2.75cm of 1a] (1b) {};
+		\node[el,below = of 1b] (2b) {};
+		\node[el,below = of 2b] (3b) {};
+		\node[el,below = of 3b] (4b) {};
+		\node[below = of 4b] (5b) {};
+		\node[el,below = of 5b] (6b) {};
+		\node[el,below = of 6b] (7b) {};
+		
+		\node[above = of 1, xshift=1.4cm, yshift=-0.9cm]   {$f$};
+		\node[above = of 1a, xshift=1.4cm, yshift=-0.9cm]  {$g$};
+			
+		\node[below = of 8a, yshift=0.65cm] (Y) {$Y$};
+		\node[right = 2.75cm of Y] {$Z$};
+	    \node[left  = 2.75cm of Y] (X) {$X$};
+	    		
+		\node[right = of 2b, xshift=-0.025cm, yshift=-0.55cm] {$\left.\rule{0pt}{10mm}\right\}\ \dupl{\concat{f}{g}}$};
+		
+		\draw[->] (1) -- (2a);
+		\draw[->] (2) -- (3a);
+		\draw[->] (3) -- (4a);
+		\draw[->] (4) -- (4a);
+		\draw[->] (5) -- (4a);
+		\draw[->] (6) -- (5a);
+				
+		\draw[->] (1a) -- (2b);
+		\draw[->] (2a) -- (2b);
+		\draw[->] (3a) -- (2b);
+		\draw[->] (4a) -- (3b); 
+		\draw[->] (5a) -- (4b);
+		%\draw[->] (6a) -- (5b);	
+		
+		\draw[->] (7)  -- (6a);
+		\draw[->] (6a) -- (6b);
+		\draw[->] (7a) -- (6b);
+		\draw[->] (8a) -- (7b);
+				
+		\begin{pgfonlayer}{background}
+			\node[fit = (2a)  (6a),dashed, xscale=1.6, yscale=1.1] (rect) {};
+			\node[below = of rect, yshift=-0.5cm, xshift=1.5cm] (fX) {$f(X)$};
+			\draw[->] (fX.west) -- ($(rect.east |- fX)$);
+		\end{pgfonlayer}
+	\end{tikzpicture}%	
+	\caption[Illustration for the identities from \cref{prelim:prop:dupl,prelim:func:prop:inv-dupl}]{An illustration for the identities from \cref{prelim:prop:dupl,prelim:func:prop:inv-dupl}.}
+	\label{prelim:func:fig:duplcomp}
+\end{figure}
+
+\begin{corollary} \label{prelim:func:duplconcat:cor:gS}
+	Let $f \colon X \to Y$, $g \colon Y \to Z$,
+	and $S \subseteq X$ with $f(X) \setminus \dupl{f} \subseteq S \subseteq f(X)$.
+	Then the following are equivalent.	
+	\begin{enumerate}
+		\item \label{prelim:func:duplconcat:cor:gS:2} $\dupl{\concat{f}{g}} \subseteq g(\dupl{f})$	
+		
+		\item \label{prelim:func:duplconcat:cor:gS:3} $\dupl{\concat{f}{g}} = g(\dupl{f})$	
+						
+		\item \label{prelim:func:duplconcat:cor:gS:1} $\dupl{g_{|S}} \subseteq g(\dupl{f})$
+			
+		\item \label{prelim:func:duplconcat:cor:gS:4} 
+		$g^{-1}(\dupl{g_{|S}}) \subseteq g^{-1}(g(\dupl{f}))$	
+			
+		\item \label{prelim:func:duplconcat:cor:gS:4x} $S \cap g^{-1}(\dupl{g_{|S}}) \subseteq g^{-1}(g(\dupl{f}))$		
+				
+		\item \label{prelim:func:duplconcat:cor:gS:4xx} For all $z \in \dupl{g}$,
+		if $S \cap g^{-1}(z)$
+		contains two distinct elements, then $z \in g(\dupl{f})$.
+		
+		\item \label{prelim:func:duplconcat:cor:gS:4xxx} For all $z \in \dupl{g}$,
+		if $f(X) \cap g^{-1}(z)$ contains two distinct elements, then
+		it contains an element from $\dupl{f}$, i.e., $y,y' \in f(X) \cap g^{-1}(z)$
+		for $y \ne y'$ implies $z \in g(\dupl{f})$.
+	\end{enumerate}	
+\end{corollary}
+\begin{proof}
+$\ref{prelim:func:duplconcat:cor:gS:2} \Rightarrow \ref{prelim:func:duplconcat:cor:gS:3}$: 
+We have $g(\dupl{f}) \subseteq \dupl{\concat{f}{g}}$ by \cref{prelim:eqn:dupl}, giving the claim.
+
+$\ref{prelim:func:duplconcat:cor:gS:3} \Rightarrow \ref{prelim:func:duplconcat:cor:gS:1}$:
+With \cref{prelim:eqn:dupl0} we have $\dupl{g_{|S}} \subseteq \dupl{g_{|f(X)}} \subseteq \dupl{\concat{f}{g}} = g(\dupl{f})$. 
+
+$\ref{prelim:func:duplconcat:cor:gS:1} \Rightarrow \ref{prelim:func:duplconcat:cor:gS:4}$: This is clear.
+
+$\ref{prelim:func:duplconcat:cor:gS:4} \Rightarrow \ref{prelim:func:duplconcat:cor:gS:4x}$: This is clear.
+	
+$\ref{prelim:func:duplconcat:cor:gS:4x} \Rightarrow \ref{prelim:func:duplconcat:cor:gS:4xx}$:
+Let $z \in \dupl{g}$ such that $x,y \in S \cap g^{-1}(z)$ for distinct $x,y \in Y$.
+Then we have $z \in \dupl{g_{|S}}$ and so $x,y \in S \cap g^{-1}(\dupl{g_{|S}})$.
+By assumption, we get $x,y \in g^{-1}(g(\dupl{f}))$.
+Thus we find $z = g(x) \in g(\dupl{f})$, which gives the claim.
+
+$\ref{prelim:func:duplconcat:cor:gS:4xx} \Rightarrow \ref{prelim:func:duplconcat:cor:gS:4xxx}$:
+Let $f(x), f(x') \in g^{-1}(z)$ with $f(x) \ne f(x')$ for $x,x' \in X$.
+If $f(x), f(x') \in S$, then, by assumption, $z = g(y)$ for some $y \in \dupl{f}$.
+We have $y \in f(X) \cap g^{-1}(z)$.
+Otherwise, without loss of generality, let $f(x) \notin S$.
+Then, since $f(X) \setminus \dupl{f} \subseteq S$ by choice of~$S$,
+we have $f(x) \in \dupl{f}$.
+
+$\ref{prelim:func:duplconcat:cor:gS:4xxx} \Rightarrow \ref{prelim:func:duplconcat:cor:gS:2}$:
+Let $z \in \dupl{g_{|f(X)}}$.
+Then $f(X) \cap g^{-1}(z)$ contains two elements.
+Thus, by assumption, we have $z \in g(\dupl{f})$.
+This shows $\dupl{g_{|f(X)}} \subseteq g(\dupl{f})$.
+Then, with \cref{prelim:eqn:dupl0}, we find 
+$\dupl{\concat{f}{g}} \subseteq g(\dupl{f})$.
+\end{proof}
+
+\begin{figure}[htb]
+	\begin{subfigure}[c]{0.29\textwidth} \centering
+		\begin{tikzpicture}[
+			every node/.style={on grid},
+			el/.style={draw,circle,inner sep=2pt},
+			every fit/.style={draw,ellipse},
+			>=latex
+			]
+			
+			\node[el] (1) {};
+			\node[el,below = of 1] (2) {};
+			\node[el,below = of 2] (3) {}; 
+			\node[el,below = of 3] (4) {};
+			\node[el,below = of 4] (5) {};
+			\node[el,below = of 5] (6) {};
+			
+			\node[el,right = 1.15cm of 1] (1a) {};
+			\node[el,below = of 1a] (2a) {};
+			\node[el,below = of 2a] (3a) {};
+			\node[el,below = of 3a] (4a) {};
+			\node[el,below = of 4a] (5a) {};
+			\node[el,below = of 5a] (6a) {};
+			
+			\node[el,right = 1.15cm of 1a] (1b) {};
+			\node[el,below = of 1b] (2b) {};
+			\node[el,below = of 2b] (3b) {}; \node[above = of 3b, yshift=-0.7cm, xshift=0.15cm] {$z$};
+			\node[el,below = of 3b] (4b) {};
+			\node[el,below = of 4b] (5b) {};
+			\node[el,below = of 5b] (6b) {};
+			
+			\draw[->] (1) -- node[label=above:$f$] {} (1a);
+			\draw[->] (2) -- (2a);
+			\draw[->] (3) -- (5a);
+			\draw[->] (4) -- (5a);
+			\draw[->] (5) -- (5a);
+			\draw[->] (6) -- (6a);
+			
+			\draw[->] (1a) -- node[label=above:$g$] {} (1b);
+			\draw[->] (2a) -- (2b);
+			\draw[->] (3a) -- (3b);
+			\draw[->] (4a) -- (3b);
+			\draw[->] (5a) -- (5b);
+			\draw[->] (6a) -- (6b);	
+			
+			\begin{pgfonlayer}{background}
+				\node[fit = (3a)  (4a),red, xscale=1, yscale=0.9] {};
+			\end{pgfonlayer}
+		\end{tikzpicture}%		
+		\subcaption{$f(X) \cap g^{-1}(z) = \emptyset$}		
+	\end{subfigure}\hfill
+	\begin{subfigure}[c]{0.4\textwidth}	\centering
+		\begin{tikzpicture}[
+			every node/.style={on grid},
+			el/.style={draw,circle,inner sep=2pt},
+			every fit/.style={draw,ellipse},
+			>=latex
+			]
+			
+			\node[el] (1) {};
+			\node[el,below = of 1] (2) {};
+			\node[el,below = of 2] (3) {};
+			\node[el,below = of 3] (4) {};
+			\node[el,below = of 4] (5) {};
+			\node[el,below = of 5] (6) {};
+			
+			\node[el,right = 1.15cm of 1] (1a) {};
+			\node[el,below = of 1a] (2a) {};
+			\node[el,below = of 2a] (3a) {};
+			\node[el,below = of 3a] (4a) {};
+			\node[el,below = of 4a] (5a) {};
+			\node[el,below = of 5a] (6a) {};
+			
+			\node[el,right = 1.15cm of 1a] (1b) {};
+			\node[el,below = of 1b] (2b) {}; \node[above = of 2b, yshift=-0.7cm, xshift=0.15cm] {$z$};
+			\node[el,below = of 2b] (3b) {};
+			\node[el,below = of 3b] (4b) {};
+			\node[el,below = of 4b] (5b) {};
+			\node[el,below = of 5b] (6b) {};
+			
+			\draw[->] (1) -- node[label=above:$f$] {} (1a);
+			\draw[->] (2) -- (2a);
+			\draw[->] (3) -- (4a);
+			\draw[->] (4) -- (4a);
+			\draw[->] (5) -- (4a);
+			\draw[->] (6) -- (6a);
+			
+			\draw[->] (1a) -- node[label=above:$g$] {} (1b);
+			\draw[->] (2a) -- (2b);
+			\draw[->] (3a) -- (2b);
+			\draw[->] (4a) -- (4b);
+			\draw[->] (5a) -- (5b);
+			\draw[->] (6a) -- (6b);	
+			
+			\begin{pgfonlayer}{background}
+				\node[fit = (2a)  (3a),red, xscale=1, yscale=0.9] {};
+			\end{pgfonlayer}
+		\end{tikzpicture}%
+		\subcaption{$f(X) \cap g^{-1}(z)$ singleton}
+	\end{subfigure}\hfill
+	\begin{subfigure}[c]{0.29\textwidth} \centering
+		\begin{tikzpicture}[
+			every node/.style={on grid},
+			el/.style={draw,circle,inner sep=2pt},
+			every fit/.style={draw,ellipse,minimum width=2pt},
+			>=latex
+			]
+			
+			\node[el] (1) {};
+			\node[el,below = of 1] (2) {};
+			\node[el,below = of 2] (3) {};
+			\node[el,below = of 3] (4) {};
+			\node[el,below = of 4] (5) {};
+			\node[el,below = of 5] (6) {};
+			
+			\node[el,right = 1.15cm of 1] (1a) {};
+			\node[el,below = of 1a] (2a) {};
+			\node[el,below = of 2a] (3a) {};
+			\node[el,below = of 3a] (4a) {};
+			\node[el,below = of 4a] (5a) {};
+			\node[el,below = of 5a] (6a) {};
+			
+			\node[el,right = 1.15cm of 1a] (1b) {};
+			\node[el,below = of 1b] (2b) {};
+			\node[el,below = of 2b] (3b) {};
+			\node[el,below = of 3b] (4b) {};
+			\node[el,below = of 4b] (5b) {}; \node[above = of 5b, yshift=-0.7cm, xshift=0.15cm] {$z$};
+			\node[el,below = of 5b] (6b) {};
+			
+			\draw[->] (1) -- node[label=above:$f$] {} (1a);
+			\draw[->] (2) -- (2a);
+			\draw[->] (3) -- (4a);
+			\draw[->] (4) -- (4a);
+			\draw[->] (5) -- (4a);
+			\draw[->] (6) -- (6a);
+			
+			\draw[->] (1a) -- node[label=above:$g$] {} (1b);
+			\draw[->] (2a) -- (5b);
+			\draw[->] (3a) -- (5b);
+			\draw[->] (4a) -- (5b);
+			\draw[->] (5a) -- (5b);
+			\draw[->] (6a) -- (6b);
+			
+			\begin{pgfonlayer}{background}
+				\node[fit = (2a)  (5a),red, xscale=0.9, yscale=0.8] {};
+			\end{pgfonlayer}
+		\end{tikzpicture}%	
+		\subcaption{$\dupl{f} \cap g^{-1}(z) \ne \emptyset$}
+	\end{subfigure}\hfill
+	\caption[Cases so that $\dupl{\concat{f}{g}} = g(\dupl{f}$)]{
+		Cases that, when fulfilled for all $z \in \dupl{g}$,
+		yield $\dupl{\concat{f}{g}} = g(\dupl{f})$
+		by \cref{prelim:func:duplconcat:cor:gS:4xxx} of \cref{prelim:func:duplconcat:cor:gS}.
+		The set $g^{-1}(z)$ is indicated by a red-colored elliptical shape.}
+	\label{prelim:trans:fig:duplconcatingduplf}
+\end{figure}
+
+\Cref{prelim:trans:fig:duplconcatingduplf} 
+depicts the following three cases: $f(X) \cap g^{-1}(z)$ is empty,
+$f(X) \cap g^{-1}(z)$ is a singleton,
+or $f(X) \cap g^{-1}(z)$ contains two distinct elements
+and an element from $\dupl{f}$. 
+If for all $z \in \dupl{g}$ one of these cases holds,
+then $\dupl{\concat{f}{g}} = g(\dupl{f})$ by \cref{prelim:func:duplconcat:cor:gS:4xxx} from \cref{prelim:func:duplconcat:cor:gS}.
+
+\begin{proposition} \label{prelim:func:prop:inv-dupl}
+	Let $f \colon X \to Y$ and $g \colon Y \to Z$. Then
+	\[
+	(\concat{f}{g})^{-1}(\dupl{\concat{f}{g}})
+	= f^{-1}(\dupl{f}) \cup (\concat{f}{g})^{-1}(\dupl{g_{|f(X)}}).
+	\]	 
+\end{proposition}
+\begin{proof}
+	By \cref{prelim:eqn:finvfinclusion} and as $g(\dupl{f}) = g_{|f(X)}(\dupl{f})$
+	we have 
+	\begin{equation} \label{prelim:eqn:comp-inv-proof}
+		g_{|f(X)}^{-1}(g(\dupl{f})) = \dupl{f} \cup g_{|f(X)}^{-1}(g(\dupl{f})\cap \dupl{g_{|f(X)}}).
+	\end{equation}
+	With $g_{|f(X)}^{-1}(g(\dupl{f})) = g^{-1}(g(\dupl{f})) \cap f(X)$
+	this then gives
+	\begin{align*}
+		& f^{-1}(g^{-1}(\dupl{\concat{f}{g}})) \\
+		& = f^{-1}(g^{-1}(g(\dupl{f}))\cup f^{-1}(g^{-1}(\dupl{g_{|f(X)}})) \tag{Eqn.~\eqref{prelim:eqn:dupl0}} \\
+		& = f^{-1}(g^{-1}(g(\dupl{f}) \cap f(X)) \cup f^{-1}(g^{-1}(\dupl{g_{|f(X)}})) \\
+		& = f^{-1}(\dupl{f}) \cup f^{-1}(g^{-1}(\dupl{g_{|f(X)}})) \tag{Eqn.~\eqref{prelim:eqn:comp-inv-proof}}		
+	\end{align*}
+	This shows the claim.
+	%
+	% Alter Beweis
+	%	%
+	%	First, let $x \in (\concat{f}{g})^{-1}(\dupl{\concat{f}{g}})$.
+	%	Then there exists $x' \in X$ with $x \ne x'$
+	%	such that $g(f(x)) = g(f(x'))$.
+	%	If $f(x) = f(x')$, then $f(x) \in \dupl{f}$
+	%	so that $x \in f^{-1}(\dupl{f})$.
+	%	Otherwise, let $f(x) \ne f(x')$.
+	%	Then we get $g(f(x)) \in \dupl{g_{|f(X)}}$
+	%	and so $x \in f^{-1}(g^{-1}(\dupl{g_{|f(X)}}))$.
+	%	
+	%	Next, let $x \in f^{-1}(\dupl{f})$.
+	%	Then $f(x) = f(x')$ for some $x' \in X$ with $x \ne x'$.
+	%	Since $g(f(x)) = g(f(x'))$ we find $g(f(x)) \in \dupl{\concat{f}{g}}$.
+	%	Now, suppose $x \in (\concat{f}{g})^{-1}(\dupl{g_{|f(X)}})$.
+	%	Then $g(f(x)) = g(f(x'))$ for some $x' \in X$
+	%	with $f(x) \ne f(x')$.
+	%	Thus we must have $x \ne x'$, which gives $g(f(x)) \in \dupl{\concat{g}{f}}$.
+	%	Thus, $x \in (\concat{f}{g})^{-1}(\dupl{\concat{f}{g}})$.
+\end{proof}
+
+The next example shows that we cannot replace $g_{|f(X)}$ by~$g$ in \cref{prelim:func:prop:inv-dupl}.
+
+\begin{example} \label{prelim:func:ex:inv-dupl}
+	Let $X = \{1,2,3,4\}$ and $f,g \colon X \to X$ with $f(1) = 1, f(2) = f(3) = 2, f(4) = 4$
+	and $g(1) = g(2) = 1$, $g(3) = g(4) = 3$.
+	Then
+	\begin{enumerate}
+		
+		\item $\dupl{\concat{f}{g}} = \{1\}$ and $\dupl{g} = \{1,3\}$,
+		
+		\item $f^{-1}(\dupl{f}) = \{2,3\}$ and $g^{-1}(\dupl{g}) = X$,
+		
+		\item $\dupl{g_{|\{1,2,4\})}} = \{ 1 \}$,
+		
+		\item $(gf)^{-1}( \dupl{\concat{f}{g}} ) = \{1,2,3\}$.
+		
+	\end{enumerate}
+	Here $f^{-1}(g^{-1}(\dupl{g})) = X$
+	properly contains $(gf)^{-1}( \dupl{\concat{f}{g}} )$.
+\end{example}
+
+\begin{proposition} \label{prelim:func:dupl:ofgS}
+	Let $f \colon X \to Y$, $g \colon Y \to Z$,
+	and $S, T, R \subseteq Y$ 
+	with $f(X) \setminus \dupl{f} \subseteq S$, $\dupl{f} \subseteq T$,
+	and $R \subseteq f(X)$.
+	Then we have the following:
+	
+	\begin{enumerate}
+		\item \label{prelim:func:dupl:ofgS:1} $g(\dupl{f}) \subseteq \dupl{g_{|S}}$
+		if and only if $\dupl{\concat{f}{g}} \subseteq \dupl{g_{|S}}$.
+		
+		\item \label{prelim:func:dupl:ofgS:2} $g(\dupl{f}) \subseteq \dupl{g_{|R}}$
+		implies $\dupl{\concat{f}{g}} = \dupl{g_{|f(X)}}$.
+		
+		\item \label{prelim:func:dupl:ofgS:2a} $\dupl{\concat{f}{g}} = \dupl{g_{|R}}$
+		implies $\dupl{g_{|R}} = \dupl{g_{|f(X)}}$.		
+		
+		\item \label{prelim:func:dupl:ofgS:3} $\dupl{\concat{f}{g}} = \dupl{g_{|R}}$
+		if and only if $\dupl{\concat{f}{g}} \subseteq \dupl{g_{|R}}$.
+		
+		\item \label{prelim:func:dupl:ofgS:4} $g(\dupl{f}) \subseteq \dupl{g_{|T}}$ 
+		if and only if for all $y \in \dupl{f}$
+		there exists $y ' \in T$ with $y \ne y'$ 
+		and $g(y) = g(y')$.
+	\end{enumerate}	
+\end{proposition}
+\begin{proof}
+	\ref{prelim:func:dupl:ofgS:1}: Since $\dupl{g_{|f(X) \setminus \dupl{f}}} \subseteq \dupl{g_{|S}}$,
+	this follows from \cref{prelim:eqn:dupl}.
+		
+	\ref{prelim:func:dupl:ofgS:2}: This follows from 
+	\cref{prelim:eqn:dupl0}
+	with $\dupl{g_{|R}} \subseteq \dupl{g_{|f(X)}}$.
+	
+	\ref{prelim:func:dupl:ofgS:2a}: 
+	Since $R \subseteq f(X)$
+	we have $\dupl{g_{|R}} \subseteq \dupl{g_{|f(X)}}$.
+	By assumption and with 	\cref{prelim:eqn:dupl0},
+	we find $\dupl{g_{|f(X)}} \subseteq \dupl{\concat{f}{g}} = \dupl{g_{|R}}$.	
+	
+	\ref{prelim:func:dupl:ofgS:3}: This follows since $\dupl{g_{|R}} \subseteq \dupl{g_{|f(X)}} \subseteq \dupl{\concat{f}{g}}$
+	with \cref{prelim:eqn:dupl0}.
+	
+	\ref{prelim:func:dupl:ofgS:4}: First, suppose $g(\dupl{f}) \subseteq \dupl{g_{|T}}$.
+	Consider $y \in \dupl{f}$. Then the assumption gives $g(y) \in \dupl{g_{|T}}$.
+	Thus, there exist distinct $y', y'' \in T$ with $g(y) = g(y') = g(y'')$
+	and we have $y \ne y'$ or $y \ne y''$, which gives the claim.
+	
+	Conversely, suppose the other condition holds.
+	Let $y \in \dupl{f}$. Then $g(y) = g(y')$ for some $y' \in T \setminus \{y\}$.
+	Since $\dupl{t} \subseteq T$ we have $y,y' \in T$. So $g(y) \in \dupl{g_{|T}}$.
+\end{proof}
+
+The condition $g(\dupl{f}) \subseteq \dupl{g_{|f(X) \setminus \dupl{f}}}$
+implies $g(\dupl{f}) \subseteq \dupl{g_{|f(X)}}$ by \cref{prelim:func:eqn:duplicate-partition}, 
+but the converse does not hold, as shown by the following example.
+By \cref{prelim:func:eqn:duplicate-partition} the difference between $\dupl{g_{|f(X)}}$
+and $\dupl{g_{|f(X) \setminus \dupl{f}}}$ is the set
+$\dupl{g_{|\dupl{f}}} \cup S$ with $S = g(\dupl{f}) \cap g(f(X) \setminus \dupl{f})$.
+
+\begin{example}
+	Let $X = \{1,2,3\}$ and $Y = \{2,3\}$. Consider $f \colon X \to Y$
+	with $f(1) = f(2) = 2$ and $f(3) = 3$,
+	and $g \colon Y \to \{3\}$
+	with $g(2) = g(3) = 3$.
+	Then $g(\dupl{f}) = \{3\}$, 
+	$\dupl{g_{|f(X)}} = \{3\}$,
+	and $\dupl{g_{|f(X) \setminus \dupl{f}}} = \emptyset$.
+	So
+	\begin{enumerate}
+		\item $g(\dupl{f}) \subseteq \dupl{g_{|f(X)}}$, but
+		
+		\item $g(\dupl{f}) \not\subseteq \dupl{g_{|f(X) \setminus \dupl{f}}}$.
+	\end{enumerate}
+\end{example}
+
+\begin{corollary} \label{prelim:cor:gduplf-in-duplfX}
+	Let $f \colon X \to Y$ and $g \colon Y \to Z$. Then the following are equivalent:
+	\begin{enumerate}
+		\item \label{prelim:cor:gduplf-in-duplfX:1} $g(\dupl{f}) \subseteq \dupl{g_{|f(X)}}$.
+		
+		\item $\dupl{\concat{f}{g}} \subseteq \dupl{g_{|f(X)}}$.
+		
+		\item $\dupl{\concat{f}{g}} = \dupl{g_{|f(X)}}$.
+		
+		\item \label{prelim:cor:gduplf-in-duplfX:5} For all $y \in \dupl{f}$ exists $y' \in f(X)$ with $y \ne y'$
+		such that $g(y) = g(y')$.
+		
+		\item \label{prelim:cor:gduplf-in-duplfX:5}
+		$
+		g(\dupl{f}) \subseteq \dupl{g_{|\dupl{f}}} \cup (g(\dupl{f}) \cap g(f(X) \setminus \dupl{f})).
+		$		
+	\end{enumerate}	
+\end{corollary}
+\begin{proof}
+	The first four equivalences follow from \cref{prelim:func:dupl:ofgS} 
+	by considering $S = T = R = f(X)$.	
+		
+	$\ref{prelim:cor:gduplf-in-duplfX:1}\Leftrightarrow \ref{prelim:cor:gduplf-in-duplfX:5}$:
+	First, let $g(f(x))$ for some $x \in X$ such that $f(x) \in \dupl{f}$.
+	By \cref{prelim:cor:gduplf-in-duplfX:1} 
+	there exists $x' \in X$ such that $f(x) \ne f(x')$
+	and $g(f(x)) = g(f(x'))$.
+	If $f(x') \in \dupl{f}$, then $g(f(x)) \in \dupl{g_{|\dupl{f}}}$.
+	Otherwise, we have $g(f(x)) \in g(f(X) \setminus \dupl{f})$.
+	This gives \cref{prelim:cor:gduplf-in-duplfX:5}.
+	
+	Conversely, first not that by \cref{prelim:func:eqn:duplicate-partition} we have
+	\[
+	\dupl{g_{|\dupl{f}}} \cup (g(\dupl{f}) \cap g(f(X) \setminus \dupl{f}))
+	\subseteq \dupl{g_{|f(X)}}.
+	\]
+	Thus \cref{prelim:cor:gduplf-in-duplfX:5} implies \cref{prelim:cor:gduplf-in-duplfX:1}.
+\end{proof}
+
+Note that $g(\dupl{f}) \subseteq \dupl{g}$
+is not equivalent to  $g(\dupl{f}) \subseteq \dupl{g_{|f(X)}}$
+as demonstrated by the next example.
+
+\begin{example}
+	Let $X = \{1,2\}$ with $f \colon X \to X$
+	with $f(1) = f(2)$.
+	Then $\dupl{f} = \{f(1)\}$, $f(\dupl{f}) = \{f(1)\}$,
+	and $\dupl{f_{|f(X)}} = \emptyset$.
+	So
+	\begin{enumerate}
+	\item $f(\dupl{f}) \subseteq \dupl{f}$, but
+	
+	\item $f(\dupl{f}) \not\subseteq \dupl{f_{|f(X)}}$.
+\end{enumerate}
+\end{example}
+
+
+\subsection{Functions on a Finite Set}
+\label{prelim:subsec:func:finite}
+
+\IN{rank!of a function}
+\IN{defect!of a function}
+\IN{kernel type of a function}
+\IN{excess!of a subset under a function}
+\label{def:defect}
+\label{def:rank}
+\label{def:kernel-type}
+\label{def:excess}
+Let $X,Y$ be finite sets and $f \colon X \to Y$ be a function.
+Then the \emph{defect} (resp.~\emph{rank}) of~$f$
+is $\defect{f} = |\excl{f}|$ (resp.~$\rank{f} = |f(X)|$).
+As $Y = f(X) \uplus \excl{f}$, we have
+\begin{equation} \label{prelim:prop:item:rank-defect-eqn}
+	|Y| = \rank{f} + \defect{f}.
+\end{equation}
+For $A \subseteq Y$ we call $\excess{f}{A} = |f^{-1}(A)| - |A|$
+the \emph{excess of $A$ under~$f$}. 
+As $|f^{-1}(y)| = 0$ if and only if $y \in \excl{f}$, and $|f^{-1}(y)| \ge 2$
+if and only if $y \in \dupl{f}$, we have, for $y \in Y$,
+\begin{equation} \label{prelim:eqn:excess-cases}
+\excess{f}{\{y\}}
+\begin{cases}
+	= -1 & \text{if } y \in \excl{f}, \\
+	= 0  & \text{if } y \in f(X) \setminus \dupl{f}, \\
+	\ge 1 & \text{if } y \in \dupl{f}.
+\end{cases}
+\end{equation}	
+
+The \emph{kernel type}~\cite{AraujoCameron2014} of~$f$ is the ordered $r$-tuple
+with $r = \rank{f}$ 
+given by the sizes of the non-empty inverse images $f^{-1}(y)$ for $y \in Y$,
+i.e., the partition of $|X|$ into these sizes.
+For example,~$f$ has kernel type $(k,1,\ldots,1)$ for $k \ge 1$ if and only if
+\begin{enumerate}
+	\item $|f^{-1}(y)| = k$ for some $y \in Y$ and
+	\item $|f^{-1}(z)| \le 1$ for all $z \in Y \setminus \{y\}$.
+\end{enumerate}
+Clearly, for $S \subseteq X$ we have
+\begin{equation} \label{eqn:subset-mapped-to-smaller-set}
+	|f(S)| \le |S|,
+\end{equation}
+and $|f(S)| = |S|$ if and only if $f_{|S}$ is injective.
+
+\begin{proposition} \label{prelim:prop:rank-defect}
+	Let $f \colon X \to Y$ and $g \colon Y \to Z$
+	for finite sets $X, Y$, and~$Z$. Then
+	\begin{equation} \label{prelim:prop:item:rank-eqn}
+		\rank{\concat{f}{g}} \le \min\{ \rank{f}, \rank{g} \},
+	\end{equation}
+	where
+	\begin{enumerate}
+		\item \label{prelim:prop:item:rank-eqn:f} $\rank{\concat{f}{g}} = \rank{f}$
+		if and only if $g_{|f(X)}$ is injective, and
+		\item \label{prelim:prop:item:rank-eqn:g} $\rank{\concat{f}{g}} = \rank{g}$
+		if and only if $g(Y) = g(f(X))$.
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+	We have $\rank{\concat{f}{g}} = |g(f(X))|$.
+	By \cref{eqn:subset-mapped-to-smaller-set},
+	$|g(f(X))| \le |f(X)| = \rank{f}$
+	with equality if and only if $g_{|f(X)}$ is injective.
+	Furthermore, $g(f(X)) \subseteq g(Y)$ gives $|g(f(X))| \le \rank{g}$,
+	and, as these sets are finite, equality of the cardinalities holds
+	if and only if $g(f(X)) = g(Y)$.
+\end{proof}
+
+\begin{proposition} \label{prelim:prop:excess}
+	\label{prelim:eqn:dupl-inequality} \label{prelim:cor:finvA} \label{prelim:prop:finvA}
+	Let $f \colon X \to Y$ with $X,Y$ finite.
+	Then the following holds:%
+	\footnote{By convention, the summation over an empty index set equals zero.}
+	\begin{enumerate}
+		\item \label{prelim:prop:excess:sum} For $A \subseteq Y$ we have
+		\begin{align}
+			\excess{f}{A} & = \sum_{y \in A} ( |f^{-1}(y)| - 1 ),  \label{prelim:eqn:sumAfinv1} \\
+			\excess{f}{A} & = \excess{f}{A \cap \dupl{f}} - |A \cap \excl{f}|. \label{prelim:eqn:sumAfinv2}
+		\end{align}
+		
+		\item \label{prelim:prop:excess:additive} For disjoint $A, B \subseteq Y$ we have $\excess{f}{A \uplus B} = \excess{f}{A} + \excess{f}{B}$.
+		
+		\item \label{prelim:eqn:dupl-inequality:1} $\excess{f}{A} \ge |A|$ for $A \subseteq \dupl{f}$.
+		
+		\item \label{prelim:eqn:dupl-inequality:2} $\excess{f}{A} \le \excess{f}{B}$
+		for $A \subseteq B \subseteq f(X)$. Moreover, we have
+		\[
+		\excess{f}{A} < \excess{f}{B}
+		\Leftrightarrow 
+		(B \setminus A) \cap \dupl{f} \ne \emptyset.
+		\]
+		\item \label{prelim:eqn:dupl-inequality:5}
+		$\excess{f}{f(X)} = \excess{f}{\dupl{f}} = |X| - \rank{f} = \sum_{i=1}^{r} (k_i - 1)$
+		where~$f$ has kernel type $(k_1, \ldots, k_r)$.	
+		
+		\item \label{prelim:eqn:dupl-inequality:4} For $A \subseteq Y$ we have
+		\begin{equation} \label{eqn:inverse-image-larger-sufficient}
+			|A \cap \excl{f}| < |A \cap \dupl{f}|
+			\Rightarrow
+			\excess{f}{A} > 0.
+		\end{equation}
+	\end{enumerate}
+\end{proposition}
+\begin{proof}	
+	\ref{prelim:prop:excess:sum}: As $f^{-1}(A) = \biguplus_{y \in A} f^{-1}(y)$,
+	we have $|f^{-1}(A)| = \sum_{y \in A} |f^{-1}(y)|$,
+	which gives \cref{prelim:eqn:sumAfinv1} with $|A| = \sum_{y \in A} 1$.	
+	Splitting the index set $A$ in the sum from \cref{prelim:eqn:sumAfinv1}
+	into $A \cap \excl{f}$, $A \cap (f(X) \setminus \dupl{f})$,
+	and $A \cap \dupl{f}$, whose summands are $-1$, $0$, and those of
+	$\excess{f}{A \cap \dupl{f}}$ by \cref{prelim:eqn:excess-cases}, gives
+	\cref{prelim:eqn:sumAfinv2}.
+
+	\ref{prelim:prop:excess:additive}: This holds as the index sets $A$ and~$B$ in \cref{prelim:eqn:sumAfinv1} are disjoint.
+
+	\ref{prelim:eqn:dupl-inequality:1}: This follows since for $A \subseteq \dupl{f}$ every summand of \cref{prelim:eqn:sumAfinv1} is at least one by \cref{prelim:eqn:excess-cases}.
+		
+	\ref{prelim:eqn:dupl-inequality:2}:
+	By \cref{prelim:prop:excess:additive}
+	we have $\excess{f}{B} = \excess{f}{A} + \excess{f}{B \setminus A}$.
+	Since $B \setminus A \subseteq f(X)$, \cref{prelim:eqn:sumAfinv2} gives
+	$\excess{f}{B \setminus A} = \excess{f}{(B \setminus A) \cap \dupl{f}}$,
+	which is at least $|(B \setminus A) \cap \dupl{f}|$
+	by \cref{prelim:eqn:dupl-inequality:1}
+	and equals zero if $(B \setminus A) \cap \dupl{f} = \emptyset$.
+		
+	\ref{prelim:eqn:dupl-inequality:5}: \Cref{prelim:eqn:sumAfinv2} for
+	$A = f(X)$ gives $\excess{f}{f(X)} = \excess{f}{\dupl{f}}$, as
+	$\dupl{f} \subseteq f(X)$.
+	As $f^{-1}(f(X)) = X$, we have
+	$\excess{f}{f(X)} = |X| - \rank{f}$.
+	Since the non-empty inverse images are the sets $f^{-1}(y)$ for $y \in f(X)$,
+	the last equality is \cref{prelim:eqn:sumAfinv1} for $A = f(X)$.
+	
+	\ref{prelim:eqn:dupl-inequality:4}: By \cref{prelim:eqn:dupl-inequality:1} the
+	assumption gives $|A \cap \excl{f}| < |A \cap \dupl{f}| \le \excess{f}{A \cap \dupl{f}}$,
+	so \cref{prelim:eqn:sumAfinv2} yields $\excess{f}{A} > 0$.
+\end{proof}
+
+For functions between sets of equal size, the excess of the duplicate set
+is precisely the defect.
+
+\begin{proposition} \label{prelim:prop:gentransdef}
+	Let $f \colon X \to Y$ with $X,Y$ finite and $|X| = |Y|$.
+	Then the following holds:
+	\begin{enumerate}
+		\item \label{prelim:prop:item:defdupl0}
+		$\defect{f} = \excess{f}{\dupl{f}} = |f^{-1}(\dupl{f})| - |\dupl{f}|$,
+		
+		\item \label{prelim:prop:item:defA} $\defect{f} \ge \excess{f}{A}$
+		for every $A \subseteq Y$,
+		
+		\item \label{prelim:prop:item:defdupl2} $\defect{f} \ge |\dupl{f}|$.
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+	\ref{prelim:prop:item:defdupl0}: By
+	\cref{prelim:eqn:dupl-inequality:5} of \cref{prelim:prop:excess},
+	\cref{prelim:prop:item:rank-defect-eqn}, and $|X| = |Y|$, we have
+	$\excess{f}{\dupl{f}} = |X| - \rank{f} = |Y| - \rank{f} = \defect{f}$.
+	
+	\ref{prelim:prop:item:defA}: For $A \subseteq Y$,
+	\cref{prelim:eqn:sumAfinv2} gives
+	$\excess{f}{A} \le \excess{f}{A \cap \dupl{f}}$, which is at most
+	$\excess{f}{\dupl{f}} = \defect{f}$ by
+	\cref{prelim:eqn:dupl-inequality:2} of \cref{prelim:prop:excess}
+	and~\cref{prelim:prop:item:defdupl0}.
+	
+	\ref{prelim:prop:item:defdupl2}: Combine \cref{prelim:prop:item:defdupl0}
+	with \cref{prelim:eqn:dupl-inequality:1} of \cref{prelim:prop:excess}
+	for $A = \dupl{f}$.
+\end{proof}
+
+\begin{corollary} \label{prelim:cor:defect-one}
+	Let $f \colon X \to Y$ with $|X| = |Y|$ and $\defect{f} = 1$.
+	Then $|\dupl{f}| = 1$ and $|f^{-1}(\dupl{f})| = 2$.
+\end{corollary}
+\begin{proof}
+	By \cref{prelim:prop:item:defdupl2} of \cref{prelim:prop:gentransdef} we
+	have $|\dupl{f}| \le 1$, and $\dupl{f} \ne \emptyset$, as otherwise
+	\cref{prelim:prop:item:defdupl0} of \cref{prelim:prop:gentransdef} 
+	would give $\defect{f} = \excess{f}{\emptyset} = 0$.
+	So $|\dupl{f}| = 1$, and then the same item yields
+	$|f^{-1}(\dupl{f})| = \defect{f} + |\dupl{f}| = 2$.
+\end{proof}

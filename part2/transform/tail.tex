@@ -1,0 +1,206 @@
+%!TEX root = ./../../springer-mono-format/book.tex
+%!TEX root = ./../../thesis-trier.tex
+
+Here, we introduce tail transformations and simple idempotents.
+We then classify the transformations obtained by composing a simple idempotent with a cycle.
+\cref{constrsync:prop:concat_cycle_SI} bounds
+the length of cycles induced in the composition of a simple idempotent with a cycle.
+
+\IN{simple idempotent}
+\IN{singular transformation|see{simple idempotent}}
+\IN{tail transformation}
+Let $a_1, \ldots, a_m \in X$ be distinct numbers with $m \ge 2$. The \emph{tail transformation (of $a_1,\ldots a_m$)}
+is the transformation $[a_1 \mapsto a_2 \mapsto \cdots \mapsto a_m]_X \colon X \to X$
+given by   \label{def:SI-mapping}
+\[
+\applyfunc{x}{[a_1 \mapsto a_2 \mapsto \cdots \mapsto a_m]_X} = 
+\begin{cases}
+	a_{i+1} & \text{if } x = a_i \text{ for } i \in \{1,\ldots,m-1\}, \\ 
+	x       & \text{otherwise.}
+\end{cases}
+\]
+When the context is clear, we often omit $X$ and simply write $[a_1 \mapsto a_2 \mapsto \cdots \mapsto a_m]$.
+
+\begin{proposition} \label{prelim:prop:tail-comp} \label{prelim:trans:eqn:SI-one-singular}
+	Let $a_1, \ldots, a_m \in X$ be pairwise distinct and $1 < i < m$. Then
+	\begin{align*}
+		[a_1 \mapsto a_2 \mapsto \cdots \mapsto a_m] 
+		& = \concat{[a_i \mapsto a_{i+1} \mapsto \cdots \mapsto a_m]}{[a_1 \mapsto a_2 \mapsto \cdots \mapsto a_i]} \\
+		t \SI{a_i}{a_{i-1}} = \SI{a_i}{a_{i+1}}t & = \concat{[a_1 \mapsto a_2 \mapsto \cdots \mapsto a_i]}{[a_i \mapsto a_{i+1} \mapsto \cdots \mapsto a_m]} 
+	\end{align*}
+	where $t = [a_1 \mapsto a_2 \mapsto \cdots a_{i-1} \mapsto a_{i+1} \mapsto \cdots \mapsto a_m]$.
+\end{proposition}
+
+A \emph{simple idempotent} is a tail transformation involving two distinct numbers, i.e., where $m = 2$.\footnote{Also called a \emph{singular} transformation in~\cite{DBLP:journals/ijfcs/Brzozowski13}.}
+So, a simple idempotent is written as $\SI{a}{b}$ for distinct $a,b \in X$.
+In~\cite{CameronRGM2017} a similar notation was used.
+A transformation $t \colon X \to X$ is a simple idempotent if and only if $\move{t}$ is a singleton set.
+
+\begin{proposition} \label{prelim:trans:prop:SI-relations}
+	For pairwise distinct $a,b,c,d \in X$, the following equations hold:
+	\begingroup
+	\allowdisplaybreaks 
+	\begin{align}
+		\concat{\SI{a}{b}}{\SI{a}{b}} & = \SI{a}{b} = \concat{\SI{b}{a}}{\SI{a}{b}} \label{prelim:trans:eqn:SI-itself} \\
+		\concat{\SI{a}{b}}{\SI{c}{d}} & = \concat{\SI{c}{d}}{\SI{a}{b}} \label{prelim:tran:eqn:SI-all-distinct} \\
+		\concat{\SI{a}{b}}{\SI{a}{c}} & = \SI{a}{b} \label{prelim:tran:eqn:SI-common-start} \\
+		\concat{\SI{a}{b}}{\SI{c}{b}} & = \concat{\SI{c}{b}}{\SI{a}{b}} = \concat{\SI{c}{a}}{\SI{a}{b}} \label{prelim:trans:eqn:SI-one-singular0} \\
+		\concat{\SI{b}{c}}{\concat{\SI{a}{b}}{\SI{c}{a}}} & = \concat{\concat{\SI{c}{b}}{\SI{a}{c}}}{\concat{\SI{b}{a}}{\SI{c}{b}}} \\
+		\concat{\SI{b}{c}}{\concat{\SI{a}{b}}{\concat{\SI{c}{a}}{\SI{d}{c}}}} & = 
+		\concat{\SI{c}{b}}{\concat{\SI{d}{c}}{\concat{\SI{b}{d}}{\concat{\SI{a}{b}}{\SI{d}{a}}}}}
+	\end{align}
+	\endgroup%
+\end{proposition}
+
+\Cref{prelim:trans:eqn:SI-one-singular0} also follows from \cref{prelim:prop:tail-comp} for $m = 3$,
+but is kept for reference.
+The equations from \cref{prelim:trans:prop:SI-relations} yield a presentation
+in terms of generators and relations for the set of all non-permutations on a finite set~\cite{East2013}.
+
+\begin{corollary}
+	Let $a,b,c,d \in X$ with $a \ne b$ and $c \ne d$ and $\SI{a}{b} \ne \SI{c}{d}$.
+	Then
+	we have 
+	$\concat{\SI{a}{b}}{\SI{c}{d}} 
+	= \concat{\SI{c}{d}}{\SI{a}{b}}$
+	if and only if $a \ne c$ and $b \ne c$ and $d \ne a$, i.e., 
+	both simple idempotents commute if and only if $a,b,c,d$ are all distinct
+	or $b = d$ and $a,b,c$ are all distinct.
+\end{corollary}
+\begin{proof}
+	For $a = c$, since $\SI{a}{b} \ne \SI{c}{d}$
+	we have $d \ne b$
+	and both simple idempotents
+	do not commute by \cref{prelim:tran:eqn:SI-common-start}.
+	Next, suppose $b = c$.
+	For $a = d$,
+	both do not commute by \cref{prelim:trans:eqn:SI-itself}.
+	For $a \ne d$,
+	we have $\concat{\SI{c}{d}}{\SI{a}{c}} = [a \mapsto c \mapsto d] \ne \concat{\SI{a}{c}}{\SI{c}{d}}$.
+	
+	Conversely, suppose $a \ne c, b \ne c, d \ne a$, i.e., $a \notin \{c,d\}$ and $b \ne c$.
+	If $b \ne d$, i.e., all points are pairwise distinct,
+	we have $\SI{a}{b}\SI{c}{d} = \SI{c}{d}\SI{a}{b}$ by \cref{prelim:tran:eqn:SI-all-distinct}.
+	For $b = d$, we have $\SI{a}{b}\SI{c}{b} = \SI{c}{b}\SI{a}{b}$
+	by \cref{prelim:trans:eqn:SI-one-singular0}.
+\end{proof}
+
+Let $t = \SI{a}{b}$ for $a \ne b$. Then $\dupl{t} = \{b\}$, $\excl{t} = \{a\}$, and 
+for finite $S \subseteq X$ we have
+\begin{align}
+	|t(S)| < |S| & \Leftrightarrow \{a,b\} \subseteq S \Leftrightarrow S = t(S) \cup \{a\}, \label{prelim:eqn:SIsmaller} \\
+	|t(S)| = |S| & \Leftrightarrow t(S) = S \lor ( b \notin S \land a \in S \land t(S) = ( S \cup \{b\} ) \setminus \{a\} ). \label{prelim:eqn:SIequalsize}
+\end{align}
+
+The following equations encompass, up to a renaming of the points,
+all combinations to compose a simple idempotent with a cycle.
+\Cref{prelim:eqn:SIcycle1,prelim:eqn:SIcycle2}
+are illustrated in \cref{prelim:fig:composition-cycle-SI}.
+
+\begin{proposition} \label{prelim:trans:prop:cycle-SI-composition}
+	Let $m \ge 2$, $\{0,1,\ldots,m\} \subseteq X$,
+	and $0 < d \le m$. Then we have
+	\begin{align}
+		[0 \mapsto d ](0 ~ 1 ~\cdots ~ m) 
+		& = [0 \mapsto \cdots \mapsto d - 1 \mapsto d](d ~ d+1 ~ \cdots ~ m)  \label{prelim:eqn:SIcycle1} \\
+		& = (d ~ d+1 ~ \cdots ~ m)[0 \mapsto \cdots \mapsto d - 1 \mapsto m] \\
+		& = \concat{[m\mapsto d]}{(0 ~ 1 ~ \cdots ~ m)} \\
+		& = \concat{[0 \mapsto 1 \mapsto \cdots \mapsto m]}{[m\mapsto d]} \\
+		& = \concat{[m\mapsto d-1]}{[0 \mapsto 1 \mapsto \cdots \mapsto m]}
+	\end{align}
+	and for distinct $a,b \in X \setminus \{0,1,\ldots,m\}$ we have
+	\begin{align}
+		(0 ~ 1 ~\cdots ~ m)[ 0 \mapsto d ] & = [1 \mapsto 2 \mapsto \cdots \mapsto d+1](0 ~ d + 1 ~ \cdots ~ m) \label{prelim:eqn:SIcycle2} \\
+		(0 ~ 1 ~ \cdots ~ m)[0 \mapsto a] & = [1 \mapsto \cdots \mapsto m \mapsto 0 \mapsto a] \label{prelim:eqn:SIcycle4} \\
+		[0 \mapsto a](0 ~ 1 ~ \cdots ~ m) & = [0 \mapsto 1 \mapsto \cdots \mapsto m \mapsto a] \label{prelim:eqn:SIcycle5} \\
+		(0 ~ 1 ~ \cdots ~ m)\SI{a}{b} & = \SI{a}{b}(0 ~ 1 ~ \cdots ~ m) \label{prelim:eqn:SIcycle6}
+	\end{align} 
+\end{proposition}
+
+\begin{corollary} For $m \ge 2$ we have the following:
+	\[
+		[0 \mapsto 1](0 ~ 1 ~ \cdots ~ m) 
+		= [0 \mapsto 1 ](1 ~ 2 ~ \cdots ~ m) 
+		= (1 ~ 2 ~ \cdots ~ m)[ 0 \mapsto m] 
+		= \concat{[m \mapsto 0]}{(0 ~ 1 ~ \cdots ~ m)}
+	\]
+\end{corollary}
+
+\begin{figure}[ht]
+	\centering
+	\begin{subfigure}{0.45\textwidth}
+		\centering
+		\scalebox{1.0}{\begin{tikzpicture}[shorten >=1pt,->,node distance=4cm]
+				%\tikzstyle{vertex}=[circle,color=red!60,fill=black!10,minimum size=25pt,inner sep=1pt,very thick]
+				%\tikzstyle{vertex}=[circle,draw,minimum size=5pt,inner sep=1pt]
+				
+				% state,blur shadow, fill={rgb:black,0.4;white,10}, inner sep=0pt, minimum size=35pt
+				
+				\foreach \name/\angle/\text in {P0/0/m,P1/30/0,P2/60/1,P3/90/2,P4/120/3,
+					P6/180/d-1,P7/210/d,P8/240/d+1,P9/300/m-2,P10/330/m-1}
+				\node (\name) at (\angle:7.3em) {$\text$};  %{\small $\text$};
+				
+				
+				\node (D) at (150:7.3em) {\rotatebox{145}{$\vdots$}}; 
+				\node (D2) at (270:7.3em) {$\hdots$};				
+				
+				\path[->] (P0) edge (P7);
+				\path[->] (P7) edge (P8);
+				\path[->] (P8) edge (D2);
+				\path[->] (D2) edge (P9);
+				\path[->] (P9) edge (P10);
+				\path[->] (P10) edge (P0);
+				\path[->] (P1) edge (P2);
+				\path[->] (P2) edge (P3);
+				\path[->] (P3) edge (P4);
+				\path[->] (P4) edge (D);
+				\path[->] (D) edge (P6);
+				\path[->] (P6) edge (P7);				
+		\end{tikzpicture}}
+		\caption{$\concat{(0 ~ 1 ~ \cdots ~ m)}{[ 0 \mapsto d ]}$.}
+	\end{subfigure}
+	\begin{subfigure}{0.45\textwidth}
+		\centering
+		\scalebox{1.0}{\begin{tikzpicture}[shorten >=1pt,->,node distance=4cm]				
+				\foreach \name/\angle/\text in {P0/0/m,P1/30/0,P2/60/1,P3/90/2,P4/120/3,
+					P6/180/d-1,P7/210/d,P8/240/d+1,P9/300/m-2,P10/330/m-1}
+				\node (\name) at (\angle:7.3em) {$\text$};  %{\small $\text$};
+				
+				\node (D) at (150:7.3em) {\rotatebox{145}{$\vdots$}}; 
+				\node (D2) at (270:7.3em) {$\hdots$};
+				
+				\path[->] (P0) edge (P1);
+				\path[->] (P7) edge (P8);
+				\path[->] (P8) edge (D2);
+				\path[->] (D2) edge (P9);
+				\path[->] (P9) edge (P10);
+				\path[->] (P10) edge (P0);
+				\path[->] (P1) edge (P8);
+				\path[->] (P2) edge (P3);
+				\path[->] (P3) edge (P4);
+				\path[->] (P4) edge (D);
+				\path[->] (D) edge (P6);
+				\path[->] (P6) edge (P7);
+		\end{tikzpicture}}
+		\caption{$\concat{[ 0 \mapsto d ]}{(0 ~ 1 ~ \cdots ~ m)}$.}
+	\end{subfigure}
+	\caption[Composition of cycle and simple idempotent]{Functional graphs resulting from the two possible compositions of $(0 ~ 1 ~ \cdots ~ m)$
+		with $\SI{0}{d}$ where $0 < d \le m$, see \cref{prelim:eqn:SIcycle1,prelim:eqn:SIcycle2}.}
+	\label{prelim:fig:composition-cycle-SI}
+\end{figure}
+
+\begin{corollary} \label{constrsync:prop:concat_cycle_SI}	
+	Let $t \colon X \to X$ be an $m$-cycle
+	and $h \colon X \to X$ be a simple idempotent.
+	Then there exist $0 \le i,j \le m$
+	and $0 < p,q < m$
+	such that $( \concat{t}{h} )^i = ( \concat{t}{h} )^{i + p}$
+	and $( \concat{h}{t} )^j = ( \concat{h}{t} )^{j+q}$.
+\end{corollary}
+\begin{proof}
+	We can assume $m \ge 2$.
+	This follows from the equations given in \cref{prelim:trans:prop:cycle-SI-composition}, since
+	the results of both compositions move at most $m + 2$ points,
+	contain at most one cycle moving more than one point, and such a cycle moves at most~$m$
+	points, or it equals a tail transformation moving at most $m + 1$ 	points.	
+\end{proof}

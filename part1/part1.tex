@@ -1,0 +1,229 @@
+%!TEX root = ./../springer-mono-format/book.tex
+%!TEX root = ./../thesis-trier.tex
+
+\chapter{Short Introduction to Synchronizing Automata}
+\label{intro:chap:short_intro_sync_aut}
+\label{intro:aut_and_formal_lang}
+
+\input{../part1/sync/sync}
+
+\chapter{Outline and Contribution}
+\label{intro:chap:overview}
+
+First, in \cref{overview:sec:problems} we introduce the two central 
+problems with which the thesis is concerned: the constrained
+synchronization problem (\cref{overview:sec:csp})
+and the description of automata for sets of synchronizing 
+words (\cref{intro:overview:structure_set_of_sync_words}).
+\Cref{overview:sec:organization} gives an overview on the 
+organization of the present work.
+Finally, \cref{overview:sec:papers} lists the papers on which this work is based, 
+as well as the unpublished results that we have included.
+
+\section{The Problems}
+\label{overview:sec:problems}
+
+\subsection{The Constrained Synchronization Problem}
+\label{overview:sec:csp}
+
+\IN{constrained synchronization problem} 
+\IN{constraint language}
+\index{regular constraint language|see{constraint language}}
+The \emph{constrained synchronization problem} asks whether a given
+deterministic and complete
+semiautomaton has  a synchronizing word contained
+in a given regular \emph{constraint language}. 
+Formally, let~$\Sigma$ be an alphabet 
+and $L \subseteq \Sigma^*$ be a regular language 
+(see \cref{prelim:sec:decision_problems,prelim:sec:regularlang}
+for formal definitions of decision problems and regular languages, respectively).
+The problem \constrsync{L} of \emph{constrained synchronization} 
+with respect to the \emph{constraint language $L$} is the following decision problem.
+
+\index{\constrsync{L}|see{constrained synchronization problem}}
+\begin{center}
+\begin{tcolorbox}[width = 0.9\textwidth,colback=white,arc=0pt,outer arc=0pt,boxrule=0.7pt,left =0.5em,right=0em]
+\decisionproblem{\constrsync{L}}
+{A deterministic and complete semiautomaton $\semiautomat{A}{Q}{\Sigma}{\delta}$.}
+{Does there exist a word $w \in L$ synchronizing $\mathcal A$?} 
+\end{tcolorbox}
+\end{center}
+
+This problem, systematically studied in~\cite{FernauGHHVW19},
+firstly appeared in connection with a reduction procedure introduced in~\cite{Gusev2012},
+as well as implicitly in reductions used in~\cite{Martyugin14}.
+\Cref{constr_sync:sec:motivation} provides further motivation and details.
+
+\subsection{Automata for Sets of Synchronizing Words}
+\label{intro:overview:structure_set_of_sync_words}
+
+The set of synchronizing words of a given automaton can be accepted by another automaton of size exponential in the size of the original automaton (see \cref{chap:prelim} for the definition of automata as language acceptors). In this thesis, we also study automata for sets of synchronizing words.
+Our motivation comes from the constrained synchronization problem, whose computational complexity is governed by two parameters: the \emph{structure of the constraint language} and the \emph{structure of the set of synchronizing words} of the given input automata.
+If an automaton recognizing the set of synchronizing words can be constructed in polynomial time for a class of input automata, then the constrained synchronization problem (with any constraint language) is solvable in polynomial time for this class. An example is the class of commutative automata over a fixed alphabet (see \cref{constr_input:subsec:comm}).
+Consequently, \NP- or \PSPACE-hardness results (see \cref{prelim:sec:compl_classes} for definitions of complexity classes) imply that automata for the corresponding sets of synchronizing words cannot, in general, be constructed in polynomial time. 
+This motivates our interest in automata 
+needing exponentially larger accepting automata for their sets of synchronizing words.
+
+Beyond its connection to the constrained synchronization problem, the study of automata for sets of synchronizing words is also motivated by the following observations.
+
+\begin{enumerate}
+\item For known families of \emph{slowly synchronizing automata}, that is, automata whose reset length is close to the \Cerny bound, the minimal automata recognizing their sets of synchronizing words are exponentially larger~\cite{DBLP:journals/corr/Maslennikova14,DBLP:journals/ijfcs/Maslennikova19}. 
+This raises the question of whether there is a deeper connection between the reset length of an automaton and the size of a minimal automaton recognizing its set of synchronizing words.
+
+\item The operation that maps a regular language to the set of synchronizing words of its minimal automaton is regularity-preserving and can therefore be studied from the perspective of the state complexity of operations~\cite{GaoMRY17,YuZhuangSalomaa1994}.
+
+\IN{reset complexity} 
+\item The class of sets of synchronizing words of automata coincides with the class of regular ideal languages (\cref{prelim:thm:sync_words_is_ideal}). Thus, every regular ideal language can be represented by an automaton having it as its set of synchronizing words. This representation can be exponentially more succinct than a representation by an accepting automaton, 
+as witnessed by known families of slowly synchronizing automata~\cite{DBLP:journals/corr/Maslennikova14,DBLP:journals/ijfcs/Maslennikova19}. From the perspective of the descriptional complexity of regular languages, it is therefore natural to investigate those regular ideal languages for which the gap between these two representations is maximal. In automata-theoretic terms, this leads to the study of automata for which minimal automata accepting their sets of synchronizing words are as large as possible.
+
+Furthermore, these observations motivate the definition of the \emph{reset complexity} of a regular ideal language as the size of a smallest automaton having this language as its set of synchronizing words. The \Cerny conjecture is equivalent to the statement that the reset complexity of a regular ideal language is at least the square root of the length of a shortest word in the language, plus one~\cite{DBLP:journals/corr/Maslennikova14,DBLP:journals/ijfcs/Maslennikova19}. 
+This yields a language-theoretic approach to the \Cerny conjecture through the investigation of shortest words in regular ideal languages~\cite{DBLP:journals/jalc/FrigeriR25,
+	DBLP:journals/jalc/FrigeriR19,
+	GusevMP13,
+	DBLP:journals/fuin/MaslennikovaR18,
+	ReisR16,
+	DBLP:journals/aam/Rodaro18}.
+
+	
+\item As we will see, our results reveal connections between subset reachability properties,
+the size of automata for sets of synchronizing words, and the well-known class of primitive permutation groups.
+\end{enumerate}
+
+\section{Organization of the Thesis}
+\label{overview:sec:organization}
+
+The thesis consists of four parts.
+In \cref{part:intro} we give a short introduction on synchronizing automata
+and an overview of the thesis.
+\Cref{part:prelim} introduces further notions, automata classes,
+and gives preliminary computational complexity results.
+A detailed overview is given in \cref{intro:outline:orga:sec:prelim}.
+\Cref{part:aut} is concerned with automata accepting the set of synchronizing words of a given automaton and is outlined in \cref{intro:outline:orga:sec:autsync} below.
+\Cref{part:constrsync} deals with the constrained synchronization problem
+and we give an overview in \cref{intro:outline:orga:sec:csp}.
+
+Parts~\ref{part:aut} and~\ref{part:constrsync} are the main parts.
+Unless stated otherwise, all the results stated in these 
+parts are due to the author of this thesis.
+
+Historically, and as outlined in \cref{overview:sec:problems}, 
+our research on the constrained synchronization problem
+led us to investigate automata for sets of synchronizing words.
+However, in the present work, we first discuss automata for sets of synchronizing words in \cref{part:aut} before turning to the constrained synchronization problem in \cref{part:constrsync}.
+We chose this order of presentation because \cref{part:constrsync} relies on results from \cref{part:aut}, whereas \cref{part:aut} is independent of \cref{part:constrsync}.
+Moreover, the study of automata accepting sets of synchronizing words is a natural topic in its own right, 
+and we expand it beyond its application to the constrained synchronization problem.
+
+\subsection{Structure of \Cref{part:prelim}: Preliminaries}
+\label{intro:outline:orga:sec:prelim}
+
+Here, we introduce further notions in \cref{chap:prelim}. 
+In \cref{chap:class-transformations} we investigate classes of transformations.
+Permutation groups are investigated in \cref{prelim:sec:permgrp}.
+More automata-theoretical notions are given in \cref{prelim:sec:automata}. 
+Classes of automata and their properties
+are investigated in \cref{chap:classes_aut}.
+Computational complexity results on subset mapping problems
+in automata with respect to certain subclasses 
+are investigated in \cref{chap:prelim_complexity_results}.
+
+Most results in this part are taken from the literature.
+Some results on idempotent and one-point singular
+transformations from \cref{chap:class-transformations}
+are new. The notion of strong $\frac{3}{2}$-connectivity
+for digraphs introduced here is new. Further, some results in \cref{chap:classes_aut}
+are new, see also \cref{overview:sec:unpublished} for more details.
+Some structural results on solvable automata in \cref{prelim:subclasses:solvable}
+appear in~\cite{DBLP:journals/jalc/000124}.
+\Cref{prelim:sec:automata} on automata theory contains some results
+on morphism and quotient automata that we have not seen elsewhere.
+The results in \cref{chap:prelim_complexity_results} 
+were first presented in~\cite{DBLP:journals/jalc/000124}.
+
+\subsection{Structure of \Cref{part:aut}: Automata for Sets of Synchronizing Words} 
+\label{intro:outline:orga:sec:autsync}
+
+\input{../part3/overview}
+
+\subsection{Structure of \Cref{part:constrsync}: The Constrained Synchronization Problem}
+\label{intro:outline:orga:sec:csp}
+
+\input{../part4/intro}
+
+\section{Work by the Author Relevant to the Thesis}
+\label{overview:sec:papers} 
+
+\subsection{Published Work}
+
+The present thesis contains and extends material from the following papers and conference contributions published since 2019, in which the author was involved.
+
+\begin{enumerate}
+	\item[\cite{FernauGHHVW19}] \fullcite{FernauGHHVW19}
+	\item[\cite{DBLP:conf/ictcs/Hoffman20}] \fullcite{DBLP:conf/ictcs/Hoffman20}
+	\item[\cite{DBLP:conf/cocoon/Hoffmann20}] \fullcite{DBLP:conf/cocoon/Hoffmann20}
+	\item[\cite{DBLP:conf/lata/Hoffmann21a}] \fullcite{DBLP:conf/lata/Hoffmann21a}
+	\item[\cite{DBLP:conf/lata/Hoffmann21}] \fullcite{DBLP:conf/lata/Hoffmann21}
+	\item[\cite{DBLP:conf/cocoon/Hoffmann21}] \fullcite{DBLP:conf/cocoon/Hoffmann21}
+	\item[\cite{DBLP:conf/dlt/Hoffmann21a}] \fullcite{DBLP:conf/dlt/Hoffmann21a}
+	\item[\cite{DBLP:journals/tcs/Hoffmann21}] \fullcite{DBLP:journals/tcs/Hoffmann21} 
+	(extended version of~\cite{DBLP:conf/cocoon/Hoffmann20})
+	\item[\cite{DBLP:conf/fct/Hoffmann21}] \fullcite{DBLP:conf/fct/Hoffmann21}
+	\item[\cite{DBLP:conf/dcfs/Hoffmann21}] \fullcite{DBLP:conf/dcfs/Hoffmann21}
+	\item[\cite{DBLP:conf/dcfs/Hoffmann22}] \fullcite{DBLP:conf/dcfs/Hoffmann22}
+	\item[\cite{DBLP:conf/wia/Hoffmann22}] \fullcite{DBLP:conf/wia/Hoffmann22}
+	%\item[\cite{DBLP:conf/wia/Hoffmann22extended}] \fullcite{DBLP:conf/wia/Hoffmann22extended}
+	%(extended version of~\cite{DBLP:conf/wia/Hoffmann22})
+	\item[\cite{HoffmannCocoonExtended}] \fullcite{HoffmannCocoonExtended} 
+	(extended version of~\cite{DBLP:conf/cocoon/Hoffmann21})
+	
+	%{\sloppy 
+		
+	\item[\cite{HoffmannLATAextended2}] \fullcite{HoffmannLATAextended2}
+	(extended version of~\cite{DBLP:conf/lata/Hoffmann21})
+		
+		%\fussy}
+	\item[\cite{HoffmannCircularExtended}] \fullcite{HoffmannCircularExtended}
+	(extended version of~\cite{DBLP:conf/lata/Hoffmann21a})
+	
+	\item[\cite{DBLP:conf/dlt/Hoffmann23}] \fullcite{DBLP:conf/dlt/Hoffmann23}
+	
+	\item[\cite{Hoffmann2024}] \fullcite{Hoffmann2024}
+	(extended version of~\cite{DBLP:conf/dlt/Hoffmann23})
+	
+	\item[\cite{DBLP:journals/jalc/000124}] \fullcite{DBLP:journals/jalc/000124}
+\end{enumerate}
+
+\subsection{Unpublished Work} 
+\label{overview:sec:unpublished}
+
+Here, we discuss results contained in the present thesis that were not published before.
+
+In~\cref{part:prelim}, the results on one-point singulars 
+from~\cref{prelim:sec:oneattractor,prelim:sec:idempotentoneattractor}
+are new. We were also unable to find the statements 
+from~\cref{prelim:sec:idempotent} on compositions
+of idempotent transformations in the literature (but most of them are rather technical or perhaps folklore). We also note that our treatment of automata theory in \cref{prelim:sec:automata}, tailored to our needs, 
+differs from those found in the literature of which we are aware,
+in particular in its usage of the reachability order
+and morphisms. Furthermore, many results related to morphisms
+and isomorphisms between automata that
+we give are new or scattered throughout the literature under different terminology and notation.
+
+In~\cref{part:aut}, the results on reachable subsets from \cref{sync_max:sec:reachable},
+on pairs of distinguishable subsets from~\cref{sync_max:sec:pairs_k_k-1,sync_max:sec:shortestdist},
+the graph-theoretical results from~\cref{sec:extended_Rystsov_graph}, 
+on automata where every letter has defect at most one from~\cref{sync_max:sec:defectone},
+and on subset mapping properties for pairs
+of equal-sized sets in SI-automata from~\cref{sec:SI:dist} are new (but one preliminary 
+result appeared in~\cite[Lem.~11]{DBLP:conf/dcfs/Hoffmann22}).
+Furthermore, the notion of $A$-primitivity is novel
+and all results from~\cref{sec:A-primitive} 
+appear in this thesis for the first time.
+
+In~\cref{part:constrsync}, some characterizations
+of solid codes from \cref{constrsync:sec:codes:solid} are (to the best of our knowledge) new.
+The complexity lower bounds involving concatenations from \cref{constr_sync:subsec:concat} have not been published previously.
+In \cref{constr_sync:chap:constr_input} some published results have
+been corrected or extended. 
+For example, the classification for partially ordered automata in \cref{constrinput:sec:two-state-pto} refines the results of~\cite{DBLP:conf/dlt/Hoffmann21a}; the bound for monotonic automata claimed in \cref{constr_sync:prop:monotonic_bound} corrects that of~\cite{DBLP:conf/wia/Hoffmann22}; and the claims on solvable automata in \cref{constr_input:subsec:solvable} have likewise been corrected. See \cref{constr_input:sec:discussion} for details.
+Also, some material has been presented differently. Further details on new, extended, or revised material are given in the discussion section at the end of each chapter.

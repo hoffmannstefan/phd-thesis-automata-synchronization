@@ -1,0 +1,294 @@
+%!TEX root = ./../../springer-mono-format/book.tex
+
+Here, we collect several mostly technical statements relating $\{a,b\}$-primitivity to 
+the distinguishability of pairs of subsets and to synchronizability. These statements will be used throughout the following sections.
+
+\cref{sync_max:cor:syncSI-abprim2,sync_max:cor:syncSI-abprim1}
+gives sufficient conditions for $\{a,b\}$-primitivity.
+\Cref{sync_max:lem:invariant-set-dist-sync}
+and \cref{sync_max:prop:SIab-non-transitive-orbit-size} 
+give bounds on orbit sizes
+under distinguishability and synchronizability assumptions.
+Finally, \cref{sync_max:cor:2-sets_transitive} 
+combines these results to derive a sufficient condition for strong $\{a,b\}$-primitivity.
+
+
+\begin{lemma}\label{sync_max:lem:syncSI-block}
+	Let $G \leq \mathcal S_n$, let $\sim$ be a $G$-congruence,
+	and let $t \colon [n] \to [n]$ be such that, for all $a,b\in[n]$,
+	\[
+	t(a) \sim t(b)
+	\iff
+	a \sim b.
+	\]
+	Then, for every $h \in \langle G \cup \{t\} \rangle_S$ and all $a,b\in[n]$,
+	\[
+	h(a) \sim h(b)
+	\iff
+	a \sim b.
+	\]
+\end{lemma}
+\begin{proof}
+	The claim follows by induction on the length of a word representing $h$
+	in terms of $t$ and generators of~$G$.
+\end{proof}
+
+\begin{corollary} \label{sync_max:cor:syncSI-abprim1} \label{sync_max:cor:syncSI-abprim2}	
+	Let $G \le \mathcal S_n$ and $A \subseteq [n]$. Then $G$ is $A$-primitive
+	if one of the following cases applies:
+	
+	\begin{enumerate}
+	\item $G$ synchronizes some idempotent $t \colon [n] \to [n]$ with $t^{-1}(\dupl{t}) \subseteq A$.
+	
+	\item There exists an idempotent $t \colon [n] \to [n]$ with $t^{-1}(\dupl{t}) \subseteq A$
+	and two distinguishable sets $B, C \subseteq [n]$ each containing a point from~$A$
+	and from $[n] \setminus A$.	
+	\end{enumerate}
+\end{corollary}
+\begin{proof}
+Suppose $G$ is not $A$-primitive and let $\sim$ be a non-trivial $G$-congruence
+such that all points in~$A$ are congruent.
+Let $a \in A$.
+Pick some point $c \in [n] \setminus A$ such that $c \not\sim a$.
+
+Let $t \colon [n] \to [n]$ be some idempotent with $t^{-1}(\dupl{t}) \subseteq A$.
+Then $t(x) = x$ for all $x \in [n] \setminus A$
+and $t(A) \subseteq A$ since $t^{-1}(\dupl{t}) = t(\move{t}) \cup \move{t}$ by \cref{prelim:cor:idempotent}.
+This yields
+\[
+ t(d) \sim t(e) \Leftrightarrow d \sim e
+\]
+for $d,e \in [n]$. By \cref{sync_max:lem:syncSI-block} we obtain 
+that $h(a) \not\sim h(c)$ for all $h \in \langle G \cup \{t\} \rangle_S$.
+In particular, we have $h(a) \ne h(c)$.
+Thus $\langle G \cup \{t\}\rangle_S$ does not contain a constant map.
+Furthermore, we can conclude that for $B \subseteq [n]$ with $A \cap B \ne \emptyset$
+and $B \cap ( [n] \setminus A ) \ne \emptyset$
+we have $|h(B)| \ge 2$ for all $h \in \langle G \cup \{t\} \rangle_S$.
+This yields that two such sets are indistinguishable in $\langle G \cup \{t\} \rangle_S$.
+\end{proof}	
+	
+	
+	\begin{example}\label{sync_max:ex:abprim-constant-not-transitive}
+		Let $G = \langle (0)(1 ~ 2 ~ \ldots ~ n - 1) \rangle_G$.
+		Then $\langle G \cup \{t\} \rangle_S$ contains a constant map
+		for the simple idempotent $t\colon [n]\to [n]$ that maps $1$ to $0$.
+		So, by \cref{sync_max:cor:syncSI-abprim2},~$G$ is $\{0,1\}$-primitive.
+		Observe that in $\langle G \cup \{t\} \rangle_S$ all pairs of distinct $2$-sets are distinguishable, but
+		$\{0,1,2\}$ is not distinguishable from $\{1,2\}$.
+	\end{example} 
+		
+	\begin{example}\label{sync_max:ex:abprim-no-constant}
+		The group $G = \langle (0 ~ 1)(2 ~ 3 ~ 4) \rangle_G \le_G \mathcal S_5$
+		is $\{0,2\}$-primitive.
+		This group synchronizes neither of the
+		two simple idempotents $t \colon [5] \to [5]$
+		with $\applyfunc{0}{t} = \applyfunc{2}{t}$.
+		So, the converse statement to 
+		\cref{sync_max:cor:syncSI-abprim2}
+		is not true. 
+		\Cref{sync_max:ex:abprim_intransitive}
+		gives another example where the given permutation group is $\{0,4\}$-primitive
+		but does not synchronize a simple idempotent mapping $0$ and~$4$
+		to the same state.		
+	\end{example}
+			
+	Next, we investigate orbits under distinguishability and synchronizability assumptions.
+	
+	\begin{lemma} \label{sync_max:lem:invariant-sets}
+		Let $G \le_G \mathcal S_n$ and $t \colon [n] \to [n]$.
+		Suppose $A \subseteq [n]$
+		is a union of orbits of~$G$
+		such that $t(A) = A$.
+		Then for each $h \in \langle G \cup \{t\} \rangle_S$
+		we have $h(A) = A$.
+	\end{lemma}
+	\begin{proof}
+		As $A$ is a union of orbits, we have $g(A) = A$
+		for $g \in G$. So, with $t(A) = A$,
+		the claim follows  by induction on the length of a word representing $h$
+		in terms of $t$ and generators of~$G$.
+	\end{proof}
+	
+	\begin{lemma} \label{sync_max:lem:invariant-set-dist-sync}
+		Let $G \le_G \mathcal S_n$ and
+		$t \colon [n] \to [n]$.
+		Suppose $A \subseteq [n]$
+		is a non-empty union of orbits of~$G$
+		such that $t(A) = A$.
+		If all pairs of distinct $2$-sets are distinguishable in $\langle G \cup \{t\} \rangle_S$ (resp.~$\langle G \cup \{t\} \rangle_S$ contains
+		a constant map), then $|A| \le 2$ (resp.~$|A| = 1$)
+		and $A \cap \dupl{t} \ne \emptyset$.
+	\end{lemma}
+	\begin{proof}
+		We can assume $n \ge 3$.
+		By \cref{sync_max:lem:invariant-sets}, 
+		pairs of distinct $2$-sets
+		from $A$ are not distinguishable (resp.~no two distinct points from $A$ can be mapped to a common point)  in $\langle G \cup \{t\} \rangle_S$,
+		which gives $|A| \le 2$ (resp.~$|A| = 1$).
+		Next, let $a \in A$ and $b,c \in [n] \setminus \{a\}$ be distinct.
+		Pick $h \in \langle G \cup \{t\}$ 
+		distinguishing $\{a,b\}$ and $\{a,c\}$ (resp.~mapping $\{a,b\}$ to a singleton)
+		such that a product	in the generators $G \cup \{t\}$
+		has shortest possible length.
+		Without loss of generality, assume $|h(\{a,b\})| = 1$.
+		By the minimal choice, we have
+		$h = t g_{m} t \cdots t g_1 t g_0$
+		for some $g_0, g_1, \ldots, g_m \in G$
+		with $|(g_m t \cdots t g_1 t g_0)(\{a,b\})| = 2$.
+		So, $h(a) \in \dupl{t}$.
+		As $t(A) = A$ and $A$ is a union of $G$-orbits,
+		so that $g(A) = A$ for $g \in G$, from $a \in A$ we get $h(a) \in A$.
+		Hence, $A \cap \dupl{t} \ne \emptyset$.
+	\end{proof}
+	
+	\begin{example}
+		Consider $G$ from \cref{sync_max:ex:abprim-no-constant} 
+		with a simple idempotent $t$ mapping $0$ to $2$
+		and $A = \Orbit{2}{G} = \{2,3,4\}$.
+		Then $t(A) = A$.
+		By \cref{sync_max:lem:invariant-set-dist-sync},
+		$G$ does not synchronize~$t$
+		and there exist pairs of distinct indistinguishable $2$-sets (for example, $\{2,3\}$ and $\{2,4\}$).
+	\end{example}
+
+	\begin{lemma} \label{sync_max:prop:SIab-non-transitive-orbit-size}
+		Let $G \le_G \mathcal S_n$ be intransitive
+		and $t \colon [n] \to [n]$ be a simple idempotent
+		mapping $a$ to $b$ with $a \ne b$ and $a,b \in [n]$.
+		Suppose in $\langle G \cup \{t\} \rangle_S$
+		all pairs of distinct $2$-sets are distinguishable (resp.~$\langle G \cup \{t\} \rangle_S$
+		contains a constant map).
+	    Then we have $|\Orbit{b}{G}| \le 2$ (resp.~$|\Orbit{b}{G}| = 1$).
+	\end{lemma}
+	\begin{proof}
+		By \cref{sync_max:cor:syncSI-abprim1},
+		$G$ is $\{a,b\}$-primitive.
+		So, by~\cref{sync_max:prop:ab_non_congruent_then_two_orbits},
+	we have $[n] = \Orbit{a}{G} \cup \Orbit{b}{G}$.
+	Since~$G$ is intransitive, both orbits are disjoint.
+	Thus, since $t$ only moves $a$,
+	we have $t(\Orbit{b}{G}) = \Orbit{b}{G}$.
+	By \cref{sync_max:lem:invariant-set-dist-sync},
+	we obtain  $|\Orbit{b}{G}| \le 2$ (resp.~$|\Orbit{b}{G}| = 1$).	
+	\end{proof} 
+
+Next, illustrating \cref{sync_max:prop:SIab-non-transitive-orbit-size},
+we give an example of an intransitive group
+in which all pairs of distinct $2$-sets
+are distinguishable when adjoining a simple idempotent
+mapping $a$ to $b$ and where $|\Orbit{b}{G}| = 2$.
+
+\begin{example}
+	Let $n \ge 3$ and $U$ be the intersection of the points stabilizers of $n-2$ and $n - 1$ in $\mathcal S_n$ 
+	($U$ is isomorphic to $\mathcal S_{n-2}$).
+	Set $G = \langle U \cup \{ (n - 2 ~ n - 1) \} \rangle_G$
+	and let $t \colon [n] \to [n]$ be the simple idempotent that maps $n-3$ to $n-2$.
+	Then in $\langle G \cup \{t\} \rangle_S$
+	all distinct pairs of $2$-sets are distinguishable
+	and $\Orbit{n-1}{G} = \{n-1,n-2\}$.
+\end{example}
+
+\begin{proposition}
+	\label{sync_max:cor:2-sets_transitive}	
+Let $G \le \mathcal{S}_n$, and let $a,b \in [n]$ be distinct, with $n \ge 5$ (resp.~$n \ge 3$).
+Suppose that for both simple idempotents $t \colon [n] \to [n]$ satisfying $\applyfunc{a}{t} = \applyfunc{b}{t}$, all pairs of distinct 2-sets are distinguishable in $\langle G \cup {t} \rangle_S$ (resp.~$G$ synchronizes $t$).
+Then $G$ is strongly $\{a,b\}$-primitive.
+\end{proposition}
+\begin{proof}		
+	By~\cref{sync_max:prop:SIab-non-transitive-orbit-size},
+	if~$G$ is intransitive,
+	we get and $|\Orbit{a}{G}| \le 2$, $|\Orbit{b}{G}| \le 2$ (resp.~$|\Orbit{a}{G}| = 1$, $|\Orbit{b}{G}| = 1$).
+	With~\cref{sync_max:prop:ab_non_congruent_then_two_orbits}
+	we have $[n] = \Orbit{a}{G} \cup \Orbit{b}{G}$, which gives $n \le 4$ (resp.~$n = 2$).
+	Thus, for $n \ge 5$ (resp.~$n \ge 3$), $G$ must be transitive.	
+	By \cref{sync_max:cor:syncSI-abprim1},
+	$G$ is $\{a,b\}$-primitive.
+\end{proof}
+
+\Cref{sync_max:cor:2-sets_transitive} fails for $n \in \{3,4\}$
+as shown by the next example.
+
+\begin{example}
+	Let $G_1 = \langle \{ (0 ~ 1) (2) \} \rangle_G \le_G \mathcal S_3$,
+	$G_2 = \langle \{ (0 ~ 1), (2 ~ 3) \}\rangle_G \le_G \mathcal S_4$
+	%and	$\langle \{ (0 ~ 1)(2 ~ 3) \}\rangle_G \le_G \mathcal S_4$
+	and $t_1 \colon [3] \to [3]$, $t_2 \colon [4] \to [4]$
+	be simple idempotents with $t_1(1) = t_1(2)$
+	and $t_2(1) = t_2(2)$.
+	Then in $\langle G_1 \cup \{t_1\} \rangle_S$
+	and $\langle G_2 \cup \{t_2\} \rangle_S$
+	all pairs of distinct $2$-sets of elements
+	are distinguishable.
+\end{example}
+
+\begin{lemma}
+	Let $G \le \mathcal S_n$ and let
+	$t \colon [n] \to [n]$ be an idempotent one-point singular
+	with $\dupl{t}=\{a_m\}$ and
+	$t^{-1}(a_m)=\{a_1,\ldots,a_m\}$, where $m\ge2$.
+Then $G$ synchronizes~$t$ if and only if
+ there exists
+$h\in\langle G\cup\{t\}\rangle_S$
+such that
+\[
+|h(\Orbit{a_m}{G})|=1
+\]
+and
+$
+[n]
+= \Orbit{a_1}{G}\cup\cdots\cup\Orbit{a_m}{G}.
+$
+\end{lemma}
+\begin{proof}
+		Set $B = \Orbit{a_1}{G} \cup \cdots \cup \Orbit{a_m}{G}$. For every $g \in G$ we have
+		\begin{equation} \label{syncmax:eqn:idempotent-one-point-sing}
+			g(\Orbit{a_m}{G}) = \Orbit{a_m}{G}.
+		\end{equation}
+		Next, we also have $t(\Orbit{a_m}{G}) \subseteq \Orbit{a_m}{G}$.
+		Together with \cref{syncmax:eqn:idempotent-one-point-sing}, this implies that
+		\begin{equation}\label{syncmax:eqn:idempotent-one-point-sing0}
+			h(\Orbit{a_m}{G})\subseteq\Orbit{a_m}{G}
+		\end{equation}
+		for every $h\in\langle G\cup\{t\}\rangle_S$.
+						
+		Now, first, suppose $G$ synchronizes~$t$. 
+		Then $\langle G\cup\{t\}\rangle_S$ contains a constant map
+		$h$. Hence
+		$
+		|h(\Orbit{a_m}{G})|=1.
+		$
+		Next, assume, for contradiction, that there exists
+		$b\in[n]\setminus B$.
+		We have $t(b) = b$. Moreover, by \cref{syncmax:eqn:idempotent-one-point-sing0},
+		every element of $\langle G\cup\{t\}\rangle_S$
+		maps $\Orbit{a_m}{G}$ into itself.
+		Hence
+		$
+		|h(\{b,a_m\})|=2
+		$
+		for every
+		$h\in\langle G\cup\{t\}\rangle_S$,
+		contradicting the assumption that
+		$G$ synchronizes~$t$.
+		Therefore,
+		$
+		[n]=B.
+		$
+		
+		Conversely, suppose there exists $h \in \langle G \cup \{t\} \rangle_S$ such that
+		$|h(\Orbit{a_m}{G})| = 1$ and $[n] = B$. Let $i \in \{1,\ldots,m-1\}$.		
+		Consider some $b \in \Orbit{a_i}{G}$.
+		There exists $g \in G$ such that $g(b) = a_i$.
+		Then $t(g(b)) = a_m$.
+		With \cref{syncmax:eqn:idempotent-one-point-sing0}
+		we can successively select such an element~$g \in G$
+		to map a point from $\Orbit{a_i}{G}$
+		into $\Orbit{a_m}{G}$ until there are no more points
+		left in $\Orbit{a_i}{G}$.
+		By this procedure, we can construct $h_i \in \langle G \cup \{t\} \rangle_S$
+		such that $h_i(\Orbit{a_i}{G}) \subseteq \Orbit{a_m}{G}$.
+		By \cref{syncmax:eqn:idempotent-one-point-sing0},
+		$h_{m-1} \cdots h_1$ maps all points into $\Orbit{a_m}{G}$.
+		Then $h h_{m-1} \cdots h_1$ maps all points to a single point.
+\end{proof}

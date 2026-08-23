@@ -1,0 +1,487 @@
+%!TEX root = ./../../springer-mono-format/book.tex
+%!TEX root = ./../../thesis-trier.tex
+
+Here, in \cref{prelim:sec:graphs:notions}, we introduce undirected and directed graphs, 
+and related notions. \cref{prelim:sec:graphs:conn} 
+investigates different connectedness notions, paths, and cycles.
+In \cref{prelim:sec:graphs:funcgraph} we
+introduce the graph of a function and of a homogeneous relation.
+
+\subsection{Basic Notions}
+\label{prelim:sec:graphs:notions}
+
+\IN{edge of a graph}
+\IN{vertex of a graph} 
+\index{node of a graph|see{vertex of a graph}}
+\IN{directed graph}
+\index{digraph|see{directed graph}}
+\IN{endpoints of edge}
+\IN{outgoing edge} 
+\IN{incoming edge}
+\IN{starting vertex}
+\IN{initial vertex} 
+\IN{source vertex} 
+\IN{ending vertex}
+\IN{final vertex}
+\IN{terminal vertex}
+\IN{outdegree of vertex}
+\IN{indegree of vertex}
+An \emph{undirected graph}, or just \emph{graph}, (resp.~a \emph{directed graph}, or \emph{digraph})
+is a tuple $G = (V, E)$ where~$V$ is the set of \emph{vertices} (or \emph{nodes}) 
+and $E \subseteq \{ \{u,v\} \mid u,v \in V \}$
+(resp.~$E \subseteq V \times V$)
+the set of \emph{edges}.\footnote{Here, $u = v$ (a self-loop) is permitted, which some authors exclude from the definition.} 
+For an edge $\{ u,v \} \in E$ (resp.~$(u,v) \in E$)
+we call~$u$ and~$v$ its \emph{endpoints}. 
+In case of digraphs, $(u,v)$ is called an \emph{outgoing edge w.r.t.~$u$} (and~$u$ is called the \emph{starting/initial/source vertex})
+and an \emph{incoming edge w.r.t.~$v$} (and~$v$ the \emph{ending/final/terminal vertex}).
+For finite~$V$ and $v \in V$ 
+the \emph{outdegree} (resp.~\emph{indegree})
+of $v$ is $|\{ u \in V : (v,u) \in E \}|$ (resp.~$|\{ u \in V : (u,v) \in E \}|$).
+
+\IN{subgraph}
+\IN{automorphism!of graphs}
+\IN{automorphism group!of graphs}
+\label{def:AutG}
+A \emph{subgraph} of an undirected (resp.~directed) graph $G = (V,E)$
+is an undirected (resp.~directed) graph $G = (V', E')$
+such that $V' \subseteq V$ and $E' \subseteq E$.
+A \emph{(graph) morphism} of two undirected (resp.~directed)
+graphs $G = (V,E)$ and $G' = (V', E')$
+is a map $\varphi \colon V \to V'$
+such that, for all $u,v \in V$,
+\[
+\{ u,v \} \in E \Rightarrow \{ \applyfunc{u}{\varphi}, \applyfunc{v}{\varphi} \} \in E'
+\quad (\text{resp. } (u,v) \in E \Rightarrow (\applyfunc{u}{\varphi}, \applyfunc{v}{\varphi}) \in E').
+\] 
+A \emph{(graph) automorphism} (for undirected and directed graphs)
+is a morphism $\varphi \colon V \to V$ 
+of a graph onto itself such that there exists a morphism $\psi \colon V \to V$
+with $\concat{\varphi}{\psi} = \concat{\psi}{\varphi} = \operatorname{id}_V$.
+These are precisely those morphisms $\varphi \colon V \to V$ such
+that 
+\[
+\{ u,v \} \in E \Leftrightarrow \{ \applyfunc{u}{\varphi}, \applyfunc{v}{\varphi} \} \in E'
+\quad (\text{resp. } (u,v) \in E \Leftrightarrow (\applyfunc{u}{\varphi}, \applyfunc{v}{\varphi}) \in E').
+\] 
+The set of all automorphisms forms a permutation group, called 
+the \emph{automorphism group} $\operatorname{Aut}(G)$ of the graph.
+
+Automorphisms of finite graphs are precisely the bijective morphisms from~$V$ onto~$V$
+since in this case $\varphi(E) \subseteq E$ and $|\varphi(E)| = |E|$ 
+imply $\varphi(E) = E$. However, this fails for infinite graphs,
+as shown by the following example.
+
+\begin{example}
+	$G = (\mathbb Z, E)$ with $E = \{ \{u,v\} \mid \{n,n+1\} \text{ and } n > 0 \}$.
+	The map $\varphi \colon \mathbb Z \to \mathbb Z$
+	with $\varphi(n) = n + 1$ for $n \in \mathbb Z$
+	is a morphism, but it is not an automorphism since
+	$\{0,1\} \notin E$ and $\varphi(\{0,1\}) = \{1,2\} \in E$.
+\end{example}
+
+\IN{symmetric digraph}
+\IN{oriented digraph}
+Let $G = (V,E)$ be a digraph. We call $G$ \emph{symmetric} (resp.~\emph{oriented})
+if $(u,v) \in E$ implies $(v,u) \in E$ (resp.~$(v,u) \notin E$) for $u \ne v$.
+
+We often give a graph (resp.~digraph) in graphical form by drawing the vertices
+as circles and the edges as connecting lines (resp.~connecting arrows)
+between them.
+
+Groups are also often denoted by $G$, but the context should make
+it clear whether we refer to a graph or a group.
+
+\subsection{Connectedness Notions} 
+\label{prelim:sec:graphs:conn} 
+
+Here, we introduce various notions related to connectedness in graphs. Let $k \ge 1$. 
+
+\begin{enumerate}	
+	\IN{walk in a graph}
+	\IN{cycle in a graph}
+	\IN{path in a graph}
+	\item A \emph{walk} (of length~$n \ge 1$)\footnote{There exist no walks of length zero according to our definition.}
+	in an undirected (resp.~directed) graph $G = (V,E)$ from $u \in V$ (\emph{start}) to $v \in V$ (\emph{end}) is a sequence
+	of edges $e_1, \ldots, e_n$
+	with $e_i = \{ v_{i-1}, v_i\}$ (resp.~$e_i = (v_{i-1}, v_i)$) for all $i \in \{1,\ldots,n\}$
+	such that $v_0 = u$ and $v_n = v$.
+	We call the walk a \emph{path}		
+	(resp.~\emph{cycle} (at $u$))
+	if $v_0, v_1, \ldots, v_n$ are distinct (resp.~$v_0, v_1,\ldots, v_{n-1}$ are distinct and $v_0 = v_n$).\footnote{The 
+		terminology varies in the literature: some authors use path where we use walk, and reserve simple path for a walk whose vertices are all distinct.}
+	Often, when the specific edges involved do not matter, we refer to a walk/path/cycle by its sequence of vertices
+	$v_0, v_1, \ldots, v_n \in V$.\footnote{Paths and cycles can also be identified
+		with graphs and digraphs such that a graph or digraph
+		contains a path if and only if it contains these as subgraphs.
+		However, this does not work for walks since they can have repeated vertices
+		or edges.}		
+	
+\IN{acyclic graph}
+\IN{directed acyclic graph}
+\IN{forest}
+\index{DAG|see{directed acyclic graph}}
+\item A directed or undirected graph $G$ is called \emph{acyclic}
+if there exists no cycle in~$G$. Equivalently, every walk is a path.
+For short, a directed acyclic graph is called a \emph{DAG}. An undirected acyclic graph
+is also called a \emph{forest}.
+
+\IN{$k$-connected graph}
+\IN{strongly $k$-connected graph}
+\IN{connected graph} \IN{strongly connected!digraph}
+\item An undirected (resp.~directed) graph $G = (V, E)$ is \emph{$k$-connected} (resp.~\emph{strongly $k$-connected})
+if for distinct vertices $u,v \in V$ and every $(k-1)$-set $A \subseteq V$ there exists
+a path $u_0, u_1, \ldots, u_n$ from $u$ to $v$
+such that $\{u_1, \ldots, u_{n-1}\} \cap A = \emptyset$.
+For $k = 1$ we also call $G$ just \emph{connected} (resp.~\emph{strongly connected}).
+	
+	\IN{strongly $\frac{3}{2}$-connected digraph}
+	\item We call the digraph $G = (V,E)$ \emph{strongly $\frac{3}{2}$-connected}
+	if it is strongly connected and for every path $v_0, v_1, \ldots, v_n$
+	and $0 < i < n$ there exists a path $u_0, u_1, \ldots, u_m$
+	with $\{u_0, u_m \} = \{ v_0, v_n \}$
+	and $v_i \notin \{u_1, \ldots, u_{m-1}\}$. Equivalently, $G$ is strongly connected and
+	for every three distinct $u,v,w \in V$
+	there exists a path from~$u$ to~$v$ or from $v$ to $u$ not traversing~$w$, i.e.,
+	we find a path avoiding $w$.
+	
+	\IN{weakly $k$-connected digraph}
+	\item A digraph $G = (V, E)$ is called \emph{weakly $k$-connected}
+	if the undirected graph with vertex set $V$ and edge set $\{ \{u,v \} \mid (u,v) \in E \}$
+	is $k$-connected. A weakly $1$-connected graph is simply called \emph{weakly connected}.
+	
+	\IN{unilaterally connected!digraph} \index{semiconnected graph|see{unilatterally connected graph}}
+	\item A digraph $G = (V, E)$ is called \emph{unilaterally connected} (or \emph{semiconnected})
+	if for distinct vertices $u, v \in V$ there exists a path from $u$ to $v$ or from $v$ to $u$.
+		
+	\IN{connected component}
+	\IN{strongly connected component!in digraph}
+	\IN{weakly connected component}  
+	\item In an undirected (resp.~directed) graph $G = (V, E)$
+    a \emph{connected component} (resp.~\emph{strongly connected component}) 
+    is a subset $S \subseteq V$ maximal for subset inclusion
+    such that there exists a path from~$u$ to~$v$
+    for distinct $u,v \in S$.
+	A subset of a digraph $G = (V,E)$ 
+	is a \emph{weakly connected component} if 
+	it is a connected component of the undirected graph with vertex set $V$
+	and edge set $\{ \{u,v\} \mid (u,v) \in E \}$.
+\end{enumerate} 
+
+\IN{connectivity}
+\begin{remark} \label{prelim:rem:connectedconnectivity}
+	The \emph{connectivity}
+	of a finite graph (resp.~digraph) with $n$ vertices
+	in which not all vertices are joined by an edge
+	is the minimal number of vertices whose
+	deletion results in a
+	graph (resp.~digraph)
+	that is not connected (resp.~not strongly connected).
+    This also equals the largest~$k$
+    such that the graph (resp.~digraph)
+    is $k$-connected (resp.~strongly $k$-connected).
+        
+    If all vertices are joined by an edge,
+    deletion of any number of vertices never
+    destroys connectedness or strong connectedness
+    and it is $k$-connected or strongly $k$-connected
+    for all $k \ge 1$.
+    In this case, the connectivity is defined to be $n - 1$.
+\end{remark}
+
+\IN{topological sorting!of a DAG}
+In a DAG $G = (V, E)$,
+when putting $u,v \in V$
+in relation if there exists a path from $u$ to $v$, we obtain 
+a partial order. 
+When saying we \emph{topologically sort the DAG}
+we refer to a topological sorting of the vertices
+w.r.t.~this partial order.
+
+The following classical result 
+was proved by Menger for undirected graphs~\cite{Menger1927}
+and extended to digraphs by Dirac~\cite{dirac1953extensions}.
+A short proof for digraphs
+is given in~\cite{DBLP:journals/dm/Goring00}.
+
+\begin{theorem}[Menger-Dirac~\cite{dirac1953extensions,Menger1927}]
+An undirected (resp.~directed) graph $G = (V,E)$ is \emph{$k$-connected} (resp.~\emph{strongly $k$-connected})
+if for distinct $u,v \in V$ there exist at least~$k$
+paths from $u$ to $v$ such that for two such paths $v_0, v_1, \ldots, v_n$
+and $u_0, u_1, \ldots, u_m$ with  $v_0 = u_0 = u$, $v_n = u_m = v$
+we have $\{ v_1, \ldots, v_{n-1}\} \cap \{ u_1, \ldots, u_{m-1}\} = \emptyset$.
+\end{theorem}
+
+In the context of the present work, only strong $\frac{3}{2}$-connectivity
+and (strong) $k$-connectivity with $k \le 2$ will be of interest.
+The implications from \cref{prelim:fig:connectivity-notions} 
+are easily seen. Figure~\ref{prelim:fig:connectedness-notions}
+shows that the converse implications do not hold. 
+Furthermore, it also gives an example of a strongly connected digraph
+that is weakly $2$-connected but not strongly~$\frac{3}{2}$-connected; thus
+strong connectivity and weak $2$-connectivity do not imply 
+strong~$\frac{3}{2}$-connectivity.
+
+\begin{figure}[htb]
+\begin{center} 
+	\begin{tikzcd}[arrows=Rightarrow]
+		&                                          & \textrm{weakly $2$-connected} \\
+		\textrm{strongly $2$-connected} \arrow[r]  & \textrm{strongly $\frac{3}{2}$-connected} \arrow[ur] \arrow[dr] &        \\
+		&                                          & \textrm{strongly connected}
+	\end{tikzcd}
+\end{center}
+	\caption[Relations among connectivity notions]{Implications for strong $2$-connectivity, strong $\frac{3}{2}$-connectivity, strong and weak connectivity. The converse implications do not hold, see \cref{prelim:fig:connectedness-notions}.}
+	\label{prelim:fig:connectivity-notions}
+\end{figure}
+
+\begin{figure}[htb]
+	\centering	
+	\begin{subfigure}[b]{0.45\textwidth}
+		\centering
+		\begin{tikzpicture}
+			\node[draw, circle] (1) {};
+			\node[draw, circle, below left = of 1] (2) {};
+			\node[draw, circle, below right = of 1] (3) {};
+			
+			\path[->] (1) edge (2)
+			(2) edge (3)
+			(3) edge (1);
+		\end{tikzpicture}
+		\caption{Strongly $\frac{3}{2}$-connected, but not strongly $2$-connected.}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.45\textwidth}
+		\centering
+		\begin{tikzpicture}
+			\node[draw, circle] (1) {};
+			\node[draw, circle, right = of 1] (2) {};
+			\node[draw, circle, right = of 2] (3) {};
+			
+			\path[->] (1) edge [bend right] (2)
+			(2) edge [bend right] (3)
+			(3) edge [bend right] (2)
+			(2) edge [bend right] (1);
+		\end{tikzpicture}
+		\caption{Strongly connected, but not weakly $2$-connected.}
+	\end{subfigure}
+	
+	\vspace{0.5cm}
+	
+	\begin{subfigure}[b]{0.45\textwidth}
+		\centering
+		\begin{tikzpicture}
+			\node[draw, circle] (1) {};
+			\node[draw, circle, below left = of 1] (2) {};
+			\node[draw, circle, below right = of 1] (3) {};
+			
+			\path[->] (1) edge (2)
+			(3) edge (2)
+			(3) edge (1);
+		\end{tikzpicture}
+		\caption{Weakly $2$-connected, but not strongly connected.}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.45\textwidth}
+		\centering
+		\begin{tikzpicture}
+			\node[draw, circle] (1) {};
+			\node[draw, circle, below = of 1] (2) {};
+			\node[draw, circle, left = of 2] (3) {};
+			\node[draw, circle, right = of 2] (4) {};
+			
+			\path[->] (1) edge (2)
+			(2) edge (3)
+			(2) edge (4)
+			(3) edge (1)
+			(4) edge (1);
+		\end{tikzpicture}
+		\caption{Strongly connected and weakly $2$-connected, but not strongly $\frac{3}{2}$-connected.}
+	\end{subfigure}
+	
+	\caption[Examples for connectedness notions]{Some relations among the introduced notions of connectedness.}
+	\label{prelim:fig:connectedness-notions}
+\end{figure}
+
+Lastly, we state a characterization of strong connectivity, which was given as a definition in~\cite[Def.~2]{DBLP:journals/jalc/GonzeJ19}.
+
+\begin{lemma}
+	\label{prelim:lem:partition_SCC}
+	A digraph $G = (V, E)$ is strongly connected if and only if for
+	every proper and non-empty $B \subsetneq V$
+	there exists an edge $(u,v) \in E$ such that $u \notin B$ and $v \in B$. 
+\end{lemma}
+\begin{proof}
+	First, suppose $G$ is strongly connected. Let $B \subsetneq V$
+	with $u \in V \setminus B$ and~$v \in B$.
+	By assumption there exists a path $v_0, v_1, \ldots, v_n$
+	with $v_0 = u$ and $v_n = v$ in $G$.
+	Let $i \in \{1,\ldots,n\}$
+	be a largest index such that $v_{i} \notin B$.
+	We have $i < n$ since $v_n \in B$, 
+	and $v_{i+1} \in B$ by the maximal choice of~$i$.
+	So, the edge $(v_i, v_{i+1}) \in E$
+	fulfills the claim.
+		
+	Conversely, suppose the condition is true.
+	Let $u,v \in V$ be distinct vertices.
+	Set $P = \{ w \in V \mid \text{there exists a path from $u$ to $w$} \} \cup \{u\}$.
+	If $V \ne P$, then, by applying the assumption to $B = V \setminus P$,
+	there exists $(u', v') \in E$
+	with $u' \in P$ and $v' \notin P$.
+	As there exists a path from $u$ to $u'$,
+	by adjoining $(u', v')$ we obtain a path from $u$ to $v'$.
+	However, as $v' \notin P$ this is a contradiction.
+	So, we must have $P = V$
+	and there exists a path from $u$ to $v$.
+	Hence, $G$ is strongly connected.
+\end{proof} 
+
+\begin{corollary}
+	An undirected graph $G = (V,E)$ is connected
+	if and only if for every proper and non-empty $B \subseteq V$
+	there exists $e \in E$ with $|e \cap (V \setminus B)| = |e \cap B| = 1$.	
+\end{corollary}
+\begin{proof}
+	Consider the digraph $(V, \{ (u,v), (v,u) \mid \{u,v\} \in E \})$.
+	Since~$G$ is connected, it is strongly connected.
+	By \cref{prelim:lem:partition_SCC} 
+	it has an edge $(u,v)$ such that $u \notin B$ and $v \in B$.
+	By definition $\{u,v\} \in E$.
+	Then the claim holds for the edge $e = \{u,v\}$.
+\end{proof}
+
+\subsection{Graphs for Transformations and Homogeneous Relations}
+\label{prelim:sec:graphs:funcgraph}
+
+\label{def:GR} 
+\label{def:Gf}
+\IN{functional graph}
+The \emph{functional graph} of a transformation $t\colon X \to X$
+is the digraph~$G_t = (X, E)$ with 
+\[
+E = \{ (x, \applyfunc{x}{t}) \mid x \in X\}.
+\]
+In~$G_t$, the vertices in $\excl{t}$ are precisely those with indegree zero, and those in $\dupl{t}$ are precisely 
+the vertices with indegree at least two. 
+A digraph is the functional graph of some transformation
+if and only if every vertex has outdegree one. 
+These graphs are also called
+maximal directed pseudoforests~\cite{GABOW1988259},
+or sun-structures in~\cite{FernauGHHVW19}.
+
+Furthermore, to every homogeneous relation~$R$ over~$X$
+we associate a digraph 
+$G_R = (X, E)$ where $E = \{ ( a, b ) \mid aRb \}$.
+
+\begin{remark} \label{prelim:rem:intuition-functional-graph}
+	The cycle points of a transformation are precisely those contained
+	in cycles of the functional graph.
+	The cycle points can be partitioned into points on individual cycles. The tail points
+	are connected to the cycle points in a ``tree-like'' fashion 
+	whose roots are precisely the root points.
+	The edges on the tails point towards the root.
+	See \cref{prelim:trans:fig:nonpermpoint} 
+	where a functional graphs
+	with two cycles and three tails is depicted.
+	The roots are indicated by solid black circles.
+		
+	\begin{figure}[ht]
+		\centering
+		\begin{tikzpicture}
+			\tikzset{every node/.style={draw,circle,inner sep=2.5pt}}
+			
+			\def\radius{4em}
+			\def\shiftX{11em}
+			\def\nA{10}
+			\def\nB{8}
+			
+			\foreach \i in {1,2,4,5,7,8,9,10} {
+				\node (A\i) at ({\radius*cos(360/\nA * \i)}, {\radius*sin(360/\nA * \i)}) {};
+			}
+			
+			\foreach \i in {3,6} {
+				\node [fill] (A\i) at ({\radius*cos(360/\nA * \i)}, {\radius*sin(360/\nA * \i)}) {};
+			}
+			
+			\foreach \i in {2,...,\nA} {
+				\path[->] (A\the\numexpr\i-1\relax) edge (A\i);
+			} 
+			\path[->] (A\nA) edge (A1);
+			
+			\foreach \j in {1,2,3,4,5,7,8} {
+				\node (B\j) at ({\shiftX + 0.9*\radius*cos(360/\nB * \j)}, {1cm + 0.9*\radius*sin(360/\nB * \j)}) {};
+			}
+			
+			\node [fill] (B6) at ({\shiftX + 0.9*\radius*cos(360/\nB *6)}, {1cm + 0.9*\radius*sin(360/\nB * 6)}) {};
+			
+			\foreach \i in {2,...,\nB} {
+				\path[->] (B\the\numexpr\i-1\relax) edge (B\i);
+			} 
+			\path[->] (B\nB) edge (B1);
+			
+			\node[above = of A3] (T11) {};
+			\node[left = of T11] (T12) {};
+			
+			\node[left = of A6] (T21) {};
+			
+			\node[below = of B6] (T31) {};
+			\node[below left = of T31] (T32) {};
+			\node[below right = of T31] (T33) {};
+			
+			\path[->] (T12) edge (T11); \path[->] (T11) edge (A3);
+			\path[->] (T21) edge (A6);
+			\path[->] (T33) edge (T31); 
+			\path[->] (T32) edge (T31);
+			\path[->] (T31) edge (B6);    
+		\end{tikzpicture}
+		\caption[Example functional graph]{Example of a functionl graph with root points marked, see \cref{prelim:rem:intuition-functional-graph}.}
+		\label{prelim:trans:fig:nonpermpoint}	
+	\end{figure}	
+\end{remark}
+
+\begin{proposition}
+	\label{prelim:fact:relation_graph} Suppose $R$ is a homogeneous relation over $X$.
+	Then the weakly connected components of $G_R$ 
+	are precisely the equivalence classes of the equivalence relation generated by $R$.
+\end{proposition}
+\begin{proof}
+	For $a, b \in X$
+	we set $a \sim b$ 
+	if $a$ and $b$ are contained in the same weakly connected component of $G_R$.
+	Then $\sim$ is an equivalence relation such that, for $a,b \in X$, we have
+	\begin{equation}\label{eqn:relation_graph}
+	aRb \Rightarrow a \sim b.
+	\end{equation}
+		
+	Now, let $E$ be any equivalence relation over $X$
+	such that $a R b$ implies $a E b$ for all $a,b \in X$.
+	Suppose $a \sim b$ for $a,b \in X$.
+	Then there exist $v_0, v_1,\ldots, v_n \in X$ forming a path from $a$ to $b$ in the undirected graph
+	resulting from $G_R$ by forgetting about the direction of edges, i.e., $v_0 = a$, $v_n = b$ and
+	for each $i \in \{1,\ldots,n\}$ we have
+	$
+    v_{i-1} R v_i \text{ or } v_i R v_{i-1}.
+    $
+	Hence, by assumption and symmetry of $E$,
+	we find $v_{i-1} E v_i$ for all $i \in \{1,\ldots,n\}$.
+    By transitivity of $E$, we get $aEb$.
+    Thus, $\sim$ refines~$E$.
+    
+    So, by \cref{eqn:relation_graph}
+    and as $\sim$ refines every equivalence
+    relation $E$ where $aRb$ implies $aEb$,
+    it equals the equivalence relation generated by~$R$.
+\end{proof}
+
+For a more algebraic description of the equivalence relation
+generated by~$R$, see~\cite[Prop.~1.4.9 \& 1.4.10]{howie1995fundamentals}.
+
+\begin{remark}
+	In the literature,
+	the set $R_G \subseteq X \times Y$
+	for a relation $R = (R_G, X, Y)$
+	as defined in~\cref{def:relation}
+	is often called the graph of the relation. However,
+	since this is not a graph as defined
+	here, we avoid this terminology.
+\end{remark}

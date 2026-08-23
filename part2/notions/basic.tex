@@ -1,0 +1,324 @@
+%!TEX root = /../../springer-mono-format/book.tex
+%!TEX root = /../../thesis-trier.tex
+
+Here, we introduce the algebraic structures of relevance to us.
+
+\begin{enumerate} 
+
+\IN{semigroup}
+\IN{product in semigroup}
+\IN{associative operation}
+\item A \emph{semigroup} 
+is a tuple $(S, \cdot)$ where $S$ is a set and $\cdot \colon S \times S \to S$
+a binary operation, called a \emph{product} and
+written as $x\cdot y$ (infix notation) %instead of~$\cdot(x,y)$
+for $x,y \in S$, that is \emph{associative}, i.e.,
+$x \cdot ( y \cdot z ) = (x \cdot y)\cdot z$ for $x,y,z \in S$.
+Often, %in case the context makes clear what operation is meant, 
+when it is clear from context what operation $S \times S \to S$ is meant, 
+we simply call the set~$S$ a semigroup, i.e., omit the tuple notation,
+and we write $xy$ instead of~$x \cdot y$, i.e., we
+omit the operation symbol.
+	
+\IN{identity element}
+\IN{monoid}  
+\item A \emph{monoid} 
+ is a tuple $(M, \cdot, 1)$ where $(M, \cdot)$ is a semigroup and $1 \in M$ is 
+ an \emph{identity element}, i.e., $1x = x1 = x$ for all $x \in M$.
+ The identity element is unique,
+ for if $1,1' \in M$ are identity elements, then $1 = 1 \cdot 1' = 1'$.
+   
+\IN{inverse operation}
+\IN{group}
+\IN{inverse element}
+\item A \emph{group}  
+ is a tuple $(G, \cdot, ^{-1}, 1)$ where $(G, \cdot, 1)$ is a monoid
+ and $^{-1} \colon G \to G$ is a unary operation, the \emph{inverse operation},
+  written as~$g^{-1}$ instead of $^{-1}(g)$ for $g \in G$,
+ such that $gg^{-1} = g^{-1}g = 1$
+ for all $g \in G$.
+ We call $g^{-1}$ the \emph{inverse element} of $g \in G$, which
+ is the unique element $h \in G$
+ such that $hg = gh = 1$. 
+
+\IN{semiring}
+\item A \emph{semiring} 
+ is a tuple $(R, +, \cdot, 0, 1)$
+ where $(R, +, 0)$ and $(R, \cdot, 1)$ are monoids
+ and the following additional equations are true:
+ 
+ \begin{enumerate} 
+ \item $x + y = y + x$ (\emph{commutativity}), \IN{commutativity}
+ 
+ \item $x \cdot 0 = 0\cdot x = 0$ (\emph{annihilation law} for $0$ in $R$), \IN{annihilation law}
+  
+   \IN{left-distributivity}
+ \item $x \cdot (y+z) = x\cdot y + x \cdot z$ (\emph{left-distributivity}) and \\ 
+   $(y+z) \cdot x = y\cdot x + z\cdot x$ (\emph{right-distributivity}).  \IN{right-distributivity}
+ \end{enumerate}
+ The operation $+$ is called \emph{addition} in $R$
+ and $\cdot$ is called \emph{multiplication} in $R$.
+\end{enumerate}
+
+Due to associativity, we omit parentheses in %when writing 
+expressions over semigroups.
+
+\begin{example}\label{prelim:ex:algstructures}
+\begin{enumerate}
+\item $(\Sigma^+, \cdot)$ for some alphabet $\Sigma$ is a semigroup. 
+
+\item $(\Sigma^*, \cdot, \varepsilon)$ for some alphabet $\Sigma$ is a monoid.
+
+\item $(\mathbb N_0, +, 0)$ and $(\mathbb N_0, \cdot, 1)$ are monoids with the usual addition and multiplication 
+operations.
+
+\item $([n], +_n, 0)$ and $([n], \cdot_n, 1)$ are monoids for $n \ge 0$
+with $x +_n y = \min(x + y, n-1)$ 
+and $x \cdot_n y = \min(x\cdot y, n-1)$ \label{def:plusmaln}
+for $x,y \in [n]$.
+
+\item The integers $\mathbb Z$ with the usual addition, inversion $x \mapsto -x$
+and identity element $0 \in \mathbb Z$ form a group.
+	
+\item The \emph{Boolean semiring} \IN{Boolean semiring} 
+ is the semiring $(\{0,1\}, \land, \lor, 0, 1)$.
+ 
+\item $(\mathbb N_0, +, \cdot, 0, 1)$ and $([n], +_n, \cdot_n, 0, 1)$ for $n \ge 1$
+ are semirings. For $n = 2$ the latter semiring equals the Boolean semiring.
+\end{enumerate}	
+\end{example}
+
+\label{def:subsemigroup}
+\IN{morphism!of semigroups}
+\IN{isomorphism!of semigroups}
+\IN{subsemigroup} 
+\IN{product on subsets} 
+\IN{commutative semigroup}
+\IN{idempotent element}
+\index{complex product|see{product on subsets}}
+\label{def:product_subsets} 
+Let~$(S_1,\cdot_1), (S_2,\cdot_2)$ be two semigroups. 
+A \emph{(semigroup) morphism} 
+is a map $\varphi \colon S_1 \to S_2$ such that $\applyfunc{xy}{\varphi} = \applyfunc{x}{\varphi} \applyfunc{y}{\varphi}$ 
+for all $x,y \in S_1$. We call~$\varphi$ an \emph{isomorphism} if there exists a semigroup morphism
+$\psi \colon S_2 \to S_1$ such that $\concat{\varphi}{\psi} = \operatorname{id}_{S_1}$
+and $\concat{\psi}{\varphi} = \operatorname{id}_{S_2}$.
+If $\varphi$ is bijective, for its inverse function $\varphi^{-1} \colon S_2 \to S_1$
+we have $\varphi^{-1}(\varphi(x)\varphi(y))
+= \varphi^{-1}(\varphi(xy)) = xy = \varphi^{-1}(\varphi(x)) \varphi^{-1}(\varphi(y))$ for $x,y \in S_1$.
+This yields that $\varphi^{-1}$ is a semigroup morphism.
+With \cref{prelim:prop:surj-inj-inverses} 
+we find that the semigroup isomorphisms are precisely the bijective morphisms.
+We say that~$S_1$ is a \emph{subsemigroup}
+of~$S_2$, written $S_1 \le_S S_2$,
+if $S_1 \subseteq S_2$ and, for all $x,y\in S_1$,
+$x \cdot_2 y \in S_1$ and $x \cdot_1 y = x \cdot_2 y$.
+For $i > 0$ and $x \in S_1$ we set $x^i = x\cdots x$ ($i$ times).
+Let $A,B \subseteq S_1$. The
+\emph{product on subsets of~$S_1$} (also called \emph{complex product} in~\cite{Kurzweil04})
+is $A \cdot B = \{ ab \mid a \in A, b \in B\}$, written $AB$ for short.
+This gives a semigroup~$(\mathcal P(S_1), \cdot)$.
+Also, we set $aA = \{a\}A$ and $Aa = A\{a\}$ for $a \in S_1$.
+We call~$S_1$ \emph{commutative} if $xy = yx$ for all $x,y \in S_1$.
+An element $x \in S_1$ is called \emph{idempotent} if $x^2 = x$.
+
+\begin{lemma} \label{prelim:lem:finite-semigrp-idempotent-power}
+	Let $S$ be a finite semigroup. Then for each $s \in S$
+	there exists $i > 0$ such that $s^i$
+	is idempotent.
+\end{lemma}
+\begin{proof}
+	By finiteness, we have $s^{j + p} = s^j$
+	for some $j \ge 0$ and $p > 0$.
+	Let $i \ge 0$ be such that $j \le i < j + p$ and $i \equiv 0 \pmod{p}$.
+	Then $(s^{i})^2 = s^{i+i} = s^i$.
+\end{proof}
+
+\begin{remark} \label{prelim:rem:semigroup-adjoin-identity}
+	Let $(S, \cdot)$ be a semigroup.
+	By adding some element $1 \notin S$
+	and setting $1\cdot 1 = 1$ and $1\cdot s = s\cdot 1 = s$ for all $s \in S$,
+	we obtain a monoid $S \cup \{1\}$.	
+\end{remark}
+
+\IN{isomorphism!of monoids}
+\IN{morphism!of monoids}
+\IN{submonoid} 
+\IN{group of units}
+\label{def:submonoid} 
+\label{def:powers-smaller}
+\label{def:group of units} 
+Let $M_1, M_2$ be two monoids with identity elements $1_1$ and $1_2$, respectively.
+We set $x^0 = 1_1$ for $x \in M_1$.
+A \emph{monoid morphism} (resp.~\emph{monoid isomorphism}) is a 
+semigroup morphism (resp.~semigroup isomorphism) $\varphi \colon M_1 \to M_2$
+with $\varphi(1_1) = 1_2$.
+When the context is clear, we simply say morphism (resp.~isomorphism) instead
+of semigroup or monoid morphism (resp.~isomorphism).
+We call~$M_1$ a \emph{submonoid} 
+of~$M_2$, written~$M_1 \le_M M_2$, if $M_1$ is a subsemigroup of $M_2$ with $1_2 \in M_1$.
+The \emph{group of units} 
+of $M_1$ 
+is
+\[ 
+\{ g \in M_1 \mid \exists h \in M_1 : gh = hg = 1 \}.
+\] 
+The group of units is in fact a group.
+Further, for $A \subseteq M_1$,  we set 
+$A^0 = \{1\}$, $A^{\le n} = A^0 \cup A \cup A^2 \cup \ldots \cup A^n$ 
+for $n \ge 0$, $A^{< 0} = \emptyset$ and $A^{< n} = A^{\le n - 1}$ for $n > 0$. 
+For $a \in M_1$ we also write $a^{< n}$ and $a^{\le n}$ for $\{a\}^{< n}$ and $\{a\}^{\le n}$, respectively.
+
+\begin{remark} In monoids, there might exist subsemigroups that are monoids in itself, but not submonoids.	
+	For example, in $\{1,s,s^2\}$ with $s^2 = s^3$ and $s1 = 1s = s$, $\{ s^2 \}$ is a subsemigroup
+	that is a monoid, but it is not a submonoid.
+\end{remark} 
+
+\begin{example}
+	Let $M$ be a monoid with identity $1 \in M$.
+	Then we 
+	obtain a semiring structure~$(\mathcal P(M), \cup, \cdot, \emptyset, 1)$
+	from the product on subsets and set union.	
+\end{example}
+
+\IN{trivial group}
+\IN{subgroup} 
+\IN{morphism!of groups}
+\label{def:subgroup}
+Let $G_1, G_2$ be two groups and $1 \in G_1$ be the identity in $G_1$.
+We call~$G_1$ \emph{trivial} 
+if $G_1 = \{1\}$.
+A \emph{group morphism} $\varphi \colon G_1 \to G_2$
+is a monoid morphism such that $\varphi(g^{-1}) = \varphi(g)^{-1}$
+for all $g \in G_1$.
+Now, for every semigroup morphism $\psi \colon G_1 \to G_2$
+we have $\psi(1) = \psi(1\cdot 1) = \psi(1)\psi(1)$,
+which implies that $\psi(1)$ is the identity in $G_2$,
+and $\psi(g)\psi(g^{-1}) = \psi(gg^{-1}) = \psi(1)$,
+so that $\psi(g)^{-1} = \psi(g^{-1})$. Thus, the group morphisms
+are precisely the semigroup morphisms
+and, technically, 
+the definition of group morphisms can be omitted (we included it for conceptual reasons).
+We say that~$G_1$ is a \emph{subgroup}
+of $G_2$, written $G_1 \le_G G_2$,
+if~$G_1$ is a submonoid of $G_2$ and the inverse operation in~$G_1$
+agrees with the inverse operation in~$G_2$ for each element of~$G_1$, i.e.,
+inversion in~$G_1$ equals the inversion in~$G_2$ restricted to~$G_1$.\footnote{Here, we use the term subgroup only
+	w.r.t.~groups. In the literature, for example~\cite{McNaughton71}, 
+	subgroups are also defined for semigroups as subsemigroups
+	having an identity element (that does not have to be an identity for the whole semigroup)
+	and containing inverses w.r.t.~this identity.}
+Next, assume $G_1 \le_G G_2$. 
+
+\begin{enumerate}
+	
+	\index{coset|see{right coset}}
+	\IN{left coset} 
+	\IN{right coset} 
+	\item 
+	A subset
+	of the form $G_1g$ (resp.~$gG_1$) for some $g \in G_2$
+	is called a \emph{right coset} (resp.~\emph{left coset}) 
+	of~$G_1$ in $G_2$.
+	A right coset is also just called coset.
+	The set of right cosets (resp.~left cosets) of $G_1$
+	forms a partition of $G_2$. If $G_2$ is finite,
+	then each right coset (resp.~left coset) has size $|G_1|$.
+	
+	\IN{maximal subgroup} 
+	\item We say that $G_1$ is a \emph{maximal subgroup} 
+	of $G_2$ if $G_1 \ne G_2$ and for every subgroup $H$ of $G_2$ with $G_1 \subseteq H$
+	we have $H = G_1$ or $H = G_2$.
+	
+	\IN{normal subgroup} 
+	\item We say that $G_1$ is a \emph{normal subgroup}
+	of $G_2$ if $gG_1g^{-1} \subseteq G_1$ for all $g \in G_1$.
+	
+\end{enumerate}
+
+\label{def:center} 
+\index{simple subgroup}
+\index{center of group}
+\index{abelian group}
+\index{order of group}
+\index{cyclic group}
+A group $G$ is said to be \emph{simple}
+if the only normal subgroups of $G$ 
+are $\{1\}$ and~$G$.
+The \emph{center} of $G$ is 
+\[
+Z(G) = \{ g \in G \mid \forall h \in G \colon hg = gh \}.
+\]
+We call~$G$ \emph{cyclic} if $G = \langle \{g\} \rangle_G$ for some $g \in G$.
+A commutative group is also often called an \emph{abelian group} in the literature.
+For a finite group~$G$,
+$|G|$ is also called the \emph{order} of the group.
+
+\index{generated!{submonoid}} 
+\index{generated!{subgroup}}
+\index{generated!{subsemigroup}}
+\index{generator}
+\label{def:gensubstructures}
+
+For a subset $T$ of a semigroup (resp.~monoid, group)
+we denote by $\langle T \rangle_S$ (resp.~$\langle T \rangle_M$, $\langle T \rangle_G$)
+the \emph{subsemigroup} (resp.~\emph{submonoid, subgroup}) \emph{generated by~$T$}, i.e., the 
+smallest subsemigroup (resp.~submonoid, subgroup) containing~$T$ in the semigroup (resp.~monoid, group) under consideration.
+In this regard, the elements in~$T$ are called the \emph{generators}
+of the semigroup~$\langle T \rangle_S$ (resp.~monoid~$\langle T \rangle_M$, group~$\langle T \rangle_G$).
+We have $\langle T \rangle_S = \bigcup_{i \ge 1} T^i$,
+$\langle T \rangle_M = \bigcup_{i \ge 0} T^i$, $\langle \emptyset \rangle_S = \emptyset$
+and $\langle \emptyset \rangle_M = \langle \emptyset \rangle_G = \{1\}$.
+Suppose $(G, \cdot, ^{-1}, 1)$ is a finite group.
+Then for $g \in G$ there exists $n \ge 1$ such that $g^n = 1$
+and so $g^{-1} = g^{n-1}$. 
+This implies that the subsemigroups in the semigroup $(G, \cdot)$
+are precisely the subgroups of $(G, \cdot, ^{-1}, 1)$
+and, for non-empty $T \subseteq G$, we have~$\langle T \rangle_G = \langle T \rangle_M = \langle T \rangle_S$.
+So, for finite groups and $T \ne \emptyset$,
+we can omit~$S, M$ or $G$  in the index and just write unambiguously~$\langle T \rangle$.
+
+% https://tex.stackexchange.com/questions/690308/im-using-subscripts-how-do-i-to-format-cdot-and-varsubscript-correctly-us
+\IN{point-wise product} 
+\IN{component-wise product} 
+\IN{direct product (semigroup)} 
+Let~$S_1, S_2$ be semigroups.
+Then $S_1 \times S_2$ with the operation
+\[
+(s, t)(s', t') = (ss', tt') 
+\]
+for $(s,t), (s', t') \in S_1 \times S_2$ is called the \emph{direct product} semigroup.
+If~$S_1, S_2$ are monoids (resp.~groups) with identities $1 \in S_1$ and $1' \in S_2$, respectively,
+then $S_1 \times S_2$ is a monoid with identity $(1,1)$
+(resp.~group with identity $(1,1)$ and  inversion $(s,t)^{-1} = (s^{-1}, t^{-1})$).
+Let~$I$ be some set. We obtain a 
+semigroup $(S_1^I, \odot)$
+with the \emph{(point-wise} or \emph{component-wise) product}~$\odot$ 
+given by $\applyfunc{x}{(f \odot  g)} = \applyfunc{x}{f} \cdot \applyfunc{x}{g}$
+for $f,g \in S_1^I$ and all $x \in I$.
+If $S_1$ is a monoid with identity~$1 \in S_1$,
+then $S_1^I$ is a monoid where the identity is the constant function $\textbf{1}\in S_1^I$
+mapping everything to~$1$.
+
+\IN{component-wise addition}
+\begin{example} \label{prelim:ex:component-wise}
+	Consider 
+	$(\mathbb N_0, +, 0)$, $(\mathbb N_0, \cdot, 1)$,
+	$([n], +_n, 0)$ and $([n], \cdot_n, 1)$
+	from Example~\ref{prelim:ex:algstructures} and an alphabet $\Sigma$.
+	We obtain monoid structures
+	$(\mathbb N_0^{\Sigma}, \oplus, \textbf{0})$
+	and $(\mathbb N_0^{\Sigma}, \odot, \textbf{1})$
+	from $(\mathbb N_0, +, 0)$ and $(\mathbb N_0, \cdot, 1)$, respectively,
+	by the construction given above where 
+	$\oplus$ is also called the \emph{component-wise addition} on $\mathbb N_0^{\Sigma}$.	
+	Similarly, we obtain
+	monoid structures 
+	$(\mathbb [n]^{\Sigma}, \oplus_n, \textbf{0})$
+	and $(\mathbb [n]^{\Sigma}, \odot_n, \textbf{1})$
+	on $[n]^{\Sigma}$.
+	In the following, unless stated otherwise, 
+	we assume these monoid structures on $\mathbb{N}_0^{\Sigma}$ and 
+	$[n]^{\Sigma}$, and we write $\oplus$ as $+$ and $\oplus_n$ as $+_n$, 
+	since there is no danger of confusion.
+\end{example}

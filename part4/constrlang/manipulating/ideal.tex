@@ -1,0 +1,185 @@
+%!TEX root = ./../../../thesis-trier.tex
+
+Here, we show the ideal intersection theorem (\cref{constr_sync:gen_results:thm:ideal_separation}).
+Later, we mostly use this result
+to deduce \PSPACE-hardness from known \PSPACE-hard problems, especially
+for constraint languages written as unions (see Remark~\ref{constrsync:compl:ideal_intersection_for_unions} for details).
+
+\begin{theorem}[Ideal Intersection Theorem]
+	\label{constr_sync:gen_results:thm:ideal_separation}
+	Let $I \subseteq \Sigma^*$ be a fixed ideal language that is regular.
+	Suppose $L \subseteq \Sigma^*$ is any regular language,
+	then
+	$$
+	\constrsync{L \cap I} \leACZEROm \constrsync{L}.
+	$$
+\end{theorem}
+\begin{proof}
+	By \cref{prelim:thm:sync_words_is_ideal}
+	there exists an automaton $\mathcal A_I$
+	such that $I = \Syn(\mathcal A_I)$.
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be an input to $\constrsync{L\cap I}$.
+	By~\cref{prelim:eqn:product_aut_sync_words}, 
+	it is $\Syn(\mathcal A) \cap I = \Syn(\mathcal A \times \mathcal A_I)$,
+	which gives	
+	\begin{equation}\label{constrsync:eqn:ideal-int}
+	\Syn(\mathcal A) \cap (L \cap I) \ne \emptyset
+	\Leftrightarrow 
+    \Syn(\mathcal A \times \mathcal A_I) \cap L \ne \emptyset,
+	\end{equation}
+	i.e., $\mathcal A \times \mathcal A_I$ has a synchronizing
+	word in $L$ if and only if $\mathcal A$ has a synchronizing word in $L \cap I$.
+	As $I$ is fixed,
+	we can construct the product automaton $\mathcal A \times \mathcal A_I$
+	%for a fixed automaton $\mathcal A_I$ 
+	by a circuit family in $\AC^0$ 
+	 as we only have to add transitions
+	and states to~$\mathcal A$ determined by a fixed automaton $\mathcal A_I$.
+	So, by~\cref{constrsync:eqn:ideal-int} 
+	constructing $\mathcal A \times \mathcal A_I$ gives a valid reduction to \constrsync{L}.	
+\end{proof}
+
+\begin{example}
+	Let $\Sigma = \{a,b,c\}$ and consider the ideal language $I = \Sigma^* c^{n} \Sigma^*$
+	that is regular.
+	Let $L_1 = \{ u \in \Sigma^* : |u|_c \le n \}$,
+	$L_2 = \{ u \in \Sigma^* : |u|_c = n \}$,
+	and $L_3 = \{ u \in \Sigma^* : m \le |u|_c \le n \}$
+	for $n,m \ge 1$ with $m \le n$.
+	Then we have
+	$L_1 \cap I = L_2 \cap I = L_3 \cap I = \{a,b\}^* c^n \{a,b\}^*$.
+	From \crefitem{constr_sync:thm:introductory_examples}{constrsync:ex:item:abcL} 
+	and \cref{constr_sync:gen_results:thm:ideal_separation} 
+	we get that $\constrsync{L_i}$
+	for $i\in \{1,2,3\}$
+	are all \PSPACE-complete problems.
+\end{example}
+
+\begin{corollary}
+	Let $L \subseteq \Sigma^*$ be regular
+	and $u_1, \ldots, u_n \in \Sigma$.
+	Then we have 
+	\begin{align*}
+	\constrsync{L\cap \Sigma^*u_1\cdots u_n\Sigma^*} & \leACZEROm \constrsync{L}, \\
+	\constrsync{L\cap \Sigma^*u_1 \Sigma^* \cdots \Sigma^* u_n \Sigma^*} & \leACZEROm \constrsync{L}.
+	\end{align*}
+\end{corollary}
+\begin{proof}
+	The languages
+	 $\Sigma^*u_1\cdots u_n\Sigma^*$
+	 and $\Sigma^*u_1 \Sigma^* \cdots \Sigma^* u_n \Sigma^*$
+	 are regular and ideals.
+	 So, the claim follows from \cref{constr_sync:gen_results:thm:ideal_separation}.		
+\end{proof}
+
+\IN{principal ideal}
+Mostly, we apply Theorem~\ref{constr_sync:gen_results:thm:ideal_separation}
+with \emph{principal ideals} $\Sigma^* u \Sigma^*$
+for $u \in \Sigma^*$.
+
+As pointed out in the next remark, for a union the problem either has the same complexity as each part, or its complexity is bounded from below by the intersection of one part with a principal ideal.
+
+\begin{remark}\label{constrsync:compl:ideal_intersection_for_unions}
+	Consider two regular languages $L_1, L_2 \subseteq \Sigma^*$.
+	There exists $u \in L_2$
+	such that $u \notin \fact{L_1}$
+	or $L_2 \subseteq \fact{L_1}$.
+	By \cref{constrsync:genresults:cor:subset},
+	in the former case, 
+	we have
+	\[
+	\constrsync{L_1} \eqACZEROm \constrsync{L_1\cup L_2}
+	\]
+	and in the latter case, since then
+	\[
+	( L_1 \cup L_2 )  \cap \Sigma^* u \Sigma^* = L_2 \cap \Sigma^* u \Sigma^*,
+	\]
+	from \cref{constr_sync:gen_results:thm:ideal_separation}
+	we get 
+	$\constrsync{L_2 \cap \Sigma^*u \Sigma^*} \leACZEROm \constrsync{L_1\cup L_2}$.
+	%	This scheme is often use in hardness proofs.
+	%	However, finding an appropriate word $u \in \fact{L_2}$ 
+	%	such that a provable 
+	%	hard problem $\constrsync{L_2 \cap \Sigma^*u \Sigma^*}$
+	%	results is the tricky part.
+\end{remark}
+
+Because we often use \cref{constr_sync:gen_results:thm:ideal_separation} to ``separate
+a hard part out'' of a constraint language we called it the Ideal Separation Theorem
+in~\cite{HoffmannCocoonExtended}, but we changed the name here because it involves an intersection
+and we thought the new name to be more appropriate.
+
+Lastly, we show how the Ideal Intersection Theorem  can be of help
+in a heuristic way by employing it to exclude problematic
+cases from a construction. This usage might not always be possible (in fact, in most cases it is not 
+possible),
+but we give the following example to also build some intuition
+on various ways in which the Ideal Intersection Theorem 
+can be applied (more examples of its application 
+will follow in the rest of this work).
+
+\begin{remark} \label{constrsync:rem:construction-ideal-intersection}
+	Consider $L = \{bb,ba\}^*a\Gamma^*$ for $|\Gamma|\le 1$.
+	We use a reduction from \SIS
+	to show \PSPACE-hardness of $\constrsync{L}$.
+	However, the construction we give
+	does not work straightforward way for~$L$,
+	but we then argue that it can be
+	used for a modified problem obtained by intersection with an appropriate ideal.
+	We then obtain \PSPACE-hardness of $\constrsync{L}$
+	from \cref{constr_sync:gen_results:thm:ideal_separation}.
+	
+	Let $\semiautomat{A}{Q}{\{a,b\}}{\delta}$ and $S \subseteq Q$.
+	Set $\semiautomat{A'}{Q \times \{\varepsilon,b\} \cup \{t\}}{\{a,b\}}{\delta'}$
+	where~$\delta'(t, x) = t$ and
+	\[
+	\delta'((q, u), x) =
+	\begin{cases}
+		t                           & \text{if } u = \varepsilon \text{ and } x = a, \\
+		(q, b) & \text{if } u = \varepsilon \text{ and } x = b, \\
+		(\delta(q, a), \varepsilon) & \text{if } ux = bb, \\
+		(\delta(q, b), \varepsilon) & \text{if } ux = ba, \\
+		(q, \varepsilon)            & \text{if } ux \notin \{bb,ba\} \text{ and } q \notin S, \\
+		t							& \text{if } ux \notin \{bb,ba\} \text{ and } q \in S, 		
+	\end{cases}
+	\]
+	for $u \in \{\varepsilon, b\}$, $q \in Q$ and $x \in \{a,b\}$.
+	
+	First, suppose $u_1 \cdots u_n a v$
+	with $u_1, \ldots, u_n \in \{bb,ba\}$ and $v \in \Gamma^*$ 
+	synchronizes~$\mathcal A'$.
+	Then it must map all states to~$t$.
+	Consider the state $\delta'((q, \varepsilon), u_1\cdots u_n)$
+	for some $q \in Q$.
+	Then it must have the form $(p, \varepsilon)$
+	for some $p \in Q$.
+	Assume $p \notin S$.
+	Then $\delta'((p, \varepsilon), a) = (p, \varepsilon)$
+	and since $|\Gamma|\le 1$
+	the word~$v$ cannot map $(p, \varepsilon)$ to~$t$.
+	Thus we must have $p \in S$
+	and then the word $v_1 \cdots v_n$
+	with $v_i = a$ if $u_i = bb$
+	and $v_i = b$ if $u_i = ba$
+	maps~$Q$ into~$S$.	
+	
+	If $u_1 \cdots u_n$ for $u_1,\ldots,u_n \in \{a,b\}$
+	maps~$Q$ into~$S$,
+	then $v_1 \dots v_n a$ with $v_i = bb$ if $u_i = a$
+	and $v_i = ba$ if $u_i = b$ for all $i \in \{1,\ldots,n\}$
+	maps all states of~$Q \times \{\varepsilon\}$ to~$t$.
+	However, if $u_1 = \cdots = u_n = bb$,
+	then $\delta'(Q \times \{b\}, u_1\cdots u_n) \subseteq Q \times \{b\}$
+	and thus $\delta'(Q \times \{b\}, u_1 \cdots u_n a) \cap \delta(Q, a) \times \{\varepsilon\} \ne \emptyset$.
+	Now no word from~$\Gamma^*$ can map this state to~$t$.
+	But this problem does not arise if we read~$ba$
+	at least once, since this word maps all states in $Q \times \{b\}$
+	to~$t$.
+	Now, note that $L \cap \Sigma^* baa \Sigma^* = \{bb,ba\}baa\Gamma^*$.
+	Thus, by \cref{constr_sync:gen_results:thm:ideal_separation} we obtain \PSPACE-hardness for $\constrsync{L}$
+	if we can show \PSPACE-hardness
+	for $\constrsync{\{bb,ba\}baa\Gamma^*}$
+	and to establish \PSPACE-hardness of this problem
+	we can use the above construction since the problematic case discussed above
+	does not arise for $\{bb,ba\}baa\Gamma^*$.
+\end{remark}

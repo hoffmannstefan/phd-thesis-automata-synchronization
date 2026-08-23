@@ -1,0 +1,264 @@
+%!TEX root = ./../../thesis-trier.tex
+
+First, \cref{sync_max:prop:twosubsets_dist_PSPACE} shows that it is \PSPACE-complete to decide whether two given subsets
+are distinguishable in a given automaton. Then, in \cref{sync_max:thm:decision:cd_PSPACE}, we show
+that deciding complete distinguishability is in \PSPACE, and in \cref{thm:cd_NL-hard} that it is \NL-hard even for SI-automata without permutational letters.
+
+\begin{theorem}
+	\label{sync_max:prop:twosubsets_dist_PSPACE}
+	The problem to decide, for a given automaton and two subsets of states as input, whether both
+	subsets of states are distinguishable in the automaton
+	is \PSPACE-complete.
+\end{theorem}
+\begin{proof}	
+	Let $(\mathcal A, S)$ be an instance of \SFS. We can assume $\emptyset \ne S \ne Q$.
+	Then there exists a word mapping $S$ to a singleton
+	if and only if $S$ and $\emptyset$ are distinguishable in $\mathcal A$,
+	which gives an $\leACZEROm$-reduction.
+	Hence, the problem is \PSPACE-hard.	
+	
+	Next, we show that the problem is in \PSPACE.
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be an $n$-state input automaton and 
+	%	We can assume that at least one of both subsets is not a singleton set.		
+	$A = \{q_1, \ldots, q_s\}$, $B = \{p_1, \ldots, p_r\}$
+	for $s,r\ge 0$ two subsets of states.
+	Store $A$ and $B$ into $s+r$ memory cells.		
+	Then, using a counter, iterate through the numbers $i \in \{1,\ldots,2^{n+1}\}$
+	and, in the $i$-step, first check
+	whether precisely one of both subsets
+	stored in the memory cells
+	is a singleton.
+	If this is the case,
+	then return \rYES (in this
+	case, the word $x_1 \cdots x_{i-1}$
+	\footnote{Setting $x_1 \cdots x_{-1} = \varepsilon$.}
+	distinguishes $A$ from $B$ where the $x_1, \ldots, x_{i-1}$ are letters guessed
+	in the previous steps).	
+	Otherwise, guess a letter $x_i \in \Sigma$, 
+	update the memory cells storing $A$ and~$B$ with $\{ \delta(q_1, x_i), \ldots, \delta(q_s, x_i) \}$
+	and $\{ \delta(p_1, x_i), \ldots, \delta(p_r, x_i) \}$, respectively,
+	and continue with the iteration.
+	If the iteration ends after going through
+	all values for $i$ without discovering a distinguishing word, then return~\rNO.
+	By \THM~\ref{sync_max:thm:distinguishing_word_bound} 
+	a shortest synchronizing word has length at most~$2^{n+1}$.
+	So, by nondeterminism, the above procedure returns \rYES
+	if and only if $A$ and $B$ are distinguishable. 
+	Using a binary encoding for the counter for $i$, 
+	the procedure runs in polynomial space.
+	As by Savitch's theorem~\cite{DBLP:journals/jcss/Savitch70} we have \NPSPACE\ = \PSPACE,  the claim follows.
+\end{proof} 
+
+
+\begin{theorem}
+	\label{sync_max:thm:decision:cd_PSPACE}
+	Deciding whether a given automaton $\semiautomat{A}{Q}{\Sigma}{\delta}$ is completely distinguishable is in \PSPACE. 
+\end{theorem}
+\begin{proof}
+	The complement of this problem is in \NPSPACE\ 
+	as witnessed by the following algorithm:
+	nondeterministically guess two distinct subsets of states $A,B \subseteq Q$
+	with $|A|,|B| \ge 2$
+	and check whether they are indistinguishable,
+	where the latter step can be done in polynomial space
+	by \cref{sync_max:prop:twosubsets_dist_PSPACE}
+	and as \PSPACE\ is closed under complement.
+	As \PSPACE\  = \NPSPACE\ 
+	by Savitch's theorem~\cite{DBLP:journals/jcss/Savitch70}
+	and by the complement-closure of \PSPACE,
+	we obtain the claim.
+\end{proof}
+
+
+\begin{theorem} 
+	\label{thm:cd_NL-hard}
+	Deciding whether a given automaton is completely distinguishable
+	is \NL-hard, even for SI-automata without permutational letters as input.
+\end{theorem}
+\begin{proof} 
+	We give a reduction from \kDAGST{2}, which is \NL-complete~\cite[Cor.~25]{Jones75}, see also \cref{compl:cor:k-DAG}.
+	Let $(G, s,t)$
+	with $G = (V, E)$ and $s,t \in V$
+	be an input instance. We can assume $s \ne t$ and
+	that~$s$ has no incoming transitions	and~$t$ no outgoing transitions.
+	
+	
+	\medskip 
+	\noindent\underline{Construction:} Let $\hat s \notin V$ be a new element
+	and $\hat{E} = E \cup  \{ (\hat s, q) \mid (s, q) \in E \}$.
+	Then set $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	where $Q = V \cup \{\hat s\}$ and $\Sigma = \Sigma_1 \cup \Sigma_2$
+	with the subalphabets $\Sigma_1 = \{ a_e \mid e \in \hat{E} \}$
+	and
+	$\Sigma_2 = \{ c_v, d_v \mid v \in V \setminus \{s,t\} \} \cup \{ c_{\hat{s}}, c_s, d_s, d_{\hat{s}} \}$
+	where~$c_s$ and~$d_{\hat{s}}$ induce self-loops at each state and the remaining letters
+	are simple idempotents
+	given by $\delta(v_1, a_{e}) = v_2$
+	for $e = (v_1, v_2) \in \hat{E}$,
+	$\delta(v, c_v) = s$ for $v \in V \setminus \{t,s\}$
+	and $\delta(v, d_v) = \hat{s}$ for $v \in V \setminus\{t,\hat{s}\}$.
+	See \cref{sync_max:fig:NL_hard:cd} 
+	for an example construction.
+	% \begin{align*}
+		% 	\applytrans{\delta}{q}{a_e} & = \applyfunc{q}{\SI{v_1}{v_2}} \\
+		% 	\applytrans{\delta}{q}{c_v} & = \applyfunc{q}{\SI{v}{s}} \quad \text{(if $v \ne s$)} \qquad
+		% 	\applytrans{\delta}{q}{d_v} = \applyfunc{q}{\SI{v}{\hat s}} \quad \text{(if $v \ne \hat s$)}.
+		% \end{align*}
+	
+	
+	\medskip 	
+	\noindent\underline{Properties:} 
+	\begin{enumerate}
+		\item \label{prop:1} Let  $p,q \in Q$ and $u \in \Sigma_1^*$. 
+		As the letters in $\Sigma_1$
+		directly encode edges in~$G$ 
+		we have $\delta(p, u) = q$
+		if and only if there exists a path from $p$ to $q$ in $G$
+		for $p \ne \hat{s}$ and	a path from $s$ to $q$ in $G$ for $p = \hat{s}$.
+		
+		\item As every letter induces a self-loop at $t$, for all $p \in Q$ and $u \in \Sigma^*$,
+		we have $\delta(t, u) = t$ and so
+		\begin{equation}\label{sync_max:eqn:trap_state}
+			\applytrans{\delta}{p}{u} = \applytrans{\delta}{t}{u}
+			\Leftrightarrow 
+			\applytrans{\delta}{p}{u} = t.
+		\end{equation} 	
+	\end{enumerate}
+	
+	\medskip 
+	\noindent\underline{Verification:}	
+	First, suppose there exists no path from $s$ to $t$ in $G$.
+	Then, by Property~\ref{prop:1} and \cref{sync_max:eqn:trap_state}, 
+	we have $|\delta(\{s, t\}, u)| = |\delta(\{\hat{s}, t\}, u)| = 2$
+	for all $u \in \Sigma^*$. So $\{s, t\}$ and $\{\hat s, t\}$
+	are not distinguishable.
+	
+	Next, suppose there exists a path $p_0, p_1, \ldots, p_n$ ($n \ge 1$)
+	from $s$ to $t$ in $G$
+	with edges $e_i = (p_{i-1}, p_i)$
+	for $i \in \{1,\ldots,n\}$.  Set $\hat{e}_1 = (\hat{s}, p_1) \in \hat{E}$.
+	Let $A \subseteq Q$ with $|A| \ge 2$ 
+	and $p \in Q \setminus A$
+	where $A \setminus \{t\} = \{q_1, \ldots, q_m\}$ for some $m \ge 1$.
+	Set
+	\[
+	w = \begin{cases}
+		c_{q_1} \cdots c_{q_m} & \text{if }  p = t, \\
+		d_{q_1} \cdots d_{q_m} a_{\hat{e}_1} a_{e_2} \cdots a_{e_n} & \text{if } p = s,	\\
+		c_{q_1} \cdots c_{q_m} d_{p} a_{e_1} a_{e_2} \cdots a_{e_n} & \text{if } p \notin \{s, t\}.
+	\end{cases}
+	\]
+	Then $\delta(p, w) \in \{ p, \hat{s} \}$
+	and
+	\[
+	\delta(A, w) = \begin{cases}
+		\{s\} & \text{if } p = t, \\
+		\{t\} & \text{if } p \ne t.
+	\end{cases}
+	\]
+	By \crefitem{sync_max:thm:char_distinguishable}{dist:item:subset_single_point},
+	it follows that $\mathcal A$
+	is completely distinguishable.
+\end{proof}
+
+
+
+\begin{figure}[ht]
+	\centering	
+	\begin{minipage}{0.4\textwidth} % braucht man hier wirklich minipages?
+		\begin{subfigure}[b]{1.0\textwidth}
+			\centering
+			\begin{tikzpicture}[node distance={14mm}, thick, main/.style = {draw, circle,blur shadow,fill=white, inner sep=3pt, minimum size=22pt}] 
+				\node[main] (1) {$v_1$}; 
+				\node[main] (2) [right of=1] {$v_2$}; 
+				\node[main] (3) [right of=2] {$t$}; 
+				\node[main] (0) [left of=1] {$s$}; 
+				%				\draw[->] (0) -- (1); 
+				%				\draw[->] (1) -- (2); 
+				%				\draw[->] (2) -- (3); 
+				
+				\path[->] (0) edge [above] node {$e_1$} (1); 
+				\path[->] (1) edge [above] node {$e_2$} (2);
+				\path[->] (2) edge [above] node {$e_3$} (3);
+			\end{tikzpicture}
+			\caption{Input digraph}  
+		\end{subfigure}
+	\end{minipage}\hfill
+	\begin{minipage}{0.58\textwidth}
+		\begin{subfigure}{1.0\textwidth}
+			\centering 
+			\begin{tikzpicture}[node distance={1.5cm and 2cm}, thick, main/.style = {draw, circle,blur shadow,fill=white, inner sep=3pt, minimum size=22pt}] 
+				\node[main] (1) {$v_1$}; 
+				\node[main] (2) [right = of 1, xshift=-1cm] {$v_2$}; 
+				\node[main] (3) [xshift=-1.5cm,right = of 2] {$t$}; 
+				\node[main] (0) [left = of 1] {$s$}; 
+				\node[main] (hats) [above = of 0, yshift=0.5cm] {$\hat s$};
+				\draw[->] (0) -- node [above] {$a_{e_1}$} (1); 
+				\draw[->] (1) -- node [above] {$a_{e_2}$} (2); 
+				\draw[->] (2) -- node [above] {$a_{e_3}$} (3); 
+				
+				\path[->] (hats) edge [below, bend left=10] node {$a_{\hat{e}_1}$} (1);
+				
+				\path[->] (1) edge [right, bend right, pos=.5] node {$d_{v_1}$} (hats)
+				(2) edge [above, bend right, pos=0.3] node {$d_{v_2}$} (hats)
+				(0) edge [left, bend left=10] node {$d_{s}$} (hats);
+				
+				\path[->] (1) edge [below, bend left=20] node {$c_{v_1}$} (0)
+				(2) edge [above, bend left=45] node {$c_{v_2}$} (0)
+				(hats) edge [right, bend left=10] node {$c_{\hat s}$} (0);
+			\end{tikzpicture} 
+			\caption{Construction from the proof of Theorem~\ref{thm:cd_NL-hard}.}
+			\label{sync_max:fig:NL_hard:cd}
+		\end{subfigure} 
+		
+		
+	\end{minipage}
+	%		\begin{tikzpicture}[node distance={29mm}, thick, main/.style = {draw, circle,blur shadow,fill=white, inner sep=3pt, minimum size=22pt}] 
+		%			\node[main] (1) {$v_1$}; 
+		%			\node[main] (2) [above right of=1] {$v_2$}; 
+		%			\node[main] (3) [below right of=1] {$v_3$}; 
+		%			\node[main] (4) [above right of=3] {$t$}; 
+		%			\node[main] (0) [left of=1, xshift=1cm] {$s$}; 
+		%			\node[main] (6) [above of=0] {$\hat s$};
+		%			
+		%			\draw[->] (1) -- node [left] {$a_{e_2}$} (2); 
+		%			\draw[->] (1) -- node [left] {$a_{e_3}$} (3); 
+		%			%\draw (1) to [out=180,in=270,looseness=5] (1); 
+		%			\draw[->] (2) -- node [right] {$a_{e_4}$} (4); 
+		%			\draw[->] (3) -- node [right] {$a_{e_5}$} (4); 
+		%			\draw[->] (0) -- node [below] {$a_{e_1}$} (1);
+		%			
+		%			
+		%			\path[->] (1) edge [above] node {$d_{v_1}$} (6);
+		%			\path[->] (2) edge [right] node {$d_{v_2}$} (6);
+		%			\path[->] (3) edge [right] node {$d_{v_3}$} (6);
+		%			
+		%			\path[->] (1) edge [bend right,above] node {$c_{v_1}$} (0)
+		%			(2) edge [bend right,above] node {$c_{v_2}$} (0)
+		%			(3) edge [bend left, below] node {$c_{v_3}$} (0);
+		%			
+		%			%		\path[->] (1) edge [bend left] node {$c_{v_1}$} (0)
+		%			%		   (2) edge [bend left] node {$c_{v_2}$} (0)
+		%			%		   (3) edge [bend left] node {$c_{v_3}$} (0)
+		%			%		   (4) edge [bend right] node {$c_{v_4}$} (0);
+		%			
+		%			%		   			\begin{scope}[-{Stealth[round,width=3pt]},rounded corners=10pt]          
+			%				%             \draw ($(3.south)+(.05, 0)$) -- (1,-2.2) -|       node [left,pos=.7] {$d_{v_3}$} (6.south);
+			%				%             \draw ($(3.south)-(.05, 0)$) -- (1,-2.2 + 0.1) -| node [left,pos=.7] {$c_{v_3}$} (0.south);
+			%				%             
+			%				%             \draw ($(2.north)+(.05, 0)$) -- (1,2.2) -|       node [left,pos=.7] {$d_{v_2}$} (6.north);
+			%				%             \draw ($(2.north)-(.05, 0)$) -- (1,2.2 - 0.1) -| node [left,pos=.7] {$c_{v_2}$} (0.north);
+			%				%             
+			%				%             \path[->] (1) edge [bend left] (0)
+			%				%              (1) edge [bend right] (6);
+			%				%		   \end{scope}
+		%			
+		%		\end{tikzpicture}  
+	\caption[Example for reductions used in the proofs of Thm.~\ref{thm:cd_NL-hard} \& \ref{thm:sync_max_NL-hard}]{Example for the reductions used in the proof of  \cref{thm:cd_NL-hard} with $\hat{e}_1 = (\hat{s}, v_1)$. 
+		The automaton in \cref{sync_max:fig:NL_hard:cd}  is completely distinguishable		
+		as there exists a path from~$s$ to~$t$ in the input graph. 
+		Self-loops are omitted.}
+	\label{sync_max:fig:NL_hard}
+\end{figure}
+
+

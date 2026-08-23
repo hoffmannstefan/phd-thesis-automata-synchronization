@@ -1,0 +1,80 @@
+%!TEX root = ./../../springer-mono-format/book.tex
+%!TEX root = ./../../thesis-trier.tex
+
+\IN{monotonic automaton}
+An automaton $\semiautomat{A}{Q}{\Sigma}{\delta}$
+is called \emph{monotonic} if there exists a linear order~$\le$ on the states
+such that $p \le q$ implies $\applytrans{\delta}{p}{x} \le \applytrans{\delta}{q}{x}$
+for all $p, q \in Q$ and $x \in \Sigma$.
+See \cref{constr_sync:fig:monotonic_aut} for two example monotonic automata.
+
+Such an order is generally not unique.  
+For example, if all transitions are self-loops in an $n$-state automaton, $n!$ orderings are possible, 
+and for each state, there exists an ordering in which it is either the minimal or the maximal element
+
+Suppose $q = \delta(q, u^i)$ for $q \in Q$, $i \ge 1$ and $u \in\Sigma^*$ in a monotonic $\semiautomat{A}{Q}{\Sigma}{\delta}$.
+We have $q \le \delta(q, u)$ or $\delta(q, u) \le q$.
+In the first case, we get $q \le \delta(q, u) \le \delta(q, u^2) \le \ldots \le \delta(q, u^{i-1}) \le q$,
+so that $q = \delta(q, u)$.
+A similar argument yields $q = \delta(q, u)$
+for $\delta(q, u) \le q$.
+So, no word can permute a subset of states
+non-trivially.\footnote{Automata with this property are called counter-free or aperiodic~\cite{McNaughton71}.}
+In particular, no permutation automata is monotonic.
+
+\begin{figure}[htb]
+	\centering
+	\begin{subfigure}[b]{0.45\textwidth}
+		\centering
+			\begin{tikzpicture} [node distance = 5.5em, on grid, auto, ->, >=triangle 45]
+			
+			\node (q0) [state, inner sep=5pt,minimum size=0pt] {$1$};
+			\node (q1) [state, right of=q0,inner sep=5pt,minimum size=0pt] {$2$};
+			\node (q2) [state, right of=q1,inner sep=5pt,minimum size=0pt] {$3$};
+			\node (q3) [state, right of=q2,inner sep=5pt,minimum size=0pt] {$4$};
+			
+			\path[->] (q0) edge [bend left] node {$a$} (q1)
+			(q1) edge [bend left] node {$b$} (q0)
+			(q0) edge [loop above] node {$b$} (q0)
+			(q2) edge [bend left] node {$b$} (q1)
+			(q1) edge [bend left] node {$a$} (q2)
+			(q2) edge [bend left] node {$a$} (q3)
+			(q3) edge [bend left] node {$b$} (q2)
+			(q3) edge [loop above] node {$a$} (q3);
+		\end{tikzpicture}
+		\caption{Linear order on states is $1 < 2 < 3 < 4$}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.45\textwidth}
+		\centering
+	\begin{tikzpicture} [node distance = 5.5em, on grid, auto, ->, >=triangle 45]
+		
+		\node (q0) [state, inner sep=5pt,minimum size=0pt] {$1$};
+		\node (q1) [state, right of=q0,inner sep=5pt,minimum size=0pt] {$2$};
+		\node (q2) [state, right of=q1,inner sep=5pt,minimum size=0pt] {$3$};
+		
+		\path[->] (q0) edge [bend left] node {$a$} (q1)
+		(q1) edge [bend left] node {$b$} (q0)
+		(q0) edge [loop above] node {$b$} (q0)
+		(q1) edge node {$a$} (q2)
+		(q2) edge [loop above] node {$a,b$} (q2);
+	\end{tikzpicture}
+		\caption{Linear order on states is $1 < 2 < 3$} \label{prelim:fig:monotonic}
+	\end{subfigure}
+	\caption[Two synchronizing monotonic automata]{Two synchronizing monotonic automata.}
+	\label{constr_sync:fig:monotonic_aut}
+\end{figure}
+
+With respect to synchronizability Ananichev and Volkov~\cite{DBLP:journals/tcs/AnanichevV04}
+have established the following tight bound (tightness is 
+shown by the automata from Figure~\ref{prelim:fig:unary_tight}, 
+which are monotonic).
+
+\begin{proposition}[Ananichev and Volkov~\cite{DBLP:journals/tcs/AnanichevV04}]
+	\label{prelim:prop:monotonic_rank_r}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be an $n$-state monotonic
+	automaton. If there exists a word of rank $r$ in $\mathcal A$,
+	then there exists a word of length
+	at most $n - r$ whose rank is at most $r$
+	and this bound is tight.
+\end{proposition}

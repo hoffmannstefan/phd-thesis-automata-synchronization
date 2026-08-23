@@ -1,0 +1,27 @@
+%!TEX root = ./../../thesis-trier.tex
+
+\IN{pair (semi)automaton}
+\label{def:pair_aut}
+Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ and $S = \{ \{ p, q\} \mid p,q \in Q\}$.
+Then~$S$ is an upper set in $\mathcal P(\mathcal A)$.
+We denote $\mathcal P(\mathcal A)_{|S}$
+also by $\semiautomat{A^{\le 2}}{S}{\Sigma}{\delta^{\le 2}}$.
+We have $\applytrans{\delta^{\le 2}}{\{p,q\}}{x} = \applytrans{\delta}{\{p,q\}}{x}$
+for $x \in \Sigma$.
+The set $F = \{ \{q\} \mid q \in Q \}$ is an upper set in $\mathcal A^{\le 2}$
+and the Rees quotient automaton $\mathcal A^{\le 2} / {\sim_F}$ is called the \emph{pair (semi-)automaton}. 
+The state set of the pair automaton is
+$\{ \{ \{ p,q\}\} \mid p \ne q \text{ and } p,q \in Q\} \cup \{F\}$.
+For ease of notation, for distinct $p,q \in Q$ we identify a state $\{ \{p,q\} \}$ with $\{p,q\}$.
+The pair automaton has $\binom{n}{2} + 1$ states.
+
+The map $\varphi \colon Q \times Q \to \{\{p,q\} \mid p,q \in Q \}$
+given by $\varphi(p,q) = \{p,q\}$ is a surjective morphism
+of $\mathcal A \times \mathcal A$ onto $\mathcal A^{\le 2}$.
+Thus, by \cref{prelim:prop:congruence_induces_morphism},
+$[(p,q)]_{\sim_{\varphi}} \mapsto \{p,q\}$
+is an isomorphism from 
+$( \mathcal A \times \mathcal A ) / {\sim_{\varphi}}$ to $\mathcal A^{\le 2}$.
+Note that $(p,q) \sim_{\varphi} (s,t)$ if and only if $\{p,q\} = \{s,t\}$
+and so $\sim_{\varphi}$ is the $\TM{\mathcal A \times \mathcal A}$-congruence
+that precisely identifies $(p,q)$ with $(q,p)$ for $p,q \in Q$.

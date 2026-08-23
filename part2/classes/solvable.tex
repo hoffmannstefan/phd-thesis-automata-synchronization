@@ -1,0 +1,1138 @@
+%!TEX root = ./../../thesis-trier.tex
+
+\IN{solvable automaton}
+We call $\mathcal A$ \emph{solvable}
+if $\delta(q, ab) \lereach q$ implies $\delta(q, ab) = \delta(q, ba)$
+for all $q \in Q$ and $a,b \in \Sigma$.
+Clearly, every commutative automaton is solvable.
+Since for partially ordered automata,
+$\delta(q, ab) \lereach q$
+implies $\delta(q, a) = \delta(q, b) = q$,
+and so $\delta(q, ab) = \delta(q, ba) = q$,
+partially ordered automata are also solvable. Clearly, commutative automata
+are solvable as well.
+
+Here, we investigate solvable automata. In \cref{prelim:classes:sec:solvable:operations}, 
+we show that the class of solvable automata
+is closed under various operations. \Cref{prelim:classes:sec:solvable:char}
+gives other characterizations of solvability.
+In \cref{prelim:classes:sec:solvable:sync}, 
+we prove bounds on shortest words whose rank is bounded,
+and we give a technical result on words mapping one subset into another subset.
+Solvable automata were introduced by
+Rystsov~\cite{Rystsov97} with a slightly different, more restricted,
+definition, we discuss this in \cref{prelim:classes:sec:comparison}.
+
+\subsection{Operations}
+\label{prelim:classes:sec:solvable:operations}
+
+Here, we prove that solvability
+is preserved 
+in subautomata and morphic images, Rees quotient, product, and pair automata
+in \cref{prelim:classes:solvable:prop:subaut},
+\cref{prelim:classes:solvable:prop:morph}, 
+\cref{prelim:classes:solvable:cor:subhom},
+\cref{prelim:subclasses:prop:solvable-product}, and
+\cref{prelim:subclasses:cor:solv-pair}, respectively.
+\Cref{prelim:subclasses:cor:solvable-product}
+proves that 
+solvability of $\mathcal A$, $\mathcal A \times \mathcal A$, and $\mathcal A^{\le 2}$ are equivalent properties,
+and in \cref{prelim:subclasses:cor:solv-pair} 
+that solvability of $\mathcal A$
+implies solvability of 
+ $\mathcal A^{\le 2} / {\sim_F}$
+and 
+$( \mathcal A \times \mathcal A ) / {\sim_D}$
+with $F = \{ \{q\} \mid q \in Q \}$
+and $D = \{ (q,q) \mid q \in Q \}$.
+In \cref{prelim:classes:solv:prop:perm-product-solv-implies-solv}
+we show that for permutation automata,
+solvability of~$( \mathcal A \times \mathcal A ) / {\sim_D}$
+implies it for~$\mathcal A$.
+
+\begin{proposition} \label{prelim:classes:solvable:prop:subaut}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be a solvable automaton
+	and $S \subseteq Q$ be an upper set.
+Then $\mathcal A_{|S}$ is solvable.	
+\end{proposition}
+\begin{proof}
+	Suppose $\delta_{|S}(q, ab) \lereach q$
+	for some $q \in S$ and $a,b \in \Sigma$.
+	Then $\delta(q, ab) \lereach q$
+	and, by solvability of $\mathcal A$,
+	we have $\delta_{|S}(q, ab) = \delta(q, ab) = \delta(q, ba) = \delta_{|S}(q, ba)$.
+	Hence, $\mathcal A_{|S}$ is solvable.
+\end{proof} 
+
+\begin{proposition} \label{prelim:classes:solvable:prop:morph}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	and $\semiautomat{B}{S}{\Sigma}{\mu}$.
+	Suppose there exists a surjective morphism $\varphi \colon Q \to S$.
+	Then solvability of $\mathcal A$ implies solvability of~$\mathcal B$.
+\end{proposition}
+\begin{proof}
+	Suppose we have $\mu(\varphi(q), abu) = \varphi(q)$ for some $u \in \Sigma^*$.
+	Then it is $\varphi(\delta(q, (abu)^i)) = \varphi(q)$
+	for all $i \ge 0$. By finiteness, there exist $i \ge 0$
+	and $p > 0$
+	such that $\delta(q, (abu)^{i + p}) = \delta(q, (abu)^i)$.
+	Hence $\delta(q, (abu)^{i}ab) \lereach \delta(q, (abu)^i)$.
+	Since~$\mathcal A$ is solvable,
+	we find $\delta(q, (abu)^iab) = \delta(q, (abu)^iba)$.
+	Then 
+	\begin{multline*}
+		\mu(\varphi(q), ab)  = \mu(\varphi(\delta(q, (abu)^i)), ab) 
+		= \varphi(\delta(q, (abu)^i ab)) \\
+		= \varphi(\delta(q, (abu)^i ba)) 
+		= \mu(\varphi(\delta(q, (abu)^i)),ba) 
+		= \mu(\varphi(q), ba).
+	\end{multline*}	
+	Hence, $\mathcal B$ is solvable.
+\end{proof}
+
+By \cref{prelim:classes:solvable:prop:morph} the class of solvable automata %, as well as all the other classes of automata introduced, 
+is closed under isomorphisms.
+
+\begin{corollary}\label{prelim:classes:solvable:cor:subhom}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be a solvable automaton
+	and $S \subseteq Q$ be an upper set.
+	Then $\mathcal A / {\sim_S}$ is solvable.
+\end{corollary} 
+\begin{proof}
+	The canonical morphism for $\sim_S$
+	from \cref{prelim:prop:congruence_induces_morphism} is surjective and
+	maps $\mathcal A$ onto $\mathcal A / {\sim_S}$.
+	So the claim follows from \cref{prelim:classes:solvable:prop:morph}.
+\end{proof}
+
+\begin{proposition}\label{prelim:subclasses:prop:solvable-product}
+	Let $\semiautomat{A_1}{Q_1}{\Sigma}{\delta_1}$ and 
+	$\semiautomat{A_2}{Q_2}{\Sigma}{\delta_2}$.
+	Then $\mathcal A_1$ and $\mathcal A_2$ are solvable
+	if and only if $\mathcal A_1 \times \mathcal A_2$ is solvable.
+\end{proposition}
+\begin{proof}
+	First, assume $\mathcal A_1 \times \mathcal A_2$ is solvable.
+	Since the maps $(p,q) \mapsto p$
+	and $(p,q) \mapsto q$
+	are surjective morphisms from $\mathcal A_1 \times \mathcal A_2$
+	to $\mathcal A_1$ and~$\mathcal A_2$, respectively,
+	we find that $\mathcal A_1$
+	and~$\mathcal A_2$ are solvable by \cref{prelim:classes:solvable:prop:morph}. 
+	
+	Now, assume $\mathcal A_1$ and $\mathcal A_2$
+	are solvable. 
+	Let $(p,q) \in Q_1 \times Q_2$ and $a,b \in \Sigma$
+	be such that $\delta_{\mathcal A_1 \times \mathcal A_2}((p,q), ab) \lereach (p,q)$.
+	This gives $\delta_1(p, ab) \lereach p$
+	and $\delta_2(q, ab) \lereach q$.\footnote{Note that
+		$\delta_1(p, ab) \lereach p$
+		and $\delta_2(q, ab) \lereach q$
+		not necessarily imply $\delta_{\mathcal A_1 \times \mathcal A_2}((p,q), ab) \lereach (p,q)$.}
+	Since $\mathcal A_1$ and $\mathcal A_2$ are solvable,
+	we find $\delta_1(q, ab) = \delta_1(q, ba)$
+	and $\delta_2(p, ab) = \delta_2(q, ba)$.
+	Thus, 
+	we get $\delta_{\mathcal A_1 \times \mathcal A_2}((p,q), ab) = \delta_{\mathcal A_1 \times \mathcal A_2}((p,q), ba)$
+	from the definition of~$\mathcal A_1 \times \mathcal A_2$.
+\end{proof}
+
+\begin{corollary}\label{prelim:subclasses:cor:solvable-product}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ and $i \ge 2$.
+	Then the following are equivalent.
+	
+	\begin{enumerate}
+		\item \label{solvable-product:item:1} $\mathcal A$ is solvable.
+		
+		\item \label{solvable-product:item:2a}
+		$\mathcal A \times \cdots \times \mathcal A$ ($i$ times) is solvable.
+		
+		\item \label{solvable-product:item:2} $\mathcal A \times \mathcal A$ is solvable.
+		
+		\item \label{solvable-product:item:3} $\mathcal A^{\le 2}$ is solvable. % als subautomton einbetten
+	\end{enumerate}	
+\end{corollary}
+\begin{proof}
+	$\ref{solvable-product:item:1} \Rightarrow \ref{solvable-product:item:2a}$: This follows from \cref{prelim:subclasses:prop:solvable-product}
+	applied $i$ times.
+	
+	$\ref{solvable-product:item:2a} \Rightarrow \ref{solvable-product:item:2}$:
+	We can assume $i > 2$.
+	Then 
+	\[
+	\mathcal A \times \cdots \times \mathcal A = \underbrace{(\mathcal A \times \cdots \times \mathcal A)}_{\text{$i-2$ times}} \times (\mathcal A \times \mathcal A).
+	\]
+	By \cref{prelim:subclasses:prop:solvable-product} 
+	we obtain that $\mathcal A \times \mathcal A$
+	is solvable.
+			
+	$\ref{solvable-product:item:2} \Rightarrow \ref{solvable-product:item:3}$: We have $\mathcal A^{\le 2} \cong (\mathcal A \times \mathcal A) / \sim$
+	for the $\TS{\mathcal A \times \mathcal A}$-congruence $\sim$
+	given by $(p_1,p_2) \sim (q_1, q_2)$
+	if and only if $\{p_1, p_2\} = \{q_1, q_2\}$.
+	%with $T = \{ ((p,q), (q,p)) \mid p,q \in Q\}$.
+	So, the claim follows from \cref{prelim:classes:solvable:cor:subhom}. 
+		
+	$\ref{solvable-product:item:3} \Rightarrow \ref{solvable-product:item:1}$: % Follows from \cref{prelim:classes:solvable:prop:subhom}, 
+	As $(\mathcal A^{\le 2})_{|F} \cong \mathcal A$
+	with $F = \{ \{q\} \mid q \in F\}$, the claim follows from \cref{prelim:classes:solvable:cor:subhom}.
+\end{proof} 
+
+\begin{corollary} \label{prelim:subclasses:cor:solv-pair}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be solvable.
+	Then the automata $\mathcal A^{\le 2} / {\sim_F}$
+	and 
+	$( \mathcal A \times \mathcal A ) / {\sim_D}$
+	with $F = \{ \{q\} \mid q \in Q \}$
+	and $D = \{ (q,q) \mid q \in Q \}$
+	are solvable.	
+\end{corollary}
+\begin{proof}
+	For solvable $\semiautomat{A}{Q}{\Sigma}{\delta}$,
+	$\mathcal A^{\le 2}$ and $\mathcal A \times \mathcal A$ are solvable by \cref{prelim:subclasses:cor:solvable-product}.
+	So, \cref{prelim:classes:solvable:cor:subhom}
+    gives the claim.
+\end{proof}
+
+The converse statement to \cref{prelim:subclasses:cor:solv-pair}
+does not hold in general, as the example from \cref{prelim:classes:fig:solvablenotR2solvable}
+shows.
+
+\begin{figure}[ht]
+	\centering
+	\begin{subfigure}{0.33\textwidth}
+		\centering
+		\begin{tikzpicture}[node distance = 2cm, on grid, auto, ->]
+			\node (q1) [state] {$q_1$};
+			\node (q2) [state, right of = q1] {$q_2$};
+			
+			%	\path[->] 
+			%	(q2) edge [loop above] node {$a$} (q2);
+			\path[->] % (q1) [loop above] edge node {$b$} (q1)
+			(q1) edge [bend left] node {$a, b$} (q2)
+			(q2) edge [bend left, below] node {$b$} (q1); 
+		\end{tikzpicture}
+		\caption{The automaton $\mathcal A$.}
+	\end{subfigure}%
+	\begin{subfigure}{0.4\textwidth}
+		\centering
+		\begin{tikzpicture}[node distance = 2.2cm, on grid, auto, ->]
+			\tikzstyle{state-subset}=[]
+			
+			\node (12) [state-subset] {$(q_1, q_2)$};
+			\node (D)  [state-subset, right of = 12] {$D$};
+			\node (21) [state-subset, right of = D] {$(q_2, q_1)$};
+			
+			\path[->] (12) edge [bend left, out=48,in=132] node {$b$} (21)
+			(21) edge [bend left, out=48,in=132] node {$b$} (12);
+			\path[->] (12) edge node {$a$} (D)
+			(21) edge node {$a$} (D);
+			% (D)  edge [loop above] node {$a,b$} (D);
+		\end{tikzpicture}
+		\caption{$( \mathcal A \times \mathcal A ) / {\sim_D}$, which is solvable.}
+	\end{subfigure}%
+	\begin{subfigure}{0.27\textwidth}
+		\centering
+		\begin{tikzpicture}[node distance = 1.5cm, on grid, auto, ->]
+			\tikzstyle{state-subset}=[]
+			
+			\node (12) [state-subset] {$\{q_1, q_2\}$};
+			\node (D)  [state-subset, below of = 12] {$F$};
+			
+			\path[->] (12) edge node {$a$} (D);
+			\path[->] (12) edge [loop above]  node {$b$} (12);
+		\end{tikzpicture}
+		\caption{$\mathcal A^{\le 2} / {\sim_F}$}
+	\end{subfigure}%
+	\caption[Non-solvable automaton with solvable pair automaton]{The automaton $\mathcal A$ is not solvable, but $( \mathcal A \times \mathcal A ) / {\sim_D}$ and $\mathcal A^{\le 2} / {\sim_F}$ with $D = \{(q,q) \mid q \in Q\}$ and $F = \{\{q\}\mid q \in Q\}$ are solvable. Self-loops omitted.}
+	\label{prelim:classes:fig:solvablenotR2solvable}
+\end{figure} 
+
+However, for permutation automata,
+a converse of \cref{prelim:subclasses:cor:solv-pair} holds
+for $( \mathcal A \times \mathcal A ) / {\sim_D}$.
+
+\begin{proposition} \label{prelim:classes:solv:prop:perm-product-solv-implies-solv}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be a permutation automaton.
+	Then solvability of $( \mathcal A \times \mathcal A ) / {\sim_D}$ with $D = \{ (q,q) \mid q \in Q \}$
+	implies that $\mathcal A$ is solvable.	
+\end{proposition}
+\begin{proof}
+	We can assume $|Q| \ge 2$.
+	Clearly, $\mathcal A$ is solvable
+	if each subautomaton of the form $\mathcal A_{|\upperset{\{q\}}}$
+	for each $q \in Q$ is solvable.
+	Thus, we can assume $Q = \upperset{\{q\}}$ for some $q \in Q$
+	in the following.
+	Let $p \in Q$ be a state with $p \ne q$.
+	Consider the upper set $S = \upperset{\{(p, q)\}}$
+	in $\mathcal A \times \mathcal A$.
+	Since $p \ne q$ and $\mathcal A$ is a permutation automaton, we have
+	\[
+	( \mathcal A \times \mathcal A )_{|S} \cong \left( (\mathcal A \times \mathcal A) / {\sim_D} \right)_{|\pi_{\sim_D}(S)}.
+	\]
+	and the projection mapping restricted to~$S$, i.e., $(\pi_2)_{|S} S \to Q$,
+	is a surjective morphism from $ ( \mathcal A \times \mathcal A )_{|S}$
+	onto $\mathcal A$.
+	Thus, by \cref{prelim:classes:solvable:prop:subaut,prelim:classes:solvable:prop:morph} 
+	we find that~$\mathcal A$ is solvable.	
+\end{proof}
+
+The partition $\{ \{ (p,q), (q, p) \} \} \cup \{ \{ D \} \}$
+of the state set of $(\mathcal A \times \mathcal A ) / {\sim_D}$
+induces a congruence whose quotient automaton
+is isomorphic to $\mathcal A^{\le 2} / {\sim_F}$. 
+Then by \cref{prelim:classes:solvable:prop:morph,prelim:prop:congruence_induces_morphism}
+it follows that $\mathcal A^{\le 2} / {\sim_F}$
+is solvable if $(\mathcal A \times \mathcal A ) / {\sim_D}$ is solvable.
+However, we do not know whether the converse implication holds.
+
+\subsection{Characterizations}
+\label{prelim:classes:sec:solvable:char}
+
+Solvable automata enjoy a wealth of other characterizations
+as we show next. \Cref{prelim:classes:solvable:thm} 
+collects various characterizations in terms of strongly
+connected components. \Cref{prelim:classes:solv:prop:char-seq} 
+characterizes solvability by increasing sequences of upper
+sets, resembling one definition originally given by Rystsov~\cite{Rystsov97} 
+(see the discussion in \cref{prelim:classes:sec:comparison}).
+\Cref{prelim:classes:solvable:prop:char-inductive} 
+gives definition in terms of a single upper sets,
+some of them are suitable for an inductive reasoning and construction
+of solvable automata, starting from commutative automata.
+
+\begin{theorem}\label{prelim:classes:solvable:thm}
+Let $\semiautomat{A}{Q}{\Sigma}{\delta}$.
+Then the following are equivalent.
+\begin{enumerate}
+\item \label{prelim:classes:solvable:thm:char:solvable} $\mathcal A$ is solvable.
+
+\item \label{prelim:classes:solvable:thm:char:SCC-quotients-comm}  For each $q \in Q$, the automaton
+\[
+( \mathcal A_{|S} ) / {\sim_T}
+\]
+with $S = \upperset{\{q\}}$ and $T = S \setminus [q]_{\eqreach}$ % mit isomorphiesätzen dann auf reihen
+is commutative.
+
+\item \label{prelim:classes:solvable:thm:char:SCC-quotients-comm-perm}  For each $q \in Q$, the automaton
+\[ 
+( \mathcal A_{|S} ) / {\sim_T}
+\]
+with $S = \upperset{\{q\}}$ and $T = S \setminus [q]_{\eqreach}$ % mit isomorphiesätzen dann auf reihen
+is a strongly trap-connected commutative permutation-reset automaton
+or a commutative permutation automaton (where the latter case includes~$T = \emptyset$, in which case~$\mathcal A$
+is strongly connected).
+
+\item \label{prelim:subclasses:thm:solvable:permutation-reset} For all upper sets $S, T \subseteq Q$
+such that $T \subseteq S$ and $S \setminus T$ 
+is a strongly connected component, the automaton $( \mathcal A_{|S} ) / {\sim_T}$
+is a commutative permutation-reset automaton.
+
+
+
+
+\item \label{prelim:subclasses:thm:solvable:restrict} For each strongly connected component $S \subseteq Q$
+the automaton $\restrictAutGamS{\mathcal A}{\Gamma_1}{S}$
+with $\Gamma_1 = \{ a \in \Sigma \mid \delta(S, a) = S \}$
+is a commutative permutation automaton 
+and $\Sigma = \Gamma_1 \cup \Gamma_2$
+for $\Gamma_2 = \{ a \in \Sigma \mid \delta(S, a) \cap S = \emptyset \}$.
+
+
+
+\item \label{prelim:prop:solvable-SCC:2} Each strongly connected component $S \subseteq Q$ is a block
+such that $\delta(q, ab) = \delta(q, ba)$
+for all $q \in S$ and $a,b \in \Sigma$
+with $\delta(S, a) = \delta(S, b) = S$.
+
+\item \label{prelim:prop:solvable-SCC:3a} For each strongly connected component $S \subseteq Q$
+and $a,b \in \Sigma$ with $\delta(S, a) \cap S \ne \emptyset$
+and $\delta(S, b) \cap S \ne \emptyset$
+we have $\delta(q, ab) = \delta(q, ba)$ for all $q \in S$.
+
+\item \label{prelim:prop:solvable-SCC:3} For each strongly connected $S \subseteq Q$
+and $a,b \in \Sigma$ with $\delta(S, a) \cap S \ne \emptyset$
+and $\delta(S, b) \cap S \ne \emptyset$ we have $\delta(q, ab) = \delta(q, ba)$ for all $q \in S$.
+
+\item \label{prelim:prop:solvable-SCC:4} For each strongly connected $S \subseteq Q$
+we have $\delta(q, ab) = \delta(q, ba)$
+for all $q \in S$ and all $a,b \in \Sigma$ with $\delta(q, ab) \in S$.
+
+\item \label{prelim:prop:solvable-SCC:3b} For each $q \in Q$ and $u \in \Sigma^*$, $\delta(q,u) = q$
+ implies $\delta(q, v) = \delta(q, u)$ for all $v \in \Sigma^*$
+ such that $|v|_x = |u|_x$ for all $x \in \Sigma$. 
+ 
+\item \label{prelim:prop:solvable-SCC:3c} For each $q \in Q$ and $u \in \Sigma^*$, $\delta(q,u) = q$
+implies
+\[
+\delta(q, v) = \delta(q, v_{\pi(1)} \cdots v_{\pi(m)})
+\]
+for each permutation $\pi\colon \{1,\ldots,m\} \to \{1,\ldots,m\}$ 
+and $v \in \Sigma^*$ with $u \in v\Sigma^*$
+and $v = v_1\cdots v_m$ for $v_1, \ldots, v_m \in \Sigma$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+$\ref{prelim:classes:solvable:thm:char:solvable} \Rightarrow \ref{prelim:classes:solvable:thm:char:SCC-quotients-comm}$: 	
+Let $p \in S$ with $p \notin T$. Assume $\delta_{|S}(p, ab) \ne \delta_{|S}(p, ab)$.
+Then $\delta(p, ab) \ne \delta(p, ba)$
+and since~$\mathcal A$
+is solvable, we have $\delta(p, ab) \not\eqreach p$ and $\delta(p, ab) \not\eqreach p$.
+Since $p \eqreach q$, we find $\delta(p, ab) \not\eqreach q$ 
+and  $\delta(p, ba) \not\eqreach q$ 
+and so $\delta(p, ab) , \delta(p, ba)\in T$ by \cref{prelim:prop:reachability-finest,prelim:eqn:reach-upperset}.
+Hence, in $(\mathcal A_{|S} ) / {\sim_T}$,
+the state~$p$ is mapped to~$T$ by both words $ab$ and $ba$.
+This already establishes commutativity
+of $(\mathcal A_{|S} ) / {\sim_T}$
+since if  $\delta_{|S}(p, ab) = \delta_{|S}(p, ab)$,
+then also in $(\mathcal A_{|S} ) / {\sim_T}$
+the state~$p$ is mapped to the same state
+by~$ab$ and~$ba$.
+
+$\ref{prelim:classes:solvable:thm:char:SCC-quotients-comm} \Rightarrow \ref{prelim:classes:solvable:thm:char:SCC-quotients-comm-perm}$: 	
+By assumption~$(\mathcal A_{|S} ) / {\sim_T}$
+is commutative. Hence, each letter acts as a morphism 
+on its state set, which is $[q]_{\eqreach} \cup \{T\}$.
+By \cref{prelim:automata:cor:SCC-disjoint-or-permutates},
+each letter either permutes $[q]_{\eqreach}$ 
+or maps all states in it to $T$. So,
+$(\mathcal A_{|S} ) / {\sim_T}$
+is a permutation-reset automaton.
+If there exists a letter mapping $[q]_{\simeq}$
+to~$T$, then it is not a sink component
+and by \crefitem{prelim:automata:prop:char-strongly-trap}{prelim:automata:prop:char-strongly-trap:1b}
+it is strongly trap-connected.
+Otherwise, since~$T$ is a trap state for $T \ne \emptyset$,
+each letter permutes all states.
+
+Alternatively, this follows with \cref{cor:SCC_comm_permutation_automaton}.
+
+$\ref{prelim:classes:solvable:thm:char:SCC-quotients-comm-perm} \Rightarrow \ref{prelim:subclasses:thm:solvable:permutation-reset}$:
+First, assume~$S$ is a sink component.
+Then, by Item~\ref{prelim:classes:solvable:thm:char:SCC-quotients-comm-perm},
+$\mathcal A_{|S}$ is a commutative permutation automaton.
+So, $\mathcal (\mathcal A_{|S}) / {\sim_T}$
+is a commutative permutation automaton, since for $T \ne \emptyset$ 
+merely a trap state is added.
+Next, assume~$S$ is not a sink component. 
+By assumption, we have $S \setminus T = [q]_{\eqreach}$
+for some $q \in Q$. Since~$S$ is an upper set, we have 
+$\upperset{\{q\}} \subseteq S \subseteq T$. 
+Set $K = \upperset{\{q\}}$ and $R = K \setminus [q]_{\eqreach}$,
+where $R \ne \emptyset$ and $T \ne \emptyset$
+as~$S$ is a sink component.
+Then, it is
+\[
+ ( \mathcal A_{|S} ) / {\sim_T}
+ \cong 
+ ( \mathcal A_{|K} ) / {\sim_{R}}
+\]
+since $\sim_T$ on~$S$
+equals $[q]_{\eqreach} \times [q]_{\eqreach} \cup \{ T \}$
+and $\sim_R$ on~$K$ equals $[q]_{\eqreach} \times [q]_{\eqreach} \cup \{ R \}$
+and so both induce isomorphic Rees quotient automata.
+By Item~\ref{prelim:classes:solvable:thm:char:SCC-quotients-comm-perm},
+$( \mathcal A_{|K} ) / {\sim_{R}}$
+is a commutative permutation-reset automaton.
+
+$\ref{prelim:subclasses:thm:solvable:permutation-reset} \Rightarrow \ref{prelim:subclasses:thm:solvable:restrict}$:
+Let $S \subseteq Q$ be a strongly connected component. By assumption,
+$( \mathcal A_{|R} ) / {\sim_T}$ with $R = \upperset{S}$ and $T = R \setminus S$
+is a permutation-reset automaton, which is equivalent
+to~$S$ being a block by \cref{prelim:perm-reset-Rees-factor}, 
+which gives $\Sigma = \Gamma_1 \cup \Gamma_2$,
+and by \cref{prelim:subclasses::com:upper-sets:prop} it is commutative
+so that  $\restrictAutGamS{\mathcal A}{\Gamma_1}{S}$
+is a commutative permutation automaton.
+
+$\ref{prelim:subclasses:thm:solvable:restrict} \Rightarrow \ref{prelim:prop:solvable-SCC:2}$:
+This is clear.
+
+$\ref{prelim:prop:solvable-SCC:2} \Rightarrow \ref{prelim:prop:solvable-SCC:3a}$:
+Since a strongly connected component~$S$ is a block
+by assumption, $\delta(S, a) \cap S \ne \emptyset$
+and  $\delta(S, b) \cap S \ne \emptyset$
+imply $\delta(S, a) = \delta(S, b) = S$ and then
+$\delta(q, ab) = \delta(q, ba)$ for all $q \in S$.
+
+$\ref{prelim:prop:solvable-SCC:3a} \Rightarrow \ref{prelim:prop:solvable-SCC:3}$:
+Let $S \subseteq Q$ be strongly connected, $q \in \delta(S, a) \cap S$,
+and $p \in \delta(S, b) \cap S$. Set $T = [q]_{\simeq}$.
+Then $S \subseteq T$, $q \in \delta(T, a) \cap T$, $p \in \delta(T, b) \cap T$,
+and so $\delta(r, ab) = \delta(r, ba)$ for all $r \in T$, in particular
+for those states from~$S$.
+
+$\ref{prelim:prop:solvable-SCC:3} \Rightarrow \ref{prelim:prop:solvable-SCC:4}$:
+Let~$S$, $q \in S$ and $a,b \in \Sigma$ as in the statement.
+Since $\delta(q, ab) \in S$ and $q \in S$, the set $T = S \cup \{\delta(q, a)\}$ is also strongly connected.
+we have $\delta(q, a) \in T$ and $\delta(\delta(q, a), b) \in T$
+so that, by Item~\ref{prelim:prop:solvable-SCC:3},
+we find $\delta(q, ab) = \delta(q, ba)$.
+
+$\ref{prelim:prop:solvable-SCC:4} \Rightarrow \ref{prelim:prop:solvable-SCC:3b}$:
+Write $u = u_1 \cdots u_n$ with $u_i \in \Sigma$ for $i \in \{1,\ldots,n\}$.
+Let $i \in \{1,\ldots,n\}$.
+Since $\delta(q, u) = q$, we have 
+\[
+q \eqreach \delta(q, u_1\cdots u_{i-1}) \eqreach 
+\delta(q, u_1\cdots u_{i-1} u_i) \eqreach \delta(q, u_1\cdots u_{i-1} u_i u_{i+1}).
+\]
+So, the set $S = \{q, \delta(q, u_1\cdots u_{i-1}), \delta(q, u_1\cdots u_{i-1} u_i),
+\delta(q, u_1\cdots u_{i-1} u_i u_{i+1}), q\}$
+is strongly connected. By assumption,
+we get $\delta(p, u_i u_{i+1}) = \delta(p, u_{i+1}u_i)$
+for all $p \in S$, in particular
+we have
+\[\delta(q, u_1\cdots u_{i-1} u_i u_{i+1})
+= \delta(q, u_1\cdots u_{i-1} u_{i+1} u_i).
+\]
+Since every permutation of the letters $u_1, \ldots, u_n$
+can be realized by swapping adjacent letters, we obtain the claim.
+
+\ref{prelim:prop:solvable-SCC:3b} $\Rightarrow$ \ref{prelim:prop:solvable-SCC:3c}: Let $q \in Q$ and $u,v,w \in \Sigma^*$
+be such that $\delta(q, u) = q$ and $u = vw$. Write $v = v_1 \cdots v_m$
+for $v_1, \ldots, v_m \in \Sigma$ and 
+consider a permutation $\pi \colon \{1,\ldots, m\} \to \{1,\ldots,m\}$.
+Since $\delta(q, vw) = q$ we have $ \delta(q, v) = \delta(q, vwv)$
+and $\delta(q, v_{\pi(1)} \cdots v_{\pi(m)})
+= \delta(q, vwv_{\pi(1)} \cdots v_{\pi(m)})$.	
+By assumption, the former equality gives
+$\delta(q, vwv_{\pi(1)} \cdots v_{\pi(m)}) = \delta(q, v)$.
+Hence, we find 
+$\delta(q, v) = \delta(q, v_{\pi(1)}\cdots v_{\pi(m)})$.
+This gives the claim.
+
+$\ref{prelim:prop:solvable-SCC:3c} \Rightarrow \ref{prelim:classes:solvable:thm:char:solvable}$:
+ Let $p \in Q$ and $a,b \in \Sigma$
+ such that $\delta(q, ab) \lereach q$.
+ Then $\delta(q, abu) = q$ for some $u \in \Sigma^*$
+ and, by assumption,
+ we have $\delta(q, ab) = \delta(q, ba)$.
+\end{proof}
+
+Our first corollary extends \cref{prelim:classes:comm:cor:collections-of-facts:7}.
+
+\begin{corollary} \label{prelim:prop:strongly-trap-solvable}
+	A strongly trap-connected (resp.~strongly connected) solvable
+	automaton $\semiautomat{A}{Q}{\Sigma}{\delta}$ 
+	is a commutative permutation-reset (resp.~commutative permutation) automaton.
+\end{corollary}
+\begin{proof}
+	By \crefitem{prelim:automata:prop:char-strongly-trap}{prelim:automata:prop:char-strongly-trap:1b}
+	we have $Q = [q]_{\eqreach} \cup \{t\}$ for a non-maximal $q \in Q$ and a trap state $t \in Q$ 
+	(resp.~$Q = [q]_{\eqreach}$ for some $q \in Q$).
+	Set $S = \upperset{\{q\}}$ and $T = S \setminus [q]_{\eqreach}$.
+	Since $Q = S$ and $T = \{t\}$ (resp.~$T = \emptyset$)
+	from 
+	\crefitem{prelim:classes:solvable:thm}{prelim:classes:solvable:thm:char:SCC-quotients-comm-perm} 
+	and \cref{prelim:Rees:S-at-most-one}
+	we get
+	that $\mathcal A$ is a commutative permutation-reset (resp.~commutative permutation)
+	automaton.
+\end{proof}
+
+\begin{corollary} \label{cor:solvable-perm-SCC}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be solvable
+	and  $S \subseteq Q$ a non-empty union of sink components (as, for example, the set of maximal states).
+	Then $\mathcal A_{|S}$ is a commutative permutation automaton.
+\end{corollary}
+\begin{proof}
+	For each sink component $T \subseteq S$, $\mathcal A_{|T}$
+	is solvable and strongly connected,
+	and so a commutative permutation automaton
+	by \cref{prelim:prop:strongly-trap-solvable}, which gives the claim. 
+\end{proof}
+
+\begin{corollary} Let $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	and $S \subseteq Q$ be an upper set.
+	Then $\mathcal A / {\sim_S}$ is solvable
+	if and only if for each strongly connected component
+	$T \subseteq Q$ 
+	we have $\delta(q, ab) = \delta(q, ba)$
+	for all $a,b \in \Sigma$
+	and $q \in T \setminus S$ with $\delta(q, ab) \in T$.
+\end{corollary}
+\begin{proof}
+	This follows directly from \crefitem{prelim:classes:solvable:thm}{prelim:prop:solvable-SCC:4},
+	the definition of the Rees quotient automaton,
+	and the fact that a strongly connected set is either completely
+	outside of~$S$ or completely inside of~$S$.	
+\end{proof}
+
+\begin{proposition}	\label{prelim:classes:solv:prop:char-seq}
+Let $\semiautomat{A}{Q}{\Sigma}{\delta}$.
+Then the following are equivalent.
+\begin{enumerate}
+	\item \label{prelim:thm:solvable:1} $\mathcal A$ is solvable. 
+	
+	\item \label{prelim:thm:solvable:2} There exists a sequence of upper sets
+	$
+	S_1 \subsetneq \cdots \subsetneq S_m = Q
+	$
+	where~$S_1$ equals the union of all sink components,
+	$\mathcal A_{|S_1}$ is a commutative permutation automaton, and, for $i \in \{2,\ldots,m\}$,~$( \mathcal A_{|S_i} )/ {\sim_{S_{i-1}}}$ is
+	a strongly trap-connected commutative permutation-reset automaton and $S_{i} \setminus S_{i-1}$ are all the strongly connected components that are not sink components.
+		
+	\item \label{prelim:classes:solv:prop:char-seq:3} There exists a sequence of upper sets
+	$
+	\emptyset = S_0 \subsetneq S_1 \subsetneq \cdots \subsetneq S_m = Q
+	$
+	such that~$( \mathcal A_{|S_i} )/ {\sim_{S_{i-1}}}$
+	is a commutative permutation-reset automaton
+	and $S_{i} \setminus S_{i-1}$ are all the strongly connected components
+	for $i \in \{1,\ldots,m\}$. 
+	
+	\item \label{prelim:thm:solvable:solv-sequence} There exists a sequence of upper sets
+	$
+	\emptyset = S_0 \subsetneq S_1 \subsetneq \cdots \subsetneq S_m = Q
+	$
+	such that~$( \mathcal A_{|S_i} )/ {\sim_{S_{i-1}}}$ 
+	is a solvable automaton for each $i \in \{1,\ldots,m\}$.   
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+\ref{prelim:thm:solvable:1} $\Rightarrow$ \ref{prelim:thm:solvable:2}:
+Consider a sequence of upper sets
+as in \crefitem{prelim:general:order:cor:seq-upper-sets}{prelim:general:order:cor:seq-upper-sets:2}.
+By \cref{cor:solvable-perm-SCC}, $\mathcal A_{|S_0}$ is a commutative permutation automaton.
+Next, each set $S_i$ for $i \in \{1,\ldots, m\}$
+has the form $S_i = [q]_{\simeq} \cup S_{i-1}$
+for some $q \in S_i \setminus S_{i-1}$, where $q$
+is not maximal since~$S_1$ equals the set of maximal states.
+By \crefitem{prelim:classes:solvable:thm}{prelim:classes:solvable:thm:char:SCC-quotients-comm-perm},
+$\mathcal ( \mathcal A_{|S_i} ) / {\sim_{S_{i-1}}}$ is a commutative permutation-reset automaton.\footnote{Alternatively, 
+since the quotient automata
+$\mathcal ( \mathcal A_{|S_i} ) / {\sim_{S_{i-1}}}$ for $i \in \{2,\ldots,m\}$
+are strongly trap-connected by \cref{prelim:automata:prop:char-strongly-trap}
+and solvable by \cref{prelim:classes:solvable:cor:subhom},
+from \cref{prelim:prop:strongly-trap-solvable} we obtain 
+that they are commutative permutation-reset automata.}
+Since~$q$ is not a maximal state, $[q]_{\simeq}$
+is not a sink component
+and so $\mathcal ( \mathcal A_{|S_i} ) / {\sim_{S_{i-1}}}$
+is strongly trap-connected by \cref{prelim:automata:prop:char-strongly-trap}.
+
+\ref{prelim:thm:solvable:2} $\Rightarrow$ \ref{prelim:classes:solv:prop:char-seq:3}:
+Consider a sequence $S_1 \subsetneq \cdots \subsetneq S_m = Q$
+as in Item~\ref{prelim:thm:solvable:2}.
+Applying \crefitem{prelim:general:order:cor:seq-upper-sets}{prelim:general:order:cor:seq-upper-sets:1} 
+to $\mathcal A_{|S_1}$
+there exists a sequence $\emptyset = T_0 \subsetneq T_1 \subsetneq \cdots \subsetneq T_l$
+such that $T_i \setminus T_{i-1}$ for $i \in \{1,\ldots,l-1\}$
+are all the sink components.
+Since~$\mathcal A_{|S_1}$ is a commutative permutation automaton,
+each $\mathcal A_{|T_i}$ is a commutative permutation automaton.
+Then each $( \mathcal A_{|T_i} ) / {\sim_{T_{i-1}}}$ is a commutative permutation automaton.
+Now, $T_0 \subsetneq T_1 \subsetneq \cdots \subsetneq T_{l} \subsetneq S_2 \subsetneq \cdots \subsetneq S_m$
+yields a sequence as claimed.
+
+\ref{prelim:classes:solv:prop:char-seq:3} $\Rightarrow$ \ref{prelim:thm:solvable:solv-sequence}:
+As a commutative automaton is solvable, we obtain the claim.
+
+\ref{prelim:thm:solvable:solv-sequence} $\Rightarrow$ \ref{prelim:thm:solvable:1}: Let $q \in Q$
+and $a,b \in \Sigma$ be such that $\delta(q, ab) \lereach q$.
+Since, by \cref{prelim:prop:reachability-finest}, $\delta(q,ab)$ and~$q$
+are contained in the same strongly connected component, by \cref{prelim:general:order:subset-in-equiv},
+we have $\{ \delta(q, ab), q \} \subseteq S_i \setminus S_{i-1}$ for some $i \in \{1,\ldots,m\}$.
+Since $(\mathcal A_{|S_i} ) / {\sim_{S_i}}$ is solvable,
+by \cref{prelim:rem:Rees} we have 
+$\{ \delta_{|S_i}(q, ab) \} = \delta_{\sim_{S_i}}([q]_{\sim_{S_i}}, ab) = 
+\delta_{\sim_{S_i}}([q]_{\sim_{S_i}}, ba) = \{ \delta_{|S_i}(q, ba) \}$
+where $[q]_{\sim_{S_i}} = \{q\}$,
+and so $\delta(q, ab) = \delta(q, ba)$.
+Hence, $\mathcal A$ is solvable.
+%
+%$\ref{prelim:subclasses:thm:solvable:sequence} 
+%\Rightarrow 
+%\ref{prelim:subclasses:thm:solvable:solvable}$:  Let
+%$
+%\emptyset = S_0 \subsetneq S_1 \subsetneq \ldots \subsetneq S_m = Q
+%$
+%be a sequence of upper sets such that~$( \mathcal A_{|S_i} )/ {\sim_{S_{i-1}}}$
+%is a commutative automaton for each $i \in \{1,\ldots,m\}$.
+%We can assume $Q \ne \emptyset$, so that $m \ge 1$.
+%For $m = 1$, $\mathcal A$ is isomorphic to~$( \mathcal A_{|S_1} )/ {\sim_{S_{0}}}$,
+%which is commutative and so solvable.
+%Otherwise,  $S_0 \subsetneq S_1 \subsetneq \ldots \subsetneq S_{m-1}$
+%forms a sequence in $\mathcal A_{|S_{m-1}}$
+%where, by \cref{prelim:prop:automata:isos:item:subaut,prelim:prop:automata:isos:item:corsub},
+%$( ( \mathcal A_{|S_{m-1}} )_{|S_i} ) / {\sim_{S_{i-1}}} \cong ( \mathcal A_{|S_i} ) / {\sim_{S_{i-1}}}$
+%are commutative for $i \in \{1,\ldots,m-1\}$.
+%Inductively, we find that $\mathcal A_{|S_{m-1}}$
+%is solvable.  As $\mathcal A / {\sim_{S_{m-1}}}$
+%is commutative, $\mathcal A$ is solvable.
+\end{proof}
+
+\Cref{prelim:classes:fig:exsolvable} gives a commutative automaton
+with a sequence as in \crefitem{prelim:classes:solv:prop:char-seq}{prelim:thm:solvable:2}.
+
+\begin{figure}[ht]
+	\centering
+	\begin{subfigure}{0.3\textwidth}
+		\centering
+		\begin{tikzpicture}[node distance = 2cm, on grid, auto, ->]
+			\node (q1) [state] {$q_1$};
+			\node (q2) [state, above of = q1] {$q_2$};
+			
+			\path[->] (q1) edge node {$a$} (q2)
+			(q2) edge [loop above] node {$a$} (q2);
+			%	(q1) edge [loop left] node {$b$} (q1);
+		\end{tikzpicture}
+		\caption{An automaton $\mathcal A$.}
+	\end{subfigure}%
+	\begin{subfigure}{0.3\textwidth}
+		\centering
+		\begin{tikzpicture}[node distance = 2cm, on grid, auto, ->]
+			\tikzstyle{state-subset}=[]
+			
+			\node (11) [state-subset] {$(q_1, q_1)$};
+			\node (12) [state-subset, right of = 11] {$(q_1, q_2)$};
+			\node (21) [state-subset, above of = 11] {$(q_2, q_1)$};
+			\node (22) [state-subset, above of = 12] {$(q_2, q_2)$};
+			
+			\path[->] (11) edge node {$a$} (22)
+			(12) edge node {$a$} (22)
+			(21) edge node {$a$} (22)
+			(22) edge [loop above] node {$a$} (22);
+			%(11) edge [loop left] node {$b$} (11)
+			%(12) edge [loop right] node {$b$} (12)
+			%(21) edge [loop left] node {$b$} (21);		 
+		\end{tikzpicture}
+		\caption{The automaton $\mathcal A \times \mathcal A$.}
+	\end{subfigure}%
+	\begin{subfigure}{0.35\textwidth}
+		\centering
+		\begin{align*}
+			S_0 & = \{ (q_2, q_2) \}, \\
+			S_1 & = \{ (q_2, q_2), (q_1, q_2)\}, \\
+			S_2 & = \{ (q_2, q_2), (q_1, q_2), (q_1, q_1) \}, \\
+			S_4 & = \{ q_1, q_2\} \times \{ q_1, q_2\}.
+		\end{align*}		
+		\caption{Sequence of upper sets.}
+	\end{subfigure}	
+	\caption[Solvable automaton with sequence of upper sets]{A sequence of subsets $S_0 \subseteq S_1 \subseteq S_2 \subseteq S_3$
+		as stated in \crefitem{prelim:classes:solv:prop:char-seq}{prelim:thm:solvable:2}
+		for a unary (and so solvable) automaton of the form $\mathcal A \times \mathcal A$.}
+	\label{prelim:classes:fig:exsolvable}
+\end{figure} 
+
+\begin{proposition} \label{prelim:classes:solvable:prop:char-inductive}
+Let $\semiautomat{A}{Q}{\Sigma}{\delta}$. Then the following are equivalent.
+\begin{enumerate}
+\item \label{prelim:classes:solvable:prop:char-inductive:1} $\mathcal A$ is solvable.	
+	
+\item \label{prelim:classes:solvable:prop:char-inductive:2} $\mathcal A$ is a commutative permutation-reset automaton or there exists a proper upper set $S \subseteq Q$
+with $|S| \ge 2$ such that $\mathcal A_{|S}$ is solvable and $\mathcal A / {\sim_S}$ is a commutative
+and strongly trap-connected permutation-reset automaton.
+
+\item \label{prelim:classes:solvable:prop:char-inductive:3} $\mathcal A$ is a commutative permutation-reset automaton or there exists a proper upper set $S \subseteq Q$
+with $|S| \ge 2$ such that $\mathcal A_{|S}$ is a commutative permutation-reset automaton
+and $\mathcal A / {\sim_S}$ is solvable.
+	
+\item \label{prelim:classes:solvable:prop:char-inductive:4} $\mathcal A$ is commutative or there exists a proper upper set $S \subseteq Q$ with $|S| \ge 2$
+such that $\mathcal A_{|S}$ and $\mathcal A / {\sim_S}$ are solvable. 
+	
+\item \label{prelim:classes:solvable:prop:char-inductive:5} There exists an upper set $S \subseteq Q$
+such that $\mathcal A_{|S}$ and $\mathcal A / {\sim_S}$ are solvable. 
+\end{enumerate}
+\end{proposition}
+\begin{proof} \ref{prelim:classes:solvable:prop:char-inductive:1} $\Rightarrow$ \ref{prelim:classes:solvable:prop:char-inductive:2} \& \ref{prelim:classes:solvable:prop:char-inductive:1} $\Rightarrow$ \ref{prelim:classes:solvable:prop:char-inductive:3}: Consider a sequence 
+$
+S_1 \subsetneq \cdots \subsetneq S_m = Q
+$
+as in \crefitem{prelim:classes:solv:prop:char-seq}{prelim:thm:solvable:2}. For $m = 1$, $Q$ equals the set
+of maximal states and~$\mathcal A$ is a commutative permutation automaton
+and so Items~\ref{prelim:classes:solvable:prop:char-inductive:2} and~\ref{prelim:classes:solvable:prop:char-inductive:3} hold.
+Next, suppose $m \ge 2$.
+Then $\mathcal A / {\sim_{S_{m-1}}}$ is a 
+commutative and strongly trap-connected permutation-reset automaton.
+For $|S_{m-1}| = 1$, we have $\mathcal A \cong \mathcal A / {\sim_{S_{m-1}}}$
+and this shows Item~\ref{prelim:classes:solvable:prop:char-inductive:2}.
+Otherwise, since $\mathcal A_{|S_{m-1}}$ is solvable by \cref{prelim:classes:solvable:prop:subaut},
+Item~\ref{prelim:classes:solvable:prop:char-inductive:2} holds
+with $S = S_{m-1}$.
+
+Next, if $|S_1| \ge 2$, then Item~\ref{prelim:classes:solvable:prop:char-inductive:3} 
+is established since $\mathcal A_{|S_1}$ is a commutative permutation
+automaton and $\mathcal A / {\sim_{S_1}}$
+is solvable by \cref{prelim:classes:solvable:cor:subhom}. For $|S_1| = 1$,
+we have $\mathcal A_{|S_2} \cong ( \mathcal A_{|S_2} ) / {\sim_{S_1}}$,
+and the latter automaton is a commutative permutation-reset automaton
+by choice of the sequence. 
+Thus for $m = 2$, $\mathcal A$ is a commutative permutation-reset automaton
+and Item~\ref{prelim:classes:solvable:prop:char-inductive:3} holds
+or Item~\ref{prelim:classes:solvable:prop:char-inductive:3} holds with the proper upper set of size at least two $S = S_2$.
+
+\ref{prelim:classes:solvable:prop:char-inductive:2} $\Rightarrow$ \ref{prelim:classes:solvable:prop:char-inductive:4} \& \ref{prelim:classes:solvable:prop:char-inductive:3} $\Rightarrow$ \ref{prelim:classes:solvable:prop:char-inductive:4} \& \ref{prelim:classes:solvable:prop:char-inductive:4} $\Rightarrow$ \ref{prelim:classes:solvable:prop:char-inductive:5}: These implications are clear.
+		
+\ref{prelim:classes:solvable:prop:char-inductive:5} $\Rightarrow$ \ref{prelim:classes:solvable:prop:char-inductive:1}: Let $S \subseteq Q$
+be an upper set such that $\mathcal A_{|S}$ and $\mathcal A / {\sim_S}$ are solvable. We can assume $0 < |S| < |Q|$. 
+Then $\emptyset \subsetneq S \subsetneq Q$ 
+gives a sequence as in \crefitem{prelim:classes:solv:prop:char-seq}{prelim:thm:solvable:solv-sequence}.
+So $\mathcal A$ is solvable.
+\end{proof}
+
+\Crefitem{prelim:classes:solvable:prop:char-inductive}{prelim:classes:solvable:prop:char-inductive:2} 
+is similar to \cref{prelim:automata:cor:composition-series-maximal-states},
+but gives more information on automata-theoretical properties.
+
+\begin{remark}
+\Crefitem{prelim:classes:solvable:prop:char-inductive}{prelim:classes:solvable:prop:char-inductive:4}
+can be used to give an alternative inductive 
+proof of the statement from \cref{prelim:subclasses:prop:solvable-product} that $\mathcal A_1 \times \mathcal A_2$ is solvable
+for solvable~$\mathcal A_1, \mathcal A_2$.
+Since, if $\mathcal A_1$ and $\mathcal A_2$
+are commutative, then it is readily seen that $\mathcal A_1 \times \mathcal A_2$
+is commutative.
+Next, if there exists, without loss of generality,
+an upper set $S_1 \subseteq Q_1$
+with $2 \le |S_1| < |Q_1|$
+such that $( \mathcal A_1 )_{|S_1}$
+and $\mathcal A_1 / {\sim_{S_1}}$ are solvable, then the set $T = S_1 \times Q_2$
+is an upper set in $\mathcal A_1 \times \mathcal A_2$
+and by \cref{prelim:automata:prod:eqn:sub,prelim:automata:prod:eqn:quot} we have
+\[
+( \mathcal A_1 \times \mathcal A_2 )_{|T} \cong (\mathcal A_1)_{|S_1} \times \mathcal A_2 \quad 
+\text{ and }
+\quad
+( \mathcal A_1 \times \mathcal A_2 ) / {\sim_T} \cong \mathcal A_1 / {\sim_{S_1}}.
+\]
+Inductively, $(\mathcal A_1)_{|S_1} \times \mathcal A_2$
+is solvable. So we obtain solvability of $\mathcal A_1 \times \mathcal A_2$.
+\end{remark}
+
+\begin{remark}
+	\Crefitem{prelim:classes:solvable:prop:char-inductive}{prelim:classes:solvable:prop:char-inductive:4}
+	can be used to give an alternative proof
+	for \cref{prelim:classes:solvable:prop:subaut}
+	using the various isomorphisms established in \cref{prelim:sec:rees}
+	as we shown next with the same notation as in \cref{prelim:classes:solvable:prop:subaut}.	
+	First, commutativity of~$\mathcal A$
+	transfers to $\mathcal A_{|S}$.
+	Next, suppose
+	there exists an upper set $R \subseteq Q$
+	with $2 \le |R| < |Q|$
+	such that~$\mathcal A_{|R}$
+	and $\mathcal A / {\sim_R}$ are solvable. 
+	By \cref{prelim:prop:automata:isos:item:subaut} we have
+	\[
+	( \mathcal A_{|S} )_{|S \cap R} \cong \mathcal A_{|S \cap R} \cong ( \mathcal A_{|R} )_{|S \cap R},
+	\]
+	and with the canonical projection map  $\pi_{\sim_R} \colon Q \to Q / {\sim_R}$ introduced in \cref{prelim:sec:relations}, 
+	by \cref{prelim:eqn:Rees:ScapT}, %,prelim:eqn:Rees:ScapT}, 
+\[
+%(\mathcal A_{|T}) / {\sim_{T\cap R}} \cong ( \mathcal A / {\sim_{T\cap R}})_{|\pi_{\sim_{T\cap R}}(T)} \cong (\mathcal A / {\sim_R})_{|\pi_{\sim_R}(T)}.
+(\mathcal A_{|S}) / {\sim_{S\cap R}} \cong (\mathcal A / {\sim_R})_{|\pi_{\sim_R}(S)}.
+\]
+Inductively, $( \mathcal A_{|R} )_{|S \cap R}$ 
+and $(\mathcal A / {\sim_R})_{|\pi_{\sim_R}(S)}$ are solvable.
+So, by \crefitem{prelim:classes:solvable:prop:char-inductive}{prelim:classes:solvable:prop:char-inductive:4}
+or by \cref{prelim:Rees:S-at-most-one}, $\mathcal A_{|S}$ is solvable.	
+\end{remark}
+
+\begin{remark}
+	\Crefitem{prelim:classes:solvable:prop:char-inductive}{prelim:classes:solvable:prop:char-inductive:4}
+	can be used to give an alternative proof
+	for \cref{prelim:classes:solvable:prop:morph}
+	using the various isomorphisms established in \cref{prelim:sec:rees}
+	as we shown next with the same notation as in \cref{prelim:classes:solvable:prop:morph}.
+	First, if $\mathcal A$ is commutative,
+	then clearly $\mathcal B$ is commutative.
+	Now, suppose
+	there exists an upper set $R \subseteq Q$
+	with $2 \le |R| < |Q|$
+	such that~$\mathcal A_{|R}$
+	and $\mathcal A / {\sim_R}$ are solvable.
+	The set $\varphi(R)$ is an upper set in $\mathcal B$ by \cref{prelim:automata:morpisms:reachability:prop:images}.
+	Now,~$\varphi_{|R}$ considered as a surjective function from $R$ onto $\varphi(R)$
+	is a surjective morphism from~$\mathcal A_{|R}$ onto~$\mathcal B_{|\varphi(R)}$.
+	%By \crefitem{prelim:thm:homtheorem}{prelim:thm:homtheorem:4}
+	By \cref{prelim:prop:Rees-homsfactorthrough}
+	there exists a surjective morphism
+	from~$\mathcal A / {\sim_R}$ onto~$( \mathcal B / {\sim_{\varphi(R)}} )_{|\pi_{\sim_{\varphi(R)}}(\varphi(Q))}$,
+	where $( \mathcal B / {\sim_{\varphi(R)}} )_{|\pi_{\sim_{\varphi(R)}}(\varphi(Q))} = \mathcal B / {\sim_{\varphi(R)}}$
+	as $\varphi(Q) = S$.
+	By induction hypothesis, 
+	as~$\mathcal A_{|R}$ and~$\mathcal A / {\sim_R}$ are solvable,
+	$\mathcal B_{|\varphi(R)}$
+	and $\mathcal B / {\sim_{\varphi(R)}}$ are solvable.
+	So, by \crefitem{prelim:classes:solvable:prop:char-inductive}{prelim:classes:solvable:prop:char-inductive:4},
+	$\mathcal B$ is solvable.
+\end{remark}
+
+\subsection{Synchronization and Subset Mapping Properties}
+\label{prelim:classes:sec:solvable:sync}
+
+First, in \cref{constr_sync:cor:solvable_sync_iff_reach_trap},
+we state that in solvable automata, a synchronizing state is a trap state (and hence unique).
+\Cref{prelim:thm:solvrank_r} states the bound~$n - r$
+for shortest words of rank at most~$r$ in solvable automata that admit a word of rank~$r$,
+thus extending Rystsov's bound for $r = 1$~\cite[Cor.~4.2]{Rystsov97}.
+Proposition~\ref{prop:S-T-bound}
+gives words of a specific form to map
+one subset onto another subset
+in solvable automata. This result is rather technical, and we need it
+in \cref{compl:sec:solv} (\cref{thm:solvable}) to prove that \ST\ 
+is in \NP\ for solvable automata.
+
+\begin{proposition}
+	\label{constr_sync:cor:solvable_sync_iff_reach_trap} \label{constr_sync:prop:solvable_sync_iff_reach_trap}
+	A synchronizing state in a solvable automaton
+	is a trap state.	
+\end{proposition}
+\begin{proof}
+	By \crefitem{prelim:classes:solvable:thm}{prelim:prop:solvable-SCC:2}
+	in solvable automata the sink components are blocks.
+	So, the claim follows from \cref{constr_sync:prop:sink-blocks-sync-trap}.  
+\end{proof}
+
+\begin{theorem}
+	\label{prelim:thm:solvrank_r}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be an $n$-state solvable
+	automaton. If there exists a word of rank $r$ in $\mathcal A$,
+	then there exists a word of length
+	at most $n - r$ whose rank is at most $r$ 
+	and these bounds are tight even for unary automata where~$r$
+	is the minimal rank among all words. Furthermore, for $\Sigma = \{a_1, \ldots, a_k\}$,
+	the word $(a_1 \cdots a_k)^{n - r}$
+	has rank at most~$r$.
+\end{theorem}
+\begin{proof} 
+	By \crefitem{prelim:classes:solvable:thm}{prelim:prop:solvable-SCC:2}
+	the strongly connected components in $\mathcal A$
+	are blocks.
+	So, Theorem~\ref{prelim:thm:SCCblocks-rank_r}
+	gives the upper bound $n - r$
+	and that $(a_1 \cdots a_k)^{n - r}$ 
+	has rank at most~$r$.
+	Tightness as claimed follows from the automata
+	given in the proof of \cref{prelim:prop:unary_bound}.
+\end{proof}
+
+\begin{proposition} \label{prop:S-T-bound}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be solvable with $n$ states, $S \subseteq Q$,
+	and $w \in \Sigma^*$.
+	Then for $\Sigma = \{a_1, \ldots, a_k\}$
+	there exists $v \in \Sigma^*$ with $|v| < 2^n$
+	and $\delta(S, v) = \delta(S, w)$
+	of the form
+	\[ 
+	v = v_0 x_1 \cdots v_{r-1} x_r v_r
+	\]%  a_1^{r_{0,1}} \cdots a_k^{r_{0,k}}
+	for some $r \le n^2$
+	where $x_1, \ldots, x_r \in \Sigma$ and $v_i = a_1^{r_{i,1}} \cdots a_k^{r_{i,k}}$
+	for numbers $0 \le r_{i,j} < 2^n$
+	with $i \in \{0,1,\ldots,r\}$ and $j \in \{1,\ldots,k\}$.
+\end{proposition}
+\begin{proof}
+	We can assume $S \ne \emptyset$.
+	By \crefitem{prelim:classes:solv:prop:char-seq}{prelim:thm:solvable:2} 
+	there exist upper sets 
+	\begin{equation}\label{eqn:S-T:sequence}
+		S_1 \subsetneq \cdots \subsetneq S_m = Q
+	\end{equation}
+	where~$S_1$ equals the union of all sink components,
+	$\mathcal A_{|S_1}$ is commutative, and $S_{i} \setminus S_{i-1}$ for $i \in \{2,\ldots,m\}$
+	are all the strongly connected components that are not sink components.  
+	Consider a word
+	$u \in \Sigma^*$ of shortest possible
+	length with $\delta(S, u) = \delta(S, w)$.
+	Let $S = \{s_1, \ldots, s_l\}$ for $l = |S| \ge 1$
+	and set $P = \pref{\{u\}}$.
+	Next, we define a function $f \colon P \to \mathbb \{1,\ldots,m\}^l$ 
+	by setting $f(u') = (i_1,\ldots,i_l)$  for $u' \in P$ 
+	where~$i_j \in \{1,\ldots,m\}$ equals the minimal number with $\delta(s_j, u') \in S_{i_j}$
+	for all $j \in \{1,\ldots,l\}$.
+	%by setting for $u' \in \Sigma^*$ such that $u = u' u''$ for some $u'' \in \Sigma^*$
+	%let $f(u') = (i_1,\ldots,i_l)$ 
+	%be the vector where $i_j$ is minimal such that $\delta(s_j, u') \in S_{i_j}$
+	%for all $j \in \{1,\ldots,l\}$.
+	Now, there exists a unique factorization $u = u_0 x_1 u_1 \cdots u_{r-1} x_r u_r$
+	with  $u_0, u_1, \ldots, u_r \in \Sigma^*$
+	and $x_1, \ldots, x_r \in \Sigma$ for some $r \ge 0$
+	such that $f(u_0 x_1 \cdots u_{t-1}) \ne f(u_0 x_1 \cdots u_{t-1}x_t)$
+	for $t \in \{1,\ldots,r\}$ and
+	\begin{align*}
+		f(\varepsilon) & = f(u_0), \\
+		f(u_0x_1)      & = f(u_0x_1 u_1), \\
+		\vdots \\
+		f(u_0 x_1 \cdots u_{r-1} x_r) & = f(u_0 x_1 \cdots u_{r-1} x_r u_r).
+	\end{align*}
+	Since the $S_i$ are upper sets,
+	for $t \in \{1,\ldots,r\}$ with $f(u_0 x_1 \cdots u_{t-1}) = (i_1, \ldots, i_l)$ 
+	and 
+	\[ 
+	f(u_0 x_1 \cdots u_{t-1} x_t) = (i_1', \ldots, i_l')
+	\] 
+	we have $i_j \ge i_j'$ for all $j \in \{1,\ldots,l\}$
+	where $i_j > i_j'$ for at least one $j \in \{1,\ldots,l\}$. 
+	So, $i_1' + \ldots + i_l' < i_1 + \ldots + i_l$.
+	As these sums are between~$l$ and~$lm$, they can decrease at most $l(m-1)$ times 
+	and we find $r \le l(m-1)$. As $l(m-1) \le n^2$ we get $r \le n^2$. 
+	Now, for $j \in \{1,\ldots,l\}$ and $t \in \{0,1,\ldots,r\}$
+	the states $\delta(s_j, u_0 x_1 \cdots u_{t-1} x_t)$ and 
+	$\delta(s_j, u_0 x_1 \cdots u_{t-1} x_t u_t)$ are both contained in the strongly connected component
+	$S_{i_j} \setminus S_{i_j - 1}$ for $i_j \ge 2$
+	or both states are contained in $S_1$.\footnote{We set $u_0 x_1 \cdots u_{-1} x_0 = \varepsilon$.}
+	By \crefitem{prelim:classes:solvable:thm}{prelim:prop:solvable-SCC:3b}
+	and as $\mathcal A_{|S_1}$ is commutative 
+	we can reorder the letters in~$u_t$ while still ending up at the same state
+	and so we find
+	\[ 
+	\delta(s_j, u_0 x_1 \cdots u_{t-1} x_t u_t) = \delta(s_j, u_0 x_1 \cdots u_{t-1} x_t a_1^{|u_t|_{a_1}} \cdots a_k^{|u_t|_{a_k}}).
+	\]
+	Now, as we have chosen $u$ of minimal length,
+	for distinct $u',u''\in P$ we have $\delta(S, u') \ne \delta(S, u'')$
+	as otherwise, for, without loss of generality, $|u'| < |u''|$
+	we have $\delta(S, u'u''') = \delta(S, u'' u''')$ 
+	for $u''' \in \Sigma^*$ with $u = u'' u'''$
+	where $|u' u'''| < |u|$, contradicting the minimal choice of~$u$.
+	%(i.e., $u$ traces out a path in the power automaton that has the subsets of~$Q$ as states
+	%and transitions for each letter given by the action of $\delta$ on subsets without repeating any sets) where these set are nonempty.
+	So, each $u' \in P$ corresponds to a distinct nonempty subset of states $\delta(S, u')$
+	and we conclude $|u| \le 2^n - 1$, which gives
+	$|u_t|_{a_h} \le 2^n - 1$ for each $h \in \{1,\ldots,k\}$.
+	Then for the word
+	$v = v_0 x_1 \cdots v_{r-1} x_r v_r$
+	where $v_i = a_1^{|u_i|_{a_1}} \cdots a_k^{|u_i|_{a_k}}$
+	for $i \in \{0,1,\ldots,r\}$
+	we have $\delta(S, u) = \delta(S, v)$
+	and the claim is proved with~$v$.
+\end{proof}
+
+\subsection{Comparison with Original Definition}
+\label{prelim:classes:sec:comparison}
+	
+\IN{$R_1$-solvable}
+\IN{$R_2$-solvable}
+Rystsov~\cite{Rys96} originally defined an automaton to be solvable, if
+it is synchronizing and admits a sequence $S_1 \subsetneq \cdots \subsetneq S_m = Q$ 
+of upper sets such that $S_1$ is a singleton set 
+containing a trap state and $\mathcal A_{|S_i} / {\sim_{S_{i-1}}}$ for $i \in \{2,\ldots,m\}$ are commutative. 
+This is equivalent to being synchronizing and solvable
+since, with \cref{constr_sync:cor:solvable_sync_iff_reach_trap}, it follows that~$S_1$ is always a singleton 
+for synchronizing and solvable automata.
+We call a synchronizing and solvable automaton
+also an~\emph{$R_1$-solvable} automaton in the following.
+Furthermore, we say that~$\semiautomat{A}{Q}{\Sigma}{\delta}$
+is \emph{$R_2$-solvable} if $(\mathcal A \times \mathcal A) / {\sim_D}$
+is $R_1$-solvable where $D = \{(q,q) \mid q \in Q\}$. This was
+another notion of solvability considered in~\cite{Rys96}.
+Since synchronizability of $(\mathcal A \times \mathcal A) / {\sim_D}$
+is equivalent to synchronizability of $\mathcal A$ by \cref{prelim:subclasses:sync:Aiffpairaut},
+an $R_2$-solvable automaton is synchronizing.\footnote{In the original
+	definition from~\cite[p.~277]{Rys96} 
+	synchronizability of~$\mathcal A$ was explicitly included.}
+	
+\begin{proposition} \label{prelim:classes:solvable:prop:R1}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	and $S \subseteq Q$ be the set of maximal states in~$\mathcal A$ w.r.t.~$\lereach$.
+	Then $\mathcal A$ is solvable if and only if $\mathcal A / {\sim_S}$
+	is $R_1$-solvable and $\mathcal A_{|S}$ is a commutative permutation automaton.
+\end{proposition}
+\begin{proof}
+	First, suppose~$\mathcal A$ is solvable.
+	Then, by \crefitem{prelim:classes:solv:prop:char-seq}{prelim:thm:solvable:2}, 
+	$\mathcal A_{|S}$ is a commutative permutation automaton. 
+	By \cref{prelim:classes:solvable:cor:subhom}, $\mathcal A / {\sim_S}$
+	is solvable and, by \cref{prelim:prop:maximal-states-factor-sync}, 
+	it is synchronizing; and so $R_1$-solvable.
+	
+	Conversely, suppose $\mathcal A_{|S}$ is a commutative permutation automaton
+	and	$\mathcal A / {\sim_S}$ is $R_1$-solvable, and so also solvable.
+	Thus, by \crefitem{prelim:classes:solvable:prop:char-inductive}{prelim:classes:solvable:prop:char-inductive:5}, 
+	since also $\mathcal A_{|S}$ is solvable, $\mathcal A$ is solvable.	
+\end{proof}
+
+\begin{proposition}
+	An automaton $\semiautomat{A}{Q}{\Sigma}{\delta}$ is $R_2$-solvable
+	if and only if it is synchronizing and $(\mathcal A \times \mathcal A) / {\sim_D}$
+	with $D = \{(q,q) \mid q \in Q\}$ is solvable.
+\end{proposition}
+\begin{proof}
+    If~$\mathcal A$ is $R_2$-solvable, then $(\mathcal A \times \mathcal A) / {\sim_D}$
+    is $R_1$-solvable, and so solvable and synchronizing.
+    Synchronizability of $(\mathcal A \times \mathcal A) / {\sim_D}$
+    implies synchronizability of $\mathcal A$ by \cref{prelim:subclasses:sync:Aiffpairaut}.
+        
+    Conversely, \cref{prelim:subclasses:sync:Aiffpairaut}
+    implies synchronizability of $(\mathcal A \times \mathcal A) / {\sim_D}$
+    and so it is $R_1$-solvable. Thus~$\mathcal A$ is $R_2$-solvable.
+\end{proof}
+
+\begin{proposition} \label{prelim:classes:solvable:prop:R1-implies-R2}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$.
+	If $\mathcal A$ is $R_1$-solvable,
+	then $\mathcal A$ is $R_2$-solvable.
+\end{proposition}
+\begin{proof}
+    Since~$\mathcal A$ is solvable, \cref{prelim:subclasses:cor:solv-pair} gives solvability
+	of $(\mathcal A \times \mathcal A ) / {\sim_D}$.
+	Then, synchronizability of $\mathcal A$ yields that it is $R_2$-solvable.
+\end{proof}
+
+By the following corollary, the class of $R_1$-solvable automata also equals
+the intersection of the class of $R_2$-solvable with the class of solvable automata.
+
+\begin{corollary}
+	The automaton $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	is $R_1$-solvable if and only if it is $R_2$-solvable and solvable.
+\end{corollary}
+\begin{proof}
+ An $R_1$-solvable automaton is solvable and, by \cref{prelim:classes:solvable:prop:R1-implies-R2},
+ $R_2$-solvable.
+ Conversely, since an $R_2$-solvable automaton is synchronizing,
+ if it is solvable, it is also $R_1$-solvable.	
+\end{proof}
+
+\Cref{prelim:classes:fig:solvablenotR2solvable} 
+depicts an $R_2$-solvable automaton that is not solvable, and so also not $R_1$-solvable.
+By definition, every non-synchronizing solvable automaton
+is neither $R_1$- nor $R_2$-solvable. 
+Figure~\ref{fig:solvability-notions} shows the inclusions relations
+between our notions of solvability that follow from the above considerations.
+
+\begin{figure}[h]
+	\centering
+\begin{tikzpicture}	
+	\begin{scope}[shift={(3cm,-5cm)}, fill opacity=0.5,	mytext/.style={text opacity=1}]
+		
+		%\draw[fill=red, draw = black] (0,0) circle (5);
+		\draw[fill=gray, draw = black,name path=circle 1] (-2.5,0) ellipse (4.7 and 2);
+		\draw[fill=gray,     draw = black,name path=circle 2] (2.5,0)  ellipse (3 and 2);
+		
+		\pgftransparencygroup
+		\clip (-2.5,0) ellipse (4.7 and 2);
+		\fill[gray!0.5] (2.5,0) ellipse (3 and 2);
+		\filldraw[draw,fill={gray!0.5},name intersections={of=circle 1 and circle 2}] (intersection-1) .. controls +(-6,1) and +(-6,-1) ..(intersection-2);
+		\endpgftransparencygroup
+		
+		%\node[mytext] at (0,4) (A) {A};
+		\node[mytext] at (-5.5,0) (B) {synchronizing};
+		\node[mytext] at (3.8,0) (C) {solvable};
+		\node[mytext] at (0.8,0) (D) {$R_1$-solvable};
+		\node[mytext] at (-2,0) (E) {$R_2$-solvable};
+	\end{scope}
+\end{tikzpicture}
+	\caption[Inclusion relations for solvability notions]{Inclusion relations between the different solvability notions.}
+	\label{fig:solvability-notions}
+\end{figure}
+
+\begin{remark}
+	Yet another, more general notion,
+    is obtained by considering
+	those automata where $(\mathcal A \times \mathcal A) / {\sim_D}$
+	is solvable.
+	This class contains the $R_2$-solvable automata
+	and, by \cref{prelim:subclasses:cor:solv-pair},
+	all solvable automata.
+	By adding a trap state to the automaton~$\mathcal A$
+	from \cref{prelim:classes:fig:solvablenotR2solvable},
+	we obtain a non-solvable automaton
+	such that $(\mathcal A \times \mathcal A) / {\sim_D}$
+	is solvable but not synchronizing.
+	Thus this class properly
+	contains the $R_2$-solvable automata.	
+\end{remark}

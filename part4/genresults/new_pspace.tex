@@ -1,0 +1,2011 @@
+%!TEX root = ./../../springer-mono-format/book.tex
+%!TEX root = ./../../thesis-trier.tex
+
+\todo[inline]{subsection teile auch in eigene dateien}
+
+Here we present \NL-, \PSPACE-, and \NP-hardness conditions in 
+\cref{constr_sync:sec:NL-hardness,constr_sync:sec:PSPACE-hardness,constr_sync:sec:NP-hardness}.
+Some of these conditions use the notion of auxiliary state avoiding words, which
+we introduce in \cref{constrsync:sec:aux}.
+\Cref{constrsync:sec:auxcodes} investigates the relation of auxiliary state avoiding
+words to codes. The proofs also uses equivalence
+relations presented in \cref{constrsync:sec:eqLn} 
+that are derived from the Myhill-Nerode relation from \cref{prelim:subsubsec:min_aut}.
+
+
+\subsection{Auxiliary State Avoiding Words}
+\label{constrsync:sec:aux}
+
+In our \PSPACE-hardness reductions in \cref{constr_sync:sec:NL-hardness,constr_sync:sec:PSPACE-hardness}
+we construct, from a given automaton, a new automaton
+having additional ``auxiliary'' states. For this new automaton
+to be synchronizable, those additional states must be mapped to a synchronizing state as well.
+Existence of certain (weakly/strongly) auxiliary state avoiding words 
+guarantees that this is possible, which also explains why we call them auxiliary state avoiding.
+
+Here, we introduce (weakly/strongly)
+auxiliary state avoiding words
+and collect various statements
+related to closure under concatenation (\cref{constrsync:prop:auxstate-concat}),
+weak auxiliary state avoidability w.r.t.~different languages (\cref{constrsync:prop:auxLn}),
+the relation between strong and weak auxiliary state avoidability (\cref{constrsync:cor:weakly-vs-strongly,constrsync:cor:weakly_suffix_strongly}), 
+partitions (\cref{constrsync:eqn:partitions}),
+and a sufficient condition for weak auxiliary state avoidability (\cref{constr_sync:prop:aux_state_sigmaL}).
+
+\IN{auxiliary state avoiding word!weakly}
+\IN{auxiliary state avoiding word!strongly}
+Let $L \subseteq \Sigma^*$. We call a word $w \in \Sigma^*$
+\begin{enumerate}
+	\item \emph{weakly auxiliary state avoiding (w.r.t.~$L$)}
+	if $w \in (  \pref{L^*}\Sigma  \setminus \pref{L^*} )^+$,
+	\item \emph{strongly auxiliary state avoiding (w.r.t.~$L$)}
+	if $w \in ( ( \pref{L} \setminus L )\Sigma  \setminus \pref{L} )^+$.
+\end{enumerate}
+
+When the context is clear, we omit mentioning the language with respect
+to which we consider a word weakly or strongly auxiliary state avoiding.
+
+\begin{example}
+\label{constrsync:ex:aux}
+\begin{enumerate}
+\item  Let $\Gamma \subseteq \Sigma$ be a proper subset.
+Then $(\Sigma \setminus \Gamma)^+$ 
+is the set of all strongly auxiliary state avoiding
+words w.r.t.~$\Gamma$
+and $(\Gamma^* ( \Sigma \setminus \Gamma ))^+$
+the set of weakly auxiliary state avoiding words w.r.t.~$\Gamma$.
+
+\item Every non-empty word is weakly auxiliary state avoiding w.r.t.~$\{\varepsilon\}$
+and, as  $\emptyset^* = \{\varepsilon\}$, also w.r.t.~$\emptyset$.
+However, no word is strongly auxiliary state avoiding w.r.t.~$\{\varepsilon\}$
+nor w.r.t.~$\emptyset$.
+
+\item If $L = \pref{L}$, then no word is strongly auxiliary state avoiding w.r.t.~$L$.	
+
+\item By \cref{constrsync:prop:prefix-maximal} no word is weakly or strongly auxiliary state avoiding w.r.t.~a maximal
+prefix code. (in fact, for prefix codes this property characterizes maximality.)
+\end{enumerate} 
+\end{example} 
+
+The empty word is never weakly nor strongly auxiliary state avoiding for any language.
+
+Weak (resp.~strong) auxiliary state avoidability w.r.t.~to a common language is preserved
+under concatenation.
+
+\begin{proposition}
+	\label{constrsync:prop:auxstate-concat}
+	Let $L \subseteq \Sigma^*$ and $u,v \in \Sigma^*$ be two weakly (resp.~strongly) auxiliary
+	state avoiding words w.r.t.~$L$.
+	Then $uv$ is weakly (resp.~strongly) auxiliary state avoiding w.r.t.~$L$.
+\end{proposition}
+\begin{proof}
+	This follows 
+	as the set of weakly auxiliary state avoiding words $(\pref{L^*} \Sigma \setminus \pref{L^*})^+$ (resp.~the set of strongly auxiliary state avoiding words $((\pref{L} \setminus L)\Sigma \setminus \pref{L})^+$)
+	forms a semigroup, i.e., is closed for concatenation.
+\end{proof}
+
+Next, we show that being weakly auxiliary state avoiding
+w.r.t.~$L, L^n$ for $n \ge 1$, or $L^*$ are all equivalent properties.
+
+\begin{proposition}
+	\label{constrsync:prop:auxLn}
+	\label{constrsync:prop:weakly-n-strongly}
+	
+	Let $L \subseteq \Sigma^*$, $u \in \Sigma^*$, and $n \ge 1$. 
+	Then the following are equivalent:
+	\begin{enumerate}
+		\item $u$ is weakly auxiliary state avoiding w.r.t.~$L$,
+		
+		\item $u$ is weakly auxiliary state avoiding w.r.t.~$L^n$,
+		
+		\item $u$ is weakly auxiliary state avoiding w.r.t.~$L^*$.		
+	\end{enumerate}
+\end{proposition} 
+\begin{proof}
+    All equivalences follow as $\pref{L^*} = \pref{(L^n)^*}$ and $(L^{*})^* = L^*$.
+\end{proof}
+
+Next, we give a statement that yields, in \cref{constrsync:cor:weakly-vs-strongly}
+a relation between weak and strong auxiliary state avoidability
+w.r.t.~$L$ and $L^n$, respectively, for some $n \ge 1$.
+
+\begin{proposition} \label{constrsync:prop:weakly-vs-strongly} \label{constrsync:item:Ln1}
+	Let $L \subseteq \Sigma^+$ be some language and $n \ge 1$.  Then we have
+	$
+	( \pref{L^*}\Sigma \setminus \pref{L^*} ) \cap \Sigma^{\le n} 
+	= ( ( \pref{L^n} \setminus L^n ) \Sigma \setminus \pref{L^n} ) \cap \Sigma^{\le n}.
+	$
+\end{proposition}
+\begin{proof}
+	Let $u \in \Sigma^{\le n}$. By \cref{constrsync:eqn:Lm}
+	we have $v \in \pref{L^*}$ if and only if $v\in \pref{L^n}$ for $v \in \Sigma^{\le n}$.
+	Thus, $u \in \pref{L^*}\Sigma$
+	and $u \notin \pref{L^*}$ 
+	are equivalent to $u \in \pref{L^n}\Sigma$
+	and $u\notin \pref{L^n}$.
+	Since $\varepsilon \notin L$,
+	we have that $v \in L^m$ implies $|v| \ge m$ for $m \ge 1$.
+	So from $u \in \Sigma^{\le n}$
+	we get that for $v \in \Sigma^*$ with $u \in v\Sigma$
+	we have $|v| < n$ 
+	and so $v \notin L^n$.
+	Thus we find $u \in \pref{L^n}\Sigma$
+	if and only if $u \in ( \pref{L^n} \setminus L^n )\Sigma$.
+	This gives the claim.
+\end{proof}
+
+\begin{corollary} \label{constrsync:cor:weakly-vs-strongly} \label{constrsync:item:Ln2}
+	Let $L \subseteq \Sigma^+$ be some language and $n \ge 1$.
+	A word $u \in \Sigma^{\le n}$ is weakly auxiliary state avoiding w.r.t.~$L$
+	if and only if it is strongly auxiliary state avoiding w.r.t.~$L^n$.	
+\end{corollary}
+\begin{proof}
+	By~\ref{constrsync:prop:weakly-vs-strongly}
+	we obtain $( \pref{L^*}\Sigma \setminus \pref{L^*} )^+ \cap \Sigma^{\le n}
+	= (( \pref{L^n} \Sigma \setminus L^n ) \setminus \pref{L^n} )^+ \cap \Sigma^{\le n}$,
+	which gives the claim.	
+\end{proof}
+
+As a consequence of the next statement, we obtain that for languages with $\varepsilon \notin L$
+every weakly auxiliary state avoiding word w.r.t~$L$
+has a suffix that is strongly auxiliary state avoiding w.r.t.~$L$.
+
+\begin{proposition} \label{constrsync:prop:weakly_suffix_strongly}  \label{item:suffix1}
+	Let $L \subseteq \Sigma^+$ be a language not containing the empty word. Then we have
+	 \[
+	 \pref{L^*}\Sigma  \setminus \pref{L^*} \subseteq  L^* ( ( \pref{L} \setminus L )\Sigma \setminus \pref{L} ).
+	 \]
+\end{proposition}
+\begin{proof}
+Let $u \in \pref{L^*}\Sigma  \setminus \pref{L^*}$.
+Write $u = u_1 \cdots u_n x$ with
+\begin{enumerate}
+	\item $u_1, \ldots, u_{n-1} \in L$, 
+	
+	\item $x \in \Sigma$, and
+	
+	\item $u_n = \varepsilon$ or $u_n \in \pref{L} \setminus L$.
+\end{enumerate}
+We have $\varepsilon \in \pref{L} \setminus L$ since $\varepsilon \notin L$.
+Thus, even for $u_n = \varepsilon$, we have $u_n \in \pref{L} \setminus L$.
+Since $u \notin \pref{L^*}$ we have $u_nx \notin \pref{L}$.
+Hence, $u \in L^* ( ( \pref{L} \setminus L )\Sigma \setminus \pref{L} )$.	
+\end{proof}
+
+\Cref{constrsync:prop:weakly_suffix_strongly} might fail
+for languages containing the empty word as shown next.
+
+\begin{example}
+	Let $L = \{\varepsilon, ac\}$.
+	Then $\pref{L} \setminus L = \{a\}$
+	and $acb \in \pref{L^*}\Sigma \setminus \pref{L^*}$
+	but $acb \notin L^* ( ( \pref{L} \setminus L )\Sigma \setminus \pref{L} )$.
+\end{example} 
+
+The inclusion from \cref{constrsync:prop:weakly_suffix_strongly} can be proper,
+as the next example shows.
+
+\begin{example}
+	Let $L = \{b, babb, aba\}$.
+	Then $babb \in L^* ( ( \pref{L} \setminus L )\Sigma \setminus \pref{L} ) \setminus ( \pref{L^*}\Sigma  \setminus \pref{L^*} )$.
+\end{example} 
+
+\begin{corollary} \label{constrsync:cor:weakly_suffix_strongly}  \label{item:suffix2}
+	Let $L \subseteq \Sigma^+$. Every weakly auxiliary state avoiding word w.r.t.~$L$
+	has a suffix that is strongly auxiliary state avoiding w.r.t.~$L$.
+\end{corollary}
+\begin{proof}
+	By~\cref{item:suffix1}, we have
+	$(\pref{L^*}\Sigma  \setminus \pref{L^*})^+ \subseteq ( L^* ( ( \pref{L} \setminus L )\Sigma \setminus \pref{L} ) )^+$.	
+\end{proof}
+
+In \cref{constrsync:prop:Cn-weakly-aux-state}
+we will show that 
+we have equality in \cref{constrsync:prop:weakly_suffix_strongly}
+for prefix codes.
+
+
+
+Next, in \cref{constrsync:eqn:partitions}, we give various partitions of $\Sigma^*$.
+\Cref{constrsync:eqn:partitions:item:weak1,constrsync:eqn:partitions:strong}
+involve weakly and strongly auxiliary state avoiding words, respectively.
+The proof of \cref{constrsync:eqn:partitions:strong} is based on the following lemma.
+
+\begin{lemma} \label{constrsync:lem:properpref}
+	Let $L \subseteq \Sigma^*$.
+	Set $L_1 = (\pref{L} \setminus L)\Sigma \setminus \pref{L}$
+	and $L_2 =  L\Sigma  \setminus \pref{L}$.
+	Then we have $\pref{L}\Sigma \setminus \pref{L} = L_1 \cup L_2$
+	and the right ideals $L_1 \Sigma^*$
+	and $L_2 \Sigma^*$ are disjoint.
+\end{lemma}
+\begin{proof}
+	Clearly, we have $\pref{L}\Sigma = (\pref{L}\setminus L)\Sigma \cup L\Sigma$,
+	which gives the first equation.		
+	
+	Next, let $u_1 x v = u_2 y w$
+	with $u_1x \in L_1$, $u_2y \in L_2$, $x,y \in \Sigma$, and $v,w \in \Sigma^*$.
+	Since $u_1, u_2 \in \pref{L}$ while $u_1x, u_2y \notin \pref{L}$,
+	neither $u_1$ nor $u_2$ can be a proper prefix of the other.
+	Indeed, if $|u_1| < |u_2|$, then $u_1x$ would be a prefix of $u_2$,
+	and hence $u_1 x \in \pref{L}$, a contradiction.
+	Similarly, $|u_2| < |u_1|$ leads to a contradiction. Therefore $|u_1| = |u_2|$,
+	which gives $u_1 = u_2$ since $u_1 x v = u_2 y w$.
+	However, by the definitions of~$L_1$ and~$L_2$,
+	we have $u_1 \notin L$ and $u_2 \in L$, contradicting $u_1 = u_2$.	
+\end{proof}
+
+\begin{proposition} \label{constrsync:eqn:partitions}
+	Let $L \subseteq \Sigma^*$. Then the following holds:
+	\begin{align}
+		\Sigma^* & = \pref{L} \uplus (  \pref{L} \Sigma  \setminus \pref{L} ) \Sigma^* \label{prelim:eqn:prefcomplement} \\			
+		\Sigma^* & = \pref{L} \uplus (\pref{L}\Sigma \setminus \pref{L} )^+ \pref{L} \label{constrsync:eqn:partitions:item:strong0} \\
+		\Sigma^* & = \pref{L^*} \uplus (\pref{L^*}\Sigma \setminus \pref{L^*})^+ \pref{L^*} \label{constrsync:eqn:partitions:item:weak1} \\
+		\Sigma^* & = U \uplus (  ( \pref{L} \setminus L )\Sigma \setminus \pref{L} ) )^+ U	\label{constrsync:eqn:partitions:strong}
+	\end{align}	
+	where $U = \pref{L} \uplus ( L\Sigma \setminus \pref{L} ) \Sigma^*$.
+\end{proposition}
+\begin{proof}
+\underline{\Cref{prelim:eqn:prefcomplement}}: Let $u \in \Sigma^*$ and 
+let $v \in \Sigma^*$ be a longest prefix of~$u$
+in $\pref{L}$. Then we either have $u = v$, and so $u \in \pref{L}$,
+or $u = vxw$ with $x \in \Sigma$ and $w \in \Sigma^*$
+such that $vx \notin \pref{L}$, i.e.,
+$u \in ( \pref{L}\Sigma \setminus \pref{L} ) \Sigma^*$.
+
+Since the prefix of every word in $\pref{L}$
+is in $\pref{L}$, and each word in $( \pref{L}\Sigma \setminus \pref{L} ) \Sigma^*$
+has a prefix not in $\pref{L}$, both sets are disjoint.
+
+\underline{\Cref{constrsync:eqn:partitions:item:strong0}}:
+The language $( \pref{L}\Sigma \setminus \pref{L} ) \Sigma^*$
+does not contain the empty word.
+Then Arden's lemma (\cref{prelim:lem:arden}) applied to \cref{prelim:eqn:prefcomplement}
+gives 
+\[
+\Sigma^* = ( \pref{L}\Sigma \setminus \pref{L} )^* \pref{L}
+= \pref{L} \cup ( \pref{L}\Sigma \setminus \pref{L} )^+ \pref{L},
+\]
+where disjointness of the union also follows since the union from \cref{prelim:eqn:prefcomplement} 
+is disjoint.\footnote{The claim also follows from \cref{prelim:eqn:Sigmastarpartition}
+applied to $\pref{L}\Sigma \setminus \pref{L}$
+since $\pref{L} = \Sigma^* \setminus ( \pref{L}\Sigma \setminus \pref{L} )\Sigma^*$.}
+
+\underline{\Cref{constrsync:eqn:partitions:item:weak1}}: This follows
+from \cref{constrsync:eqn:partitions:item:strong0} applied to $L^*$.
+
+\underline{\Cref{constrsync:eqn:partitions:strong}}: 
+By \cref{constrsync:lem:properpref} we find
+\[
+\Sigma^* = U  \uplus ( (\pref{L} \setminus L)\Sigma \setminus \pref{L} )\Sigma^*.
+\]
+Then \cref{prelim:lem:arden} gives $\Sigma^* = (  ( \pref{L} \setminus L )\Sigma \setminus \pref{L} ) )^* U$.
+The sets $\pref{L}$ and $(  ( \pref{L} \setminus L )\Sigma \setminus \pref{L} ) ) \Sigma^*$
+are disjoint. By \cref{constrsync:lem:properpref}, 
+$(L\Sigma \setminus \pref{L})\Sigma^*$
+and $(\pref{L} \setminus L)\Sigma \setminus \pref{L} )\Sigma^*$
+are disjoint. These sets are also pairwise disjoint. This gives the claim.\footnote{The claim also follows by applying~\cref{prelim:eqn:Sigmastarpartition} to $( \pref{L} \setminus L )\Sigma \setminus \pref{L}$,
+	which gives
+	\[
+	\Sigma^* = U \cup ( \pref{L} \setminus L )\Sigma \setminus \pref{L} )^+  U
+	\]
+	with $U = \Sigma^* \setminus ( ( \pref{L} \setminus L )\Sigma \setminus \pref{L} )\Sigma^* ) = \pref{L} \cup ( L\Sigma \setminus \pref{L} ) \Sigma^*$.}
+\end{proof}
+
+Lastly, we give a sufficient condition to identify weakly auxiliary state
+avoiding words in terms of the Levenshtein-Romanov mapping.
+
+\begin{proposition} \label{constr_sync:prop:aux_state_sigmaL}
+	Let $L \subseteq \Sigma^*$ and $u \in \Sigma^+$.
+	If $\sigma_L(u) = \varepsilon$, then $u$ is weakly
+	auxiliary state avoiding w.r.t.~$L$.	
+\end{proposition} 
+\begin{proof}
+	As $\sigma_{L}(u) = \varepsilon$, $u$
+	has no non-empty suffix in $\pref{L^*}$.
+	So, by~\cref{constrsync:eqn:partitions:item:weak1}
+	we find that  $u \in (\pref{L^*}\Sigma \setminus \pref{L^*})^+$.
+\end{proof} 
+
+The next example gives $L \subseteq \Sigma^*$ and weakly auxiliary state avoiding $u \in \Sigma^*$
+with $\sigma_L(u) \ne \varepsilon$.
+
+\begin{example}
+	Let $L = \{bc, a\}$.
+	Then~$ba$ is strongly and weakly auxiliary state avoiding w.r.t.~$L$, but $\sigma_L(ba) = a$.
+	For another example, the word $aa$ is strongly and weakly auxiliary state
+	avoiding w.r.t.~$\{ab,b\}$ and we have $\sigma_{\{ab,b\}}(aa) = a$.	
+\end{example}
+
+\subsection{Auxiliary State Avoiding Words and Prefix Codes}
+\label{constrsync:sec:auxcodes}
+
+In our applications, the notions of strongly or weakly auxiliary state avoiding words
+occur in conjunction with prefix codes. Here,
+we investigate relations to prefix codes.
+
+\Cref{constrsync:prop:prefix-weakly} states that the sets of weakly and strongly auxiliary 
+state avoiding words w.r.t.~some language
+are generated by prefix codes. This follows from \cref{constrsync:prop:prefix-weakly0}.
+In \cref{constrsync:prop:prefix-weakly-implies-strongly}
+we prove that w.r.t.~a prefix code, every strongly auxiliary state avoiding
+word is weakly auxiliary state avoiding.
+The property of weak auxiliary state avoidability
+is preserved w.r.t.~codes when concatenating 
+code words to the front, as proved in \cref{constrsync:cor:Cn-weakly-aux-state}.
+\Cref{constrsync:cor:Cn-weakly-aux-state} follows from \cref{constrsync:prop:Cn-weakly-aux-state}.
+\cref{constrsync:prop:vu} collects 
+equivalent conditions related to concatenating
+words to the front while preserving weak auxiliary state avoidability.
+
+\begin{proposition} \label{constrsync:prop:prefix-weakly0} 
+	Let $L \subseteq \Sigma^*$.
+	Then $\pref{L}\Sigma \setminus \pref{L}$
+	is a prefix code if it is non-empty.
+\end{proposition}
+\begin{proof}
+	This follows since every proper prefix of a word from $\pref{L}\Sigma$
+	is contained in $\pref{L}$
+	and therefore cannot belong to $\pref{L}\Sigma \setminus \pref{L}$.
+\end{proof}
+	
+\begin{corollary}\label{constrsync:prop:prefix-weakly} 
+	Let $L \subseteq \Sigma^*$.
+	If the language $\pref{L^*}\Sigma \setminus \pref{L^*}$ (resp.~$(\pref{L} \setminus L)\Sigma \setminus \pref{L}$) is non-empty,
+	then it is a prefix codes.
+\end{corollary}
+\begin{proof} 
+	For the first language the claim
+	follows from \cref{constrsync:prop:prefix-weakly0} 
+	applied to the language~$L^*$.
+	For the second language
+	the claim follows since it is a subset
+	of $\pref{L}\Sigma \setminus \pref{L}$
+	and thus inherits the property of being a prefix code.
+\end{proof}
+
+By \cref{constrsync:prop:prefix-weakly} a factorization
+of weakly (resp.~strongly) auxiliary state avoiding
+words into words from $\pref{L^*}\Sigma \setminus \pref{L^*}$ 
+(resp.~$( \pref{L} \setminus L )\Sigma \setminus \pref{L}$) is unique.
+
+Let $C \subseteq \Sigma^+$ be a prefix code.
+In this case, we have $C\Sigma \cap \pref{C} = \emptyset$.
+Thus $(C\Sigma \setminus \pref{C}) \Sigma^* = C \Sigma^+$.
+Using this in \cref{constrsync:eqn:partitions:strong} then gives
+the following partition involving strongly state avoiding words:
+\begin{equation} \label{constrsync:eqn:partitions:strong2}
+	\Sigma^* = \pref{C} \uplus C\Sigma^+ \uplus ( ( \pref{C} \setminus C )\Sigma \setminus \pref{C})^+ ( \pref{C} \uplus C\Sigma^+ ).
+\end{equation}
+
+Next, we show that every strong auxiliary state avoiding word
+w.r.t.~some prefix code is also weakly auxiliary state avoiding w.r.t.~the same prefix code.
+
+\begin{proposition}
+\label{constrsync:prop:prefix-weakly-implies-strongly} 
+Suppose $C \subseteq \Sigma^*$ is a prefix code. 
+Then every strongly auxiliary state avoiding
+word w.r.t.~$C$ is also weakly auxiliary state avoiding w.r.t.~$C$.
+\end{proposition}
+\begin{proof}
+By~\cref{constrsync:eqn:capprefCstar} we have
+$
+ ( ( \pref{C} \setminus C)\Sigma ) \setminus \pref{C} 
+ = ( ( \pref{C} \setminus C)\Sigma ) \setminus \pref{C^*}. 
+$
+As $\pref{C} \setminus C)\Sigma \subseteq \pref{C^*}\Sigma$
+we find that $(\pref{C} \setminus C)\Sigma) \setminus \pref{C} )$
+is contained in $\pref{C^*} \Sigma \setminus \pref{C^*}$,
+which gives the claim.
+\end{proof}
+
+The following example shows that \cref{constrsync:prop:prefix-weakly-implies-strongly} does not hold for arbitrary codes.
+
+\begin{example}
+	Consider the code $C = \{a,aab,c\}$.
+	Then $aac \in (\pref{C} \setminus C)\Sigma \setminus \pref{C}$
+	but $aac \in C^*$.
+	By \cref{constrsync:eqn:partitions:item:weak1}
+	we have $aac \notin ( \pref{C^*}\Sigma \setminus \pref{C^*} )^+$
+	and so $aac$ is not weakly auxiliary state avoiding w.r.t.~$C$.
+	For another example (that is not a code),
+	consider $L = \{a,b,aa\}$.
+	Then $ab \in (\pref{L}\setminus L)\Sigma \setminus \pref{L}$
+	but $ab \in \pref{L^*}$.
+\end{example}
+
+\Cref{constr_sync:thm:uC} involved weakly auxiliary state avoiding words of the form
+$wu$ for $w \in \Sigma^*$ and a weakly auxiliary state avoiding $u \in \Sigma^*$.
+Next, we investigate conditions when weak auxiliary state avoidability
+is preserved by concatenating words to the front.
+
+\begin{proposition} \label{constrsync:prop:Cn-weakly-aux-state}
+	Let $C \subseteq \Sigma^+$ be a prefix code.
+	Then the following holds:
+	\[
+	\pref{C^*}\Sigma \setminus \pref{C^*} = C^* ( (\pref{C} \setminus C)\Sigma \setminus \pref{C} )
+	\]	
+\end{proposition}
+\begin{proof}
+	By \cref{constrsync:eqn:capprefCstar} we have 
+	$(\pref{C} \setminus C)\Sigma \setminus \pref{C} = (\pref{C} \setminus C)\Sigma \setminus \pref{C^*}$.
+	Since $\pref{C}\setminus C \subseteq \pref{C^*}$,
+	we have
+	\[
+	(\pref{C} \setminus C)\Sigma \setminus \pref{C^*} \subseteq \pref{C^*}\Sigma \setminus \pref{C^*}.
+	\]
+	Thus $C^* ( (\pref{C} \setminus C)\Sigma \setminus \pref{C^*} )
+	\subseteq C^* ( \pref{C^*}\Sigma \setminus \pref{C^*} )$.
+	Since  $C^* \pref{C^*}\Sigma \subseteq  \pref{C^*}\Sigma$,
+	by \cref{constrsync:eqn:complementprefCstar} 
+	we have $C^* ( \pref{C^*}\Sigma \setminus \pref{C^*} ) 
+	= \pref{C^*}\Sigma \setminus \pref{C^*}$.
+	The other inclusion follows from \cref{constrsync:prop:weakly_suffix_strongly}.
+\end{proof}
+
+\begin{corollary} \label{constrsync:cor:Cweakly-aux-state0}
+	Let $C \subseteq \Sigma^+$ be a prefix code. Then we have
+	\begin{align*}
+		(\pref{C}\setminus C)\Sigma \setminus \pref{C} & \subseteq \pref{C^*}\Sigma \setminus \pref{C^*} \\
+			\pref{C^*}\Sigma \setminus \pref{C^*} & = C^* ( \pref{C^*}\Sigma \setminus \pref{C^*} )
+	\end{align*}	
+\end{corollary}
+\begin{proof}
+	The first equation clearly follows from \cref{constrsync:prop:Cn-weakly-aux-state}.
+	We have $C^* C^* ( (\pref{C} \setminus C)\Sigma \setminus \pref{C} )
+	= C^* ( (\pref{C} \setminus C)\Sigma \setminus \pref{C} )$, which gives
+	the second equation with \cref{constrsync:prop:Cn-weakly-aux-state}.	
+\end{proof}
+
+\begin{corollary}  \label{constrsync:cor:Cn-weakly-aux-state}
+	Let $C \subseteq \Sigma^+$ be a prefix code
+	and $u$ weakly or strongly state avoiding w.r.t.~$C$.
+	Then $vu$ is weakly state avoiding w.r.t.~$C$ for each $v \in C^*$.
+\end{corollary}
+\begin{proof}
+	We can write $u = u_1 \cdots u_n$
+	where, for $i \in \{1,\ldots,n\}$,
+	we have $u_i \in \pref{C^*}\Sigma \setminus \pref{C^*}$ 
+	if $u$ is weakly auxiliary state avoiding
+	and $u_i \in (\pref{C}\setminus C)\Sigma \setminus \pref{C}$
+	if $u$ is strongly auxiliary state avoiding. 
+	By \cref{constrsync:prop:Cn-weakly-aux-state,constrsync:cor:Cweakly-aux-state0} we have
+	\[
+	wu_1 \in \pref{C^*}\Sigma \setminus \pref{C^*}
+	\]
+	and
+	\[
+	u_i \in \pref{C^*}\Sigma \setminus \pref{C^*}
+	\]
+	for $i \in \{2,\ldots,n\}$ for both cases that $u$ is strongly or weakly
+	auxiliary state avoiding.
+	Thus $wu_1 \cdots u_n$ is weakly auxiliary state avoiding.
+\end{proof}
+
+\begin{example}
+	\Cref{constrsync:prop:Cn-weakly-aux-state} 
+	is not valid for arbitrary languages.
+	For example consider $L = \{aa,bc,aabd\}$.
+	Then $bd$ is weakly auxiliary state avoiding w.r.t.~$L$,
+	but $aabd \in L$ is not weakly auxiliary state avoiding 
+	w.r.t.~$L$.
+\end{example}
+
+\begin{corollary}
+		Let $C \subseteq \Sigma^+$ be a prefix code.
+		Then $( C \cup \pref{C^*}\Sigma \setminus \pref{C^*} )^* = (\pref{C^*}\Sigma \setminus \pref{C^*} )^*C^*$.
+\end{corollary}
+\begin{proof} 
+	By \crefitem{prelim:langeqn}{prelim:langeqn:starcup}
+	we have 
+	$( C \cup \pref{C^*}\Sigma \setminus \pref{C^*} )^* = (C^* ( \pref{C^*}\Sigma \setminus \pref{C^*} ) )^* C^*$.
+	By \cref{constrsync:eqn:complementprefCstar} 
+	the last language equals 
+	$( \pref{C^*}\Sigma \setminus \pref{C^*} )^* C^*$.
+\end{proof} 
+
+The following examples show that concatenating a word
+from the set of prefixes to a weakly auxiliary state avoiding
+word does not, in general, yield a weakly auxiliary state
+avoiding word even w.r.t.~prefix codes.
+
+\begin{example}
+\begin{enumerate}
+\item Consider the prefix code $C = \{aa,bac\}$.
+Then $ac$ is weakly (and strongly) auxiliary state avoiding w.r.t.~$C$,
+but $bac \in C$ is not weakly auxiliary state avoiding w.r.t.~$C$.
+
+\item Consider the prefix code $C = aaa^*b$. 
+Here,  $\pref{C^*}$
+is a submonoid of $\Sigma^*$ 
+and $ab$ is strongly and weakly 
+auxiliary state avoiding w.r.t.~$C$. However, for  $a \in \pref{C^*}$ we have $aab \in C$
+and so $aab$ is neither weakly nor strongly auxiliary state avoiding w.r.t.~$C$.
+\end{enumerate}
+\end{example}
+
+Next, we show that the property of preservation of weak auxiliary state avoidability (for a fixed word)
+is equivalent for certain types of prefixes.
+
+\begin{proposition}	\label{constrsync:prop:vu}
+	Let $C \subseteq \Sigma^*$ be a prefix code, $u \in \Sigma^*$ be weakly auxiliary state avoiding w.r.t.~$C$,
+	and $n \ge 1$ be some fixed number.
+	Then the following are equivalent.	 
+	\begin{enumerate}
+	\item \label{constrsync:aux:v} $vu$ is weakly auxiliary state avoiding  w.r.t.~$C$ 
+	for each $v \in \pref{C} \setminus C$.		
+		
+	\item \label{constrsync:aux:vCstar} $vu$ is weakly auxiliary state avoiding  w.r.t.~$C$ for each $v \in \pref{C^*}$.
+		
+	\item \label{constrsync:aux:vCn} $vu$ is weakly auxiliary state avoiding  w.r.t.~$C$ for each $v \in \pref{C^n}$.
+	\end{enumerate} 
+\end{proposition} 
+\begin{proof}
+	$\ref{constrsync:aux:v} \Rightarrow~\ref{constrsync:aux:vCstar}$: 
+	Set $L = \pref{C^*}\Sigma \setminus \pref{C^*}$ so that $L^+$ is the set of weakly auxiliary state avoiding words w.r.t.~$C$. 
+	By \cref{prelim:eqn:prefLstarnoeps} 
+	we have $\pref{C^*} = C^* (\pref{C} \setminus C)$.
+	By \cref{constrsync:aux:v}
+	we have $(\pref{C} \setminus C) L^+ \subseteq L^+$.
+	By \cref{constrsync:cor:Cn-weakly-aux-state} 
+	we have $C^* L^+ \subseteq L^+$.
+	Thus we obtain  $\pref{C^*}L^+ \subseteq L^+$,
+	which gives the claim.
+	
+	$\ref{constrsync:aux:vCstar} \Rightarrow~\ref{constrsync:aux:vCn}$: This is clear
+	since $\pref{C^n} \subseteq \pref{C^*}$.
+	
+	$\ref{constrsync:aux:vCn} \Rightarrow~\ref{constrsync:aux:v}$: This is clear
+	since $\pref{C} \setminus C \subseteq \pref{C^n}$.
+\end{proof}
+
+\subsection{Maximal Prefix Codes}
+\label{constrsync:sec:max-prefix-codes}
+
+\IN{maximal prefix code}
+\IN{prefix code!maximal}
+We call~$C \subseteq \Sigma^+$ \emph{maximal} if $C \cup \{u\}$ is not a prefix code for each $u \in \Sigma^* \setminus C$.
+%Maximal codes are related to the defining conditions of weak and strong auxiliary state avoidability in the following way.
+
+Auxiliary state avoiding words are related to maximal codes. Here, we demonstrate this by deriving
+characterizations of maximal codes from the results of \cref{constrsync:sec:auxcodes,constrsync:sec:aux}.
+
+\begin{proposition} \label{constrsync:prop:prefix-maximal}
+	Let $C \subseteq \Sigma^+$ be a prefix code. Then the following are equivalent:
+	\begin{enumerate}
+		\item \label{constrsync:prop:prefix-maximal:1} $C$ is maximal.
+		
+		\item \label{constrsync:prop:prefix-maximal:2} $\Sigma^* = \pref{C} \uplus C\Sigma^+$.
+		
+		\item \label{constrsync:prop:prefix-maximal:3} $(\pref{C} \setminus C)\Sigma \setminus \pref{C} = \emptyset$.
+		
+		\item \label{constrsync:prop:prefix-maximal:4} $\pref{C^*}\Sigma  \setminus \pref{C^*} = \emptyset$.
+		
+		\item \label{constrsync:prop:prefix-maximal:5} $\pref{C^*} = \Sigma^*$.
+	\end{enumerate}	
+\end{proposition}
+\begin{proof}
+	$\ref{constrsync:prop:prefix-maximal:1} \Rightarrow \ref{constrsync:prop:prefix-maximal:2}$: Let $u \in \Sigma^*$.
+	For $u \in C$, we have $u \in \pref{C}$.
+	For $u \notin C$,
+	since~$C$ is maximal,
+	$C \cup \{u\}$ is not a prefix code.
+	This yields that some word in~$C$
+	has~$u$ as a prefix, i.e., $u \in \pref{C} \setminus C$,
+	or that $u$ has some word from~$C$
+	as a prefix, i.e., $u \in C\Sigma^+$.
+	This yields $\Sigma^* = \pref{C} \uplus C\Sigma^+$.
+	
+	$\ref{constrsync:prop:prefix-maximal:2} \Rightarrow \ref{constrsync:prop:prefix-maximal:3}$: Since $\Sigma^* = \pref{C} \uplus C\Sigma^+$
+	and the union from \cref{constrsync:eqn:partitions:strong2}
+	is disjoint,
+	we must have $( ( \pref{C} \setminus C )\Sigma \setminus \pref{C})^+ ( \pref{C} \uplus C\Sigma^+ ) = \emptyset$,
+	which gives $(\pref{C} \setminus C)\Sigma \setminus \pref{C} = \emptyset$.
+	
+	$\ref{constrsync:prop:prefix-maximal:3} \Rightarrow \ref{constrsync:prop:prefix-maximal:4}$: By \cref{constrsync:prop:weakly_suffix_strongly} 
+	every word in $\pref{C^*}\Sigma  \setminus \pref{C^*}$
+	has a suffix in $(\pref{C} \setminus C)\Sigma \setminus \pref{C}$.
+	However, this latter set is empty by assumption.
+	Thus, there can be no word in $\pref{C^*}\Sigma \setminus \pref{C^*}$, i.e.,
+	this set is empty as well.
+	
+	$\ref{constrsync:prop:prefix-maximal:4} \Rightarrow \ref{constrsync:prop:prefix-maximal:5}$: This follows from the disjoint union given in
+	\cref{constrsync:eqn:partitions:item:weak1} since the 
+	set $(\pref{L^*}\Sigma \setminus \pref{L^*})^+ \pref{L^*}$
+	is empty by assumption.
+	
+	$\ref{constrsync:prop:prefix-maximal:5} \Rightarrow \ref{constrsync:prop:prefix-maximal:1}$: Suppose~$C$ is not maximal.
+	Then $C \cup \{u\}$ is a prefix code for some $u \in \Sigma^*$
+	with $u \notin C$.
+	Since~$u$ has no prefix in~$C$ it is not contained in $C\pref{C^*}$
+	and since no word from~$C$ has it as a prefix,
+	it is not contained in $\pref{C}$.
+	We have $\pref{C^*} = \pref{C} \cup C\pref{C^*}$
+	and thus $u \notin \pref{C^*}$.
+\end{proof}
+
+\begin{remark}
+	Let $C \subseteq \Sigma^+$ be a prefix code.
+	The set $( (\pref{C} \setminus C)\Sigma ) \setminus \pref{C}$
+	is precisely the set of minimal words
+	that are not prefixes of words from~$C$.
+\end{remark}
+
+\begin{proposition} \label{constrsync:prop:prefix-maximalD}
+	Let $C \subseteq \Sigma^+$ be a prefix code.
+	Then $D = C \cup ( ( \pref{C} \setminus C ) \Sigma \setminus \pref{C} )$
+	is a maximal prefix code.
+\end{proposition}
+\begin{proof}
+	Since $C$ and~$( \pref{C} \setminus C ) \Sigma \setminus \pref{C}$
+	are prefix codes
+	and no word from~$C$ can be a prefix of a word
+	from $( \pref{C} \setminus C ) \Sigma \setminus \pref{C}$
+	and vice versa, we find that $D$ is a prefix code.
+	
+	Next, by \cref{constrsync:eqn:partitions:strong2}, we have
+	\begin{align*}
+	\Sigma^* & \subseteq \pref{C} \cup C\Sigma^+ \cup 
+	((\pref{C}\setminus C)\Sigma \setminus \pref{C})\Sigma^* \\
+	& = \pref{C} \cup ((\pref{C}\setminus C)\Sigma \setminus \pref{C}) 
+	\cup C\Sigma^+ \cup ((\pref{C}\setminus C)\Sigma \setminus \pref{C})\Sigma^+ \\
+	& \subseteq \pref{D} \cup D\Sigma^+.
+	\end{align*}
+	Thus $\Sigma^* = \pref{D} \cup D\Sigma^+$.
+	Since~$D$ is a prefix code, this union is disjoint.
+	So $D$ is maximal by \cref{constrsync:prop:prefix-maximal:2} of \cref{constrsync:prop:prefix-maximal}.	
+\end{proof}
+
+\begin{example}
+	Let $C = a^i a^* b$ for some $i \ge 0$.
+	Then $\pref{C} \setminus C = a^*$,
+	$(\pref{C} \setminus C )\{a,b\} = \{ b, ab, aab, \ldots, a^{i-1}b \} \cup C \cup aa^*$,
+	and $(\pref{C} \setminus C )\{a,b\} \setminus \pref{C} = 
+	\{ b, ab, aab, \ldots, a^{i-1}b \}$.	
+\end{example}
+
+\begin{example}
+	Let $C = \{ab,aab,aaab\}$.
+	Then $\pref{C} \setminus C = \{ \varepsilon,a,aa,aaa\}$,
+	$( \pref{C} \setminus C )\{a,b\} = \{ a, b, aa, ab, aaa, aab, aaaa, aaab \}$,
+	and $( \pref{C} \setminus C )\{a,b\} \setminus \pref{C}
+	= \{ b, aaaa \}$.
+\end{example}
+
+\begin{remark}
+	Note that, in general, there might be several possibilities to obtain a maximal
+	prefix code by extending a given prefix code~$C$.
+	For example, for $C = \{b, ab, aab\}$,
+	$D_i = \{ aaa^jb \mid 1 \le j \le i - 1 \}\cup \{ a^{i+2} \}$ for $i \ge 1$,
+	and $D = \{ aaab, aaaab, aaaaab, \ldots \}$
+	the sets $C \cup D_i$ for $i \ge 1$
+	and $C \cup D$ all give maximal prefix codes.
+	Note that here $D_1 = (\pref{C} \setminus C)\Sigma \setminus \pref{C}$.	
+\end{remark}
+
+\subsection{Relations Derived From the Myhill-Nerode Relation} 
+\label{constrsync:sec:eqLn}
+
+Here, we introduce relations derived from the Myhill-Nerode relation $\equiv_L$,
+which was introduced in \cref{prelim:subsubsec:min_aut}. We first abstractly describe 
+a method for constructing a new relation that refines the Myhill-Nerode relation from a given relation $\sim$ 
+ when certain assumptions are satisfied.
+We then derive various properties of this new relation.
+Via this abstract construction we obtain a relation~$\eqLL{C}{V}$,
+which will be central to most of our hardness proofs
+given in the remaining sections since it allows 
+to  distinguish, or ``keep track'', of certain words in automata that we construct in our reductions.
+
+Let $L \subseteq \Sigma^*$. Suppose we have an equivalence
+relation $\sim$ on~$\Sigma^*$ and a language $U \subseteq \Sigma^*$
+such that, for all $u,v \in \Sigma^*$ and $x \in \Sigma$,
+the following properties hold:
+\begin{enumerate}
+\item \label{constrsync:rel:refinesNerode} If $u \sim v$, then $u \equiv_L v$, i.e., $\sim$ refines $\equiv_L$.
+
+\item \label{constrsync:rel:saturateU} The relation~$\sim$ saturates~$U$.
+
+\item \label{constrsync:rel:right-congr2} If $u \equiv_L v$ and $u,v \in U$, then $ux,vx \in U$ or $ux \sim vx$.
+
+\item \label{constrsync:rel:right-congr1} If $u \sim v$, then $ux \sim vx$ or $ux,vx \in U$.
+\end{enumerate}
+Then for $u,v \in \Sigma^*$ define a relation $\eqLsimU{L}{\sim}{U}$ by
+\[
+u \eqLsimU{L}{\sim}{U} v
+\Leftrightarrow 
+( u \sim v ) \lor ( u \equiv_L v \land u,v \in U ).
+\]
+\label{def:Nerode-generalization}
+
+Before establishing some properties of this relation, we present two examples to build intuition.
+
+\begin{example} \label{constrsync:ex:refineNerode}
+	\begin{enumerate} 		
+		\item  \label{constrsync:ex:refineNerode:right-ideal} Properties~\ref{constrsync:rel:refinesNerode},
+		\ref{constrsync:rel:saturateU},\ref{constrsync:rel:right-congr2}, and~\ref{constrsync:rel:right-congr1}
+		are obviously fulfilled when $\sim$ equals the equality relation
+		and $U$ is a right ideal.
+		
+		% In dem Fall das zeigen:
+		% There are finitely many equivalences classes for $\equiv_{L,U}$
+		% if and only if~$L$ is regular and~$\Sigma^* \setminus U$ is finite.
+		
+		\item For $U = \Sigma^*$, the above construction always yields
+		the Myhill-Nerode relation $\equiv_L$, regardless of which relation $\sim$ (that refines $\equiv_L$) we choose.
+	\end{enumerate}
+\end{example}
+
+\begin{remark} \label{constrsync:rem:refined-Nerode}
+	Since~$\sim$ refines $\equiv_L$, for $u,v \in \Sigma^*$, we have
+	\[
+	u \eqLsimU{L}{\sim}{U} v
+	\Leftrightarrow
+	(  u \sim v  \land |\{u,v\} \cap U| \le 1 ) \lor
+	( u \equiv_L v \land u,v \in U ).
+	\]
+	In the special case that~$\sim$ is the equality relation,
+	we also have
+	\[
+	u \eqLsimU{L}{\sim}{U} v
+	\Leftrightarrow
+	( u = v  \land u,v \notin U ) \lor
+	( u \equiv_L v \land u,v \in U ).
+	\]	
+\end{remark}
+
+The relation $\eqLsimU{L}{\sim}{U}$ is an equivalence relation that is invariant under right concatenation
+as stated next.
+
+\begin{theorem} \label{constrsync:thm:relation-right-congruence}
+The relation $\eqLsimU{L}{\sim}{U}$ is an equivalence
+relation such that, for all $u,v \in \Sigma^*$,
+if $u \eqLsimU{L}{\sim}{U} v$,
+then $ux \eqLsimU{L}{\sim}{U} vx$ for all $x \in \Sigma$.
+\end{theorem}
+\begin{proof}
+%Clearly, the relation is symmetric and reflexive.
+Symmetry and reflexivity are clear.
+For transitivity, consider $u,v,w \in \Sigma^*$
+such that $u \eqLsimU{L}{\sim}{U} v$
+and $v \eqLsimU{L}{\sim}{U} w$.
+If $u \sim v$ and $v \sim w$, then $u \sim w$
+and so $u \eqLsimU{L}{\sim}{U} w$.
+For $u \equiv_L v$ and $v \equiv_L w$ with $u,v,w \in U$
+we have $u \equiv_L w$ 
+since $\equiv_L$ is transitive and so $u \eqLsimU{L}{\sim}{U} w$.
+Now, suppose $u \sim v$ and $v \equiv_L w$ with $v,w \in U$.
+By Property~\ref{constrsync:rel:refinesNerode},
+$u \sim v$ implies $u \equiv_L v$.
+Since~$\sim$ 
+saturates~$U$ by Property~\ref{constrsync:rel:saturateU},
+we also have $u \in U$. Thus we find $u \equiv_L w$
+and $u,w \in U$, i.e., $u \eqLsimU{L}{\sim}{U} w$.
+Next, suppose $u \equiv_L v$ with $u,v \in U$
+and $v \sim w$. By Property~\ref{constrsync:rel:refinesNerode}
+we have $v \equiv_L w$. Since~$\sim$ 
+saturates~$U$ by Property~\ref{constrsync:rel:saturateU},
+we also have $w \in U$.
+Thus we find $u \equiv_L w$
+and $u,w \in U$, i.e., $u \eqLsimU{L}{\sim}{U} w$.
+
+Next, suppose $u \eqLsimU{L}{\sim}{U} v$ for $u,v \in \Sigma^*$
+and let $x \in \Sigma$. We show that then we have $ux \eqLsimU{L}{\sim}{U} vx$.
+By combining Property~\ref{constrsync:rel:refinesNerode}
+with \cref{prelim:eqn:Nerodecongruence}
+and using Property~\ref{constrsync:rel:right-congr1}, we get
+\[
+u \sim v 
+\Rightarrow 
+( ux \sim vx ) \lor ( ux \equiv_L vx \land ux, vx \in U )
+\]
+Thus, if $u \sim v$, we have $ux \eqLsimU{L}{\sim}{U} vx$.
+Next, let $u \equiv_L v$ with $u,v \in U$.
+If $ux \sim vx$, then we have $ux \eqLsimU{L}{\sim}{U} vx$ 
+by the definition of $\eqLsimU{L}{\sim}{U}$.
+Otherwise, by Property~\ref{constrsync:rel:right-congr2},
+we have $ux, vx \in U$. Since, by \cref{prelim:eqn:Nerodecongruence}, 
+from $u \equiv_L v$ we get $ux \equiv_L vx$,
+we also have $ux \eqLsimU{L}{\sim}{U} vx$. This shows the claim.
+\end{proof}
+
+\begin{proposition} \label{constrsync:prop:equiv-classes-form}
+For $u \in \Sigma^*$ we have
+\[
+[u]_{\eqLsimU{L}{\sim}{U}}
+= 
+\begin{cases}
+	[u]_{\sim}               & \text{if } u \notin U, \\
+	[u]_{\sim} \cup ( [u]_{\equiv_L} \cap U ) & \text{if } u \in U.
+\end{cases}
+\]
+\end{proposition}
+\begin{proof}
+Let $v \in [u]_{\eqLsimU{L}{\sim}{U}}$.
+First, suppose $u \notin U$.
+Then, by definition,
+we must have $u \sim v$, i.e., $v \in [u]_{\sim}$.
+Next, suppose $u \in U$
+and $v \notin [u]_{\sim}$.
+In this case, by definition,
+we have $u \equiv_L v$ and $v \in U$, i.e.,
+$v \in [u]_{\equiv_L} \cap U$.
+
+Conversely, by definition,
+we always have $[u]_{\sim} \subseteq [u]_{\eqLsimU{L}{\sim}{U}}$.
+If also $u \in U$ and $v \in [u]_{\equiv_L} \cap U$,
+then $u \equiv_L v$ and $u,v \in U$
+so that $v \in [u]_{\eqLsimU{L}{\sim}{U}}$.
+\end{proof}
+
+\begin{proposition} \label{constrsync:prop:relation-refines}
+Let $V \subseteq \Sigma^*$ be such that $U \subseteq V$
+and $\approx$ be an equivalence
+relation that is coarser than~$\sim$ and that fulfills
+Properties~\ref{constrsync:rel:refinesNerode},
+\ref{constrsync:rel:saturateU},\ref{constrsync:rel:right-congr2}, and~\ref{constrsync:rel:right-congr1} w.r.t.~$L$ and~$V$. % vielleicht begriff \sim und U compatible mit L oder so einführen
+Then for $u,v \in \Sigma^*$ we have that
+$u \eqLsimU{L}{\sim}{U} v$
+implies
+$u \eqLsimU{L}{\approx}{V} v$, i.e., $\eqLsimU{L}{\sim}{U}$ refines $\eqLsimU{L}{\approx}{V}$.
+\end{proposition}
+\begin{proof}
+Suppose $u \eqLsimU{L}{\sim}{U} v$ for $u,v \in \Sigma^*$.
+Then we have $u \sim v$
+or $u \equiv_L v$ with $u,v \in U$.
+In the former case, since $u \sim v$
+implies $u \approx v$,
+we also have $u \eqLsimU{L}{\approx}{V} v$.
+In the latter case, since $U \subseteq V$,
+we find $u,v \in V$
+and with $u\equiv_L v$
+we also have $u \eqLsimU{L}{\approx}{V} v$ .
+\end{proof}
+
+\begin{corollary} \label{constrsync:cor:relation-refines_Nerode}
+The relation $\eqLsimU{L}{\sim}{U}$
+refines $\equiv_L$.
+\end{corollary} 
+\begin{proof}
+The equivalence relation $\equiv_L$ and the set~$\Sigma^*$
+fulfill all Properties~\ref{constrsync:rel:refinesNerode},
+\ref{constrsync:rel:saturateU},\ref{constrsync:rel:right-congr2}, and~\ref{constrsync:rel:right-congr1}.
+Now $\eqLsimU{L}{\equiv_L}{\Sigma^*}$
+equals~$\equiv_L$ and so the claim follows from \cref{constrsync:prop:relation-refines}.
+\end{proof}
+
+\begin{corollary}  \label{constrsync:cor:both-prefix-L}
+	The relation $\eqLsimU{L}{\sim}{U}$
+	saturates~$L$ and $\pref{L}$.
+\end{corollary}
+\begin{proof}
+This follows from \cref{constrsync:cor:relation-refines_Nerode} 	
+since $\equiv_L$ saturates~$L$
+and $\pref{L}$.
+That $\equiv_L$ saturates $\pref{L}$
+follows since if $u \equiv_L v$
+and $u \in \pref{L}$,
+then $uw \in L$ for some $w \in \Sigma^*$.
+Now we have $uw \equiv_L vw$.
+Thus, we also get $vw \in L$
+and so $v \in \pref{L}$.
+\end{proof}
+
+\label{def:equivLn}
+Let $n \ge 0$. For $L \subseteq \Sigma^*$ 
+and $U = \Sigma^n \Sigma^*$
+we now consider
+the equivalence relation $\eqLsimU{L}{=}{U}$,
+which we also denote by $\eqLn$ in the following.
+With \cref{constrsync:rem:refined-Nerode}, for $u,v \in \Sigma^*$, we have 
+\begin{align*} 
+u \eqLn v
+& \Leftrightarrow 
+( u = v )
+\lor 
+( \min\{ |u|, |v| \} \ge n \land u \equiv_L v ) \\
+& \Leftrightarrow 
+( \max\{ |u|, |v| \} < n \land u = v )
+\lor 
+( \min\{ |u|, |v| \} \ge n \land u \equiv_L v ) \\
+& \Leftrightarrow 
+( \min\{ |u|, |v| \} < n \land u = v   )
+\lor 
+( \min\{ |u|, |v| \} \ge n \land u \equiv_L v )
+\end{align*}
+
+Clearly, for $m \ge n$ the relation 
+$\eqLp{m}$ refines $\eqLp{n}$
+and $\eqLp{0}$ equals $\equiv_L$.
+
+\begin{proposition} \label{constrsync:prop:eqLn-classes}
+Let $u \in \Sigma^*$.
+Then we have
+\[
+[u]_{\eqLn}
+=
+\begin{cases}
+	\{u\} & \text{if } |u| < n, \\
+	\{ v \in \Sigma^n\Sigma^* \mid v \equiv_L u \} & \text{otherwise.}
+\end{cases}
+\]
+Thus, we have 
+at least $|\Sigma^{< n}| = ( |\Sigma|^n - 1 ) / (|\Sigma| - 1)$
+many equivalence classes.
+\end{proposition}
+\begin{proof}
+This follows directly from \cref{constrsync:prop:equiv-classes-form}
+with $U = \Sigma^n \Sigma^*$ and the fact that $\sim$
+equals the equality relation in the definition of~$\eqLn$.
+\end{proof}
+
+\begin{corollary}
+There are finitely many equivalence classes for $\eqLn$
+if and only if~$L$ is regular.
+\end{corollary}
+\begin{proof}
+First, suppose~$L$ is regular.
+Then, by \cref{prelim:min_aut:terminal_object},
+we have finitely many equivalence classes for $\equiv_L$.
+Thus there are only finitely many 
+distinct sets of the form $\{ v \in \Sigma^n\Sigma^* \mid v \equiv_L u \}$
+for $u \in \Sigma^*$ with $|u| \ge n$.
+Since there are only finitely many words of length at most~$n$,
+with \cref{constrsync:prop:eqLn-classes} 
+we find that there are only finitely many equivalence classes 
+for $\eqLn$.
+
+Conversely, since $\eqLn$ refines $\equiv_L$,
+the  $\equiv_L$-classes	are unions of $\eqLn$-classes. Thus,
+if there are only finitely many $\eqLn$-classes,
+then there are only finitely many $\equiv_L$-classes
+and so~$L$ is regular by \cref{prelim:min_aut:terminal_object}.
+\end{proof}
+
+\label{def:preeqLL}
+Next, let $C \subseteq \Sigma^+$ be a prefix code and $V \subseteq C$. 
+Consider the relation $\preeqLL{C}{V}$ on~$\Sigma^*$
+which is, for $u,v \in \Sigma^*$, given by
+\[
+u \preeqLL{C}{V} v \Leftrightarrow ( u = v ) \lor ( \exists w \in \pref{V} \setminus V \colon u,v \in C^*w ).
+\]
+
+\begin{proposition}
+The relation~$\preeqLL{C}{V}$ given above is an equivalence relation.
+\end{proposition}
+\begin{proof} 
+Clearly, the relation is reflexive and symmetric.
+It is also transitive, for assume we have $u_1, u_2, u_3 \in \Sigma^*$
+with $u_1 \preeqLL{C}{V} u_2$ and $u_2 \preeqLL{C}{V} u_3$, where we can suppose all three words are distinct.
+Then we find $u_1, u_2 \in C^* w_1$ and $u_2, u_3 \in C^* w_2$
+for some $w_1, w_2 \in \pref{V} \setminus V$.
+This gives  $u_2 \in C^* w_1 \cap C^* w_2$.
+We have $w_1, w_2 \notin C\Sigma^*$
+as otherwise some word from~$V$ would have a word from~$C$
+as a proper prefix, which is not possible since~$C$ is a prefix code.
+As~$C$ is a prefix code,
+by \cref{constrsync:prop:char-prefix-code,constrsync:prop:suffix-factorizations}
+we find $w_1 = w_1$.
+Thus $u_1, u_3 \in C^* w_1$, giving $u_1 \preeqLL{C}{V} u_3$.
+\end{proof}
+
+\begin{remark}
+	Transitivity might fail if~$C$ is not a prefix
+	code. For example, consider $C = \{aa,ba,baa\}$, which is only a code, but not a prefix code.
+	Then $\pref{C} \setminus C = \{\varepsilon, a, b\}$.
+	We have $aaa, baa \in C^*a$ and $baa, ba \in C^*$,
+	but there exists no $w \in \{\varepsilon,a,b\}$
+	such that $C^*w$ contains 
+	$aaa$ and $ba$.
+	Thus, the relation defined above 
+	would not yield a transitive relation.
+	However, there exist codes that are not prefix
+	codes 
+	such that
+	$u_1, u_2 \in C^*w_1$ and $u_2, u_3 \in C^*w_2$
+	for some $w_1, w_2 \in (\pref{C}\setminus C)$
+	would imply $u_1, u_3 \in C^* w_3$ for some $w_3 \in \pref{C} \setminus C$,
+	and so they would yield transitivity.
+	For example, this holds for the code $C = \{a, ab\}$, 
+	because $\pref{C} \setminus C = \{\varepsilon\}$.
+	However, we only need this construction in the 
+	context of prefix codes.	
+\end{remark}
+
+\begin{proposition} \label{constrsync:prop:Cstarw-relation-unique}
+	Let $u,v \in \pref{V}\setminus V$.
+	Then $u \preeqLL{C}{V} v$
+	implies $u = v$.
+\end{proposition}
+\begin{proof}
+	By the definition of~$\preeqLL{C}{V}$,
+	from $u \preeqLL{C}{V} v$
+	we get $u,v \in C^* w$ for some $w \in \pref{V}\setminus V$.
+	Since~$C$ is a prefix code, which gives $u,v \notin C\Sigma^*$, 
+	by \cref{constrsync:prop:char-prefix-code,constrsync:prop:suffix-factorizations},
+	from $u \in C^* u \cap C^* w$ and $v \in C^* v \cap C^*w$
+	we get $u = w = v$.
+\end{proof}
+
+\begin{proposition} \label{constrsync:prop:prefix-code-pre-equivalence} 
+	Let $u \in \Sigma^*$.
+	Then we have
+	\[
+	[u]_{\preeqLL{C}{V}} =
+	\begin{cases}
+		C^*w   & \text{if } u \in C^*w \text{ with } w \in \pref{V} \setminus V, \\
+		\{u\}  & \text{otherwise.} 
+	\end{cases}
+	\]
+\end{proposition}
+\begin{proof}
+	First, suppose $u \notin C^* (\pref{V}\setminus V)$.
+	By reflexivity, we have $\{u\} \subseteq [u]_{\preeqLL{C}{V}}$.
+	Next, let $v \in [u]_{\preeqLL{C}{V}}$.
+	By the definition of~$\preeqLL{C}{V}$
+	we have $u = v$. This gives $[u]_{\preeqLL{C}{V}} = \{u\}$.
+	Now, let $u \in C^* w$ for some $w \in \pref{V}\setminus V$.
+	In this case, by the definition of $\preeqLL{C}{V}$,
+	we have $C^*w \subseteq [u]_{\preeqLL{C}{V}}$.
+	Next, let $v \in [u]_{\preeqLL{C}{V}}$.	
+	We can assume $u \ne v$. Then $u \preeqLL{C}{V} v$ implies $u,v \in C^* w'$ for some $w' \in \pref{V}\setminus V$.
+	Since $u \in C^*w \cap C^*w'$ and $w' \notin C\Sigma^*$,
+	by \cref{constrsync:prop:char-prefix-code,constrsync:prop:suffix-factorizations},
+	we get $w = w'$ and so $v \in C^*w$.
+	This gives $[u]_{\preeqLL{C}{V}} \subseteq C^* w$.
+\end{proof}
+
+\begin{proposition} \label{constrsync:prop:properties-simCV}
+The relation~$\preeqLL{C}{V}$ fulfills Properties~\ref{constrsync:rel:refinesNerode},
+\ref{constrsync:rel:saturateU}, \ref{constrsync:rel:right-congr2}, and~\ref{constrsync:rel:right-congr1}
+for $L = C^*$ and $U = \Sigma^* \setminus ( C^* ( \pref{V} \setminus V) )$.
+\end{proposition}
+\begin{proof}
+Observe that $u \equiv_{C^*} \varepsilon$ if and only if $u \in C^*$ (this in fact holds for the Kleene star of any language). We will use this equivalence in the following arguments.	
+
+Property~\ref{constrsync:rel:refinesNerode}: Suppose $u \preeqLL{C}{V} v$ for $u,v \in \Sigma^*$.
+For $u = v$ we have $u \equiv_L v$. So, now let $u \ne v$. Then $u = u'w$
+and $v = v' w$ for some $u',v' \in C^*$ and $w \in \pref{V} \setminus V$.
+We have $u' \equiv_{C^*} \varepsilon$ and $v' \equiv_{C^*} \varepsilon$.
+With \cref{prelim:eqn:Nerodecongruence} this yields $u \equiv_{C^*} w \equiv_{C^*} v$.
+
+Property~\ref{constrsync:rel:saturateU}: By \cref{constrsync:prop:prefix-code-pre-equivalence},
+for $u \in U$, we have $[u]_{\preeqLL{C}{V}} = \{u\}$. Thus~$\preeqLL{C}{V}$ saturates~$U$.
+
+Property~\ref{constrsync:rel:right-congr2}: Suppose $u \equiv_{C^*} v$ for $u,v \in U$ and let $x\in \Sigma$.
+We have $ux, vx \in U$ or, without loss of generality, $ux \notin U$.
+Then $ux \in C^*w$ for some $w \in \pref{V} \setminus V$.
+Assume $w \ne \varepsilon$. Then we can write $w = w'x$  for some $w' \in \pref{V} \setminus V$.
+This gives $u \in C^*w'$, which is not possible since $u \in U$.
+Thus, we must have $w = \varepsilon$ and so $ux \in C^*$.
+By \cref{prelim:eqn:Nerodecongruence}, we find $ux \equiv_{C^*} vx$.
+This then gives $vx \in C^*$ and so $ux \preeqLL{C}{V} vx$.
+
+Property~\ref{constrsync:rel:right-congr1}: 
+Suppose $u \preeqLL{C}{V} v$ for $u,v \in \Sigma^*$ and let $x \in \Sigma$.
+We can assume $u \ne v$.
+Then we have $u,v \in C^*w$
+for some $w \in \pref{V} \setminus V$.
+The claim holds for $ux, vx \in U$.
+Next, without loss of generality, let $ux \notin U$. Then
+$ux \in C^*w'$ for some $w' \in \pref{V} \setminus V$.
+Suppose $w' = \varepsilon$.
+By Property~\ref{constrsync:rel:refinesNerode} we have $u \equiv_{C^*} v$.
+This gives $ux \equiv_{C^*} vx$.
+With $ux \in C^*$ we have $ux \equiv_{C^*} \varepsilon$
+and so $vx \equiv_{C^*} \varepsilon$ and thus $vx \in C^*$.
+This then gives $ux \preeqLL{C}{V} vx$.
+Next, suppose $w' \ne \varepsilon$.
+We have $ux \in C^*w' \cap C^* wx$. 
+Since~$C$ is a prefix code, we have $w', wx \notin C\Sigma^+$ (note that the possibility $wx \in C$
+has not been excluded yet).
+By \cref{constrsync:prop:char-prefix-code,constrsync:prop:suffix-factorizations}
+and as $|w'|, |wx| > 0$ we then get $w' = wx$.
+This gives $ux, vx \in C^*w'$ and so $ux \preeqLL{C}{V} vx$.
+\end{proof} 
+
+Thus, by \cref{constrsync:prop:properties-simCV}, we can define an equivalence
+relation in the following way.
+
+\begin{definition} \label{def:eqLL}
+	Let $C \subseteq \Sigma^+$ be a prefix code and $V \subseteq C$.
+	The relation $\eqLL{C}{V}$ is defined
+	to be $\eqLsimU{C^*}{\preeqLL{C}{V}}{U}$ with $U = \Sigma^* \setminus ( C^* ( \pref{V} \setminus V) )$.
+\end{definition}
+
+This relation fulfills
+ \cref{constrsync:thm:relation-right-congruence,constrsync:prop:equiv-classes-form,constrsync:prop:relation-refines}.
+Unraveling the definition, for $u,v \in \Sigma^*$ we have the following:
+\begin{align*}
+u \eqLL{C}{V} v
+& \Leftrightarrow
+( u = v ) \lor ( \exists w \in \pref{V} \setminus V \colon u,v \in C^*w ) \lor
+( u \equiv_{C^*} v \land u,v \notin C^* (\pref{V} \setminus V) ) \\
+& \Leftrightarrow
+( \exists w \in \pref{V} \setminus V \colon u,v \in C^*w ) \lor
+( u \equiv_{C^*} v \land u,v \notin C^* (\pref{V} \setminus V) )
+\end{align*}
+where $u = v$ can be omitted since each word is either in $C^*(\pref{V}\setminus V)$
+or its complement. Then with \cref{constrsync:prop:equiv-classes-form,constrsync:prop:prefix-code-pre-equivalence}
+we have
+\begin{equation}\label{constrsync:eqn:eqLLCV}
+u \eqLL{C}{V} v \Leftrightarrow
+\begin{cases}
+	v \in C^*w & \text{if } u \in C^*w \text{ with } w \in \pref{V} \setminus V, \\
+	v \in [u]_{\equiv_{C^*}} \setminus ( C^* ( \pref{V} \setminus V ) ) & \text{if } u \notin C^* ( \pref{V} \setminus V ).
+\end{cases}
+\end{equation}
+With \cref{constrsync:prop:Cstarw-relation-unique} we also obtain that for $u,v \in \pref{V}\setminus V$
+we have 
+\begin{equation} \label{constrsync:eqn:eqLLCV-unique-on-prefV}
+	u \eqLL{C}{V} v \Leftrightarrow u = v.
+\end{equation} 
+
+
+\begin{example}\label{constrsync:ex:eqLL}
+For $C = aa^*b$ and $V = \{ab,aab\}$
+we have the distinct equivalence classes $[\varepsilon]_{\eqLL{C}{V}} = C^*$,
+$[a]_{\eqLL{C}{V}} = C^*a$, $[aa]_{\eqLL{C}{V}} = C^*aa$, $[aaa]_{\eqLL{C}{V}} = C^*aaaa^*$,
+and $[b]_{\eqLL{C}{V}} = \Sigma^* \setminus \pref{C^*}$.
+In fact,
+we can construct an automaton
+$\automat{A_{\eqLL{C}{V}}}{\Sigma^* / {\eqLL{C}{V}}}{\Sigma}{\delta_{\eqLL{C}{V}}}{[\varepsilon]_{\eqLL{C}{V}}}{\{ [\varepsilon]_{\eqLL{C}{V}} \}}$
+with
+transition function given by $\delta_{\eqLL{C}{V}}([w]_{\eqLL{C}{V}}, x) = [wx]_{\eqLL{C}{V}}$ for $w \in \Sigma^*$ and $x \in \Sigma$, which
+is well-defined by \cref{constrsync:thm:relation-right-congruence}.
+This automaton accepts $C^*$
+since $[\varepsilon]_{\eqLL{C}{V}} = C^*$. See~\cref{fig:eqLLaut}
+for a depiction of $\mathcal A_{\eqLL{C}{V}}$
+with the minimal automaton~$\minaut{C^*}$ for comparison.
+
+\begin{figure}
+	\centering
+	\begin{subfigure}[b]{0.55\textwidth}
+		\centering			
+		\begin{tikzpicture}[shorten >=1pt,node distance=2.5cm and 3cm,on grid,auto]
+			\tikzstyle{state}=[]
+			
+			\node[state] (eps)                  {$[\varepsilon]_{\eqLL{C}{V}}$};
+			\node[state] (a)   [right = of eps] {$[a]_{\eqLL{C}{V}}$};
+			\node[state] (aa)  [right = of a]   {$[aa]_{\eqLL{C}{V}}$};
+			\node[state] (aaa) [below = of aa]  {$[aaa]_{\eqLL{C}{V}}$};
+			\node[state] (b)  [below = of eps] {$[b]_{\eqLL{C}{V}}$};
+			
+			\path[->] (eps) edge node {$a$} (a)
+			(a)	edge node {$a$} (aa)
+			(aa)   edge node {$a$} (aaa)
+			(aaa) edge [loop right, looseness=2.75] node {$a$} (aaa);
+			
+			
+			\path[->] (a)   edge [bend left=20] node {$b$} (eps)
+			(aa)  edge [bend left=50, above] node {$b$} (eps)
+			(aaa) edge [bend left=30, above, pos=.3] node {$b$} (eps);
+			
+			\path[->] (b)  edge [loop left, looseness=2.75] node {$a,b$} (b);	
+			\path[->] (eps) edge [left] node {$b$} (b);
+		\end{tikzpicture}
+		\caption{The automaton $\mathcal A_{\eqLL{C}{V}}$}
+		\label{fig:AeqLL}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.36\textwidth}
+		\centering			
+		\begin{tikzpicture}[shorten >=1pt,node distance=2.5cm,on grid,auto]
+			\tikzstyle{state}=[]
+			
+			\node[state] (eps)                  {$[\varepsilon]_{\equiv_{C^*}}$};
+			\node[state] (a)   [right = of eps] {$[a]_{\equiv_{C^*}}$};
+			\node[state] (b)  [below = of eps] {$[b]_{\equiv_{C^*}}$};
+			
+			\path[->] (eps) edge node {$a$} (a)
+			(a)   edge [loop right, looseness=2.75] node {$a$} (a);
+			\path[->] (b)  edge [loop right, looseness=2.75] node {$a,b$} (b);			
+			\path[->] (eps) edge [left] node {$b$} (b)
+			(a)   edge [bend left] node {$b$} (eps);
+		\end{tikzpicture}
+		\caption{The automaton $\minaut{C^*}$}
+		\label{fig:ACstar}
+	\end{subfigure}
+	\caption[Example automaton derived from $\eqLL{C}{V}$]{\Cref{fig:AeqLL} shows the automaton~$\mathcal A_{\eqLL{C}{V}}$ 
+		from \cref{constrsync:ex:eqLL} for $C = aa^*b$ and $V = \{ab,aab\}$;
+		\cref{fig:ACstar} shows $\minaut{C^*}$.}
+	\label{fig:eqLLaut}
+\end{figure}
+\end{example}
+
+\begin{example}
+	Consider $C = \{aba,bba\}$ and $V = \{aba\}$.
+	Then we have $ab \NeqLL{C}{V} bb$,
+	but $ab \equiv_{C^*} bb$.   
+\end{example}
+
+
+\begin{remark} % gibt das überhaupt Rechtskongruenz?
+Setting two words $u,v \in \Sigma^*$ in relation precisely if
+\[
+( \exists w \in \pref{V} \setminus V \colon u,v \in C^*w ) \lor
+( u \equiv_{C^*} v \land \forall w \in \pref{V} \setminus V \colon |\{u,v\} \cap C^*w| \le 1 )
+\]	
+For the code 
+and language~$V$ from \cref{constrsync:ex:eqLL}  
+this relation would give the same classes.
+However, for example, 
+for $C = \{ ac, bc\}$
+and $V = \{ac\}$ we have that $a$ and $b$ are in relation
+whereas $a \NeqLL{C}{V} b$.
+\end{remark}
+
+In our constructions
+we need this relation to have finitely many classes, a property characterized
+in the next statement.
+
+\begin{proposition} \label{constrsync:prop:eqCV-finite-index}
+There are finitely many equivalence classes for $\eqLL{C}{V}$ if and only if $C^*$ is regular
+and~$V$ is finite. 
+\end{proposition}
+\begin{proof}
+	First, suppose~$C^*$ is regular and~$V$ is finite.
+	By \cref{prelim:min_aut:terminal_object} 
+	there are only finitely many equivalence classes for $\equiv_{C^*}$.
+	By \cref{constrsync:eqn:eqLLCV}
+	each equivalence class has the form $C^*w$
+	for some $w \in \pref{V}\setminus V$
+	or $[u]_{\equiv_{C^*}} \cap U$.
+	Since $\pref{V}\setminus V$ is finite
+	and there are only finitely many $\equiv_{C^*}$-equivalence
+	classes, we obtain that there are only
+	finitely many $\eqLL{C}{V}$-equivalence classes.
+	
+	Conversely, suppose there are finitely many equivalence classes for $\eqLL{C}{V}$.
+	By \cref{constrsync:cor:relation-refines_Nerode}, 
+	$\eqLL{C}{V}$ refines $\equiv_{C^*}$.
+	Thus the $\equiv_{C^*}$-equivalence classes
+	are unions of $\eqLL{C}{V}$-equivalence classes
+	and we find that there are only finitely
+	many $\equiv_{C^*}$-equivalence classes.
+	So $C^*$ is regular by \cref{prelim:min_aut:terminal_object}.
+	By \cref{constrsync:prop:equiv-classes-form,constrsync:prop:Cstarw-relation-unique,constrsync:prop:prefix-code-pre-equivalence},
+	distinct words in $\pref{V}\setminus V$ belong to distinct $\eqLL{C}{V}$-equivalence classes.
+	Thus $\pref{V}\setminus V$ is finite.
+	Since~$V$ is a prefix code, this set equals the set of proper prefixes of words from~$V$.
+	Now, finiteness of its set of proper prefixes yields that~$V$ is finite.
+\end{proof}
+
+\subsection{An \NL-Hardness Condition}
+\label{constr_sync:sec:NL-hardness}
+
+\begin{theorem} \label{constrsync:thm:NL-hardness}
+	Let $C \subseteq \Sigma^+$ be a prefix code that is a regular language
+	and $u_1, u_2 \in C$ be distinct.
+	Suppose there exists $u \in C^*$ such that
+	\[
+	vu \in ( (\pref{C}\setminus C)\Sigma \setminus \pref{C} \cup C )^*	
+	\]
+	for all $v \in \pref{C} \setminus C$.
+	Then $\constrsync{C^*}$ is \NL-hard.
+\end{theorem} 
+\begin{proof}
+	We give a reduction from \DFAS
+	for automata over a binary alphabet, which
+	is \NL-hard by \cref{prelim:complexity:general_aut_sync}.
+	Let $\semiautomat{A}{Q}{\{a_1, a_2\}}{\delta}$
+	be an input automaton over the binary alphabet $\{a_1, a_2\}$.
+	Let $v_1, v_2 \in \Sigma^*$ such that $u_1 \in v_1\Sigma$
+	and $u_2 \in v_2\Sigma$.
+	Set $D = (\pref{C}\setminus C)\Sigma \setminus \pref{C} \cup C$.
+	For short, denote $[v]_{\eqLpp{D}{\{u_1, u_2\}}}$ 
+	simply by $[v]$ for $v \in \Sigma^*$ in the following.	
+	Let $\semiautomat{A'}{Q'}{\Sigma}{\delta}$
+	with $Q' = Q \times \{ [v] \mid v \in \Sigma^* \}$ and
+	where, for $q \in Q$, $v \in \Sigma^*$, and $x \Sigma$, we set
+	\[
+	\delta'((q, [v]), x)
+	=
+	\begin{cases}
+	(\delta(q, a_i), [vx]) & \text{if } [v] = [v_i] \text{ and } v_i x = u_i, \\ 
+	(q, [vx]) & \text{otherwise.}
+	\end{cases}
+	\]
+	Let $\varphi \colon D^* \to \{a_1, a_2\}^*$
+	be given by $\varphi(u_i) = a_i$ for $i \in \{1,2\}$
+	and $\varphi(v) = \varepsilon$ for $v \in D \setminus \{u_1, u_2\}$
+	with $\varphi(w_1 \dots w_m) = \varphi(w_1) \cdots \varphi(w_m)$,
+	which is well-defined since~$D$ is a code.
+	Inductively, with $[\varepsilon] = [w]$ if and only if $w \in D^*$,
+	we obtain that for $w_1, \ldots, w_m \in D$
+	we have
+	\begin{equation}\label{constrsync:eqn:NL-hardness}
+		\delta'((q, [\varepsilon], w_1 \cdots w_m) = (\delta(q, \varphi(w_1 \cdots w_m)), [\varepsilon]).
+	\end{equation}	
+	
+	Suppose for the word $w_1 \cdots w_m$ with $w_1, \ldots, w_m \in C$
+	we have $|\delta'(Q \times \{ [\varepsilon] \}, w_1 \cdots w_m)| = 1$.
+	By \cref{constrsync:eqn:NL-hardness}
+	we find 
+	$\delta'(Q \times \{ [\varepsilon] \}, w_1 \cdots w_m) = \delta(Q, \varphi(w_1 \cdots w_m)) \times \{ [\varepsilon]) \}$.
+	Thus we have $| \delta(Q, \varphi(w_1 \cdots w_m)) | = 1$.
+	
+	Conversely, suppose the word $x_1 \cdots x_m$ with $x_1,\ldots,x_m \in \{a_1, a_2\}$
+	synchronizes $\mathcal A$.
+	For each $i \in \{1,\ldots,m\}$
+	let $w_i = u_1$ if $x_i = a_1$ and $w_i = u_2$ if $x_i = a_2$.
+	Then for $q \in Q$
+	we have
+	\[
+	\delta'((q, [\varepsilon]), w_1 \cdots w_m) = (\delta(q, x_1 \cdots x_m), [\varepsilon]).
+	\]
+	By assumption, for $v \in \pref{C} \setminus C$, we have $vu \in D^*$
+	and thus
+	\[
+	\delta'((q, [v]), u) = \delta'((q, [\varepsilon]), vu) \in Q \times \{[\varepsilon]\}.
+	\]
+	Since $[\varepsilon] = [w]$ if and only if $w \in D^*$
+	and with $\pref{C}\setminus C = \pref{D} \setminus D$
+	this also gives $\{[v] \mid v \in \Sigma^* \} = \{[v] \mid v \in \pref{C}\setminus C\}$,
+	we find $\delta'(Q', vu) \subseteq Q \times \{[\varepsilon]\}$.
+	Thus, we find $\delta'(Q', vu w_1 \cdots w_m) = \delta(Q, x_1 \cdots x_m) \times \{[\varepsilon]\}$,
+	and this set is a singleton set.
+\end{proof}
+
+\begin{example} \label{constrsync:ex:finite-prefix-code-with-letter}
+	Let Let $C \subseteq \Sigma^+$ be a finite prefix code with $a \in C$
+	for some $a \in \Sigma$.
+	Set $n = \max\{ i : a^i \in \fact{L} \} + 1$.
+	Then for $u = a^{n+1}$ we have
+	\[
+	vu \in ( (\pref{C}\setminus C)\Sigma \setminus \pref{C} \cup C )^*	
+	\]
+	for all $v \in \pref{C} \setminus C$.
+\end{example}
+
+\begin{corollary}
+	Let $C \subseteq \Sigma^+$ be a  finite prefix code with $a \in C$
+	for some $a \in \Sigma$.
+	Then $\constrsync{C^*}$ is \NL-hard.
+\end{corollary}
+\begin{proof}
+	The claim follows from
+	\cref{constrsync:thm:NL-hardness,constrsync:ex:finite-prefix-code-with-letter}.
+\end{proof}
+
+
+\subsection{Two \PSPACE-Hardness Conditions}
+\label{constr_sync:sec:PSPACE-hardness}
+
+Here, we present two \PSPACE-hardness conditions. 
+\Cref{constr_sync:thm:uC} is concerned with constraint languages
+of the form $UuV$, $U \subseteq u^*$ non-empty, 
+and \cref{constr_sync:thm:Cu} with constraint
+languages of the form $C^*uL$
+for some prefix code~$C$, word $u$
+and $L \subseteq \Sigma^*$, where $U, V, L$, and $C$ are regular languages.
+The proof of \cref{constr_sync:thm:Cu} uses \cref{constrsync:lem:aux-state-new-code} 
+from the present section.
+In \cref{constrsync:prop:PSPACE-hard-cases}, utilizing
+\Cref{constr_sync:thm:uC,constr_sync:thm:Cu} in its proof,
+we give a list of binary constraint languages giving \PSPACE-hard
+problems which will be used later in \cref{sec:constr_sync:three_states}.
+
+\begin{theorem} \label{constr_sync:thm:uC}
+	Let $C \subseteq \Sigma^+$ be a regular language that is a prefix code
+	with $u_1, u_2 \in C^+$ where $\{u_1, u_2\}$ is a code
+	and $U,V \subseteq \Sigma^*$ be non-empty and regular such that
+	\[
+	\{ u_1, u_2 \}^* \subseteq V \subseteq \pref{C^*}
+	\]
+	and $U \subseteq u^*$ for some $u \in \Sigma^+$.
+	%that is strongly auxiliary state avoiding w.r.t.~$C$. % braucheich gar nicht mehr, geht jetzt auch mit weakly
+	Suppose $vu$ is weakly auxiliary state avoiding 
+	w.r.t.~$C$ for each $v \in \pref{C}\setminus C$.
+	Then $\constrsync{UuV}$ is \PSPACE-hard.
+\end{theorem}
+\begin{proof}
+	We give a reduction from the problem \SFS over a binary alphabet
+	which is \PSPACE-complete 
+	by~\cref{prelim:thm:binary_pspace_problems}.
+	Let $(\mathcal A, S)$ with $\semiautomat{A}{Q}{\{a_1, a_2\}}{\delta}$ and $S \subseteq Q$ 
+	be an \SFS-instance.
+	We can assume $S$ is non-empty.	
+	
+	Set $n = r\cdot s \cdot |u|$
+	for $r, s \ge 1$
+	such that $u_1 \in C^r$
+	and $u_2 \in C^s$.
+	Let $\overline{u}_1 = u_1^{s|u|}$
+	and $\overline{u}_2 = u_2^{r|u|}$.
+	We have $\overline{u}_1, \overline{u}_2 \in C^n$
+	and since $\{u_1, u_2\}$
+	is a code, we have $\overline{u}_1 \ne \overline{u}_2$
+	by \cref{constr_sync:lem:two-words-code}.
+	For readability, in this proof, for $v \in \Sigma^*$,
+	we denote $[v]_{\eqLL{C^n}{\{ \overline{u}_1, \overline{u}_2 \}}}$
+	simply by $[v]$ (confusion with the notation for transition matrices
+	should not arise as these matrices are not used in the present proof).
+	Since~$C$ is regular, by \cref{constrsync:prop:eqCV-finite-index},
+	$\{ [v] \mid v \in \Sigma^* \}$ is finite. 
+	Note that $\pref{C^*} = \pref{(C^n)^*}$,
+	and that $[v] = [\varepsilon]$ if and only if $v \in (C^n)^*$
+	and so $\{ [v] \mid v \in \pref{C^*} \} = \{ [v] \mid v \in \pref{C^n} \}$.
+		
+	
+	\medskip
+	\noindent\underline{Construction:} Pick some $s \in S$ and let $\overline{S} \colon Q \to S$
+	be given by $\overline{S}(q) = s$ for $q \in Q \setminus S$
+	and $\overline{S}(q) = q$ for $q \in S$.	
+	Then set $\semiautomat{A'}{Q'}{\Sigma}{\delta}$
+	where $Q' = Q \times \{ [v] \mid v \in \pref{C^*} \}$ and, 
+	for $v \in \pref{C^*}$ and $x \in \Sigma$, we set
+	\[
+	\delta'((q, [v]), x)
+	=
+	\begin{cases}
+		(\delta(q, a_i), [\varepsilon]) & \text{if } vx \in (C^n)^* \overline{u}_i \text{ for some } i \in \{1,2\}, \\
+		(q, [vx]) & \text{if } vx \in \pref{C^*} \text{ and } vx \notin (C^n)^*\overline{u}_1 \cup (C^n)^*\overline{u}_2, \\
+		(\overline{S}(q), [\varepsilon]) & \text{otherwise.}		
+	\end{cases}
+	\]
+	Consider $v, v' \in \pref{C^*}$
+	with $[v] = [v']$ and $x \in \Sigma$.
+	Suppose $vx \in (C^n)^* \overline{u}_i$ for some $i \in \{1,2\}$.
+	Then we have $v \in (C^n)^* w$
+	for $w \in \pref{\overline{u}_i}\setminus \{u_i\}$
+	with $|w| + 1 = |\overline{u}_i|$.
+	By \cref{constrsync:eqn:eqLLCV} 
+	we find $v' \in (C^n)^*w$.
+	Thus $v'x \in (C^n)^* \overline{u}_i$.
+	We have $[vx] = [v'x]$ by \cref{constrsync:thm:relation-right-congruence}.
+	Thus, by \cref{constrsync:cor:both-prefix-L}, either
+	both words $vx, v'x$ are contained in $\pref{C^*}$
+	or both are not contained in this set.
+	Combining these facts,	
+	we obtain that if one of the defining cases of~$\delta'$
+	applies to~$v$ it also applies to~$v'$ and vice versa,
+	and so the function $\delta'$ is well-defined.
+	
+	
+	Let $\varphi \colon (C^n)^* \to \{a_1, a_2\}^*$ be given
+	by $\applyfunc{w_1 \cdots w_m}{\varphi} = \applyfunc{w_1}{\varphi} \cdots \applyfunc{w_m}{\varphi}$ 
+	for $w_1, \ldots, w_m \in C^n$
+	where $\varphi(\overline{u}_i) = a_i$ for $i \in \{1,2\}$
+	and $\varphi(v) = \varepsilon$ for $v \in C^n \setminus \{\overline{u}_1, \overline{u}_2\}$.
+%	\[
+%	\applyfunc{w_i}{\varphi} = 
+%	\left\{ \begin{array}{ll}
+%		a_1 & \text{if } w_i =  \overline{u}_1, \\
+%		a_2 & \text{if } w_i \ne \overline{u}_1,
+%	\end{array} 
+%	\right.
+%	\]
+	Since the factorization of $w$ into words from~$C^n$ is unique, $\varphi$
+	is well-defined. Note that $\varphi$ is surjective and for each $w \in C^*$
+	there exists $\hat{w} \in \{\overline{u}_1, \overline{u}_2\}^*$
+	such that $\applyfunc{w}{\varphi} = \applyfunc{\hat{w}}{\varphi}$.
+				
+	\medskip
+	\noindent\underline{Properties:} By an easy induction, for $w \in (C^n)^*$, we find that we have
+	\begin{equation} \label{constrsync:eqn:uCvarphi}
+		\delta'((q, [\varepsilon]), w) = (\delta(q, \varphi(w)), [\varepsilon]).
+	\end{equation}
+	Next, consider a word $v \in \pref{C^*} \Sigma \setminus \pref{C^*}$.
+	We can write $v = v_1 \cdots v_{m-1} v_m x$ for $m \ge 1$
+	with $v_1,\ldots, v_{m-1} \in C^n$, $v_m \in \pref{C^n}\setminus C^n$,
+	and $x \in \Sigma$
+	where we set $v_1 \cdots v_{0}$ 
+	equal to $\varepsilon$.
+	Then, by \cref{constrsync:eqn:uCvarphi} and the definition of~$\delta'$,
+	for $q \in Q$ with $p = \delta(q, \varphi(v_1 \cdots v_{m-1}))$ 
+	we have
+	\begin{equation}\label{constrsync:eqn:uCweakly-in-S}
+	\delta'((q, [\varepsilon]), v) 
+	= \delta'((p, [\varepsilon]), v_m x) 
+	= \delta'((p, [v_m]), x) 
+	= (\overline{S}(p), [\varepsilon]).
+	\end{equation}
+	Let $v \in \pref{C^*}$. 
+	We have $\pref{C^*} = C^* (\pref{C}\setminus C)$.
+	By assumption, each word in $(\pref{C}\setminus C )u$
+	is weakly auxiliary state avoiding w.r.t.~$C$.
+	By \cref{constrsync:cor:Cn-weakly-aux-state} 
+	we obtain that each word in
+	$C^* (\pref{C}\setminus Cu$ is weakly auxiliary state avoiding w.r.t.~$C$,
+	i.e.,  a concatenation of words from $\pref{C^*}\Sigma\setminus \pref{C^*}$.
+	By induction, with \cref{constrsync:eqn:uCweakly-in-S} we then obtain 
+	\begin{equation} \label{constrsync:eqn:uCinS}
+		\delta'((q, [v]), u) = \delta'((q, [\varepsilon]), vu) \in S \times \{[\varepsilon]\}.
+	\end{equation}
+	More precisely, since $|u| \le n$ (and so it does not contain $\overline{u}_1$ or $\overline{u}_2$
+	as a factor), we also get\footnote{Note that $|u| \le n$ implies, since $u$ is also weakly auxiliary state avoiding w.r.t.~$C^n$
+		by \cref{constrsync:prop:auxLn}, that~$u$ is strongly auxiliary state avoiding w.r.t.~$C^n$
+		by \crefitem{constrsync:prop:weakly_suffix_strongly}{item:suffix2}.}
+	\begin{equation} \label{constrsync:eqn:uContoS}
+		\delta'((q, [\varepsilon]), u)  = (\overline{S}(q), [\varepsilon]).
+	\end{equation}
+	This then gives $\delta'(Q \times [\varepsilon], u^i) = S \times \{[\varepsilon]\}$
+	for all $i \ge 1$ 
+	since $\overline{S}^j = \overline{S}$ for all $j \ge 1$.
+	Thus, with \cref{constrsync:eqn:uCinS},
+	we find $\delta'(Q', u^i) = S \times \{[\varepsilon]\}$ for all $i \ge 1$.
+			
+	\medskip
+	\noindent\underline{Verification:} Suppose $u^i v$ with $i \ge 1$ where $u^i \in U$ and $v \in V$
+	synchronizes $\mathcal A'$. By \cref{constrsync:eqn:uCinS,constrsync:eqn:uContoS} 
+	we have $\delta'(Q', u^i) = S \times \{\varepsilon\}$.
+	Since $v \in \pref{C^*}$, we can write $v = v_1 \cdots v_{m-1} v_m$
+	with $v_1, \ldots, v_{m-1} \in C^n$ and $v_m \in \pref{C^n}\setminus C^n$.
+	Then, for each $q \in S$, we have
+	\[
+	\delta'((q, [\varepsilon]), v_1 \cdots v_{m-1}v_m ) 
+	= (\delta(q, \varphi(v_1\cdots v_{m-1})), [v_m]).
+	\]
+	By assumption, this equals the same state for each $q \in S$
+	and so $|\delta(S, \varphi(v_1\cdots v_{m-1}))| = 1$.
+		
+	Conversely, let $v \in \{a_1, a_2\}^*$
+	be such that $|\delta(S, v)| = 1$.
+	Pick a word $u^i \in Uu$ with $i \ge 1$.
+	Write $v = v_1 \cdots v_m$ with $v_1, \ldots, v_m \in \{a_1, a_2\}$
+	and let $w_j$ equal $\overline{u}_1$ if $v_j = a_1$
+	and $\overline{u}_2$ if $v_j = a_2$ for each $j \in \{1,\ldots,m\}$.
+	We have $v = \varphi(w_1 \cdots w_m)$ and so, from \cref{constrsync:eqn:uCvarphi},
+	for $q \in S$, we get
+	\[
+	\delta'((q, [\varepsilon]), w_1 \cdots w_m) = (\delta(q, v), [\varepsilon]),
+	\]
+	where $\delta(q, v)$ equals the same state for each $q \in S$ by assumption.
+	Thus, since $\delta'(Q', u^i) = S \times \{\varepsilon\}$
+	by \cref{constrsync:eqn:uCinS,constrsync:eqn:uContoS},
+	the word $u^i w_1 \cdots w_m$ synchronizes $\mathcal A'$.
+	Since $w_1 \cdots w_m \in \{u_1, u_2\}^* \subseteq V$, this word
+	is a synchronizing word for~$\mathcal A'$
+	from $UuV$.
+\end{proof}
+
+\begin{remark}
+	By \crefitem{constrsync:ex:refineNerode}{constrsync:ex:refineNerode:right-ideal},
+	we obtain the relation
+	$\eqLsimU{C^n}{=}{\Sigma^* \setminus \pref{\{\overline{u}_1, \overline{u}_2\}}}$. 
+	Let us also denote $[w]_{\eqLsimU{C^n}{=}{\Sigma^* \setminus \pref{\{\overline{u}_1, \overline{u}_2\}}}}$
+	by $[w]$ for $w \in \Sigma^*$ in the following.
+	This relation can also be used to give an alternative construction
+	in the proof of \cref{constr_sync:thm:uC}
+	by setting $\semiautomat{A'}{Q \times \{ [w] \mid w \in \pref{C^n} \setminus C^n\}}{\Sigma}{\delta'}$
+	and, for $q \in Q$, $w \in \pref{C^n}\setminus C^n$ and $x \in \Sigma$, 
+	\[
+	\delta'((q, [w], x)
+	= \begin{cases}
+		(q, [\varepsilon]) &\text{if } wx \in C^n \setminus \{\overline{u}_1, \overline{u}_2\}, \\
+		(\delta(q, a_i), [\varepsilon]) & \text{if } wx = \overline{u}_i \text{ for some } i \in \{1,2\}, \\
+		(q, [wx]) & \text{if } wx \in \pref{C^n} \setminus C^n, \\
+		(\overline{S}(q), [\varepsilon]) & \text{if } wx \notin \pref{C}.		 		
+	\end{cases}
+	\]
+	Then the remaining argument can be continued in a similar way as the original proof.	
+	Yet another similar proof can be given
+	by using the classes 
+	$[w]_{\eqLpp{C}{|\overline{u}_1|}}$
+	for $w \in \Sigma^*$, in the following simply denoted by~$[w]$.
+	Then 
+	let $\semiautomat{A'}{Q'}{\Sigma}{\delta'}$
+	with $Q' = Q \times \{ [w]  : w \in \pref{C^n} \setminus C^n \}$
+	and, for $q \in Q$, $w \in \pref{C^n}\setminus C^n$ and $x \in \Sigma$, set
+	\[
+	\applytrans{\delta'}{(q, [w])}{x} = 
+	\begin{cases}
+		(\applytrans{\delta}{q}{a_1}, [\varepsilon]) & \text{if } wx = \overline{u}_1, \\
+		(\applytrans{\delta}{q}{a_2}, [\varepsilon]) & \text{if } wx \in C^n \setminus \{ \overline{u}_1 \}, \\
+		(q, [wx])                                    & \text{if } wx \in \pref{C^n} \setminus C^n \\
+		(\overline{S}(q), [\varepsilon]) & \text{if } wx \notin \pref{C^n}.	
+	\end{cases}
+	\]
+\end{remark}
+
+\begin{lemma} \label{constrsync:lem:aux-state-new-code}
+	Let $C \subseteq \Sigma^+$ be a prefix code
+	and $w \in C^+$
+	be such that we have
+	\[
+	( \pref{C} \setminus C) w \subseteq ( (\pref{C}\setminus C)\Sigma \setminus \pref{C} \cup C)^*.
+	\]
+	Then $D = ( C \setminus \{u\} ) \cup u(C \setminus \{u\}) \cup uuC$
+	for $u \in C$ is a prefix code 
+	such that for $\hat{u} \in C \setminus \{u\}$ we have
+	\[
+	( \pref{D} \setminus D ) w \hat{u} \in ( (\pref{D\setminus D}\Sigma \setminus \pref{D} \cup D)^*.
+	\]
+\end{lemma}
+\begin{proof} 
+	Set $U = (\pref{C}\setminus C)\Sigma \setminus \pref{C}$
+	and $V = (\pref{D}\setminus D)\Sigma \setminus \pref{D}$.
+	The following equations are easy to verify:
+	\begin{align}
+		\pref{D} \setminus D & = \{\varepsilon, u, uu\} ( \pref{C} \setminus C )  \label{constrsync:eqn:prefD} \\
+		\{\varepsilon, u, uu\}(\{\varepsilon\} \cup C \cup C^2 \cup C^3)& = (\{\varepsilon\} \cup D)\{\varepsilon, u, uu\} \label{constrsync:eqn:CDcommute} \\
+		V & = \{\varepsilon,u,uu\} U \label{constrsync:eqn:VuuuU}
+	\end{align}
+	Note that, from~\cref{constrsync:eqn:CDcommute}, 
+	by induction, we obtain
+	$
+		\{\varepsilon, u, uu\}C^* = D^*\{\varepsilon, u, uu\}.
+	$
+	Since $C^* \subseteq \{\varepsilon, u, uu\} C^*$
+	and $ D^*\{\varepsilon, u, uu\} \subseteq C^*$
+	this gives $C^* = D^*\{\varepsilon, u, uu\}$.	
+	Next, we show that
+	\begin{equation} \label{constrsync:eqn:UCstar} 
+	(U \cup C)^* \subseteq (V \cup D)^*\{\varepsilon, u, uu\}
+	\end{equation}
+	Let $w \in (U \cup C)^*$.
+	For $w = \varepsilon$, this is clear.
+	Otherwise, we have $w = v x$ with $v \in (U \cup C)^*$
+	and $x \in U \cup C$.
+	Inductively, we find $v \in (V \cup D)^* \{\varepsilon, u, uu\}$.
+	By \cref{constrsync:eqn:CDcommute,constrsync:eqn:VuuuU}, we have
+	\[
+	\{\varepsilon, u, uu\} x \subseteq
+	\begin{cases}
+		V     & \text{if } x \in U, \\
+		D^* \{\varepsilon, u, uu\} & \text{if } x \in C. 
+	\end{cases} 
+	\]
+	Thus $\{\varepsilon, u, uu\} x \in (V \cup D)^* \{\varepsilon, u, uu\}$,
+	which gives $w \in (V \cup D)^* \{\varepsilon, u, uu\}$.
+	
+	Next, since $\hat{u} \in D$ and $\{\varepsilon, u, uu\}\hat{u} \in D$,
+	with \cref{constrsync:eqn:UCstar} we find 
+	$(U \cup C)^* \hat{u} \subseteq (V \cup D)^* D$.
+	Then, from \cref{constrsync:eqn:prefD} and the assumption
+	$(\pref{C}\setminus C)w \subseteq (U \cup C)^*$, we get
+	\[
+	(\pref{D}\setminus D)w \subseteq \{\varepsilon,u,uu\}(\pref{C} \setminus C) w \subseteq \{\varepsilon, u, uu \} ( U \cup C )^*
+	\subseteq ( U \cup C )^*
+	\]
+	Thus we have $(\pref{D}\setminus D)w\hat{u} \subseteq (V\cup D)^*D$
+	since $(U \cup C)^* \hat{u} \subseteq (V \cup D)^* D$.
+\end{proof}
+	
+\begin{theorem} \label{constr_sync:thm:Cu}
+	Let $C \subseteq \Sigma^+$ be a 
+	prefix code	that is a regular language
+	and contains three distinct words $u_1, u_2, u_3 \in C$.
+	Suppose we have a non-empty regular language $L \subseteq \Sigma^*$
+	with $|\fact{L} \cap \{u_1, u_2, u_3\}| \le 2$
+	and there exists $w \in (C \setminus \{u_3\} )^*$
+	such that
+	\[
+	( \pref{C}\setminus C )w \subseteq ( ( ( ( \pref{C}\setminus C)\Sigma) \setminus \pref{C} ) \cup C )^*.
+	\]
+	Then $\constrsync{(C \setminus \{u_3\})^* u_3 L}$
+	is \PSPACE-hard.
+\end{theorem}
+\begin{proof}
+	Set $D = ( C \setminus \{u_1\} ) \cup u_1 ( C \setminus \{u_1\} ) \cup u_1 u_1 C$
+	and $E = ( ( \pref{D} \setminus D )\Sigma \setminus \pref{D} ) \cup D$.
+	Then~$E$ is a maximal prefix code by \cref{constrsync:prop:prefix-maximalD}
+	and, by \cref{constrsync:lem:aux-state-new-code}, we have
+	\begin{equation}\label{constrsync:eqn:reset-pspace-reduction}
+		v w u_2 \in E^*
+	\end{equation}
+	for all $v \in \pref{D} \setminus D$.
+	Observe that we have $\pref{D} \setminus D = \pref{E} \setminus E$.	
+	
+	Let $\semiautomat{A}{Q}{\{a_1, a_2, a_3\}}{\delta}$
+	be an automaton.
+	Set $v_1 = u_1 u_2$, $v_2 = u_1 u_1 u_2$, $v_3 = u_3$, $v_4 = u_1 u_3$, 
+	and $v_5 = u_1 u_1 u_3$.
+	Define morphisms $\varphi \colon E^* \to \{a_1, a_2, a_3\}$
+	and $\psi \colon \{a_1, a_2, a_3\}^* \to E^*$
+	by $\varphi(v_i) = a_{\min\{i,3\}}$ for $i \in \{1,2,3,4,5\}$
+	and	$\varphi(v) = \varepsilon$ for $v \in E \setminus \{v_1, v_2, v_3, v_4, v_5\}$,
+	and $\psi(a_i) = v_i$ for $i \in \{1,2,3\}$
+	and then $\varphi(w_1 \cdots w_n) = \varphi(w_1) \cdots \varphi(w_n)$
+	for $w_1,\ldots, w_n \in E$
+	and $\psi(x_1 \cdots x_m) = \psi(x_1) \cdots \psi(x_m)$
+	for $x_1, \ldots, x_m \in \{a_1, a_2, a_3\}$.
+	These morphisms are well-defined since~$E$ and $\{a_1,a_2,a_3\}$ are codes.	
+	Let $L' = \{ u \in E^* \mid uv \in L \text{ for some $v \in \Sigma^*$} \}$.
+	Since $|\fact{L'} \cap \{u_1, u_2, u_3\}| \le 2$,
+	at most one of the two sets
+	$\fact{L'} \cap \{v_1, v_2\}$
+	or
+	$\fact{L'} \cap \{v_3, v_4, v_5\}$ is non-empty.
+	This yields
+	that at most one of the two sets
+	$\fact{\varphi(L')} \cap \{a_1, a_2\}$
+	or
+	$\fact{\varphi(L')} \cap \{a_3\}$
+	is non-empty.
+	By \crefitem{constr_sync:thm:introductory_examples}{constrsync:ex:item:abcL},
+	$\constrsync{\{a_1, a_2\}^*a_3 \varphi(L')}$ is \PSPACE-complete.	
+	Next, we give a reduction from this problem. Consider~$\mathcal A$
+	to be an input automaton for this problem.
+	For simplicity, in this proof, for $v \in \Sigma^*$,
+	we denote $[v]_{\eqLL{E}{\{v_1, \ldots, v_5\}}}$
+	simply by $[v]$ (as in the proof of \cref{constr_sync:thm:uC}, confusion
+	with the notation for transition matrices should not arise).
+	By \cref{constrsync:prop:eqCV-finite-index},
+	we have finitely many equivalence classes w.r.t.~$\eqLL{E}{\{v_1, \ldots, v_5\}}$.
+		
+	\medskip	
+	\noindent\underline{Construction:} Let $w_i \in \Sigma^*$ be such that 
+	$v_i \in w_i \Sigma$ for $i \in \{1,\ldots,5\}$.
+	Define $\semiautomat{A'}{Q \times \{ [v] : v \in \Sigma^* \}}{\Sigma}{\delta'}$
+	where, for $q \in Q$, $v \in \Sigma^*$ and $x \in \Sigma$,
+	\[
+	\delta'((q, [v]),x)
+	=
+	\begin{cases}
+	(\delta(q, a_{\min\{3,i\}}, [vx]) & \text{if } [v] = [w_i] \text{ for } i \in \{1,\ldots,5\} \text{ with } w_ix = v_i, \\
+	(q, [vx])) & \text{otherwise.}
+	\end{cases}
+	\]
+	Consider $v,v' \in \Sigma^*$ with $[v] = [v']$.
+	Suppose $[w_i] = [w_j]$ for $i,j \in \{1,\ldots,5\}$.
+	By \cref{constrsync:eqn:eqLLCV}
+	this gives $w_i, w_j \in C^*w$ for some $w \in \pref{\{v_1, \ldots, v_5\}} \setminus \{v_1, \ldots, v_5\}$.
+	By \cref{contrsync:prop:prefix-code-suffix-unique} 
+	we find $w_i = w_j = w$.
+	Thus $[v] = [w_i]$ for some $i \in \{1,\ldots,j\}$
+	implies $[v] \ne [w_j]$ for $j \ne i$,
+	and this yields that~$\delta'$ is well-defined. 
+	
+	Note that for $v \in \Sigma^*$ we have $[v] = [\varepsilon]$ 
+	if and only if $v \in E^*$,
+	which also gives $\{ [v] : v \in \pref{E} \setminus E \} 
+	= \{ [v] : v \in \Sigma^* \}$ since $\pref{E^*} = \Sigma^*$
+	by \cref{constrsync:prop:prefix-maximal}.\footnote{We note that $[v] = [w_i]$ and $w_i x = v_i$
+		is equivalent to $vx \in E^* v_i$.
+		Thus, the transition function can also be defined as in the proof
+		of \cref{constr_sync:thm:uC} 
+		by having a case for $vx \in E^* v_i$,
+		and also setting the second component equal to $[\varepsilon]$
+		in this case (but $vx \in E^* v_i$ implies $[vx] = [\varepsilon]$ anyway).
+		However, we defined it as above since
+		then it is easier to see that $\delta'((q, [v]), u) \in Q \times \{[vu]\}$
+		for $u,v \in \Sigma^*$.}	
+		
+		
+	\medskip
+	\noindent\underline{Properties:} For $w_1,\ldots, w_m \in E$, $x_1, \ldots, x_l \in \{a_1,a_2,a_3\}$,
+	and $q \in Q$, we have
+	\begin{align}
+		\delta'((q, [\varepsilon]), w_1 \cdots w_m) & = (\delta(q, \varphi( w_1 \cdots w_m ) ), [\varepsilon]) \label{constrsync:eqn:CuLvarphi} \\ 
+		\delta'((q, [\varepsilon]), \psi(x_1 \cdots x_l)) & = (\delta(q, x_1 \cdots x_l), [\varepsilon]) \label{constrsync:eqn:CuLpsi} \\
+		\varphi(\psi(x_1 \cdots x_l)) & = x_1 \cdots x_l \label{constrsync:eqn:psivarphi}
+	\end{align}
+		
+	\medskip
+	\noindent\underline{Verification:} Suppose $\mathcal A'$ has a synchronizing word
+	of the form $w_1 \cdots w_m u_3 v$
+	with $w_1, \ldots, w_m \in C \setminus\{u_3\}$
+	and $v \in L$.
+	We have $w_1 \cdots w_m \in (D \setminus \{ v_3, v_4, v_5 \})^* \{ \varepsilon, u_1, u_1 u_1\}$.
+	Thus, we find
+	$w_1 \cdots w_m u_3 \in (D \setminus \{ v_3, v_4, v_5 \})^* \{ v_3, v_4, v_5 \} \subseteq E^*$.
+	Since~$E$ is a maximal prefix code,
+	by \cref{constrsync:prop:prefix-maximal} 
+	we have $v \in \pref{E^*}$
+	and thus we can write $v = v' v''$ with $v' \in E^*$ and $v'' \in \pref{E} \setminus E$.
+	For $q \in Q$,
+	we have 
+	\begin{align*}
+		\delta'((q, [\varepsilon]), w_1 \cdots w_m u_3 v)
+		& = \delta'( (\delta(q, \varphi( w_1 \cdots w_m u_3 v' )), [\varepsilon]), v'') \tag{Eqn.~\eqref{constrsync:eqn:CuLvarphi}} \\
+		& = (\delta(q, \varphi( w_1 \cdots w_m u_3 v' )), [v'']). \tag{Def.~$\delta'$}
+	\end{align*}
+	Since $\delta'((q, [\varepsilon]), w_1 \cdots w_m u_3 v)$
+	equals the same state for each $q \in Q$,
+	also $\delta(q, \varphi( w_1 \cdots w_m u_3 v' ))$
+	equals the same state for each $q \in Q$
+	and so $\varphi( w_1 \cdots w_m u_3 v' )$
+	synchronizes $\mathcal A$.
+	We have $\varphi(w_1 \cdots w_m) \in\{a_1, a_2\}^*$,
+	$\varphi(u_3) = a_3$
+	and $\varphi(v') \in \varphi(L')$
+	since $v' \in L'$.	
+		
+	Conversely, suppose the word $x_1 \cdots x_m a_3 v$ synchronizes $\mathcal A$
+	where $x_1, \ldots, x_m \in \{a_1, a_2\}$
+	and $v = \varphi(v')$ for some $v' \in L'$.
+	For $q \in Q$ and $w' \in \pref{D} \setminus D$
+	we have $w'wu_2 \in E^*$ by \cref{constrsync:eqn:reset-pspace-reduction}.
+	This gives
+	\[
+	\delta'((q, [w']), w u_2)
+	= (q, [w'wu_2]) \in Q \times \{ [\varepsilon] \}.
+	\]	
+	By \cref{constrsync:eqn:CuLvarphi,constrsync:eqn:psivarphi}, for $q \in Q$, we
+	have
+	\[
+	\delta'((q, [\varepsilon]), \psi(x_1 \cdots x_m a_3)v'))
+	= (\delta(q, \varphi( \psi(x_1 \cdots x_m a_3)v' ) ), [\varepsilon])
+	= (\delta(q, x_1 \cdots x_m a_3 v), [\varepsilon]).
+	\]
+	Since on the right hand side always the same state
+	results, the word $wu_2 \psi(x_1 \cdots x_m a_3)v'$
+	synchronizes $\mathcal A'$.\footnote{Note that
+		with $\varphi(\psi(v)) = v = \varphi(v')$ we have  
+	$
+	\varphi(\psi(x_1 \cdots x_m a_3 v))
+	= \varphi(\psi(x_1)\cdots \psi(x_m) u_3 \psi(v))
+	= \varphi(\psi(x_1 \cdots x_m a_3)v').
+	$	
+	Then \cref{constrsync:eqn:CuLpsi}
+	yields that also $wu_2\psi(x_1 \cdots x_m a_3 v)$ 
+	synchronizes~$\mathcal A'$.
+	}	
+	By the definition of~$L'$
+	we have $v' v'' \in L$ for some $v'' \in \Sigma^*$.
+	Then $wu_2 \psi(x_1 \cdots x_m a_3) v' v''$
+	synchronizes $\mathcal A'$
+	where $\psi(x_1, \ldots, x_m) \in ( D \setminus \{ v_3, v_4, v_5 \} )^* \subseteq ( C \setminus \{u_3\} )^*$
+	and $\psi(a_3) = u_3$.	
+\end{proof}
+
+\begin{remark}
+	Using $[v]_{\eqLL{D}{\{v_1, \ldots, v_5\}}}$
+	instead of $[v]_{\eqLL{E}{\{v_1, \ldots, v_5\}}}$
+	in the proof of \cref{constr_sync:thm:Cu} (denoting it by $[v]$
+	in the following) for $v \in \Sigma^*$,
+	we can also, alternatively, use the following
+	construction in its proof: $\semiautomat{A'}{Q \times \{ [v] : v \in \pref{D} \setminus D \}}{\Sigma}{\delta'}$
+		where, for $v \in \pref{D} \setminus D$ and $x \in \Sigma$,
+		\[
+		\delta'((q, [v]), x)
+		=
+		\begin{cases} 
+			((\delta(q, a_{\min\{i,3\}}), [\varepsilon]) & \text{if } vx =v_i \text{ for some } i \in \{1,2,3,4,5\}, \\
+			% nicht notwendig, da element in D zu eps äquivalent
+			%	(q, [\varepsilon])               & \text{if } vx \in D \setminus \{v_1, v_2, v_3, v_4, v_5\}, \\
+			(q, [vx])                        & \text{if } vx \in \pref{D} \setminus \{v_1, \ldots, v_5\}, \\
+			(q, [\varepsilon])               & \text{otherwise.}
+		\end{cases}
+		\]		
+		Let $v, v' \in \pref{D} \setminus D$ with $[v] = [v']$ and $x \in \Sigma$.		
+		Then either both $v, v'$ are contained in $\pref{\{v_1,\ldots,v_5\}}$
+		or none is contained in this set
+		by \cref{constrsync:eqn:eqLLCV} 
+		and since~$D$ is a prefix code.		
+		If $v,v' \in \pref{\{v_1,\ldots,v_5\}}$,
+		then $v = v'$ by \cref{constrsync:eqn:eqLLCV-unique-on-prefV} 
+		and so $vx = v'x$.
+		Otherwise, we have $[vx] = [v'x]$.
+		By \cref{constrsync:cor:both-prefix-L}
+		we have that $vx \in D$ if and only if $v'x \in D$
+		and $vx \in \pref{D} \setminus D$ if and only if $v'x \in \pref{D} \setminus D$.
+		Combining these relations, we find that 
+		one of the defining cases of~$\delta'$ applies to $vx$
+		if and only if it applies to~$v'x$
+		and with $[vx] = [v'x]$ we get that~$\delta'$ is well-defined.
+		Since we pick $v \in \pref{D} \setminus D$ and 
+		not $v \in \pref{D^*}$ we can test for equality with one of the $v_i$
+		in the first case, and do not have to check for containment in $D^*v_i$, or equivalently
+		whether $[v] = [w_i]$ with $w_ix = v_i$.
+		Since $[\varepsilon] = [u]$ for $u \in \Sigma^*$ if and only if $u \in D^*$,
+		this construction works in the same way as the original construction
+		and it can be verified similarly that it yields a reduction.		
+\end{remark}
+
+Recall that, by~\cref{constr_sync:lem:two-words-code,constr_sync:cor:code_growth_of_star},
+a code contains at least two words if and only if $C^*$ has exponential growth.
+
+\begin{example}
+In the proof of~\crefitem{constr_sync:thm:introductory_examples}{constrsync:ex:item:cab}
+it was directly shown 
+that \constrsync{c(a+b)^*} is \PSPACE-hard.
+By considering the prefix code $C = \{a,b\}$ and $u = c$,
+this also follows easily 
+from~\cref{constr_sync:thm:uC}, since
+we have $\pref{C} \setminus C = \{\varepsilon\}$
+and the word $\varepsilon\cdot u$
+is weakly auxiliary state avoiding
+w.r.t.~$C$ by \cref{constrsync:ex:aux}.
+\end{example}
+
+\begin{example}
+	\label{constrsync:pspace-hard-example}
+	Let $m,n \ge 1$.
+	By \cref{constr_sync:thm:Cu} with $C = \{a^m,b,c\}$
+	it follows that the problem $\constrsync{\{b,c\}^*a^m}$
+	is \PSPACE-hard.
+	Further, as $\{b,c\}^*a^m \cap \Sigma^*\{b,c\} = \emptyset$,
+	by \cref{constr_sync:prop:Gamma_suffix} 
+	we find that 
+	$
+	\constrsync{\{b,c\}^*a^m b^n c^n \{b,c\}^*}
+	$
+	is \PSPACE-hard.	
+\end{example}
+
+Next, we list a few example constraint languages that yield \PSPACE-complete problems. 
+We will refer to most of them later in \cref{sec:constr_sync:three_states}.
+\PSPACE-hardness for the constraint language from \crefitem{constrsync:prop:PSPACE-hard-cases}{constrsync:Cu:1} has already been established in \cref{constrsync:rem:construction-ideal-intersection} as an example; nevertheless, we include another proof using \cref{constr_sync:thm:Cu}, since we believe it gives a good illustration of its application.
+
+\begin{proposition}
+	\label{constrsync:prop:PSPACE-hard-cases}
+Suppose $\Sigma = \{a,b\}$
+and $\Gamma \subseteq \Sigma$ with $|\Gamma| \le 1$.
+The problem $\constrsync{L}$ is \PSPACE-hard
+for the following constraint languages $L$:
+\begin{enumerate}
+    \item \label{constr_sync:aa:1} $aa(bb^*a)^*$ and $bb(aa^*b)^*$,
+    \item \label{constr_sync:aa:2} $aa(bb+ba)^*$ and $bb(aa+ab)^*$,
+	\item \label{constr_sync:23:3} $aba(a+bb)^*$ and $bab(b+aa)^*$,
+	\item \label{constr_sync:23:4} $bba(aa^*b)^*$ and $aab(bb^*a)^*$,	
+	
+	\item \label{constr_sync:23:1} $aab(b+ab)^*$ and $bba(a+ba)^*$,
+	\item \label{constr_sync:23:2} $aab(bb+ab)^*$ and $bba(aa+ba)^*$,
+	
+    \item \label{constr_sync:23:5} $baab(aa+ab)^*$ and $baab(bb+ba)^*$,
+        
+	\item \label{constrsync:Cu:1} $(bb+ba)^*a\Gamma^*$,
+	\item \label{constrsync:Cu:2} $(a+bb)^*ba\Gamma^*$,
+	\item \label{constrsync:Cu:3} $(b+ab)^*aa\Gamma^*$.
+\end{enumerate}
+\end{proposition} 
+\begin{proof} 
+	Two languages listed side by side
+	are the same up to renaming of the letters. Hence, it is sufficient
+	to show the claim for one language in each case.
+	
+	\ref{constr_sync:aa:1}:	All words of the form $b^iaa$ 
+	with $i \ge 0$ are weakly auxiliary state avoiding w.r.t.~$C = bb^*a$.
+	So, $\constrsync{aaC^*}$ is \PSPACE-hard by \cref{constr_sync:thm:uC}.
+		
+	\ref{constr_sync:aa:2}: 
+	The words $aa$ and $baa$ are weakly auxiliary state avoiding w.r.t.~$\{bb,ba\}$.
+	So, the problem $\constrsync{aa\{bb,ba\}^*}$ is \PSPACE-hard by \cref{constr_sync:thm:uC}.
+	    
+    \ref{constr_sync:23:3}: The words $aba$ and $baba$
+    are weakly auxiliary state avoiding w.r.t.~$\{a,bb\}$.
+    So, the problem \constrsync{aba(a+bb)^*} is \PSPACE-hard by \cref{constr_sync:thm:uC}.
+
+  \ref{constr_sync:23:4}: 
+  The word $a^ibb$ is weakly auxiliary state
+  avoiding w.r.t.~$ aa^*b$ for $i \ge 0$.
+  Set $C = (aa^*b)^*$ and $V = aC$. Then $\{aab,aaab\}^* \subseteq V \subseteq C^*$.
+  So, by \cref{constr_sync:thm:uC}, $\constrsync{bba( aa^*b )^*}$
+  is \PSPACE-hard.
+  
+\ref{constr_sync:23:1}: Follows by~\ref{constr_sync:aa:1} and \cref{gen_results:cor:factors_etc_complexity} 
+ as $\fact{aab(b+ab)^*} = \fact{aa(bb^*a)^*}$.\footnote{Observe that $b(b+ab)^* = L(\mathcal B_{1,\{2\}})$
+ 	and $(bb^*a)^* = L(\mathcal B)$
+ 	for $\automat{B}{\{1,2\}}{\{a,b\}}{\mu}{1}{\{1\}}$
+ 	with $\mu(1, b) = \mu(2, b) = 2$
+ 	and $\mu(2, a) = 1$. Now we have
+ 	$L(\mathcal B) = \{\varepsilon\} \cup L(\mathcal B_{1,\{2\}})a$
+ 	and $L(\mathcal B_{1,\{2\}}) = L(\mathcal B)b$.
+ 	This gives the stronger claims $aab(b+ab)^*a \subseteq aa(bb^*a)$
+ 	and $aa(bb^*a)b \subseteq aab(b+ab)^*$
+ 	than mere equality of the factor sets.
+ 	Thus, both languages
+ 	arise from the same constraint PDFA by merely
+ 	redistributing the final states inside a sink component.
+ 	For Item~\ref{constr_sync:23:2} a similar PDFA
+ 	can be found with this property.}
+
+\ref{constr_sync:23:2}: Follows by~\ref{constr_sync:aa:2} and \cref{gen_results:cor:factors_etc_complexity}
+ as $\fact{aab(bb+ab)^*} = \fact{aa(bb+ba)^*}$.
+
+\ref{constr_sync:23:5}: 
+The two words $baab$ and $abaab$ are weakly auxiliary state avoiding w.r.t~$\{aa,ab\}$.
+So, $\constrsync{baab\{aa,ab\}^*}$ is \PSPACE-hard by \cref{constr_sync:thm:uC}.
+
+\ref{constrsync:Cu:1}: Set $C = \{bb,ba,a\}$. We have $(\pref{C}\setminus C)ba \subseteq C$ with $ba \in C$
+and since $|\Gamma| \le 1$ we have $|\fact{\Gamma^*} \cap \{bb,ba,a\}| \le 1$.
+By \cref{constr_sync:thm:Cu}, $\constrsync{\{bb,ba\}^*a\Gamma^*}$
+is \PSPACE-hard.
+
+\ref{constrsync:Cu:2}: Set $C = \{a,bb,ba\}$. We have $(\pref{C}\setminus C)a \subseteq C$ with $a \in C$
+and since $|\Gamma| \le 1$ we have $|\fact{\Gamma^*} \cap \{a,bb,ba\}| \le 1$.
+By \cref{constr_sync:thm:Cu}, $\constrsync{\{a,bb\}^*ba\Gamma^*}$
+is \PSPACE-hard.
+
+\ref{constrsync:Cu:3}: Set $C = \{b,ab,aa\}$. We have $(\pref{C}\setminus C)b \subseteq C$ with $b \in C$
+and since $|\Gamma| \le 1$ we have $|\fact{\Gamma^*} \cap \{a,ab,aa\}| \le 1$.
+By \cref{constr_sync:thm:Cu}, $\constrsync{\{b,ab\}^*aa\Gamma^*}$
+is \PSPACE-hard.
+\end{proof}
+
+\subsection{Two \NP-Hardness Conditions}
+\label{constr_sync:sec:NP-hardness}
+
+\input{../part4/genresults/nphard}

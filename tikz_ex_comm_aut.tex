@@ -1,0 +1,183 @@
+\begin{figure}[htb]
+     \centering
+    \scalebox{1.0}{
+% diamand in der mitte
+% \begin{tikzpicture}
+%  \tikzset{every state/.style={minimum size=1pt},>=stealth'}
+%  \tikzstyle{dotted}=                  [dash pattern=on \pgflinewidth off 2pt]
+   
+ \begin{tikzpicture}[
+ 	>=latex',
+ 	shorten >=1pt,
+ 	node distance=6em,
+ 	on grid,
+ 	auto
+ 	]
+ 	\tikzset{every state/.style={minimum size=1pt},
+ 		mybox/.style={
+ 			draw=red,
+ 			dashed,
+ 			rounded corners,
+ 			inner sep=13pt
+ 		}
+ 	}
+ 	
+ 	%---------------- Left automaton ----------------%
+ 	
+ 	\node[state] (2) {};
+ 	\node[state] (3) [below left=of 2] {};
+ 	\node[state] (4) [below right=of 2] {};
+ 	\node[state] (5) [left=of 3] {};
+ 	\node[state] (6) [below right=of 3] {};
+ 	\node[state] (8) [above right=of 4] {};
+ 	\node[state] (9) [above=of 8] {};
+ 	
+ 	\path[->]
+ 	(2) edge node {$a$} (3)
+ 	(3) edge[bend left] node {$a$} (5)
+ 	(5) edge[bend left] node {$a$} (3)
+ 	(3) edge node {$b$} (6)
+ 	(6) edge[loop below] node {$a,b$} (6)
+ 	(5) edge[bend right=70] node {$b$} (6);
+ 	
+ 	\path[->]
+ 	(2) edge node {$b$} (4)
+ 	(4) edge[loop right] node {$b$} (4)
+ 	(4) edge node {$a$} (6);
+ 	
+ 	\path[->]
+ 	(8) edge[bend left] node {$b$} (9)
+ 	(9) edge[bend left] node {$b$} (8)
+ 	(8) edge node {$a$} (4)
+ 	(9) edge[bend right] node {$a$} (4);
+ 	
+ 	%---------------- Arrow ----------------%
+ 	
+ 	\node (P) [right=6em of 4] {\LARGE $\Rightarrow$};
+ 	
+ 	%---------------- Right automaton ----------------%
+ 	
+ 	\node[state] (S1) [right=3em of P] {};
+ 	\node[state] (S2) [above right=of S1] {};
+ 	\node[state] (S3) [below right=of S2] {};
+ 	\node[state] (S4) [below left=of S3] {};
+ 	\node[state] (S5) [above right=of S3] {};
+ 	
+ 	\path[->]
+ 	(S2) edge node {$a$} (S1)
+ 	(S2) edge node {$b$} (S3)
+ 	(S3) edge node {$a$} (S4)
+ 	(S1) edge node {$b$} (S4)
+ 	(S5) edge node {$a$} (S3);
+ 	
+ 	\path[->]
+ 	(S1) edge[loop above] node {$a$} (S1)
+ 	(S3) edge[loop right] node {$b$} (S3)
+ 	(S5) edge[loop above] node {$a,b$} (S5)
+ 	(S4) edge[loop below] node {$a,b$} (S4);
+ 	
+ 	%---------------- Background rectangles ----------------%
+ 	
+ 	\begin{pgfonlayer}{background}
+ 		
+ 		% States 3 and 5
+ 		\node[mybox, fit=(3)(5)] {};
+ 		
+ 		% State 6
+ 		\node[
+ 		mybox,
+ 		fit=(6), inner sep=8
+ 		] {};
+ 		
+ 		% State 2
+ 		\node[
+ 		mybox,
+ 		fit=(2), inner sep=8
+ 		] {};
+ 		
+ 		% State 4
+ 		\node[
+ 		mybox,
+ 		fit=(4), inner sep=8
+ 		] {};
+ 		
+ 		% States 8 and 9
+ 		\node[
+ 		mybox,
+ 		fit=(8)(9)
+ 		] {};
+ 		
+ 	\end{pgfonlayer}
+ 	
+ \end{tikzpicture}
+}
+  \caption[Example quotient automaton of \texorpdfstring{$\rho$}{rho}-automaton]{
+  	Left: A $\rho$-automaton $\mathcal A$ (that is commutative and synchronizing). The strongly connected components of $\mathcal A$
+  	are surrounded by boxes. Right: The automaton $\mathcal A / {\eqreach}$.}
+  %    have been framed by red boxes.}
+  \label{fig:ex_comm_aut}
+\end{figure}
+
+
+
+
+
+%With Theorem~\ref{sync_max:thm:com_waa_same_sync_words}, 
+%a commutative automaton with $n$
+%states can only be sync-maximal when $2^n - n \le n$.
+%This leaves only the possibilities $n \in \{1,2\}$.
+%As sync-maximality implies that it is synchronizing \todo{das irgendwo hinschreiben als claim oder so?}
+%the claim follows with Proposition~\ref{prop:two_state_comm_sync}.
+%Conversely, that the two types of automata are commutative
+%and sync-maximal is easily seen.
+
+
+
+%\begin{toappendix2} 
+%
+%\begin{figure}[htb]
+%     \centering
+%    \scalebox{.7}{
+%% diamand in der mitte
+%% \begin{tikzpicture}
+%%  \tikzset{every state/.style={minimum size=1pt},>=stealth'}
+%%  \tikzstyle{dotted}=                  [dash pattern=on \pgflinewidth off 2pt]
+%   
+%  \begin{tikzpicture}[>=latex',shorten >=1pt,node distance=2cm,on grid,auto]
+% \tikzset{every state/.style={minimum size=1pt}}
+%    \node[state] (10) at (11,2) {};
+%   \node[state] (11) at (14,1) {}; %[below right of=10] {};
+%   \node[state] (12) at (10.5,-0.5) {}; % [below of=11] {};
+%   \node[state] (13) [below of=12] {};
+%   \node[state] (14) [right of=13] {};
+%   \node[state] (15) [left of=11] {};
+%   \node[state] (16) [right of=12] {};
+%   
+%   \path[->] (10) edge [bend left] node {$a$} (11)
+%             (11) edge node {$b$} (16)
+%             (10) edge [left] node {$b$} (12)
+%            % (11) edge [loop left] node {$a$} (11)
+%             (12) edge [left] node {$b$} (13)
+%             (13) edge [loop below] node {$b$} (12)
+%             (14) edge [loop below] node {$b$} (14)
+%             (13) edge [bend left] node {$a$} (14)
+%             (14) edge [bend left] node {$a$} (13);
+%    
+% % \path[->] (12) edge [loop right] node {$a$} (12);
+% 
+%   \path[->] (11) edge [bend left] node {$a$} (15)
+%             (15) edge [bend left] node {$a$} (11);
+%             
+%   \path[->] (16) edge [bend left] node {$a$} (12)
+%             (12) edge [bend left] node {$a$} (16);
+%             
+%   \path[->] (15) edge [left,pos=.3] node {$b$} (12);
+%   \path[->] (16) edge node {$b$} (14);
+%   
+%\end{tikzpicture}
+%}
+%   
+%   \caption{A commutative automaton that is not synchronizing.}
+%  \label{fig:ex_comm_aut2}
+%\end{figure}
+%\end{toappendix2}

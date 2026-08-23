@@ -1,0 +1,232 @@
+%!TEX root = ./../../thesis-trier.tex
+
+The preceding sections have linked the absence of certain congruences to synchronizability, reachability, and distinguishability
+properties. Here, we collect some sufficient conditions for the absence of non-trivial $S$-congruences
+in a transformation semigroups~$S$.
+
+For $g = (0 ~ 1 ~ \cdots n - 1)$ and $t \colon [n] \to [n]$
+let~$r$ be the greatest common divisor of the numbers $t(i) - i$
+for $i \in [n]$ and~$n$.
+If $r > 1$, then the mod-$r$ residue classes form a non-trivial $\langle G \cup \{t\} \rangle_S$-congruence.
+Next, we show that under certain assumptions,
+$r = 1$ also implies that there exist no non-trivial congruences.
+This statement extends a statement from~\cite[Lem.~3]{HeathIKS09}.
+
+\begin{proposition} \label{syncmax:primitive:prop:circular-primitive}
+	Let $g = (0 ~ 1 ~ \cdots ~ n - 1)$
+	and $t_1, \ldots, t_k \colon [n] \to [n]$
+	be transformations moving at least one point such that,
+	for each $i \in \{1,\ldots,k\}$, we have
+	$n \ge 2 M_i - 1$
+	or $|\move{t_i}| < d$ for all proper divisors~$d$ of~$n$ with $d > 1$
+	where $M_i= \max(\move{t_i})$.
+	If the greatest common divisor
+	of the numbers $t_i(j) - j$
+	for $j \in \move{t_i}$ and $i \in \{1,\ldots,k\}$
+	is coprime to~$n$,
+	then $S = \langle \{g,t_1,\ldots,t_k\} \rangle_S$
+	admits no non-trivial $S$-congruence.
+\end{proposition}
+\begin{proof}
+	Assume there exists an $S$-congruence
+	that does not equal the universal relation.
+	Since this is also a $\langle g \rangle_S$-congruence,
+	by \cref{lem:congruence_on_cyclic_group}, each class
+	is a mod-$r$ residue class where~$r$ divides~$n$
+	and we have $r < n$. For a contradiction, assume $r > 1$.
+	
+	Next, we show that for each $i \in \{1,\ldots,k\}$, 
+	each congruence class contains an element fixed by~$t_i$. 
+	To see this, note that for $|\move{t_i}| \ge n/r$
+	we have $n - M_i \ge r$ since $r \le n/2$ as it is a proper divisor
+	and, with the assumption $n \ge 2 M_i - 1$, we find
+	\[
+	n - M_i
+	\ge n - \frac{n + 1}{2}
+	= \frac{n - 1}{2}
+	\ge r - \frac{1}{2}.
+	\]
+	Thus, if $|\move{t_i}| \ge n / r$,
+	then since $\{M_i, M_i + 1, \ldots, n\} \subseteq \fix{t_i}$
+	and $n - M_i \ge r$ each congruence class
+	contains a point from $\fix{t_i}$, and
+	if $|\move{t_i}| < n / r$, since each congruence class has size $n / r$,
+	it also contains a point from $\fix{t_i}$.
+	
+	Next, consider $j \in \move{t_i}$.
+	As written above, there exists $l \in \fix{t_i}$
+	with $j \equiv l \pmod{r}$.
+	Thus we have $t_i(l) \equiv l \pmod{r}$
+	and since $\equiv$ is an $S$-congruence
+	and $j \equiv l \pmod{r}$
+	we get $t_i(j) \equiv j \pmod{r}$, i.e.,
+	$r$ divides $t_i(j) - j$.
+	Hence, $r$ divides the numbers $t_i(j) - j$ for $i \in \{1,\ldots,k\}$
+	and $j \in \move{t_i}$.
+	But~$r$ also divides $n$, and by the assumption,
+	it follows that $r = 1$, giving a contradiction.	
+\end{proof}
+
+\begin{corollary}
+	Let $g = (0 ~ 1 ~ \cdots ~ n - 1)$
+	and $t_1, \ldots, t_k \colon [n] \to [n]$
+	be simple idempotents. If the greatest common divisor
+	of the numbers $t_i(j) - j$ 
+	for $j \in [n]$ with $t_i(j) \ne j$
+	where $i \in \{1,\ldots,k\}$
+	is coprime to~$n$, then $S = \langle \{g,t_1,\ldots,t_k\} \rangle_S$
+	admits no non-trivial $S$-congruence.	
+\end{corollary}
+\begin{proof}
+	This follows from \cref{syncmax:primitive:prop:circular-primitive}
+	since for simple idempotents we have $|\move{t_i}| = 1$.
+\end{proof}
+
+\begin{example}
+	Let $G = \langle \{ (0 ~ 1 ~ \cdots ~ n - 1) \} \rangle_G$.
+	Then for non-empty $A \subseteq [n]$ where there exists
+	no divisor $r$ of~$d$ with $r > 1$ such that $i \equiv j \pmod{r}$
+	for all $i,j \in A$
+	we have that $G$ is $A$-primitive
+	by \cref{lem:congruence_on_cyclic_group}.
+	In this case, by \cref{syncmax:primitive:prop:circular-primitive},
+	when adding simple idempotents mapping
+	every two distinct states in~$A$ onto each other,
+	the generated transformation semigroup~$S$
+	does not admit any non-trivial $S$-congruences.
+	For example, if~$n$ is even and $n \ge 8$,
+	then $G$ is $\{0,2,5,7\}$-primitive.
+	Adding a simple idempotent mapping $0$ to~$5$
+	results in a transformation semigroup admitting
+	no non-trivial congruence,
+	but adding the two simple idempotents
+	mapping $0$ to~$2$ 
+	and $5$ to~$7$
+	results in a transformation semigroup
+	that admits a congruence whose classes
+	are the mod-$2$ residue classes.
+	By \cref{syncmax:primitive:prop:circular-primitive} we have to add simple idempotents $t$
+	such that the numbers $t(i) - i$
+	and~$n$ are coprime. In fact, for simple idempotents,
+	this condition characterizes those sets
+	of simple idempotents
+	resulting in transformation semigroups
+	admitting a non-trivial congruence.	
+\end{example}
+
+\begin{lemma} \label{syncmax:primitive:lem:transitive-primitive}
+	Let~$G$ be a transitive permutation group on~$X$ and~$t$ be a simple idempotent
+	with $t(a) \ne a$ and $S = \langle G \cup \{t\} \rangle_S$.
+	Then $t(a) \sim a$ for every non-trivial $S$-congruence $\sim$
+	on~$X$.	
+\end{lemma}
+\begin{proof}
+	Let $\Delta$ be an equivalence class for some non-trivial $S$-congruence.
+	Since this is also a $G$-congruence, $\Delta$ is a block of~$G$
+	of size at least two.
+	By transitivity, we have $a \in \Delta^g$ for some $g \in G$.
+	Let $b \in \Delta^g$ with $b \ne a$.
+	We have $b \sim a$.
+	Since~$\sim$ is a $S$-congruence, we find $b = t(b) \sim t(a)$
+	and so $t(a) \sim a$.	
+\end{proof}
+
+\begin{corollary}
+	Let~$G$ be a transitive and $A$-primitive permutation group on~$X$
+	for some $A \subseteq X$.
+	For a set $T \subseteq \mathcal T_X$
+	of simple idempotents
+	such that $(X, E)$ with $E = \{ \{a, t(a)\} \mid a \in X, t(a) \ne a \}$
+	is a connected graph,
+	the semigroup $S = \langle G \cup T \rangle_S$
+	admits no non-trivial $S$-congruences.
+\end{corollary}
+\begin{proof}
+	By \cref{syncmax:primitive:lem:transitive-primitive}
+	and the assumption, the points in~$A$
+	are all congruent for each $S$-congruence
+	not equal to the equality relation,
+	and thus by $A$-primitivity
+	the universal relation is the only
+	$S$-congruence not equal to the equality relation.	
+\end{proof}
+
+\begin{lemma}
+	Let $G$ be a permutation group on~$X$
+	having a non-empty set of fixpoints~$F$
+	and where $X \setminus F$ is an orbit.
+	Then the only blocks containing~$F$
+	are $F$ and~$X$.		
+\end{lemma}
+\begin{proof}
+	Clearly,~$F$ is a block.
+	Next, let $\Delta$
+	be a block properly containing~$F$.
+	Pick $a \in \Delta \setminus F$.
+	Assume there exists $b \in X \setminus \Delta$.
+	By assumption, we have $g(a) = b$
+	for some $g \in G$.
+	Now, $F \subseteq g(\Delta)$.
+	Thus, since~$\Delta$
+	is a block, we have $\Delta = g(\Delta)$.
+	However, since $b \in g(\Delta)$, this gives $b \in \Delta$,
+	which is a contradiction.
+\end{proof}
+
+Let $\sim$ be an $S$-congruence.
+Clearly, $t( [a]_{\sim} ) \subseteq [a]_{\sim}$ for $a \in \fix{t}$.
+Thus, if for a transformation semigroup $S$ on~$X$ with $S$-congruence $\sim$
+and $A \subseteq X$, for each pair of distinct $a,b \in X$
+there exist $t \in S$ and $c \in \fix{t}$ with $t(a) = b$ and $c \sim a$,
+we have %$c = t(c) \sim t(a) = b$
+$b = t(a) \subseteq [a]_{\sim}$
+and this yields that all points in~$A$ are congruent w.r.t.~$\sim$.
+
+\begin{proposition}
+	Let $G$ be $\{a,b\}$-primitive for distinct $a, b$ on a set $X$ of size at least three
+	and $S = \langle G \cup \{t\} \rangle_S$
+	for a simple idempotent $t \colon X \to X$ mapping $a$ to $b$.
+	Then~$G$ is transitive and $S$ admits
+	no non-trivial $S$-congruence,
+	or~$G$ is intransitive 
+	with two distinct orbits $\Orbit{a}{G}$
+	and $\Orbit{b}{G}$
+	and the non-trivial $S$-congruences
+	are precisely those induced by sets of the form $\{c\}$
+	for $c \in \Orbit{a}{G}$
+	and the equivalence classes 
+	of some $H$-congruence on  $\Orbit{b}{G}$ for $H = \{ g_{|\Orbit{b}{G}} \mid g \in G \}$
+	that does not equal the equality relation.
+\end{proposition}
+\begin{proof}
+	Let $\sim$ be some $S$-congruence not equal to the equality relation.
+	First, assume there exists $c \in X \setminus \{a\}$
+	with $c \sim a$. Then $c = t(c) \sim t(a) = b$
+	and so $a \sim b$, which yields that $\sim$
+	is the universal relation.
+	Otherwise, $\{a\}$ is a congruence class.
+	If~$G$ is transitive, then all blocks have size one
+	and so~$\sim$ equals the equality relation.
+	If~$G$ is intransitive, 
+	then by \cref{sync_max:prop:ab_non_congruent_then_two_orbits} 
+	we have two disjoint orbits $\Orbit{a}{G}$
+	and $\Orbit{b}{G}$.
+	Since~$\{a\}$ is an equivalence class, and so a block for~$G$,
+	we can conclude that all equivalence classes
+	in $\Orbit{a}{G}$ are singletons.
+	Thus, for $c \in \Orbit{b}{G}$
+	we have $[c]_{\sim} \subseteq \Orbit{b}{G}$
+	and since $\Orbit{b}{G} \subseteq \fix{t}$,
+	$[c]_{\sim}$ is a block.
+	Next, it is easy to verify that the given sets induce $S$-congruences on~$X$.
+	So, we obtain the claim.		
+\end{proof}
+
+\begin{example}
+	The group $\langle (0)(1 ~ 2 ~ 3) \rangle_G$
+	is $\{0,1\}$-primitive, intransitive
+	and the partition $\{0\}$, $\{1,2,3\}$
+	induces a congruence for the transformation semigroup
+	generated when adding the simple idempotent mapping $0$
+	to~$1$.	
+\end{example}

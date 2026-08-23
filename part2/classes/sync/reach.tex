@@ -1,0 +1,158 @@
+%!TEX root = ../../../thesis-trier.tex
+
+Here, %we investigate synchronizing automata in terms of the reachability order on the states
+%and the set of maximal states for this quasiorder.
+in \cref{prelim:prop:maximal-states-factor-sync},
+we first prove that the quotient automaton w.r.t.~the set of maximal
+states is synchronizing.
+Then, in \cref{prelim:thm:SCC_sync_words}, we prove that an automaton is synchronizing if and only if the subautomaton
+on the set of maximal states is synchronizing and strongly connected.
+Further, in this case, the set of maximal states equals the set of synchronizing states.
+As an application, in \cref{prelim:prop:CernySCC},
+we show that if the \v{C}ern\'y conjecture holds for strongly connected automata,
+then it holds for all automata.
+
+\begin{proposition}
+	\label{prelim:prop:maximal-states-factor-sync}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ and $S \subseteq Q$ be
+	the set of maximal states for $\lereach$.
+	Then~$S$ is an upper set and $\mathcal A / {\sim_S}$ is synchronizing with trap state~$S$.
+\end{proposition}
+\begin{proof}
+   By \cref{prelim:order:maximal-elements-upper-set}, $S$ is an upper set forming a trap state in $\mathcal A / {\sim_S}$. 
+   By \cref{prelim:automata:prop:max-states}, this trap state is reachable from every other 
+   state, and so the claim follows with
+   \crefitem{prelim:cor:sync_trap_state}{prelim:cor:sync_trap_state:item:trapreach}.
+\end{proof}
+
+\begin{theorem}
+	\label{prelim:thm:SCC_sync_words}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ and $S \subseteq Q$ be the set of maximal states for $\lereach$.
+	Then $S$ is an upper set and the following are equivalent.
+	
+	\begin{enumerate}
+		\item \label{prelim:thm:SCC_sync_words:sync} $\mathcal A$ is synchronizing.
+		
+		\item \label{prelim:thm:SCC_sync_words:Ssync} $\mathcal A_{|S}$ is synchronizing.
+		
+		\item \label{prelim:thm:SCC_sync_words:SsyncSCC} $\mathcal A_{|S}$ is synchronizing and strongly connected (so that $S$ is a sink component).
+		
+		\item \label{prelim:thm:SCC_sync_words:Ssyncstates} $\mathcal A$ is synchronizing and $S$ equals the set of synchronizing states of $\mathcal A$.
+	\end{enumerate}
+\end{theorem}
+\begin{proof} 
+	By \cref{prelim:order:maximal-elements-upper-set}, $S$ is an upper set. Next, we show the stated equivalences.	
+	
+	$\ref{prelim:thm:SCC_sync_words:sync} \Rightarrow~\ref{prelim:thm:SCC_sync_words:Ssync}$: By \crefitem{prelim:prop:sync_words_restriction}{prelim:Synsubaut}, 
+	if $\mathcal A$ is synchronizing, then $\mathcal A_{|S}$
+	is synchronizing.	
+		
+	$\ref{prelim:thm:SCC_sync_words:Ssync} \Rightarrow~\ref{prelim:thm:SCC_sync_words:SsyncSCC}$: 
+	By assumption $\delta(S, u) = \{q\}$ for some $q \in Q$ and $u \in \Sigma^*$.
+	So $p \lereach q$ for all $p \in S$,
+	which gives, as $p$ is a maximal state, $p \eqreach q$ for all $p \in S$.
+	Hence $S$ is strongly connected and as it is an upper set
+	it is a sink component.
+	
+	$\ref{prelim:thm:SCC_sync_words:SsyncSCC} \Rightarrow~\ref{prelim:thm:SCC_sync_words:Ssyncstates}$: 
+	By \cref{prelim:prop:maximal-states-factor-sync}
+	the automaton $\mathcal A / {\sim_S}$ is synchronizing.
+	So, from \crefitem{prelim:prop:sync_word_factor}{prelim:Synuv}
+	we get that $\mathcal A$ is synchronizing.
+	Let $q \in Q$ be such that $\delta(Q, u) = \{q\}$ for some $u \in \Sigma^*$.
+	Then $p \lereach q$ for all $p \in Q$. So, $q$ is maximal and we have $q \in S$.
+	Furthermore, as~$S$ is a sink component, for $p \in S$
+	there exists $v \in \Sigma^*$ such that $\delta(q, v) = p$.
+	Then $\delta(Q, uv) = \{p\}$ so that $p$ is a synchronizing state.
+	So we obtain that $S$ equals the set of synchronizing states.			
+	
+	$\ref{prelim:thm:SCC_sync_words:Ssyncstates} \Rightarrow~\ref{prelim:thm:SCC_sync_words:sync}$: This is obvious.
+\end{proof}
+
+\begin{corollary} \label{prelim:classes:sync:cor:sync-state}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ and $q \in Q$.
+	Then the following are equivalent.
+	\begin{enumerate}
+	\item $q$ is synchronizing.
+	
+	\item $\mathcal A$ is synchronizing and~$q$ is maximal w.r.t.~$\lereach$.
+	
+	\item $\mathcal A$ is synchronizing and~$q$ is a maximum w.r.t.~$\lereach$.
+		
+	\end{enumerate}
+\end{corollary}
+
+\crefitem{prelim:thm:SCC_sync_words}{prelim:thm:SCC_sync_words:SsyncSCC}
+and \cref{prelim:prop:maximal-states-SCC} give the next corollary.
+
+\begin{corollary}\label{prelim:cor:sync-unique-sink}
+	A synchronizing automaton has a unique sink component.
+\end{corollary} 
+
+Furthermore, \cref{prelim:thm:SCC_sync_words}
+yields the following corollary (but this also follows from \cref{prelim:autsyncw:lem:minrank} stated earlier).
+%we obtain that strongly connected synchronizing automata
+%are precisely those for which every state is synchronizing.
+ 
+\begin{corollary}
+	\label{prelim:cor:SCC_sync}
+	In an automaton every state is a synchronizing state if and only if it is synchronizing and strongly connected.
+\end{corollary} 
+
+As a nice application of \cref{prelim:prop:sync_word_factor} and \cref{prelim:thm:SCC_sync_words}, 
+we prove that confirmation of
+the \v{C}ern\'y conjecture for strongly connected automata
+implies it for all automata.
+This result appears in the literature in~\cite[Thm.~10]{Pin81a}, \cite[Prop.~2]{DBLP:journals/acta/CarpiD09}, \cite[Thm.~2]{Rystsov92}, and in slightly more general form in
+\cite[Prop.~2.1]{DBLP:journals/tcs/Volkov09} and~\cite[Thm.~6]{DBLP:conf/birthday/Babcsanyi09}.
+
+\begin{proposition} \label{prelim:prop:CernySCC}
+	The \v{C}ern\'y conjecture is true for all automata if  it is true for all strongly connected automata.
+\end{proposition}
+\begin{proof}
+	Assume the \v{C}ern\'y conjecture is true for strongly connected automata.
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be a synchronizing $n$-state automaton
+	with set of synchronizing states $S \subseteq Q$.
+	By \cref{prelim:thm:SCC_sync_words} the set~$S$ equals the upper set of all maximal states
+	and $\mathcal A_{|S}$ is synchronizing and strongly connected.
+	So, by assumption,~
+	$\mathcal A_{|S}$ has a synchronizing word $v \in \Sigma^*$ of length at most $(|S| - 1)^2$.
+	%As $\mathcal A$ is not strongly connected, we have $|S| < n$.
+	By \cref{prelim:prop:maximal-states-factor-sync}, $\mathcal A / {\sim_S}$ is synchronizing with trap state $S$.
+	As~$\mathcal A / {\sim_S}$ has $n - |S| + 1$ states,
+	from \crefitem{prelim:thm:sync_trap_state}{prelim:subclasses:thm:trap:item:bound}
+    we obtain that $\mathcal A / {\sim_S}$ 
+	has a synchronizing word $u \in \Sigma^*$ of length at most $\frac{( n - |S| + 1 )(n - |S|)}{2}$.	
+	By \crefitem{prelim:prop:sync_word_factor}{prelim:Synuv}, the word~$uv$
+	synchronizes~$\mathcal A$ and
+	\begin{align*}
+		|uv| \le \frac{( n - |S| + 1 )(n - |S|)}{2} + (|S| - 1)^2
+		 & \le (n - |S|)^2 + (|S|-1)^2 \\
+		 & \le (n - |S| + |S| - 1)^2 = (n - 1)^2. \qedhere
+	\end{align*}
+\end{proof}
+
+Volkov~\cite[Prop.~2.1]{DBLP:journals/tcs/Volkov09} (see also~\cite[Prop.~1]{AnaVolGus2013})
+gave the following generalization
+of the previous argument. Suppose we have a class of automata
+fulfilling the following two properties:
+\begin{enumerate} 
+	\item it is closed under taking
+	subautomata and Rees quotient automata, and
+	\item the reset length of every  $n$-state synchronizing automaton from this class that is strongly connected
+	or has a trap state is bounded by~$f(n)$ for some function $f \colon \mathbb N_0 \to \mathbb N_0$
+	with $f(n) + f(m) \le f(n + m - 1)$ for all $n,m \ge 1$.
+	
+%	there exists  a function 
+%	$f \colon \mathbb N_0 \to \mathbb N_0$ with
+%	$f(n) + f(m) \le f(n + m - 1)$
+%	for all $n, m \ge 1$
+%	such that the reset length of every $n$-state
+%	automaton from this class that is strongly connected
+%	or has a trap state is bounded by~$f(n)$.
+\end{enumerate} 
+Then, with the notation as in the proof of \cref{prelim:prop:CernySCC},
+$|uv| \le f(n - |S| + 1) + f(|S|) \le f(n)$, and we obtain that
+every $n$-state synchronizing automaton in this class
+has a synchronizing word of length at most $f(n)$.
+Specifically, for the class of all automata, the function $f(n) = (n-1)^2$ fulfills both conditions.

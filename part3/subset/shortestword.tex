@@ -1,0 +1,57 @@
+%!TEX root = ../../thesis-trier.tex
+
+Let $A$ and $B$ be two subsets of states in an $n$-state automaton.
+Here, we show that the set of words distinguishing $A$ from $B$
+is acceptable by an automaton with $O(n^{|A|+|B|})$ states.
+As a consequence, a shortest distinguishing word has length in~$O(n^{|A|+|B|})$.
+
+\begin{theorem}
+	\label{sync_max:thm:distinguishing_word_bound}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ 
+	be an $n$-state automaton and $A, B \subseteq Q$
+	with $|A|, |B| \ge 2$.	
+	Then the set of words distinguishing $A$ from $B$ is regular
+	and acceptable by an automaton with 
+	\[
+	\left( n + \binom{n}{2} + \binom{n}{3} + \cdots + \binom{n}{|A|} \right) \cdot
+	\left( n + \binom{n}{2} + \binom{n}{3} + \cdots + \binom{n}{|B|} \right) - n + 1
+	\]
+	states.	Furthermore, for a shortest distinguishing word $u \in \Sigma^*$ we have
+	\[
+	|u| \le \left( \binom{n}{2} + \binom{n}{3} + \cdots + \binom{n}{|A|} \right) \cdot
+	\left( \binom{n}{2} + \binom{n}{3} + \cdots + \binom{n}{|B|} \right)
+	\]
+\end{theorem}
+\begin{proof}
+	Let  $\automat{B}{Q'}{\Sigma}{\mu}{(A,B)}{E}$ where
+	\begin{align*}
+		Q' & = \{ R \subseteq Q : 0 < |R| \le |A| \} \times \{ P \subseteq Q : 0 < |P| \le |B| \}, \\
+		E & = \{ (R, P) \in Q' \times Q' : |R| = 1 \text{ if and only if } |P| > 1 \}, \\
+		\applytrans{\mu}{(R, P)}{x} & = (\applytrans{\delta}{R}{x}, \applytrans{\delta}{P}{x}) \text{ for } (R, P) \in Q' \times Q' \text{ and } x \in \Sigma.
+	\end{align*}
+    Set $F =  \{ \{q\} \mid q \in Q \}$.
+    Then $\mathcal B / {\sim_{F \times F}}$ with start state $\pi_{\sim_{F \times F}}((A,B))$
+    and final state set $\pi_{\sim_{F\times F}}(E)$
+    accepts the set of words distinguishing $A$ from $B$.
+    This automaton has the claimed number of states.
+        
+    Next, let $u \in \Sigma^*$ be a shortest distinguishing word.
+    We have $|u| > 0$ and thus we can write $u = wx$ for some $w \in \Sigma^*$ and $x \in \Sigma$.
+    By the minimal choice and since~$u$ is a distinguishing word, 
+    for each proper prefix $v \in \Sigma^*$
+    of~$u$, for $(R, P) = \mu(A, B, v)$
+    we have $(R, P) \notin E$
+    with $|R| \ge 2$ and $|P| \ge 2$.    
+    Thus, since we have 
+    \[
+    |\{ (R, P) \in Q' \times Q' : |R| \ge 2, |P| \ge 2 \}| = \left( \binom{n}{2} + \binom{n}{3} + \cdots + \binom{n}{|A|} \right) \cdot 
+    \left( \binom{n}{2} + \binom{n}{3} + \cdots + \binom{n}{|B|} \right)
+    \]
+    and all states traverses by prefixes of~$w$ are distinct,
+    we find
+    \[
+    |w| \le \left( \binom{n}{2} + \binom{n}{3} + \cdots + \binom{n}{|A|} \right) \cdot 
+    \left( \binom{n}{2} + \binom{n}{3} + \cdots + \binom{n}{|B|} \right) - 1
+    \]
+    This gives the claimed bound for~$u$.
+\end{proof}

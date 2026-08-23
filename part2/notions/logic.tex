@@ -1,0 +1,140 @@
+%!TEX root = ./../../springer-mono-format/book.tex
+%!TEX root = ./../../thesis-trier.tex
+
+\IN{pigeonhole principle}
+\IN{induction proof}
+\IN{well-ordering principle}
+\IN{implication}
+\IN{equivalence}
+\IN{conjunction} 
+\IN{universal quantifier}
+\IN{existential quantifier}
+\IN{disjunction}
+\IN{negation}
+\label{def:powerset}
+Some notions were already introduced in \cref{intro:sec:basic}, for example $[n] = \{0,1,\ldots,n-1\}$; see also the notation index (page~\pageref{chap:notationindex})
+for a list of all notations. We use standard logical notation: $\land$ for \emph{conjunction} (and), $\lor$ for 
+\emph{disjunction}  (or), $\neg$ for \emph{negation}, $\Rightarrow$ (\emph{implication}), $\Leftrightarrow$ (\emph{equivalence}), $\forall$ and $\exists$
+for the \emph{universal quantifier}  and the \emph{existential quantifier}, respectively, etc. 
+We also assume familiarity with standard arguments on finite sets, like
+the \emph{pigeonhole principle}, \emph{proofs by induction}, and the \emph{well-ordering principle}.
+%For $Z \subseteq X$, we denote by $f_{|Z} : Z \to Y$ %brauche ich nur an enier stelle, dort vielleicht als fussnote? todo
+%the function obtained % by restriction to elements from $Z$ as arguments.
+%by restriction of the arguments to elements of $Z$.
+Furthermore, we use standard (naive) set-theoretical notation: \emph{union} ($\bigcup$), \emph{disjoint union} ($\uplus$),\footnote{Meant to be pairwise disjoint when more than two sets are involved.}
+\emph{intersection}  ($\cap$), \emph{set difference}  ($\setminus$), \emph{subset} ($\subseteq$), \emph{proper subset} ($\subsetneq$) 
+etc. For a set $X$, we denote by $\mathcal P(X) = \{ Y \mid Y \subseteq X \}$
+the \emph{power set (of $X$)}. 
+A finite set containing~$k$ elements is called a \emph{$k$-set}. A $1$-set is also called a \emph{singleton set}. 
+If $X_1, \ldots, X_n$ are sets, their \emph{Cartesian product} 
+is $X_1 \times \cdots \times X_n = \{ (x_1, \ldots, x_n) \mid \forall i \in \{1,\ldots,n\} : x_i \in X_i \}$, i.e., the
+set of $n$-tuples where the $i$-th component is an element from $X_i$
+for $i \in \{1,\ldots,n\}$. For $X_1 = \cdots = X_n$, 
+we set $X_1^n = X_1 \times \cdots \times X_n$
+where $X_1^0$ equals the singleton set containing the empty tuple.
+Elements from $X_1^n$ for $n \ge 0$ are also identified
+with sequences of length~$n$ and, for finite $X_1$,
+we also call them words over $X_1$ (see \cref{intro:sec:basic})
+where the empty tuple corresponds to the empty word.
+The \emph{(component) projection mappings} 
+are the mappings $\pi_i \colon X_1 \times \cdots \times X_n \to X_i$
+given by $\applyfunc{(x_1, \ldots, x_i, \ldots, x_n)}{\pi_i} = x_i$ for $i \in \{1,\ldots,n\}$. 
+Two sets $X,Y$ are called \emph{disjoint} if $X \cap Y = \emptyset$.
+A \emph{partition of $X$} is a family of non-empty sets $\{ X_i \mid i \in I \}$ for some index set $I$ 
+such that $X = \bigcupplus_{i\in I} X_i$.
+%and $X_i \cap X_j = \emptyset$ for distinct $i,j \in I$.
+We call $\{X\}$ and $\{\{x\} \mid x \in X \}$ the \emph{trivial partitions}.
+A \emph{section} (or \emph{transversal})
+of a partition $\{ X_i \mid i \in I \}$ of $X$
+is a subset $S \subseteq X$ 
+such that $S \cap X_i$ is a singleton for each $i \in I$.
+
+Every finite set $X$, by ordering its elements,
+can be identified with~$[n]$ for $n = |X|$.
+So, statements involving~$[n]$ for some $n \ge 0$
+%are meant to refer to any finite set of size $n$.
+hold for all finite sets $X$ of size $n$
+by choosing some identification for $X$.
+Thus, in statements involving finite sets we can assume,
+without loss of generality, the finite sets to be of the form~$[n]$
+for some $n \ge 0$, which will be done in the present work.
+
+\IN{tuple}
+\index{$n$-tuple|see{tuple}}
+\IN{union} 
+\IN{disjoint union} 
+\IN{intersection}
+\IN{set difference}
+\IN{subset}
+\IN{proper subset} 
+\IN{power set}
+\IN{component projection mapping} 
+%\IN{projection mapping|see{component projection mapping}} 
+\IN{disjoint}
+\IN{partition} 
+\IN{trivial partition}
+\IN{section}
+\index{transversal|see{section}}
+\IN{Cartesian product}
+\IN{$1$-set}
+\index{singleton|see{$1$-set}}
+\label{def:tuple-notation-function}
+\label{def:pi}
+\IN{$k$-set}
+
+%\section{Number Theory}
+
+\IN{finite set}
+\IN{least common multiple} \label{def:lcm}
+\label{def:gcd}
+\IN{greatest common divisor}
+\IN{coprime number}
+\IN{prime number} 
+\label{def:bmod}  \label{def:residue_congruence}
+For $a,a',b\in \mathbb N_0$ with $b > 0$, we denote by $a \bmod b$  the unique number $0 \le r < b$
+such that $a = bn + r$ for some $n \ge 0$. If $r = 0$, we say that $b$ \emph{divides} $a$ (or~$a$ is a \emph{multiple} of $b$).
+We write $a \equiv_b a'$ or $a \equiv a' \pmod{b}$
+if $a \bmod b = a' \bmod b$ (equivalently $b$ divides $(a-a')$).
+Suppose $c$ divides $b$ and $a \equiv a' \pmod{b}$.
+Then $a \equiv a' \pmod{c}$ and we get
+\begin{equation}\label{prelim:eqn:ab_divisor}
+	a  \equiv 0 \pmod{c} \Leftrightarrow 
+	a' \equiv 0 \pmod{c}.
+\end{equation}
+For a finite set $M \subseteq \mathbb N_0$
+we denote by $\gcd(M)$ (resp.~$\lcm(M)$ if $0\notin M$), also for short $\gcd M$ (resp.~$\lcm M$),
+the \emph{greatest common divisor} (resp.~\emph{least common multiple}) of the numbers in $M$
+where we set $\gcd(\emptyset) = 0$ (resp.~$\lcm(\emptyset) = 1$).
+Also we set  $\gcd(a_1, \ldots, a_n) = \gcd\{a_1, \ldots, a_n\}$ (resp.~$\lcm(a_1, \ldots, a_n) = \lcm\{ a_1, \ldots, a_n\}$)
+for $a_1, \ldots, a_n \ge 0$ (resp.~$a_1, \ldots, a_n \ge 1$).
+Two number $a,b$ are called \emph{coprime} 
+if $\gcd(a,b) = 1$. A number $p > 1$ is \emph{prime} if it is only divisible by $1$ or $p$.
+For a real number $x$ we set $\lfloor x \rfloor = \max\{ k \in \mathbb Z \mid k \le x\}$. \label{def:floorfn}
+
+\begin{theorem}[Prime Number Theorem (see, for example,~\cite{Landau1909})] \IN{prime number theorem}
+	\label{prelim:thm:PTN}
+	Suppose we have a numbering  $p_1 < p_2 < p_3 < \ldots$ of the prime numbers.	
+	%Let $p_n$ be the $n$-th prime number. 
+	Then for every $\varepsilon > 0$
+	there exists $N > 0$ such that $(1 - \varepsilon)\cdot n\log(n) \le p_n \le (1 + \varepsilon)\cdot n\log(n)$ for all $n \ge N$.
+\end{theorem} 
+
+\begin{corollary}
+	\label{prelim:cor:PNT}
+	There exists a number $N \ge 1$ such that $p_n < n^2$
+	for all $n \ge N$.	
+\end{corollary}
+
+%	Lastly, we state a solvability criterion for a system of linear congruences.
+%	
+%	\begin{theorem}[Generalized Chinese Remainder Theorem~\cite{schmid58}]
+%		\label{prelim:thm:gen_CRT}
+%		The system of linear congruences
+%		\[
+%		x \equiv r_i \pmod{m_i} \quad (i=1,2,\ldots,k)
+%		\] 
+%		has integral solutions $x$ if and only if 
+%		$r_i \equiv r_j \pmod{\gcd(m_i, m_j)}$ for all pairs $i \ne j$
+%		%$\gcd(m_i,m_j)$ divides $(r_i - r_j)$ for all pairs $i \ne j$ 
+%		and all solutions are congruent modulo $\lcm(m_1, \ldots, m_k)$.
+%	\end{theorem}

@@ -1,0 +1,847 @@
+%!TEX root = ../../springer-mono-format/book.tex
+%!TEX root = ../../thesis-trier.tex
+
+Here, we collect the order-theoretical notions that we need such 
+as quasiorders, partial orders, the induced equivalence relation, upper sets, etc.
+\Cref{prelim:gen:order:sec:def} give definitions and some basic equations. In \cref{prelim:gen:order:sec:eq-upper-lower},
+we investigate upper and lower sets and the induced equivalence relation. Maximal and minimal elements are 
+investigated in \cref{prelim:gen:order:sec:maximal-minimal},
+and the set of maximal elements in \cref{prelim:gen:order:sec:set-maximal}.
+\Cref{prelim:general:order:sec:seq-upper-sets} collects results on sequences of upper sets.
+We later need all these notions when we introduce a special quasiorder on automata.
+
+\subsection{Definitions and Basic Facts}
+\label{prelim:gen:order:sec:def}
+
+\begin{enumerate}
+	\IN{quasiorder} 
+	\index{preorder|see{quasiorder}}
+	\item A \emph{quasiorder} (or \emph{preorder}) on a set $X$ is a reflexive and transitive relation. 
+	We also write $(X, \lesssim)$ for $X$ together with the quasiorder $\lesssim$. 
+	
+	
+	\item For a quasiordered set $(X, \lesssim)$
+	we call two elements $x,y \in X$ \emph{incomparable} \IN{incomparable elements}
+	if neither $x \lesssim y$ nor $y \lesssim x$ is true.
+	
+	\item Let $\lesssim$ be a quasiorder on $X$ and $S \subseteq X$.
+	\begin{enumerate}   \IN{minimal element}
+		\item We call $x \in X$ a \emph{minimal element} (resp.~\emph{maximal element}) 
+		of~$S$ if $x \in S$ and for all $y \in S$, \IN{maximal element}
+		if $y \lesssim x$ (resp.~$x \lesssim y$), then $x \lesssim y$ (resp.~$y \lesssim x$).
+		
+				\IN{maximum} \index{greatest element|see{maximum}}
+				\item We call $x \in X$ a \emph{minimum}, or \emph{least element},
+				(resp.~\emph{maximum}, or \emph{greatest element}) 
+				of~$S$ if $x \in S$ 
+				and for all $y \in S$ we have $x \lesssim y$ (resp.~$y \lesssim x$).
+				\IN{minimum} \index{least element|see{minimum}}
+		
+		\IN{lower set!quasiorder} \IN{upper set!for quasiorder}
+		\item The set $S$ is a \emph{lower set} (resp.~an \emph{upper set}) if $x \in S$ and 
+		$y \lesssim x$ (resp.~$x \lesssim y$) imply $y \in S$ for $x,y \in X$. \IN{upper set!quasiorder} 
+		
+		\label{def:genupperset} \IN{generated!upper set} \IN{generated!lower set}
+		\item The \emph{smallest lower set} (resp.~\emph{upper set}) \emph{containing $S$ (in $X$)}
+		is $\lowerset{S} = \{ y \in X \mid \exists x \in S \colon y \lesssim x \}$
+		(resp.~$\upperset{S} = \{ y \in X \mid \exists x \in S \colon x \lesssim y \}$).
+	\end{enumerate}
+
+\begin{center}
+	\fbox{ \begin{minipage}{30em}			
+			The notions of maximal/maximum and minimal/minimum are usually only defined for partially ordered
+			sets, but here we use them for quasiordered sets as well.
+		\end{minipage}
+	}
+\end{center}
+
+	\IN{morphism!of quasiordered sets} 
+	\index{monotone function|see{morphism}}
+	
+	\item %For sets $X, Y$ with quasiorders $\lesssim$ and $\precsim$ respectively,
+	Given quasiordered sets $(X, \lesssim)$ and $(Y, \lessapprox)$
+	an \emph{(order) morphism} (or \emph{monotone function}) is a function $\varphi \colon X \to Y$  
+	such that, for all $x,y \in X$, we have
+	\[
+	x \lesssim y \Rightarrow \applyfunc{x}{\varphi} \lessapprox \applyfunc{y}{\varphi}.
+	\] 
+	Additionally, we call $\varphi \colon X \to Y$ an \emph{(order) isomorphism} if there exists another order morphism \IN{isomorphism!order isomorphism}
+	$\psi \colon Y \to X$ such that $\concat{\psi}{\varphi} = \operatorname{id}_Y$
+	and $\concat{\varphi}{\psi} = \operatorname{id}_X$.	
+	
+	\IN{partial order}
+	\item A \emph{partial order} on a set $X$ is a quasiorder that is antisymmetric.
+	
+	\index{linear order|see{total order}}
+	\IN{total order}
+	\item A \emph{total} (or \emph{linear}) \emph{order} is a partial order $\le$ on $X$ such that,
+	for all $x,y \in X$, we have
+	$	x \le y \text{ or } y \le x.
+	$
+	
+	\IN{topological sorting!of a partial order} \index{topological order|see{topological sorting}}
+	\index{linear extension|see{topological sorting}}
+	\item A \emph{topological sorting} (also \emph{topological order} or \emph{linear extension})
+	of a partial order $\le$ on $X$ 
+	is a total order $\le^*$ on $X$ such
+	that the identity transformation $\operatorname{id} \colon X \to X$ is a morphism from $(X, \le)$ to $(X, \le^*)$.\footnote{According
+		to Szpilrajn's extension theorem every partial order
+		can be topologically sorted~\cite{szpilrajn1930extension}.}
+		
+	For finite~$X$, a topological sorting 
+	can be identified
+	with an indexing $x_1, \ldots, x_n$ %enumeration
+	of all the elements from $X$ such that
+	$x_i \le x_j$ implies~$i \le j$.
+		
+
+
+%    \IN{maximum} \index{greatest element|see{maximum}}
+%    \IN{minimum} \index{least element|see{minimum}}
+%    \item For a partially ordered set $(X, \le)$, we call $x \in X$ a \emph{minimum}, or \emph{least element},
+%    (resp.~\emph{maximum}, or \emph{greatest element}) 
+%    of~$S$ if $x \in S$ 
+%    and for all $y \in S$ we have $x \le y$ (resp.~$y \le x$).
+%    Due to antisymmetry, a minimum (resp.~maximum) is unique and, if it exists, the only minimal (resp.~maximal) element.
+     
+
+ \IN{equivalence relation induced!by quasiorder}
+ \IN{induced equivalence relation|see {equivalence relation induced}}
+ \item Given a quasiorder $\lesssim$ on a set $X$, the \emph{induced equivalence relation (by $\lesssim$)} is
+ \begin{equation}\label{prelim:eqn:induced_eqrel}
+ 	x \simeq y \Leftrightarrow x \lesssim y \land y \lesssim x,
+ \end{equation}
+ and the well-defined \emph{induced partial order} $\le$
+ on the equivalence classes $X / {\simeq}$ \IN{induced partial order}
+ is defined by setting
+ \begin{equation}\label{prelim:eqn:induced_pto}
+ 	[x]_{\simeq} \le [y]_{\simeq} \Leftrightarrow x \lesssim y.
+ \end{equation}  
+ By Equation~\eqref{prelim:eqn:induced_pto}
+ the function $x \mapsto [x]_{\simeq}$ is a surjective order morphism.
+ When the context is clear, we also denote
+ the induced partial order on the equivalence classes by the same symbol~$\lesssim$.
+\end{enumerate}
+
+A minimum (resp.~maximum) is also a minimal (resp.~maximal) element. 
+If not said otherwise, 
+we mean minimal, maximal, minimum, and maximum w.r.t.~$S = X$. 
+In a partially ordered set, a minimum (resp.~maximum) equals a unique minimal (resp.~maximal) element.
+For $p \lesssim q$, we also say that $p$ is below~$q$, $q$ is above~$p$,
+and that  these relations hold in a strict sense if additionally $q \not\lesssim p$.
+
+
+\IN{component-wise order}
+\begin{example}\label{prelim:general:order:ex:component-wise-order}
+Let $(X, \lesssim)$ be a quasiordered set and $I$ be some set.
+Then the set of functions~$X^I$ becomes a quasiordered set $(X^I, \lesssim^*)$
+by setting $f \lesssim^*  g$ if and only if~$\applyfunc{x}{f} \lesssim \applyfunc{x}{g}$ for all $x \in I$
+and~$f,g \in X^I$. If $\lesssim$ is a partial order, then $\lesssim^*$ is also a partial order,
+called the \emph{component-wise order}.
+Often, without special mentioning, 
+we simply denote this quasiorder on~$X^I$ by~$\lesssim$ as well.
+\end{example}
+ 
+\begin{example}\label{prelim:ex:order:NzeroSigma-induced-pto}
+	For some alphabet $\Sigma$, the sets of functions $\mathbb N_0^{\Sigma}$ and $[n]^{\Sigma}$
+	are partially ordered
+	by the component-wise order from \cref{prelim:general:order:ex:component-wise-order}
+	derived from the usual order on $\mathbb N_0$.
+\end{example}
+
+\todo[inline]{erst die gleichungen, dann die aussagen?}
+
+Let $(X, \lesssim)$ and $(Y, \lessapprox)$ be quasiordered sets 
+with induced equivalence relations~$\simeq$ and~$\approxeq$, respectively,
+and let $\varphi \colon X \to Y$ be an order morphism.
+
+\begin{proposition} \label{prelim:prop:morphism_equiv_class}
+	For $x \in X$ we have $\varphi([x]_{\simeq}) \subseteq [\varphi(x)]_{\approxeq}$,
+	i.e., the morphism~$\varphi$ maps an equivalence class into an equivalence class.
+	Furthermore, if $\varphi$ is an order isomorphism,
+	we also have $\varphi([x]_{\simeq}) = [\varphi(x)]_{\approxeq}$.
+\end{proposition}
+\begin{proof}
+	Let $y \in [x]_{\simeq}$, i.e., $x \simeq y$.
+	Clearly, we have $\varphi(x) \approxeq \varphi(y)$.
+	Thus $\varphi(y) \in [\varphi(x)]_{\approxeq}$.
+	
+	Next, suppose $\varphi$ is an order isomorphism.
+	Then $\concat{\varphi}{\psi} = \operatorname{id}_X$
+	for some order morphism $\psi \colon Y \to X$.
+	Let $y \in [\varphi(x)]_{\approxeq}$.
+	By \cref{prelim:prop:surj-inj-inverses}, 
+	$\varphi$ is surjective.	
+	Thus there exist $z \in X$ such that $y = \varphi(z)$.
+	Since $\varphi(z) \approxeq \varphi(x)$,
+	we find $z = \psi(\varphi(z)) \approxeq \psi(\varphi(x)) = x$.
+	Thus $z \in [x]_{\simeq}$
+	and so $y \in \varphi([x]_{\simeq})$.
+\end{proof}
+
+\begin{proposition} \label{prelim:prop:morphism_on_induced_pto} 
+	%Let $(X, \lesssim)$ and $(Y, \lessapprox)$ be quasiordered sets and $\varphi \colon X \to Y$ be an order morphism.
+	%If $\le$ and $\preceq$ respectively denote the induced partial orders,
+	%If $\simeq$ and $\approxeq$ denote the induced equivalence relations on $X$ and $Y$, respectively,
+	The morphism $\varphi$ induces a well-defined order morphism $\overline{\varphi} \colon X / {\simeq} \to Y / {\approxeq}$
+	w.r.t.~the induced partial 
+	orders given by $\applyfunc{[x]_{\simeq}}{\overline{\varphi}} = [\varphi(x)]_{\approxeq}$.
+\end{proposition}
+\begin{proof}
+ Since $x \simeq y$ implies $\varphi(x) \simeq \varphi(y)$,
+ $\overline{\varphi}$ is well-defined.
+ By \cref{prelim:eqn:induced_pto} it is a morphism.	
+\end{proof}
+
+\begin{proposition} \label{prelim:general:order:prop:equiv-class-image-disjoint-or-subset}
+	$\varphi(S) \cap T \ne \emptyset$ implies $\varphi(S) \subseteq T$ for equivalence classes $S \subseteq X$ and $T \subseteq Y$
+	of the induced equivalence relation.
+\end{proposition} 
+\begin{proof}
+		Suppose~$\varphi(S) \cap T \ne \emptyset$.
+		Since all elements in~$\varphi(S)$ are equivalent w.r.t.~$\approxeq$,
+		and~$T$, as an equivalence class, is a maximal set whose element are all equivalent,
+		we find $\varphi(S) \subseteq T$.	
+\end{proof}
+
+The following example gives a  
+bijective (order) morphism that is not an isomorphism.
+
+\begin{example}\label{prelim:ex:order:bijmorph}
+	Let $X = \{0,1\}$ and $\le$ be the partial order with $0 \le 1$. Then $\operatorname{id}_X$
+	is a bijective morphism of $X$ ordered by equality to $X$ ordered by $\le$
+	that is not an isomorphism.
+\end{example}
+
+In the following statements, $(X, \lesssim)$ is a quasiordered set with induced equivalence relation~$\simeq$
+and induced partial order $\le$ on $X / {\simeq}$. 
+
+For $x,y \in X$, the following hold:
+\begin{align} 
+	x \lesssim y & \Leftrightarrow y \in \,\upperset{\{x\}} 
+	\Leftrightarrow \,\upperset{\{ y \}} \subseteq \,\upperset{\{ x \}}  \label{prelim:eqn:reach-upperset} \\
+	x \simeq y & \Leftrightarrow \upperset{\{x\}} = \upperset{\{y\}} \label{prelim:general:order:eqn:equiv-uppersets} \\
+\end{align}
+For a morphism $\varphi \colon X \to Y$ %where $Y$ is quasiordered by $\lessapprox$
+and $S \subseteq X$ we have:
+\begin{align}
+	\varphi(\upperset{S}) & \subseteq \upperset{\varphi(S)} \label{prelim:general:order:eqn:morphism-upperset} \\
+	\text{$S$ is an upper set} & \Rightarrow \text{$\varphi^{-1}(S)$ is an upper set}               \label{prelim:general:order:eqn:morphism-upperset-inverse}
+\end{align} 
+For $S, T \subseteq X$ we have:
+\begin{align}
+	\text{$S, T$ are upper sets} & \Rightarrow \text{$S \cup T$ and $S \cap T$ are upper sets} \label{prelim:general:order:eqn:upper-union-int}\\
+	\text{$S, T$ are disjoint upper sets} & \Rightarrow \text{$\forall x \in S \ \forall y \in T \colon x \not\lesssim y \land y \not\lesssim x$} \label{prelim:general:order:eqn:disjoint-upper-sets} \\
+	\text{$S$ is an upper set} & \Leftrightarrow S = \bigcup_{x \in S} \upperset{\{x\}} \label{prelim:general:order:eqn:upper-set} \\
+	\text{$S$ is an upper set} & \Leftrightarrow \text{$X \setminus S$ is a lower set} \label{prelim:order:prop:upper-complement-lower} 
+\end{align}
+Similar statements to 
+\cref{prelim:eqn:reach-upperset,prelim:general:order:eqn:equiv-uppersets,prelim:general:order:eqn:morphism-upperset,prelim:general:order:eqn:upper-union-int,prelim:general:order:eqn:disjoint-upper-sets,prelim:general:order:eqn:upper-set} 
+also hold for lower sets. 
+
+\begin{remark}\label{prelim:general:order:rem:morphism-upperset}
+	The inclusion from \cref{prelim:general:order:eqn:morphism-upperset} 
+	can be proper. For example, let $X = \{x_1, x_2\}$ where $x_1 \lesssim x_2$.
+	Then with the morphism $\varphi \colon X \to X$ defined by $\varphi(x_1) = \varphi(x_2) = x_1$
+	we have $\varphi(\upperset{\{x_1\}}) = \{x_1\}$
+	and $\upperset{\{\varphi(x_1)\}} = \{x_1, x_2\}$. This also shows
+	that a morphism does not necessarily map upper sets to upper sets.
+	More generally, if all elements are comparable in an arbitrary set~$X$ with at least two elements,
+	then any constant map is an order morphism
+	such that the inclusion from \cref{prelim:general:order:eqn:morphism-upperset}
+	is proper.
+\end{remark}
+
+\begin{remark}
+	Let $x \in X$. Then $\upperset{\{x\}} \setminus [x]_{\simeq}$ is a upper set
+	and $\lowerset{\{x\}} \setminus [x]_{\simeq}$ is a lower set.
+\end{remark}
+
+From \cref{prelim:order:prop:upper-complement-lower} 
+we obtain the next statement.
+
+\begin{proposition} \label{prelim:general:order:max-proper-upper-iff-min-nonempty-lower}
+	$S \subseteq X$ is a maximal proper upper set w.r.t.~set inclusion
+	if and only if $X \setminus S$ is a minimal non-empty lower set w.r.t.~set inclusion.
+\end{proposition}
+
+\begin{remark}
+	\label{prelim:general:order:rem:upper-and-lower}
+	In most of the remaining statements
+	of the present section that make a claim on upper and lower sets, 
+	we only give the proofs for upper sets, since the corresponding statement for lower sets
+	follows similarly.
+\end{remark}
+
+\subsection{Equivalence Classes and Upper and Lower Sets}
+\label{prelim:gen:order:sec:eq-upper-lower}
+
+Here, \cref{prelim:general:order:subset-in-equiv}
+relates upper and lower sets to equivalence classes,
+and we list consequences in \cref{prelim:general:order:upper-union-equiv-class,prelim:automata:cor:SsetminusT}.
+\Cref{prelim:automata:prop:TsetminusS-strong-conn,prelim:general:order:lem:diff-in-equiv-class,prelim:general:order:lem:upper-lower-diff-maximal} give relations between maximal and minimal upper and lower sets
+and equivalence classes.
+
+In this section, let $(X, \lesssim)$ be a quasiorder and let~$\simeq$
+be its induced equivalence relation.
+
+\begin{proposition} \label{prelim:general:order:subset-in-equiv}
+	For $S \subseteq X$, the following are equivalent.
+	\begin{enumerate}
+		\item \label{prelim:general:order:subset-in-equiv:1} $S$ is contained in an equivalence class for~$\simeq$.
+		
+		\item \label{prelim:general:order:subset-in-equiv:2} For every upper set~$T \subseteq X$
+		we have $S \subseteq T$
+		or $S \cap T = \emptyset$. 
+		
+		\item \label{prelim:general:order:subset-in-equiv:3} For every lower set~$T \subseteq X$
+		we have $S \subseteq T$
+		or $S \cap T = \emptyset$. 		
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+$\ref{prelim:general:order:subset-in-equiv:1} \Rightarrow~\ref{prelim:general:order:subset-in-equiv:2}$: Let $T \subseteq X$ be an upper set.
+ Suppose we have $x \in S \cap T$.
+ Since~$T$ is an upper set, we have $\upperset{\{x\}} \subseteq T$.
+ By \cref{prelim:eqn:reach-upperset},
+ we find $[x]_{\simeq} \subseteq \upperset{\{x\}}$.
+ Thus $S\subseteq T$ since $S \subseteq [x]_{\simeq}$ by assumption.
+ 
+ 	
+$\ref{prelim:general:order:subset-in-equiv:2} \Rightarrow~\ref{prelim:general:order:subset-in-equiv:3}$: Let $T \subseteq X$ be a lower set. Since $X \setminus T$ is an upper set by \cref{prelim:order:prop:upper-complement-lower}, by \cref{prelim:general:order:subset-in-equiv:2}, $S$ is either contained in $X \setminus T$ or $T$.
+ 
+$\ref{prelim:general:order:subset-in-equiv:3} \Rightarrow~\ref{prelim:general:order:subset-in-equiv:1}$: Let $x, y \in S$. 
+ By assumption, we find $S \subseteq \,\lowerset{\{y\}}$
+ and $S \subseteq \,\lowerset{\{x\}}$.
+ This gives $x \lesssim y$ and $y \lesssim x$, respectively.
+ Thus $x \simeq y$ and so $S$ is contained in an equivalence class. 
+% Suppose $S$ is not contained in an equivalence class. 
+% Then there exist $p, q \in S$
+% such that $p \notin \upperset{\{q\}}$.
+% Hence, $p \in S \setminus T$
+% and $q \in S \cap T$ for the upper set 
+% $T = \upperset{\{q\}}$.
+\end{proof}
+
+\begin{corollary} \label{prelim:general:order:upper-union-equiv-class}
+	Every upper or lower set $S \subseteq X$ is a union of equivalence classes.
+\end{corollary}
+\begin{proof}
+ Clearly, $S \subseteq \bigcup_{y \in S} [y]_{\simeq}$.
+ By \cref{prelim:general:order:subset-in-equiv}, 
+ we have $\bigcup_{y \in S} [y]_{\simeq} \subseteq S$.
+\end{proof}
+
+\begin{corollary} \label{prelim:automata:cor:SsetminusT}
+	Let $S, T \subseteq X$ be both upper or lower sets.	
+	If $T \setminus S$ is non-empty and contained in an equivalence class,
+	then it equals this equivalence class.
+\end{corollary}
+\begin{proof}
+    Without loss of generality, suppose $S$ and~$T$ are upper sets.
+	Let $x \in T \setminus S$.
+	By assumption, $T \setminus S \subseteq [x]_{\simeq}$.
+	By \cref{prelim:general:order:subset-in-equiv},
+	$[x]_{\simeq} \subseteq T$
+	and $[x]_{\simeq} \cap S = \emptyset$.
+	Therefore, $[x]_{\simeq} \subseteq T \setminus S$.
+\end{proof}
+
+\begin{lemma}\label{prelim:general:order:lem:diff-in-equiv-class}
+	Let $S,T \subseteq X$.
+	If $T \setminus S$ is contained in an equivalence class, then
+	for all upper sets $R \subseteq X$ with $S \cap T \subseteq R \subseteq T$, 
+	we have $R = S \cap T$ or $R = T$.
+\end{lemma}
+\begin{proof} 
+	Let~$R$ be an upper set	with $S\cap T \subseteq R \subseteq T$.
+	By \cref{prelim:general:order:subset-in-equiv}
+	either we have $( T \setminus S ) \subseteq R$, which gives $T = (S \cap T) \cup (T \setminus S) \subseteq R$
+	and so $R = T$,
+	or $(T \setminus S) \cap R = \emptyset$,
+	which gives 
+	$
+	R = R \cap T = R \cap ( (S \cap T) \cup (T \setminus S) ) = ( R \cap ( S \cap T ) ) \cup ( R \cap ( T \setminus S ) )
+	= R \cap (S \cap T) = S \cap T.
+	$		
+\end{proof}
+
+\begin{lemma}\label{prelim:general:order:lem:upper-lower-diff-maximal}
+	Let $S,T \subseteq X$.
+	Then the following are equivalent.
+\begin{enumerate}
+	  \item \label{prelim:general:order:lem:upper-lower-diff-maximal:1} For all upper sets $R \subseteq X$ with $S \cap T \subseteq R \subseteq T$, we have $R = S \cap T$ or $R = T$.
+	
+	\item \label{prelim:general:order:lem:upper-lower-diff-maximal:2} For all lower sets $R \subseteq X$ with $S \cap T \subseteq R \subseteq T$, 
+	we have $R = S \cap T$ or $R = T$.    	
+\end{enumerate}	 	
+\end{lemma}
+\begin{proof}
+	Let~$R$ be a lower (resp.~an upper) set
+	with $S\cap T \subseteq R \subseteq T$.
+	Then $X \setminus T \subseteq X \setminus R \subseteq X \setminus (S \cap T) = (X \setminus S) \cup (X \setminus T)$.
+	Since $X \setminus R, X\setminus S$, $X \setminus T$,
+	and $( X\setminus T ) \cup (X \setminus T)$ 
+	are upper (resp.~lower) sets by \cref{prelim:order:prop:upper-complement-lower,prelim:general:order:eqn:upper-union-int},
+	from \cref{prelim:general:order:lem:upper-lower-diff-maximal:1}
+	we obtain $X \setminus R = X \setminus T$
+	or $X \setminus R = X \setminus ( S \cap T )$,
+	and so $R = T$ or $R = S \cap T$.
+    This proves \cref{prelim:general:order:lem:upper-lower-diff-maximal:2}.
+    The converse implication follows similarly.
+ \end{proof}
+
+An analogous equivalence to \cref{prelim:general:order:lem:upper-lower-diff-maximal}, between upper and lower sets but with $S \subseteq R \subseteq S \cup T$ in place of $S \cap T \subseteq R \subseteq T$, can be established. We omit such a statement here.
+
+\begin{proposition} \label{prelim:automata:prop:TsetminusS-strong-conn}
+	Let $S, T \subseteq X$ be both upper sets or both lower sets.
+    Then the following are equivalent.
+    
+    \begin{enumerate}
+    \item \label{prelim:automata:prop:TsetminusS-strong-conn:1} $T \setminus S$
+    is contained in an equivalence class.
+    
+    \item \label{prelim:automata:prop:TsetminusS-strong-conn:2} For all upper sets $R \subseteq X$ with 
+    $S \cap T \subseteq R \subseteq T$ we have $R = S \cap T$ or $R = T$.
+    \end{enumerate}	
+\end{proposition}
+\begin{proof}
+$\ref{prelim:automata:prop:TsetminusS-strong-conn:1} \Rightarrow \ref{prelim:automata:prop:TsetminusS-strong-conn:2}$: This follows from \cref{prelim:general:order:lem:diff-in-equiv-class} (note that this statement applies to any sets, not just upper/lower sets).
+		
+$\ref{prelim:automata:prop:TsetminusS-strong-conn:2} \Rightarrow \ref{prelim:automata:prop:TsetminusS-strong-conn:1}$: 
+First, suppose $S$ and $T$ are upper sets.
+Suppose $T \setminus S$ is not contained in an equivalence class.
+Then we have $x \not\lesssim y$ for some $x,y \in T \setminus S$.
+Let $R = \upperset{\{x\}}$. We have $y \notin R$.
+By \cref{prelim:general:order:eqn:upper-union-int}, $(S \cap T) \cup (R \cap T)$ is an upper set.
+This upper set properly contains~$S\cap T$
+and is properly contained in~$T$.
+%
+% Alternativer Beweis
+%First, suppose $S$ and $T$ are upper sets. Let $R \subseteq X$
+%be an upper set.
+%Set $K = ( S \cap T ) \cup ( R \cap T )$.
+%By \cref{prelim:general:order:eqn:upper-union-int}, $K$ is an upper set.
+%Since $S\cap T \subseteq K \subseteq T$, from the assumption
+%we get $K = S \cap T$ or $K = T$.
+%In the former case we have $(T \setminus S) \cap R = \emptyset$,
+%and in the latter case we have $(T \setminus S) \subseteq R$.
+%By \cref{prelim:general:order:subset-in-equiv}, we find that $T \setminus S$
+%is contained in an equivalence class.
+
+Next, if~$S$ and $T$ are lower sets, we use the same reasoning
+but with \crefitem{prelim:general:order:lem:upper-lower-diff-maximal}{prelim:general:order:lem:upper-lower-diff-maximal:2}
+and lower set instead of upper sets.\footnote{Alternatively, for a lower set $R \subseteq X$
+consider the lower set $K = (S \cup T) \cap (R \cup S)$.
+Since $S \subseteq K \subseteq S \cup T$,
+we have $( X \setminus S ) \cap ( X \setminus T ) \subseteq X \setminus K \subseteq X \setminus S$
+and as these sets are upper sets by \cref{prelim:general:order:eqn:upper-union-int},
+from the assumption we get $X \setminus K = X \setminus ( S \cup T )$
+or $X \setminus K = X \setminus S$, equivalently $K = S \cup T$ or $K = S$. In the former case, $T \setminus S \subseteq R$,
+and in the latter case, $(T \setminus S) \cap R = \emptyset$.
+So, from \cref{prelim:general:order:subset-in-equiv}, we get that~$T \setminus S$ is contained in an equivalence class.}
+\end{proof}
+
+By \cref{prelim:automata:cor:SsetminusT,prelim:automata:prop:TsetminusS-strong-conn}
+for upper sets $S,T$, if $T \setminus S$ is non-empty and contained in an equivalence class,
+then $T = (S \cap T) \cup [x]_{\simeq}$ for some $x \in T \setminus S$.
+
+
+\subsection{Maximal and Minimal Elements}
+\label{prelim:gen:order:sec:maximal-minimal}
+
+\Cref{prelim:general:order:cor:min-equiv-class}
+characterizes upper and lower sets that are equivalence classes.
+In \cref{prelim:general:order:XS-only-uppersets}
+we characterize uniqueness of a proper non-empty upper or lower set.
+\Cref{prelim:order:prop:num-disj-upper,prelim:order:cor:num-disj-upper}
+gives quantitative statements on the number of disjoint upper and lower sets,
+as well as on incomparable maximal and minimal elements in finite sets.
+Lastly, in \cref{prelim:order:prop:maximum,prelim:order:prop:maximum2,prelim:general:order:prop:unique-equiv-and-upper}
+we list results concerning on maxima and minima.
+
+In this section, let $(X, \lesssim)$ be a quasiorder and let~$\simeq$ be its induced equivalence relation.
+
+\begin{proposition} \label{prelim:general:order:cor:min-equiv-class} \label{prelim:general:order:prop:min-equiv-class} \label{prelim:prop:sink-comp}
+	The following are equivalent for $S \subseteq X$:
+	
+	\begin{enumerate}
+	\item \label{prelim:general:order:cor:min-equiv-class:1} $S$ is a minimal non-empty upper (resp.~lower) set w.r.t.~set inclusion.
+	
+	\item \label{prelim:general:order:cor:min-equiv-class:2} $S$ is an equivalence class that is an upper (resp.~a lower) set.
+	
+	\item \label{prelim:general:order:cor:min-equiv-class:2a} $S$ is non-empty such that $S = \bigcap_{x \in S} \upperset{\{x\}}$ (resp.~$S = \bigcap_{x\in S} \lowerset{\{x\}}$).
+		
+	\item \label{prelim:general:order:cor:min-equiv-class:3} \label{prelim:eqn:sink-comp} $S$ is non-empty such that $S = \upperset{\{x\}}$ (resp.~$S = \,\lowerset{\{x\}}$) for each $x \in S$.
+		
+	\item \label{prelim:general:order:cor:min-equiv-class:4} 
+	Each~$x \in S$ is maximal (resp.~minimal) and $S = [x]_{\simeq}$.
+	
+	\item \label{prelim:general:order:cor:min-equiv-class:4b} We have $S = [x]_{\simeq}$ for some maximal (resp.~minimal) $x \in X$.
+				
+	\item \label{prelim:general:order:cor:min-equiv-class:5} $S$ is a maximal (resp.~minimal) equivalence class in $(X / {\simeq}, \le)$.	
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+	As mentioned in \cref{prelim:general:order:rem:upper-and-lower}, we prove the result only for upper sets.
+	
+$\ref{prelim:general:order:cor:min-equiv-class:1}\Rightarrow~\ref{prelim:general:order:cor:min-equiv-class:2}$: By minimality, there exists no upper set~$R \subseteq X$ with $R \subseteq S$
+ such that $R \ne \emptyset$ and $R \ne S$.
+ Hence, by \cref{prelim:automata:prop:TsetminusS-strong-conn} applied with $\emptyset$ and~$S$, 
+ $S$ is contained in an equivalence class.
+ Since~$S \ne \emptyset$, by \cref{prelim:automata:cor:SsetminusT} (or by \cref{prelim:general:order:upper-union-equiv-class}), 
+ it equals an equivalence class.
+
+$\ref{prelim:general:order:cor:min-equiv-class:2}\Rightarrow~\ref{prelim:general:order:cor:min-equiv-class:2a}$
+ Let $x \in S$. Since~$S$ is an equivalence class we have $S \subseteq \upperset{\{x\}}$
+ by \cref{prelim:general:order:upper-union-equiv-class}.
+ Thus $S \subseteq \bigcap_{x \in S} \upperset{\{x\}}$.
+ Since~$S$ is an upper set, we have $\upperset{\{x\}} \subseteq S$,
+ Thus $\bigcap_{x \in S} \upperset{\{x\}} \subseteq S$. Since~$S$ 
+ is an equivalence class it is non-empty.
+ 
+$\ref{prelim:general:order:cor:min-equiv-class:2a}\Rightarrow~\ref{prelim:general:order:cor:min-equiv-class:3}$
+ Let $x \in S$. Then $S = \bigcap_{y \in S}\upperset{\{y\}} \subseteq \upperset{\{x\}}$.
+ It is easy to see that $S = \bigcap_{y \in S} \upperset{\{y\}}$ is an upper
+ set. Thus we have $\upperset{\{x\}} \subseteq S$ for $x \in S$
+ since $\upperset{\{x\}}$ is the smallest upper set generated by~$x$.  
+
+$\ref{prelim:general:order:cor:min-equiv-class:3}\Rightarrow~\ref{prelim:general:order:cor:min-equiv-class:4}$: Let $x \in S$ and assume $x \lesssim y$ for some $y \in X$. Then $y \in \upperset{\{x\}} = S$.
+By assumption, $\upperset{\{y\}} = S = \upperset{\{x\}}$.
+Thus, with \cref{prelim:general:order:eqn:equiv-uppersets}, we get $x \simeq y$.
+So~$x$ is maximal.
+Next, let $z \in [x]_{\simeq}$.
+Then $z \in \upperset{\{x\}} = S$. Thus we have $[x]_{\simeq} \subseteq S$.
+Now, suppose $z \in S$. Then $\upperset{\{z\}} = S = \upperset{\{x\}}$
+and so $z \simeq x$ by \cref{prelim:general:order:eqn:equiv-uppersets}.
+This gives $[x]_{\simeq} \subseteq S$.
+
+$\ref{prelim:general:order:cor:min-equiv-class:4}\Rightarrow~\ref{prelim:general:order:cor:min-equiv-class:4b}$: This is clear.
+
+$\ref{prelim:general:order:cor:min-equiv-class:4b}\Rightarrow~\ref{prelim:general:order:cor:min-equiv-class:5}$:
+ Let $S = [x]_{\simeq}$ with $x$ maximal in~$X$.
+ Suppose $[x]_{\simeq} \le [y]_{\simeq}$ for some $y \in X$.
+ Then we have $x \lesssim y$. Since~$x$ is maximal,
+ we find $x \simeq y$ and so $[x]_{\simeq} = [y]_{\simeq}$. Thus $[x]_{\simeq}$
+ is maximal in $(X / {\simeq}, \le)$.
+
+$\ref{prelim:general:order:cor:min-equiv-class:5}\Rightarrow~\ref{prelim:general:order:cor:min-equiv-class:1}$: 
+ Let $x \in S$ and $y \in X$ with $x \lesssim y$.
+ Since~$S$ is maximal, we find $x \simeq y$ and so $x \in S$. Hence~$S$
+ is an upper set. 
+ Next, let~$R \subseteq X$ be a non-empty upper set
+ with $R \subseteq S$. Since~$S$ is an equivalence class,
+ \cref{prelim:general:order:upper-union-equiv-class} (or \cref{prelim:general:order:lem:diff-in-equiv-class})
+ implies that $S \subseteq R$. Therefore,~$S$ is minimal w.r.t.~set inclusion
+ among all non-empty upper sets.
+\end{proof}
+
+\begin{corollary}
+	An element $x \in X$ is maximal if and only if $[x]_{\simeq}$ is an upper set.	
+\end{corollary}
+
+\begin{corollary}
+	If~$X$ is finite, then every upper set contains
+	an upper upper set forming a maximal equivalence class in $(X / {\simeq}, \le)$.
+\end{corollary}
+
+\begin{corollary}
+	An upper set is a maximal proper set w.r.t.~set inclusion
+	if and only if its complement is a minimal equivalence class
+	for the induced partial order.
+\end{corollary}
+\begin{proof} This follows from directly from \cref{prelim:general:order:max-proper-upper-iff-min-nonempty-lower,prelim:general:order:cor:min-equiv-class}.
+\end{proof}
+
+\begin{proposition} \label{prelim:general:order:XS-only-uppersets}
+	Let $S \subseteq X$ be a non-empty and proper upper (resp.~lower) set.
+	Then $S$ and~$X$ are the only non-empty upper (resp.~lower) sets if and only
+	if~$S$ and $X \setminus S$ are equivalence classes and~$X \setminus S$ is not an upper (resp.~a lower) set.
+\end{proposition}
+\begin{proof}
+	Suppose~$S$ and~$X$ are the only non-empty upper sets.
+	By considering $T = X$ and~$S$
+	in  \cref{prelim:automata:prop:TsetminusS-strong-conn},
+	we find that $X \setminus S$ is contained in an equivalence class.
+	From \cref{prelim:automata:cor:SsetminusT} 
+	we get that it equals that equivalence class.
+	Next, for $x \in S$, since  $\upperset{\{x\}} \subseteq S$,
+	we get $\upperset{\{x\}} = S$
+	and so~$S$ is an equivalence class by \cref{prelim:general:order:cor:min-equiv-class}.
+	By assumption, $X \setminus S$ is not an upper set.	
+		
+	Conversely, suppose~$S$ and $X \setminus S$ are equivalence
+	classes. Since all upper sets are unions of equivalence classes and~$X$ is non-empty,
+	$S$, $X \setminus S$, and~$X$ are all possible non-empty upper sets.
+	So, if $X \setminus S$ is not an upper set, only $S$ and~$X$ remain as upper sets.
+\end{proof}
+
+\begin{proposition} \label{prelim:order:prop:num-disj-upper}
+	Suppose~$X$ is finite. Then the following numbers are equal:
+	
+	\begin{enumerate}
+	\item The maximal number of pairwise disjoint non-empty upper (resp.~lower) sets.
+	
+	\item The number of maximal (resp.~minimal) elements in $(X / {\simeq}, \le)$.
+	
+	\item The maximal number of incomparable maximal (resp.~minimal) element in~$X$.
+	\end{enumerate}	
+\end{proposition}
+\begin{proof}
+	Let $m_1, m_2, m_3$ be the maximal number of pairwise disjoint non-empty upper sets,
+	of distinct maximal elements in $(X / {\simeq}, \le)$, 
+	and the maximal number of incomparable maximal elements in~$X$, respectively.	
+
+By \cref{prelim:general:order:cor:min-equiv-class} maximal elements in $X / {\simeq}$
+are upper sets that are equivalence classes, hence pairwise disjoint.
+This gives $m_1 \ge m_2$.	
+
+By the definition of the induced partial order,
+incomparable maximal elements induce
+distinct maximal elements in $X / {\simeq}$, which gives $m_2 \ge m_3$.
+
+By \cref{prelim:general:order:eqn:disjoint-upper-sets}, we have $m_3 \ge m_1$.	
+\end{proof}
+
+\begin{corollary}  \label{prelim:order:cor:num-disj-upper}
+	For finite~$X$, there are at most~$k$ distinct maximal (resp.~minimal) elements in the partially ordered set 
+	$(X /{\simeq}, \le)$ if and only if, among $k+1$ upper (resp.~lower) sets, two have a non-empty intersection. 
+\end{corollary}
+
+The following statements are easy to verify and we omit their proofs.
+
+\begin{proposition} \label{prelim:order:prop:maximum}
+	The following are equivalent for $x \in X$:	
+	\begin{enumerate}
+		\item $x \in X$ is a maximum (resp.~minimum) for $X$.
+		\item $[x]_{\simeq}$ is a maximum (resp.~minimum) in $(X / {\simeq}, \le)$. 
+		\item $[x]_{\simeq} \subseteq S$ for every upper (resp.~lower) set $S \subseteq X$. % da vereingung, und wenn das nicht gelten würden, kann man größtes [x] [x] darin finden, und die gehören zu verschiedenen maximalen
+	\end{enumerate} 	
+\end{proposition}
+
+\begin{proposition} \label{prelim:order:prop:maximum2}
+	The following are equivalent:
+	\begin{enumerate}		
+		\item There exists a maximum  (resp.~minimum) in $X$ for $\lesssim$.
+		
+		\item For $x,y \in X$ there exists $z \in X$ with $x \lesssim z$ and~$y \lesssim z$ (resp.~$z \lesssim x$ and $z \lesssim y$). 
+		
+		\item For two maximal (resp.~minimal) $x,y \in X$ we have $x \simeq y$.
+		
+		\item For every two upper (resp.~lower) sets $S, T \subseteq X$ we have $S \cap T \ne \emptyset$.		
+		
+	\end{enumerate} 	
+\end{proposition}
+
+\begin{proposition}\label{prelim:general:order:prop:unique-equiv-and-upper}
+	Let $S \subseteq X$ be an equivalence class.
+	If~$S$ is a maximum (resp.~minimum) in~$X / {\simeq}$,
+	then it is the only upper (resp.~lower) set among the equivalence classes.
+	Furthermore, if~$X$ is finite and~$S$ the only upper (resp.~lower) set that is an equivalence
+	class, then it is a maximum (resp.~minimum) in $X / {\simeq}$.
+\end{proposition}
+\begin{proof}
+	We only give the proof for upper sets and maxima.
+	First, suppose~$S$ is an equivalence class that is a maximum in $X / {\simeq}$.
+	Let $T \subseteq X$ be an equivalence class that is an upper set.
+	By \cref{prelim:order:prop:maximum}, we have $S \subseteq T$.
+	Since~$S$ and~$T$ are equivalence classes,
+	we find $S = T$.
+	By \cref{prelim:general:order:cor:min-equiv-class}, $S$ is
+	an upper set, and so a unique equivalence class
+	that is an upper set.
+	
+	Conversely, suppose~$X$ is finite and $S$ is 
+	a unique upper set that is an equivalence class.
+	By \cref{prelim:general:order:cor:min-equiv-class}, $S$
+	is maximal in $X / {\simeq}$ and unique with this property.
+	By finiteness, for each $x \in X$
+	there exists a maximal $y \in X$ such that $x \le y$.
+	Since~$S$ is the unique maximal element,
+	we find $y \in S$.
+	This yields that $S$ is a maximum in $X / {\simeq}$.	
+\end{proof}
+
+To show that the converse implication
+from \cref{prelim:general:order:prop:unique-equiv-and-upper}
+might fail for infinite~$X$, consider $X = \mathbb N_0 \cup \{ a \}$
+with the usual order on~$\mathbb N_0$
+and~$a$ being incomparable to any other element.
+Then $\{a\}$ is a unique upper set that is an equivalence class, but it is not a maximum
+w.r.t.~the induced partial order on the equivalence classes (which results in the same order structure
+since every equivalence class is a singleton).
+
+
+\subsection{The Set of Maximal Elements}
+\label{prelim:gen:order:sec:set-maximal}
+
+In this section, let $(X, \lesssim)$ and
+\[
+S = \{ x \in X \mid \text{$x$ is maximal}\}
+\]
+be the set of maximal elements. We denote the induced equivalence with~$\simeq$.
+
+\begin{proposition} \label{prelim:order:maximal-elements-upper-set}
+	The set of maximal elements~$S$ is an upper set and we have
+	\begin{equation}\label{prelim:general:order:set-of-maximal-elements}
+		S = \bigcup_{\text{$x$ is maximal}} [x]_{\simeq}.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	\Cref{prelim:general:order:set-of-maximal-elements} is obvious,
+	and together with \cref{prelim:general:order:cor:min-equiv-class}
+	we obtain that~$S$ is an upper set.	
+\end{proof}
+
+Next, we investigate~$S$ for finite~$X$. Similar statements could be obtained
+for the set of minimal elements. But since we only need the set of maximal elements
+later, we do not formulate corresponding statements for this set.
+
+\begin{lemma} \label{prelim:general:order:lem:finite-maximal}
+	If~$X$ is finite, then
+	for each $x \in X$ there exists $y \in S$ such that $x \lesssim y$.
+\end{lemma}
+\begin{proof}
+	Assume there exists $x \in X$ for which this condition is false.
+	Set $x_0 = x$ and, inductively, for $x_{i}$ with $i \ge 0$
+	there exists $x_{i+1} \in X$ such that $x_i \lesssim x_{i+1}$
+	but $x_{i+1} \not\lesssim x_i$,
+	since otherwise $x_i$ would be a maximum
+	in~$\{x_0, x_1, \ldots, x_i\}$
+	and so also maximal such that $x \lesssim x_i$.
+	Now, in this way, we obtain an infinite and strictly increasing sequence,
+	which is not possible for finite~$X$.
+\end{proof}
+
+\begin{proposition} \label{prelim:prop:maximal-elements-and-upper-sets}
+	Suppose~$X$ is finite.
+	Then the set of maximal elements is the minimal non-empty
+	set w.r.t.~set inclusion that has non-empty
+	intersection with each non-empty upper set.	
+\end{proposition}
+\begin{proof}
+	Let~$T$ be a minimal non-empty upper set
+	that has non-empty intersection with each non-empty upper set.
+	
+	Consider $x \in S$.
+	By assumption, we have $y \in T \cap \upperset{\{x\}}$ for some $y \in X$.
+	Since~$x$ is maximal, this gives $y \simeq x$.
+	Then $x \in T$ since~$T$ is an upper set.	
+	Hence $S \subseteq T$.
+	
+	Next, let $R$ be an upper set and $x \in R$. 
+	By Lemma~\ref{prelim:general:order:lem:finite-maximal}, 
+	there exists $y \in S$ such that $x \lesssim y$.
+	Since~$R$ is an upper set, we have $y \in R \cap S$.
+	Hence, by minimality of~$T$, we find $T \subseteq S$.
+\end{proof}
+
+\begin{corollary}
+	Let~$X$ be finite and $S \subseteq X$ be a non-empty upper set.
+	Then~$S$ contains an upper set that is an equivalence class.	
+\end{corollary}
+\begin{proof}
+	By \cref{prelim:prop:maximal-elements-and-upper-sets} we 
+	have $q \in S$ for some maximal element~$q \in X$.
+	Then $[q]_{\simeq}$ is an upper set by \cref{prelim:general:order:cor:min-equiv-class}
+	and we have $[q]_{\simeq} \subseteq S$.	
+\end{proof} 
+
+\subsection{Sequences of Upper and Lower Sets}
+\label{prelim:general:order:sec:seq-upper-sets}
+
+Here, we investigate sequences of increasing upper and lower sets
+under certain finiteness conditions. We only give statements for upper sets,
+since corresponding statements for lower sets follow analogously,
+and we actually only need them for upper sets in later chapters.
+
+\begin{proposition} \label{prelim:general:order:prop:seq-upper-sets}
+	Let $S \subseteq Q$ be a proper upper set
+	and $X \setminus S$ be finite.
+	Then there exists a sequence of upper sets
+	\[
+	S_1 \subsetneq \cdots \subsetneq S_m = X
+	\]
+	with $S_1 = S$ and such that  $S_{i} \setminus S_{i-1}$ for $i \in \{2,\ldots,m\}$
+	are all the equivalence classes in~$X \setminus S$.
+\end{proposition}
+\begin{proof}
+	By finiteness, there exists a sequence
+	of upper sets $S_1 \subsetneq \cdots \subsetneq S_m$
+	with $S_1 = S$ and~$m$ maximal. Since $X$ is an upper set, we have $S_m = X$.
+	
+	First, assume there exists $i \in \{2,\ldots,m\}$ such that
+	$S_{i} \setminus S_{i-1}$ is not contained in an equivalence
+	class.
+	By \cref{prelim:general:order:subset-in-equiv} there exists an upper set $T \subseteq X$
+	with $( S_i \setminus S_{i-1} ) \cap T \ne \emptyset$
+	and $( S_i \setminus S_{i-1} ) \not\subseteq T$.
+	Thus, for the upper set $S_{i-1} \cup ( T  \cap S_i )$
+	we have $S_{i-1} \subsetneq S_{i-1} \cup ( T  \cap S_i ) \subsetneq S_i$,
+	which contradicts the maximal choice of~$m$.
+	
+	Next, let $x \in X \setminus S$. Then there exists a minimal $i \in \{2,\ldots,m\}$
+	such that $x \in S_i$, so that $x \in S_i \setminus S_{i-1}$.
+	Since $S_i \setminus S_{i-1}$ is contained in an equivalence
+	class, we have $S_i \setminus S_{i-1} \subseteq [x]_{\simeq}$.
+	By \cref{prelim:automata:cor:SsetminusT} 
+	we find $S_i \setminus S_{i-1} = [x]_{\simeq}$.
+\end{proof}
+
+\begin{remark}
+	\Cref{prelim:general:order:prop:seq-upper-sets} 
+	can also be proved 
+	by picking a proper upper set $S \subseteq S_{m-1}$ such that $|X \setminus S_{m-1}|$ has minimal size.
+	Then~$S_{m-1}$ is a proper maximal upper set containing~$S$
+	and by \cref{prelim:automata:prop:TsetminusS-strong-conn} 
+	and  \cref{prelim:automata:cor:SsetminusT}
+	the difference $X \setminus S_{m-1}$ equals an equivalence class.
+	If $S \ne S_{m-1}$, inductively, 
+	there exists a sequence of upper sets $S_1 \subsetneq \cdots \subseteq S_{m-1}$
+	such that $S_i \setminus S_{i-1}$ for $i \in \{1,\ldots,m-1\}$
+	are all the equivalence classes in $S_{m-1} \setminus S$.
+	Now for each equivalence class $R \subseteq X$
+	we either have $R \subseteq S_{m-1}$
+	or $R \cap S_{m-1} = \emptyset$. Since the latter case implies $R \subseteq X \setminus S_{m-1}$,
+	and then $R = X \setminus S_{m-1}$ since $X \setminus S_{m-1}$
+	is an equivalence class, with $S_m = X$
+	we also obtain a sequence as claimed.
+\end{remark}
+
+For finite~$X$, by picking for $S$ the empty set
+or the set of maximal elements we obtain the following corollary
+to \cref{prelim:general:order:prop:seq-upper-sets}.
+
+\begin{corollary} \label{prelim:general:order:cor:seq-upper-sets}
+	Suppose~$X$ is finite.
+	\begin{enumerate} 
+		\item  \label{prelim:general:order:cor:seq-upper-sets:1} There exists a sequence of upper sets
+		\[
+		\emptyset = S_0 \subsetneq S_1 \subsetneq \cdots \subsetneq S_m = X
+		\]
+		such that $S_{i} \setminus S_{i-1}$ for $i \in \{1,\ldots,m\}$
+		are all the equivalence classes in~$X$.
+		
+		\item  \label{prelim:general:order:cor:seq-upper-sets:2} There exists a sequence of upper sets
+		\[
+		S_1 \subsetneq \cdots \subsetneq S_m = X
+		\]
+		such that $S_0$ equals the set of maximal elements
+		and each equivalence class of a non-maximal element has the form
+		$S_{i} \setminus S_{i-1}$ for some $i \in \{1,\ldots,m\}$.
+	\end{enumerate} 
+\end{corollary}
+
+The sequences from \crefitem{prelim:general:order:cor:seq-upper-sets}{prelim:general:order:cor:seq-upper-sets:1}
+are related to topological sortings in the following way.
+Given a topological sorting $[x_1]_{\simeq}, \ldots, [x_m]_{\simeq}$ of the elements from $X / {\simeq}$ for finite~$X$,
+we obtain a sequence as in \Crefitem{prelim:general:order:cor:seq-upper-sets}{prelim:general:order:cor:seq-upper-sets:1}
+by setting $S_i = \upperset{\{x_1, \ldots, x_i\}}$ and $S_0 = \emptyset$.
+Conversely, given a sequence as in \crefitem{prelim:general:order:cor:seq-upper-sets}{prelim:general:order:cor:seq-upper-sets:1},
+the equivalence classes $S_i \setminus S_{i-1}$ for $i \in \{1,\ldots,m\}$
+give a topological sorting of $X / {\simeq}$
+since $x_i \lesssim x_j$ for $x_i \in S_i \setminus S_{i-1}$ and $x_j \in S_j \setminus S_{j-1}$ with $i \ne j$
+implies $\upperset{\{x_i\}} \subsetneq \upperset{\{x_j\}}$ by \cref{prelim:eqn:reach-upperset}.
+Thus, $\upperset{\{x_i\}} \subseteq S_i$
+and $\upperset{\{x_j\}}\subseteq S_j$
+give $S_i \subsetneq S_j$ and so $i \le j$.

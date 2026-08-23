@@ -1,0 +1,464 @@
+%!TEX root = ./../../springer-mono-format/book.tex
+%!TEX root = ./../../thesis-trier.tex
+
+Here, in \cref{syncmax:thm:Aprim-idempt} we characterize $A$-primitivity in transitive groups 
+by synchronization of all one-point singulars.
+We then note a few consequences. At the end, we also introduce the more general class
+of unimodular transformations and characterize strongly $\{a,b\}$-primitiveness
+by synchronization of transformations from this class. This is in fact the most general class
+of transformations synchronized by strongly $\{a,b\}$-primitive groups, but 
+we cannot generalize this to transitive $A$-primitive group for sets $A$ with more than three points.
+
+\label{def:quasiorderidemp}
+We use the following quasiorder in the present section:
+for a transformation monoid  $T \le_M \mathcal T_n$,
+write $a \rightsquigarrow_T b$ 
+if $a = b$ or there exists an idempotent one-point singular $t \in T$
+such that $t(a) = b$ (note that for $a\ne b$ this implies $\dupl{t} = \{b\}$).
+\footnote{Two distinct points $a,b \in [n]$ are also in relation for the following types of 
+	transformations $t \colon [n] \to [n]$:
+	\begin{enumerate}
+		\item if $t$ is a one-point singular that permutes its image with $t(a) = t(b)$ and $t^p(b) = b$ for some $p > 0$, or
+		
+		\item $t$ is a one-point singular with $t^j(a) = b$ for some $j \ge 1$ and $t(b) = b$.
+	\end{enumerate}	
+	This follows since then we can find  $i > 0$ such that $t^i$ is an idempotent one-point singular
+	with $t^i(a) = b$.
+	By \cref{prelim:lem:finite-semigrp-idempotent-power}
+	we find $i > 0$ such that $t^i$ is idempotent.
+	Then, for (1), we have $\dupl{t_{|t([n])}} = \emptyset$
+	and, with \cref{prelim:eqn:dupl0}, this yields that $t^i$ is a one-point singular
+	with image $t([n])$. Then $t^i(a) = t^i(b)$
+	and since $b \in t([n])$,
+	we have $t^i(b) = b$.
+	For (2), we have $\dupl{t} = \{b\}$ and as in the proof of \cref{prelim:lem:transitive-grp-one-point-singular} 
+	we can conclude that $t^i$ is an idempotent one-point singular.
+	We then must have $t^i(a) = b$
+	since otherwise $i < j$ and $t^i(a)$ is not contained in a cycle, contradicting
+	$t^i(t^i(a)) = t^i(a)$.
+	%	
+	% Umkehrung: 
+	%	Next, suppose $t^i$ is an idempotent one-point singular with $t(a) = b$.
+	%	Then~$t$ must be a one-point singular.
+	%	%Assume $t(b) \notin \{b, t(a)\}$.
+	%	%Assume $t(b) \ne b$.
+	%	
+	%	Suppose $t$ does not permute its image.
+	%	Then $t(t(c))$ for some $c \in [n]$
+	%	ends at the duplicate state and $t(c)$ and~$c$ are not contained in any cycle.
+	%	If the cycle is not a self-loop, then $t(t(c))$ and $t(c)$ are mapped to distinct states on the cycle
+	%	and $t^2$ is not a one-point singular. So, this is not possible.
+	%	Thus, the cycle that contains the duplicate state is a self-loop	
+}
+If the transformation
+monoid $T$ is clear from context, we shall simply write~$\rightsquigarrow$ instead.
+
+\begin{lemma}
+	\label{sync_max:lem:idempotent_quasiorder}
+	Let $T \le_M \mathcal T_n$ be a transformation monoid with group of units $G$.
+	Then~$\rightsquigarrow$ is a quasiorder
+	such that, for $a,b \in [n]$ and $g \in G$,
+	$a \rightsquigarrow b$
+	implies $\applyfunc{a}{g} \rightsquigarrow \applyfunc{b}{g}$.
+\end{lemma}
+\begin{proof}
+	By definition, $\rightsquigarrow$ is reflexive.
+	Next, let $a,b,c \in [n]$
+	be distinct such that $a \rightsquigarrow b$
+	and $b \rightsquigarrow c$,	witnessed by idempotent one-point singulars
+	$h_1, h_2 \in T$ 
+	such that $h_1(a) = b$
+	and $h_2(b) = c$.
+	The points $b$ and $c$ are the unique duplicate points of $h_1$ and~$h_2$, respectively.
+	Thus $\dupl{h_1} \subseteq h_1([n]) \cap h_2^{-1}(\dupl{h_2})$
+	and so, by \cref{prelim:trans:idempt-one-point:prop:comp}
+	the composition $\concat{h_1}{h_2}$
+	is an idempotent one-point singular.
+	We have $h_2(h_1(a)) = h_2(b) = c$.
+	We also have $h_1(c) = c$
+	or $h_1(c) = b$ and both cases give $h_2(h_1(c)) = c$.
+	Thus we have $(\concat{h_1}{h_2})(a) = c$
+	and so $a \rightsquigarrow c$. 
+	Next, let $g \in G$.
+	By \cref{prelim:conj}
+	we have $\applyfunc{\applyfunc{a}{g}}{h_1^g} = \applyfunc{b}{g}$
+	and $h_1^g$ is an idempotent
+	one-point singular.
+	So we find $\applyfunc{a}{g} \rightsquigarrow  \applyfunc{b}{g}$.
+\end{proof}
+
+\begin{theorem} \label{syncmax:thm:Aprim-idempt}
+Suppose $G \le_G \mathcal S_n$ is transitive and $A \subseteq [n]$ is a subset with $|A| \ge 2$. Then the following are equivalent. 
+\begin{enumerate}
+\item \label{syncmax:thm:Aprim-idempt:1} $G$ is $A$-primitive.
+
+\item \label{syncmax:thm:Aprim-idempt:2} $G$ synchronizes every one-point singular $t$ on~$[n]$
+with $A \subseteq t^{-1}(\dupl{t})$. 
+
+\item \label{syncmax:thm:Aprim-idempt:3} $G$ synchronizes some idempotent one-point singular $t$ on~$[n]$
+with $t^{-1}(\dupl{t}) = A$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+\ref{syncmax:thm:Aprim-idempt:1} $\Rightarrow$ \ref{syncmax:thm:Aprim-idempt:2}:
+Since~$G$ is transitive, by \cref{prelim:lem:transitive-grp-one-point-singular}, there
+exists an idempotent one-point singular $h \in \langle G \cup \{t\} \rangle_S$
+with $A \subseteq h^{-1}(\dupl{h})$.
+Let $A = \{a_1, \ldots, a_m\}$ for $m \ge 2$
+and $h(a_i) = a_m$ for $i \in \{1,\ldots,m\}$.
+Pick $i \in \{1,\ldots,m\}$.  We have $a_i \rightsquigarrow a_m$ since $h(a_i) = a_m$.
+Denote by~$\leftrightsquigarrow$
+the equivalence relation
+induced by the quasiorder~$\rightsquigarrow$,
+which is a $G$-congruence
+by \cref{sync_max:lem:idempotent_quasiorder}.
+Since~$G$ is transitive, there exists $g \in G$
+with $\applyfunc{a_1}{g} = a_m$.
+Pick some $k > 0$ 
+such that $\applyfunc{a_i}{g^k} = a_i$.
+By successively applying~$g$
+to $a_i \rightsquigarrow a_m$
+we find $a_i \rightsquigarrow \applyfunc{a_i}{g}, 
+\applyfunc{a_i}{g} \rightsquigarrow \applyfunc{a_i}{g^2},
+\ldots, 
+\applyfunc{a_i}{g^{k-1}} \rightsquigarrow a_i$.
+So $a_i \leftrightsquigarrow \applyfunc{a_i}{g}$ where $\applyfunc{a_i}{g} = a_m$.
+Thus, we have $a_i \leftrightsquigarrow a_m$ for all $i \in \{1,\ldots,m\}$.
+Since~$G$ is $A$-primitive,
+this implies that all
+pairs of states are equivalent.
+Hence, for all pairs $c,d \in [n]$
+there exists an idempotent $f \in \langle G \cup \{t\} \rangle_S$
+such that $\applyfunc{c}{f} = \applyfunc{d}{f} = d$.
+So, with the transformation semigroup version 
+of the pair criterion (\cref{prelim:remarks_trans_semigrp_semiautomata} and \cref{prelim:thm:pair_sync_condition}) it follows
+that $\langle G \cup \{t\} \rangle_S$
+contains a constant map.	
+
+\ref{syncmax:thm:Aprim-idempt:2} $\Rightarrow$ \ref{syncmax:thm:Aprim-idempt:3}: This is clear.
+
+\ref{syncmax:thm:Aprim-idempt:3} $\Rightarrow$ \ref{syncmax:thm:Aprim-idempt:1}: 
+ If~$G$ is not $A$-primitive, then, by \cref{sync_max:cor:syncSI-abprim1}, it synchronizes no
+ idempotent $t \colon [n] \to [n]$ with $t^{-1}(\dupl{t}) \subseteq A$. This gives the claim.
+\end{proof}
+
+\begin{remark}
+	We note that instead of quasiorders in the proof of 
+	the implication ``$\ref{syncmax:thm:Aprim-idempt:1} \Rightarrow \ref{syncmax:thm:Aprim-idempt:2}$''
+	in \cref{syncmax:thm:Aprim-idempt},
+	we can also construct
+	a digraph on $[n]$ 
+	that has an edge $(c,d)$ for each idempotent one-point singular
+	mapping $c$ to $d$.
+	By \cref{prelim:conj}, $G$ is a subgroup of the automorphism group
+	of this graph. Furthermore, as~$G$ is transitive, this graph is strongly connected by \cref{prelim:thm:vertex_transitive_finite_graph}, 
+	and paths correspond
+	to idempotent one-point singulars mapping the starting vertex
+	to the end vertex. Then, all pairs of points can be mapped to a common point
+	by following a path, 
+	which yields claim.
+\end{remark}
+
+\begin{corollary} \label{syncmax:cor:Aprim-idempt} \label{sync_max:thm:idemp}
+Let $G \le_G \mathcal S_n$, $n \ge 3$ and $a,b \in [n]$ be distinct. Then the following are equivalent.
+\begin{enumerate}
+\item \label{syncmax:cor:Aprim-idempt:1} $G$ is strongly $\{a,b\}$-primitive.
+
+\item \label{syncmax:cor:Aprim-idempt:2} $G$ synchronizes every one-point singular $t \colon [n] \to [n]$ with
+$t(a) = t(b)$.
+
+\item \label{syncmax:cor:Aprim-idempt:4} $G$ synchronizes every simple idempotent $t \colon [n] \to [n]$ with $t(a) = t(b)$. 
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+\ref{syncmax:cor:Aprim-idempt:1} $\Rightarrow$ \ref{syncmax:cor:Aprim-idempt:2}:
+ This follows from \cref{syncmax:thm:Aprim-idempt}.
+
+\ref{syncmax:cor:Aprim-idempt:2} $\Rightarrow$ \ref{syncmax:cor:Aprim-idempt:4}: This is clear.
+
+\ref{syncmax:cor:Aprim-idempt:4} $\Rightarrow$ \ref{syncmax:cor:Aprim-idempt:1}: This follows from \cref{sync_max:cor:2-sets_transitive}.
+\end{proof}
+
+\begin{remark}
+ \Cref{syncaut:permgrp:ex:threesets} gives a transitive permutation group that
+ is not $\{a,b\}$-primitive for all pairs of points $a,b \in [n]$,
+ and so does not synchronize some simple idempotent,
+ but which is $A$-primitive for all $A \subseteq [n]$
+ with $|A| \ge 3$.
+ Thus, synchronization of all idempotent one-point singulars
+ with $|t^{-1}(\dupl{t})| = 3$
+ is not sufficient for $\{a,b\}$-primitivity for some $\{a,b\}$.	
+\end{remark}
+
+As the trivial subgroup on $[2]$, which is not strongly $\{0,1\}$-primitive,
+synchronizes every non-permutation,
+\cref{syncmax:cor:Aprim-idempt} does not hold for $n = 2$.
+
+By~\cref{sync_max:cor:syncSI-abprim2}, 
+if $G$ synchronizes one simple idempotent $t$
+with $t(a) = t(b)$, 
+then $G$ is $\{a,b\}$-primitive.
+However, as \cref{sync_max:ex:abprim-no-constant}
+shows, $\{a,b\}$-primitivity
+does not imply that $G$
+synchronizes some simple idempotent $t$
+with $t(a) = t(b)$.
+\Cref{sync_max:thm:idemp} 
+states that synchronization of both simple idempotents
+mapping $a$ and $b$ to the same
+point is equivalent to strong $\{a,b\}$-primitivity.
+
+With our results we obtain a characterization of primitivity first given by 
+Ara\'ujo and Cameron~\cite[Thm.~2]{AraujoCameron2014}.
+
+\begin{corollary}[{Ara\'ujo and Cameron~\cite[Thm.~2]{AraujoCameron2014}}] \label{sync_max:thm:primtiive_kerneltype_k1111}
+ Let $G \le_G \mathcal S_n$ be transitive and $1 < k < n$. Then~$G$ admits a non-trivial block of size at least~$k$
+ if and only if there exists a one-point singular of defect $k - 1$ not synchronized by~$G$.
+\end{corollary}
+\begin{proof}
+ First, suppose~$G$ has a non-trivial block $\Delta$ of size at least~$k$.
+ Thus, $G$ is not $\Delta$-primitive.
+ By \crefitem{syncmax:thm:Aprim-idempt}{syncmax:thm:Aprim-idempt:3}, 
+ no idempotent one-point singular $t \colon [n] \to [n]$
+ with $t^{-1}(\dupl{t}) = \Delta$
+ is synchronized by~$G$
+ and such a $t$ has defect $k - 1$.
+ Conversely, suppose~$G$ does not synchronize some one-point singular $t \colon [n] \to [n]$ 
+ of defect $k - 1$. By \cref{syncmax:thm:Aprim-idempt},
+ $G$ is not $A$-primitive for $A = t^{-1}(\dupl{t})$
+ and so there exists a non-trivial block
+ of size at least $|A|$. By \cref{prop:char-one-attractor}, we have $|A| = k$.
+\end{proof}
+
+With \cref{sync_max:prop:prim_stronglyabprim,sync_max:thm:idemp} we also easily obtain
+that a permutation group on $[n]$ where $n \ge 3$ is primitive
+if and only if it synchronizes every idempotent one-point singular.
+
+Since in a transitive group $G \le_G \mathcal S_n$
+a block $\Delta$ and its equal-sized translates $g(\Delta)$
+partition the domain, $n$ is a multiple of the size of every block
+in a transitive permutation group. Thus \cref{sync_max:thm:primtiive_kerneltype_k1111} 
+implies that a transitive
+permutation group $G \le_G \mathcal S_n$ 
+synchronizes every transformation
+of kernel type $(k,1,\ldots,1)$
+with $\frac{n}{2} < k < n$,
+or that an imprimitive permutation group
+with non-trivial blocks of size at most~$l$
+synchronizes every transformation of kernel type $(k,1,\ldots,1)$
+for $l < k < n$.
+Example~\ref{syncaut:permgrp:ex:threesets}
+gave imprimitive groups of arbitrarily large size that synchronize
+every transformation of kernel type $(k,1,\ldots,1)$ with $k \ge 3$
+as these groups only have non-trivial blocks of size two.
+
+Lastly, we give a more general synchronization property for strongly $\{a,b\}$-primitive groups
+and so-called unimodular transformations introduced in~\cite{Volkov24}.
+This is based on two lemmas from~\cite[Lem.~4.3 \& 4.4]{KariVolkov2021} 
+originally used for the solution of the road coloring problem in~\cite{KariVolkov2021}.
+For the convenience of the reader we give full proofs (our lemmas are actually a little less general
+than the original ones from~\cite{KariVolkov2021} and adapted to our setting of groups and non-permutations).
+We will use the stability relation $\sim_s$ introduced on page~\pageref{def:stability}.
+
+Let $t \colon [n] \to [n]$. For $a \in [n]$, set $l(a) = \min\{ i \mid \exists p > 0 \colon t^i(a) = t^{i + p}(a) \}$, i.e., the
+shortest distance to a cycle state for the transformation induced by~$a$
+(which is the shortest distance to a root state for a tail state).
+Let $L = \max\{ l(a) \mid a \in [n] \}$.
+We call $t$ \emph{unimodal}~\cite{Volkov24} if $L \ge 1$ and for $a,b \in [n]$ with $l(a) = l(b) = L$
+we have $t^L(a) = t^L(b)$. In this case, two points $a,b \in [n]$
+such that
+\begin{enumerate}
+	\item $t(b) = t^L(c)$ and $a = t^{L -1}(c)$ for some $c \in [n]$ with $l(c) = L$, and
+	
+	\item $t^p(b) = b$ for some $p > 0$, i.e., $b$ lies in a cycle of the functional graph of~$t$,
+\end{enumerate} 
+are called a \emph{unimodal pair} for~$t$.
+
+Intuitively, a unimodular transformation is a non-permutation
+with the property that all paths of maximal length that traverse a single cycle state (which must be an end state)
+share the same cycle state as their end state. See \cref{fig:unimodal} for an example (taken from~\cite{Volkov24}).
+One-point singulars are unimodal.
+
+	\begin{figure}[htb]
+	\centering
+	
+	\begin{tikzpicture}[
+		scale=1.0,
+		>=Stealth,
+		every node/.style={circle, draw, inner sep=2pt},
+		]			
+		
+		\node (A)  at (-2,2) {2};
+		\node (B)  at (0,2)   {1};
+		\node (C)  at (0,0.1)    {2};
+		\node (D)  at (0,-1.8)  {1};
+		\node (E)  at (4,-1.8) {1};
+		
+		\node (Y)  at (10,2) {3};
+		
+		\node (AD) at (2,0.1)   {0};
+		\node (AB) at (2,2)  {0};
+		\node (BC) at (4,2)  {0};
+		
+		\node (CD) at (4,0.1)   {0};
+		\node (AC) at (6,2)  {1};
+		\node (BD) at (8,2)  {2};
+		
+		\node (AE) at (6,0.1)   {2};
+		\node (BE) at (9,0.1)   {3};
+		
+		\node (X)  at (8,-1.8) {3};
+		
+		
+		\draw[->] (CD) -- (AD);	
+		
+		\draw[->] (AD) -- (AB);
+		\draw[->] (AB) -- (BC);
+		\draw[->] (BC) -- (CD);
+		
+		\draw[->] (A) -- (B);
+		\draw[->] (C) -- (B);
+		
+		\draw[->] (D) --  (AD);
+		\draw[->] (E) --  (AD);
+		
+		\draw[->] (B) -- (AB);
+		
+		\draw[->] (AC) -- (BC);
+		
+		\draw[->] (BD) -- (AC);
+		
+		\draw[->] (AE) -- (AC);
+		
+		\draw[->] (BE) --  (AE);
+		
+		\draw[->] (Y) -- (BD);
+		
+		\draw[->] (X) -- (AE);
+		
+		
+		\draw[dashed,-] (A) -- (C);			
+		\draw[dashed,-] (D) -- (E);
+		\draw[dashed,-] (E) -- (CD);			
+		\draw[dashed,-] (X) -- (BE);			
+		\draw[dashed,-] (D) -- (CD);			
+		\draw[dashed,-] (B) -- (AD);			
+		\draw[dashed,-] (BD) -- (AE);
+		
+		\draw[dashed,-] (AB) to[out=45,in=135] (AC);
+		
+	\end{tikzpicture}
+	\caption[Unimodal transformation]{Functional graph of a unimodal transformation.
+		Marks indicate $l(a)$; we have $L = 3$. Dashed lines show the kernel relation.}
+	\label{fig:unimodal}
+\end{figure}
+
+\IN{incompressible set}
+For $S \le_S \mathcal T_X$ we call $A \subseteq X$ \emph{incompressible}
+if there exists no $t \in S$ such that $|A| < |t(A)|$. Clearly, if~$A$
+is incompressible, then $t(A)$ is incompressible for each $t \in S$
+and $|A| = |t(A)|$.
+
+\begin{lemma} \label{syncmax:lem:incompressible-stable-pair}
+	Let $S \le_S \mathcal T_n$ be a semigroup and $A \subseteq [n]$
+	be a maximal incompressible set.
+	Suppose that there exists $t \in S$ that fixes every point in~$A$
+	except one point $a \in A$. Then $a \sim_s t(a)$.
+\end{lemma}
+\begin{proof}
+	Let $h \in S$. To show $a \sim_s t(a)$, we have to show that $f(h(a)) = f(h(t(a)))$
+	for some $f \in S$.
+	We may assume $h(a) \ne h(t(a))$.
+	Set $B = A \setminus \{a\}$. Then we have the following:	
+	\begin{enumerate}
+		\item The set $h(t(A))$ is incompressible and has the same size as~$A$
+		
+		\item The set $h(A)$ is incompressible and has the same size as~$A$.
+		
+		\item $h(t(B)) = h(B)$.
+	\end{enumerate}
+	This yields that the set $C = h(B) \cup \{ h(a), h(t(a)) \}$
+	has size $|A| + 1$.	
+	Then, by the maximality of~$A$, there exists a pair of points in $C$ that can be mapped to the same point. Since $h(t(A))$ and $h(A)$ are incompressible, this pair must be $h(a)$ and $h(t(a))$.	
+	Thus, we have $f(h(a)) = f(h(t(a)))$ for some $f \in S$.
+	This yields $a \sim_s t(a)$.
+\end{proof}
+
+\begin{lemma} \label{syncmax:lem:unimodal-stable}
+	Let $G \le_G \mathcal S_n$ be transitive
+	and $t \colon [n] \to [n]$ be unimodal 
+	with unimodal pair $a,b \in [n]$.
+	Then $a \sim_s b$ w.r.t.~the transformation semigroup $\langle G \cup \{t\} \rangle_S$.
+\end{lemma}
+\begin{proof}
+	Let $A = \{ c \in [n] \mid l(c) = L \}$.
+	Since~$a, b \in [n]$ is a unimodal pair, without loss of generality,
+	we have $t(a) = t(b) = t^L(c)$ and $a = t^{L-1}(c)$
+	for some $c \in A$ and $b$ is contained in a cycle
+	of the functional graph of~$t$.
+	
+	Next, consider a maximal incompressible $B \subseteq [n]$
+	w.r.t.~$\langle G \cup \{t\} \rangle$.
+	Let $d \in B$.
+	By transitivity, we have $g(d) = c$ for some $g \in G$.
+	The set $g(B)$ is also incompressbile.
+	Thus, since $t^L(d) = t^L(d')$ for all $d,d' \in A$,
+	there can only be one state from~$A$ in $g(B)$
+	and so we have $g(B) \cap A = \{ c \}$.
+	Let $C = t^{L - 1}(g(B))$.
+	The set $C$ is incompressible and, by choice of~$L$,
+	all of its points except $a = t^{L - 1}(c)$
+	are contained in a cycle of the functional graph of~$t$.
+	Let $m$ be the least common multiple of the lenghts
+	of the cycles in the functional graph of~$t$.
+	Then $t^m$ fixes all states in the cycles
+	but, since $t^{m + 1} = t^m(t(a)) = t^m(t(b)) = t(b)$,
+	we have	$t^m(a) = b$.
+	By \cref{syncmax:lem:incompressible-stable-pair} (applied with $t^m$, $C$, and $\langle G \cup \{t\} \rangle_S$
+	in the roles of $t$, $A$, and~$S$, respectively)
+	we find $a \sim_s b$.	
+\end{proof}
+
+\begin{theorem} \label{syncmax:thm:unimodal-sync}
+	Let $G \le_G \mathcal S_n$.
+	Then~$G$ is strongly $\{a,b\}$-primitive
+	if and only if it  $G$ synchronizes every unimodal $t \colon [n] \to [n]$ with unimodal pair $a,b$.	
+\end{theorem}
+\begin{proof}
+	First, suppose~$G$ is strongly $\{a,b\}$-primitive.
+	Let $t\colon [n] \to [n]$ be unimodal with unimodal pair~$a,b$.
+	By \cref{syncmax:lem:unimodal-stable},
+	we have $a \sim_s b$ in $\langle G \cup \{t\} \rangle_S$.
+	Since $G$ is $\{a,b\}$-primitive, this yield that $\sim_s$
+	equals the universal relation. 
+	By \cref{prelim:cor:stability-sync} it follows that 
+	$\langle G \cup \{t\} \rangle_S$ contains a constant map, i.e., $G$ synchronizes~$t$.
+	
+	Conversely, each simple idempotent mapping $a$ to~$b$ or vice versa 
+	is a unimodal with unimodal pair $a,b$.
+	Thus, by \cref{sync_max:cor:2-sets_transitive}, $G$ is strongly $\{a,b\}$-primitive.	
+\end{proof}
+
+\begin{corollary} \label{syncmax:cor:unimodal-sync}
+	A group on a finite domain of size at least three is primitive
+	if and only if it synchronizes every unimodal transformation.	
+\end{corollary}
+\begin{proof}
+	This follows from \cref{sync_max:prop:primitive_Aprimitive,syncmax:thm:unimodal-sync}.
+\end{proof}
+
+One-point singulars are unimodal
+and with \cref{prelim:lem:transitive-grp-one-point-singular}
+for two points mapped to a common state we find
+an idempotent one-point singular having 
+having these two points as an unimodal pair.
+Thus \cref{syncmax:thm:unimodal-sync} also 
+implies \cref{syncmax:cor:Aprim-idempt,sync_max:thm:primtiive_kerneltype_k1111}.
+
+\begin{remark}
+	Comparing \cref{syncmax:thm:unimodal-sync} and~\cref{syncmax:thm:Aprim-idempt}
+	the question arises whether we can characterize
+	transitive $A$-primite groups for sets $A$ with more than three points
+	by the property that such a group synchronizes every unimodal transformation
+	having a unimodal pair in~$A$. We do not know how to obtain such a characterization.	
+\end{remark}

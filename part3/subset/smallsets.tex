@@ -1,0 +1,308 @@
+%!TEX root = ../../thesis-trier.tex
+
+In \cref{prelim:autsyncw:prop:two-sets-min-rank}
+we prove, using \cref{sync_max:prop:two-sets-containing-2set},
+that distinguishability of pairs of $k$-sets in automata with at least $k+1$ states 
+implies synchronizability for $k \ge 3$, and for $k = 2$
+existence of a word of rank at most two.
+Then we list several consequences, for example,
+that a strongly connected automaton in which pairs of $2$-sets
+are distinguishable is synchronizing.
+\Cref{sync_max:ex:2-sets-binary,sync_max:ex:2-sets}
+give non-synchronizing automata where all pairs of $2$-sets
+are distinguishable. Lastly, in~\cref{sync_max:prop:disjointklsets}, 
+for automata whose transformation monoid contains a transitive group,
+we give a sufficient condition for synchronizability in terms 
+of the distinguishability of certain disjoint sets.
+
+\begin{lemma}
+	\label{sync_max:prop:two-sets-containing-2set}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$.
+	Suppose for all distinct states $p, q \in Q$
+	there exist distinguishable subsets $A, B \subseteq Q$
+	with $\{p,q\} \subseteq A \cap B$.
+	Then $\mathcal A$ is synchronizing.	
+\end{lemma}
+\begin{proof}
+	A word $u \in \Sigma^*$ that distinguishes $A$ from $B$
+	maps at least one subset to a singleton subset,
+	which implies $\applytrans{\delta}{p}{u} = \applytrans{\delta}{q}{u}$.
+	As this holds for any pair of distinct states $p,q \in Q$, by \cref{prelim:thm:pair_sync_condition} 
+	the automaton $\mathcal A$ is synchronizing.    			
+\end{proof}
+
+\begin{proposition} \label{prelim:autsyncw:prop:two-sets-min-rank} 	\label{sync_max:cor:k-ge-3-sync}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ and $2 \le k,l \le |Q|$ with $|Q| \ge k + 1$
+	or $|Q| \ge l + 1$.
+	Suppose each $k$-set is distinguishable from
+	each distinct $l$-set of states in~$\mathcal A$
+	and let $u$ be a word of minimal rank~$r$.
+	For $k \ge 3$ or $l \ge 3$, we have $r = 1$, i.e., $\mathcal A$ is synchronizing.
+	For $k = l = 2$, we have~$r \le 2$ where for $r = 2$
+	the set $\delta(Q, u)$ is permuted by each letter, and so
+	a union of sink components by \cref{prelim:autsyncw:lem:perm-each-letter-sink}.
+\end{proposition}
+\begin{proof}	
+	Without loss of generality, let $k \le l$.
+	First, suppose $l \ge 3$.
+	Let $p,q \in Q$ be distinct.
+	By assumption, there exist distinct $p_3, \ldots, p_k, p_{k+1} \in Q \setminus \{p,q\}$.
+	Set $A = \{p,q,p_3, \ldots, p_k\}$.
+	Next, there also exists an $l$-subset $B \subseteq Q$
+	with $\{p,q,p_{k+1}\} \subseteq B$.
+	Since $p_{k+1} \notin A$
+	we have $A \ne B$.
+	By assumption, $A$ and~$B$ are distinguishable.
+	The, from \cref{sync_max:prop:two-sets-containing-2set} we conclude that $r = 1$. 
+				
+	Next, suppose $k = l = 2$.
+	Assume $r \ge 3$. Then we can pick three distinct states $p,q,s \in \delta(Q, u)$.
+	By assumption, the sets $\{p,q\}$ and $\{p,s\}$
+	are distinguishable by some word $v \in \Sigma^*$.
+	Since one of both sets is mapped to a singleton,
+	we find $|\delta(Q, uv)| < |\delta(Q, u)|$, contradicting
+	the choice of~$u$ as a word of minimal rank.
+	So, we have $r \le 2$.
+	Now, suppose $r = 2$.
+	Assume there exists $a \in \Sigma$
+	such that $\delta(\delta(Q, u), a) \ne \delta(Q, u)$.
+	Since~$r$ is the minimal possible rank, $\delta(\delta(Q, u), a)$
+	is a $2$-set.
+	Then, by assumption, there exists a word $v$
+	distinguishing $\delta(\delta(Q, u), a)$
+	and $\delta(Q, u)$.
+	However, then one of both subsets is mapped
+	to a singleton, which is not possible
+	since the minimal possible rank of a word is $2$.
+	Hence, $\delta(\delta(Q, u), a) = \delta(Q, u)$
+	for each $a \in \Sigma$.	
+\end{proof}
+
+Next, we list a few
+consequences of \cref{sync_max:prop:two-sets-containing-2set,sync_max:cor:k-ge-3-sync}.
+
+\begin{corollary} \label{sync_max:cor:two-sets-containing-2set}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be an $n$-state automaton and $2 \le k < n$.
+	
+	\begin{enumerate}
+		\item \label{sync_max:cor:two-sets-containing-2set:1} If $n \ge 4$ and all pairs of distinct $3$-sets
+		are distinguishable in $\mathcal A$, then $\mathcal A$ is synchronizing.
+		
+		
+		\item \label{sync_max:cor:two-sets-containing-2set:2} If for every $k$-set $A \subseteq Q$ there exists $B \subseteq Q$
+		with $A \subseteq B$ such that $A$ and~$B$ are distinguishable,
+		then $\mathcal A$ is synchronizing.
+		
+		\item \label{sync_max:cor:two-sets-containing-2set:item:kl}  Let $0 < l \le n - k$.
+		If every $k$-set is distinguishable from 
+		every $(k+l)$-set, then $\mathcal A$ is synchronizing.  
+		
+		\item \label{sync_max:cor:two-sets-containing-2set:4} If every $k$-set is distinguishable from the whole
+		state set, then the automaton is synchronizing.
+	\end{enumerate}	
+\end{corollary}
+\begin{proof}
+	\ref{sync_max:cor:two-sets-containing-2set:1}: This follows from~\cref{sync_max:cor:k-ge-3-sync} with $k = 3$.
+	
+	\ref{sync_max:cor:two-sets-containing-2set:2}: For distinct $p,q \in Q$ choose some $k$-set with $p, q \in A$.
+	By assumption, there exists $B \subseteq Q$ containing $A$ 
+	so that $A$ and $B$ are distinguishable.
+	Then \cref{sync_max:prop:two-sets-containing-2set} gives the claim.
+	
+	\ref{sync_max:cor:two-sets-containing-2set:item:kl} and~\ref{sync_max:cor:two-sets-containing-2set:4} clearly follow from~\ref{sync_max:cor:two-sets-containing-2set:2}.
+\end{proof}
+
+\begin{corollary} \label{prelim:aut-sync-words:subset:cor:no-letter-fixes-two-sets-and-dist-2-sets-implies-sync} \label{sync_max:prop:2-sets-dist-SCC-implies-sync}
+Suppose $\semiautomat{A}{Q}{\Sigma}{\delta}$ is an automaton with at least three states in which all pairs of distinct $2$-sets
+are distinguishable.
+\begin{enumerate}
+\item \label{sync_max:prop:2-sets-dist-SCC-implies-sync:1} If for distinct $p,q \in Q$ 
+we have $\delta(\{p,q\}, a) \ne \{p,q\}$ for some $a \in \Sigma$,
+then $\mathcal A$ is synchronizing.
+
+\item \label{sync_max:prop:2-sets-dist-SCC-implies-sync:2} If~$\mathcal A$ is strongly connected, then it is synchronizing.
+
+\item \label{sync_max:prop:2-sets-dist-SCC-implies-sync:3} Either $\mathcal A$ has a unique sink component and is synchronizing, or it has 
+precisely two sink components each of size one.
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+\ref{sync_max:prop:2-sets-dist-SCC-implies-sync:1}: Let $u \in \Sigma^*$ be a word of minimal possible rank.
+By \cref{prelim:autsyncw:prop:two-sets-min-rank} 
+we have $|\delta(Q, u)| \le 2$
+where $|\delta(Q, u)| = 2$ is not possible
+since otherwise every letter would permute this set
+by \cref{prelim:autsyncw:prop:two-sets-min-rank}.
+
+\ref{sync_max:prop:2-sets-dist-SCC-implies-sync:2}: Let~$u$ be a word of minimal rank
+and assume $|\delta(Q, u)| \ge 2$.
+By \cref{prelim:autsyncw:prop:two-sets-min-rank},
+$\delta(Q, u)$ has size two and equals a union of sink components.
+Since~$\mathcal A$ is strongly connected, $Q$ is its only sink component
+and  we find $\delta(Q, u) = Q$,
+which is not possible since~$|Q| \ge 3$.
+
+\ref{sync_max:prop:2-sets-dist-SCC-implies-sync:3}:	By \cref{prelim:autsyncw:lem:minrank}, $\mathcal A$
+has at most two sink components.
+First, if it has a unique sink component~$S \subseteq Q$,
+then $\mathcal A_{|S}$ is strongly connected
+and all pairs of distinct $2$-sets from~$S$ are distinguishable.
+Thus, by Item~\ref{sync_max:prop:2-sets-dist-SCC-implies-sync:2}, $\mathcal A_{|S}$ is synchronizing.
+Since the set of maximal states equals the union of all sink components
+by \cref{prelim:order:maximal-elements-upper-set}, $S$ equals the set of maximal states
+and so~$\mathcal A$ is synchronizing by \cref{prelim:thm:SCC_sync_words}.
+Next, suppose~$\mathcal A$ has two sink components.
+Then it is not synchronizing by \cref{prelim:autsyncw:lem:minrank}.
+By \cref{prelim:autsyncw:prop:two-sets-min-rank},
+$\delta(Q, u)$ for a word of minimal rank~$u$
+equals a union of sink components and has size two.
+Since this set has non-empty intersection with both sink components by \cref{sync_max:eqn:upper_set}, 
+both sink components must have size one.
+\end{proof}
+
+Next, \cref{sync_max:ex:2-sets-binary,sync_max:ex:2-sets} give infinite families of non-synchronizing automata 
+where all pairs of $2$-sets are distinguishable, demonstrating that the case $k = 2$ in
+\cref{prelim:autsyncw:prop:two-sets-min-rank} is special in the sense that
+it does not imply synchronizability similar to the case $k > 2$.
+By adding in these examples another letter that swaps the two maximal states and fixes every other state, we obtain non-synchronizing automata 
+with a unique sink component where all pairs of $2$-sets are distinguishable.
+
+\begin{example} 
+	\label{sync_max:ex:2-sets}
+	Set $\semiautomat{A_n}{[n]}{\Sigma}{\delta}$
+	for $n \ge 3$
+	where $\Sigma = \{ a_{ij} \mid i \in \{0,1\}, j \in \{2,\ldots,n-1\}\}$
+	and, for $i \in \{0,1\}$, $j \in \{2,\ldots,n-1\}$,
+	we have
+	\[
+	\delta(k, a_{ij}) = \begin{cases}
+		i & \text{if } k = j, \\
+		k & \text{otherwise,}
+	\end{cases} 
+	\]
+	for $k \in [n]$.
+	See \cref{sync_max:fig:2-sets}
+	for~$\mathcal A_3$.
+	Now, consider two distinct $2$-sets $\{p, q\}$
+	and $\{s, t\}$ of states. First, without loss of generality,
+	suppose $\{p, q\} \subseteq \{2,\ldots,n-1\}$.
+	Then $\delta(p, u) = \delta(q, u) = 0$
+	and $|\delta(\{s,t\}, u)| = 2$
+	for $u = a_{0p} a_{0q}$.
+	Otherwise, $\{0,1\}$ has non-empty intersection
+	with both $2$-sets where we assume, without loss of 
+	generality, $p = 0$ and $q \ne 1$.
+	Then,
+	$\delta(p, a_{0q}) = \delta(q, a_{0q}) = 0$
+	and $|\delta(\{s, t\}, a_{0q})| = 2$.
+\end{example}
+
+\begin{example}
+	\label{sync_max:ex:2-sets-binary}
+	Let $\semiautomat{A_n}{Q_n}{\{a,b\}}{\delta_n}$ be the automaton given by the state diagram in \cref{sync_max:fig:2-sets-binary} where $n \ge 3$. Consider two distinct sets of states  $\{p_1, p_2\}, \{q_1, q_2\}$ with $p_1 < p_2$ and $q_1 < q_2$. %Note that this implies $p_1, q_1 \le n - 2$.
+	First, without loss of generality, suppose $p_1 < q_1$.
+	In this case, for $q_2 \le n - 2$, we have $\delta(\{q_1, q_2\}, a^{n - 2 - q_1}) = \{n - 2\}$ 
+	and $|\delta(\{p_1, p_2\}, a^{n - 2 - q_1})| = 2$.
+	For $q_2 = n - 1$ and $q_1 \ne n - 2$,
+	we have $\delta(\{q_1, q_2\}, b^{n - 2 - q_1}) = \{n-1\}$
+	and $|\delta(\{p_1, p_2\}, b^{n-2 - q_1})| = 2$.
+	For $q_2 = n - 1$ and $q_1 = n - 2$,
+	if $p_2 = n - 1$ the word $b^n$ distinguishes both subsets,
+	and if $p_2 \le n - 2$ the word $a^n$ distinguishes both subsets.
+	Next, suppose $p_1 = q_1$. In this case, without loss of generality,
+	assume $p_2 < q_2$. % p_2 auf n - 2
+	For $q_2 = n - 1$, we have $\delta(\{p_1, p_2\}, a^n) = \{n-2\}$
+	and $\delta(\{q_1, q_2\}, a^n) = \{n - 1, n - 2\}$.
+	Otherwise, for $q_2 < n - 1$,
+	we have $\delta(\{p_1, p_2\}, u) = \{ n - 2 \}$
+	and $\delta(\{q_1, q_2\}, u) = \{ n - 1, n - 2\}$
+	for $u = a^{n - 3 - q_2}ba^n$. 
+\end{example}
+
+\todo[inline]{maßangaben auf em umstellen}
+\begin{figure}
+	\centering
+	\begin{subfigure}[b]{0.44\textwidth}		
+		\centering
+		\begin{tikzpicture}[node distance = 2.5cm and 1.25cm]
+			
+			\node[state] (3) {$3$};
+			
+			\node[state, left = of 3] (4) {$4$};
+			\node[state, right = of 3] (2) {$2$};
+			\node[state, above = of 4] (0) {$0$};
+			\node[state, above = of 2, yshift=-0.0cm] (1) {$1$};
+			
+			\path[->] (2) edge [bend left=10,above,sloped,pos=.7] node {$a_{02}$} (0)
+			(2) edge [right] node {$a_{12}$} (1); 
+			
+			\path[->] (3) edge [bend left=15, above, sloped, pos=0.49] node {$a_{03}$} (0)
+			(3) edge [bend right=15, right] node {$a_{13}$} (1)
+			(4) edge [above, sloped] node {$a_{04}$} (0)
+			(4) edge [bend right=15, pos=0.7,above, inner sep=9pt] node {$a_{14}$} (1);	
+		\end{tikzpicture}	
+		\caption[Non-Synchronizing and pairs of $2$-sets distinguishable]{Automaton as in \cref{sync_max:ex:2-sets}.}
+		\label{sync_max:fig:2-sets}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.55\textwidth}
+		\centering
+		\begin{tikzpicture}[inner sep=0pt, minimum size=20pt, node distance = 0.6cm and 0.7cm]
+			\node[state] (0) {$0$};
+			\node[state, right = of 0] (1) {$1$};
+			\node[right = of 1] (dots) {$\cdots$};
+			\node[state, right = of dots] (n-3) {$n-3$};
+			\node[state, right = of n-3] (n-2) {$n-2$};
+			\node[state, below = of n-2] (n-1) {$n-1$};
+			
+			\path[->] (0) edge [above] node {$a,b$} (1)
+			(1) edge [above] node {$a,b$} (dots)
+			(dots) edge [above] node {$a,b$} (n-3)
+			(n-3) edge [above] node {$a$} (n-2)
+			(n-3) edge [below] node {$b$} (n-1);
+		\end{tikzpicture}
+		\caption[Binary non-Synchronizing and pairs of $2$-sets distinguishable]{Binary automaton as in \cref{sync_max:ex:2-sets-binary}.} 
+		\label{sync_max:fig:2-sets-binary}
+	\end{subfigure}
+	\caption[Tow non-synchronizing automata where all pairs of $2$-sets distinguishable]{Two non-synchronizing automata where all pairs of distinct $2$-sets are distinguishable, self-loops omitted.}
+	\label{sync_max:fig:non-sync-two-sets-dist}
+\end{figure}
+
+Lastly, we consider the case that the transformation monoid contains a transitive group. In this case, we state a sufficient condition for synchronizability
+in terms of the distinguishability of certain disjoint subsets. We need this result later in a more algebraic context.
+For this reason, we give a formulation in terms of transformation monoids without reference to automata.
+
+\begin{proposition} 
+	\label{sync_max:prop:disjointklsets}
+	Let $M \le_M \mathcal T_n$ be a transformation
+	monoid with a transitive group of units
+	and $2 \le k, l < n$ such that $kl < n$.
+	If every $k$-set is distinguishable
+	from every disjoint $l$-set,
+	then $M$ contains a constant map. 		
+\end{proposition}
+\begin{proof}
+	Without loss of generality, assume $k \le l$.
+	Let $p, q \in [n]$ be two distinct states.
+	Pick $A,B \subseteq [n]$ with $k = |A|$, $l = |B|$
+	and $p,q \in A \cap B$ (note that the following argument includes the case $k = l = 2$ and $A = B = \{p,q\}$).
+	As $G$ is transitive, by \cref{thm:separating_neumann} 
+	we have $\applyfunc{A}{g} \cap B = \emptyset$
+	for some $g \in G$.
+	By assumption there exists $h \in M$
+	mapping precisely one of both subsets $\applyfunc{A}{g}$
+	or $B$ to a singleton subset.
+	If $|\applyfunc{\applyfunc{A}{g}}{h}| = 1$,
+	then, as $\{p,q\} \subseteq A$,
+	the transformation $\concat{g}{h}$
+	maps $\{p,q\}$ to a singleton.
+	If $|\applyfunc{B}{h}| = 1$,
+	then, as $\{p,q\} \subseteq B$,
+	the transformation~$h$ maps $\{p,q\}$
+	to a singleton.	
+	Using the correspondence between automata
+	and transformation semigroups (see \cref{prelim:remarks_trans_semigrp_semiautomata}),
+	the pair criterion (\cref{prelim:thm:pair_sync_condition})
+	implies that $M$ contains a constant map as all pairs of states $p,q$ 
+	can be mapped to the same state.	
+\end{proof}

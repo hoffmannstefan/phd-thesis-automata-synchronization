@@ -1,0 +1,37 @@
+%!TEX root = ./../../springer-mono-format/book.tex
+%!TEX root = ./../../thesis-trier.tex
+
+This chapter gives a short introduction to synchronizing automata for readers unfamiliar with the topic. \Cref{intro:sec:basic} fixes the notation needed here. The notation for the
+remainder of the thesis is given in~\cref{chap:prelim}.
+In \cref{intro:sec:defsyncaut} 
+we formally introduce synchronizing automata. Then, in~\cref{intro:sec:examples}, we present several introductory examples and 
+problems and discuss their relation to synchronizing automata.
+Finally,
+\cref{intro:sec:cerny} defines the reset length, states \Cerny's conjecture,
+and presents the \Cerny automata, which serve as a running example throughout
+the thesis.
+
+For readers who want to learn more about synchronizing automata, the most recent survey articles are by Kari and Volkov~\cite{KariVolkov2021} (see also its precursor~\cite{DBLP:conf/lata/Volkov08}) and by Volkov~\cite{Volkov22}, 
+the latter containing a good coverage
+of applications from different fields and types of automata considered in the literature.
+ The surveys by Jürgensen~\cite{DBLP:journals/iandc/Jurgensen08}, Kari and Volkov~\cite{KariVolkov2021}, and Béal and Perrin~\cite{BealPerrin2016} discuss connections to codes (see also Chapters~3 and~10 of~\cite{DBLP:books/daglib/0025093}). Sandberg~\cite{Sandberg04} and Kohavi~\cite[Chap.~13]{Kohavi70} include relations to automata with outputs as well as applications in circuit theory and testing. The survey by Bogdanović et al.~\cite{Bogdanovic99} presents structural results not covered in the other surveys. Another survey is by Mateescu and Salomaa~\cite{MateescuS01}. Finally, we recommend~\cite{ArCamSt2017} on synchronizing permutation groups, motivated by synchronizing automata, as results presented in that survey were inspirational for our results in \cref{sync_max:sec:perm_grps} from \cref{part:aut}.
+
+\section{Notions Used in the Introduction}
+\label{intro:sec:basic}
+
+\input{../part1/sync/notions}	
+
+\section{Formal Definition of Automata Synchronization}
+\label{intro:sec:defsyncaut}
+
+\input{../part1/sync/def}	
+
+\section{Introductory Examples}
+\label{intro:sec:examples}
+
+\input{../part1/sync/examples}	
+
+\section{Reset Length and the \Cerny Conjecture} 
+\label{intro:sec:cerny}
+
+\input{../part1/sync/resetlength}

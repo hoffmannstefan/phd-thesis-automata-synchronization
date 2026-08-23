@@ -1,0 +1,53 @@
+%!TEX root = ./../../thesis-trier.tex
+
+\todo[inline]{hier an einigen stellen befehl semiautomat nicht benutzt, weil probleme wie unten.}
+
+Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ and $\Gamma \subseteq \Sigma$.
+
+\begin{enumerate}
+	
+	\IN{restriction on automaton}
+	\item The \emph{restriction of $\mathcal A$ to $\Gamma$} is $\semiautomat{A_{|\Gamma}}{Q}{\Gamma}{\delta_{|\Gamma}}$
+	where $\delta_{|\Gamma} \colon Q \times \Gamma \to Q$
+	is defined by $\applytrans{\delta_{|\Gamma}}{q}{x} = \applytrans{\delta}{q}{x}$ for all $q \in Q$
+	and all $x \in \Gamma$.	\label{def:restriction_Gamma}
+	
+	\label{def:restriction_aut}
+	\item Let $S \subseteq Q$ be an upper set in $\mathcal A$.
+	The \emph{restriction of $\mathcal A$ to the upper set $S$}
+	is the 
+	deterministic and complete semiautomaton $\semiautomat{A_{|S}}{S}{\Sigma}{\delta_{|S}}$ 
+	with $\delta_{|S} \colon S \times \Sigma \to S$
+	given by
+	$\applytrans{\delta_{|S}}{q}{x} = \applytrans{\delta}{q}{x}$
+	for $q \in S$ and $x \in \Sigma$.
+	We also call~$\mathcal A_{|S}$ the \emph{sub(semi-)automaton} \IN{subautomaton}
+	corresponding to (or induced/defined by) the upper set $S \subseteq Q$.
+	We often just denote $\delta_{|S}$ by $\delta$ in this context.
+		 
+	\label{def:restriction_autSGamma}
+	\item If $S \subseteq Q$ is an upper set in $\mathcal A_{|\Gamma}$,
+	then by %$\semiautomat{A_{|S,\Gamma}}{S}{\Gamma}{\delta_{|S,\Gamma}}$
+%	$\semiautomat{{\restrictAutGamS{\mathcal A}{\Gamma}{S}}{S}{\Gamma}{\delta_{|S,\Gamma}}$ %
+	$\restrictAutGamS{\mathcal A}{\Gamma}{S} = (S, \Gamma, \delta_{|\Gamma, S})$	
+	we denote the \emph{restriction of $\mathcal A$ to the the alphabet $\Gamma$ and the subset $S$}, i.e.,
+	$(\mathcal A_{|\Gamma})_{|S}$. 
+\end{enumerate}
+
+Upper sets can be identified with subautomata. 
+Let $\semiautomat{A}{Q}{\Sigma}{\delta}$
+and $S, T \subseteq Q$ be upper sets. The following facts are readily seen.
+We have
+\begin{equation} \label{prelim:prop:automata:isos:item:subaut}
+	(\mathcal A_{|S})_{|T} \cong \mathcal A_{|T}  \text{ for } T \subseteq S
+\end{equation}
+Clearly, $\mathcal A_{|S}$ is strongly connected if and only if~$S$
+is a sink component.
+
+\begin{proposition}
+	\label{prelim:prop:automata:isos:item:corsub}
+	The extension of the inclusion map $i \colon S \to Q$
+	given by $i(q) = q$ for $q \in S$ to subsets induces
+	a bijection between	the strongly connected components (resp.~upper sets) in~$\mathcal A_{|S}$ 
+	and the strongly connected components (resp.~upper sets) $R$ in~$\mathcal A$ with~$R \subseteq S$.
+\end{proposition}

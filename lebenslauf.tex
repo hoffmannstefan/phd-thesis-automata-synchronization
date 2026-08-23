@@ -1,0 +1,626 @@
+%\documentclass[a4paper,12pt]{article}
+
+%%%%!TEX TS-program = xelatex
+%%%%!TEX encoding = UTF-8 Unicode
+%%%
+%%%% Load Thesis Class
+%%\documentclass{DEIThesis}
+
+%%!TEX TS-program = xelatex
+%%!TEX encoding = UTF-8 Unicode
+
+
+
+%\documentclass[draft,a4paper,12pt,twoside,openright]{book}
+\documentclass[a4paper,12pt,twoside,openright]{book}
+\RequirePackage[
+headheight=2cm,
+top=3.5cm,
+bottom=3.5cm,
+footskip=1.5cm,
+footnotesep=1cm,
+twoside,
+a4paper
+]{geometry}
+
+% export in PDF/X, PDF/A, etc...
+\RequirePackage{etoolbox}
+\RequirePackage{colorprofiles}
+%\RequirePackage[a-2b,mathxmp]{pdfx}[\today]
+
+% language, font and encodings
+\RequirePackage{newpxtext} %,newpxmath}
+\RequirePackage[T1]{fontenc}
+%\RequirePackage[english]{babel}
+
+
+
+% spacings (\onehalfsize, \doublesize)
+\RequirePackage{setspace}
+
+% indent first line of paragraph
+\RequirePackage{indentfirst}
+
+% captions
+\RequirePackage{caption}
+\RequirePackage{subcaption}
+
+% footnotes
+\RequirePackage{footnote}
+\RequirePackage[bottom]{footmisc}
+
+% mathematics
+\RequirePackage{amsmath}
+
+% links
+\RequirePackage{hyperref}
+\RequirePackage{url}
+
+% colors
+\RequirePackage{color}
+
+% graphics
+\RequirePackage{graphicx}
+
+% algoritms
+\RequirePackage{algorithm}
+\RequirePackage{algorithmic}
+
+% code snippets
+\RequirePackage{listings}
+
+% plots, drawings etc...
+\RequirePackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows.meta}
+
+% custom headers and footers
+\RequirePackage{fancyhdr}
+
+% custom title style
+\RequirePackage{titlesec}
+
+% remove headers and footers in blank pages
+\RequirePackage{scrextend}
+
+% box for titles
+\RequirePackage{adjustbox}
+
+
+
+
+
+\input{packages}
+\input{macros}
+%\usepackage{comment}
+%\usepackage{todo}
+
+
+
+%\title{The Structure of the Set of Synchronizing Words -- Relations to Permutations Groups and the Constrained Synchronization Problem}
+
+%\title{The Set of Synchronizing Words, Congruences in Transformation Semigroups and
+%	the Constrained Synchronization Problem}
+
+%\title{Synchronizing Automata and their Set of Synchronizing Words, Congruences on Transformation Semigroups 
+%	and the Constrained Synchronization Problem}
+
+%\title{Synchronizing Automata, Sets of Synchronizing Words, Congruences %on Transformation Semigroups 
+%	and the Constrained Synchronization Problem}
+
+%\title{Synchronizing Automata, the Set of Synchronizing Words, Congruences and the Constrained Synchronization Problem}
+
+\title{The Set of Synchronizing Words and the Constrained Synchronization Problem}
+\author{Stefan Hoffmann}
+
+
+
+
+
+
+% style for headers and footers
+\newcommand{\setfancyhf} {
+	\fancyhf{}
+	\fancyhead[RO]{{\footnotesize\leftmark}}
+	\fancyhead[LE]{{\footnotesize\rightmark}}
+	\fancyfoot[RE, LO]{}
+	\fancyfoot[C]{\thepage}
+}
+
+
+\renewcommand{\maketitle} {
+
+
+%{\transparent{0.2} test} test
+
+%set custom geometry
+\newgeometry{
+	top=1.5cm,
+	bottom=2cm,
+	inner=2cm,
+	outer=2cm,
+	headheight=3.5cm,
+	includehead,
+	includefoot,
+}
+
+
+
+
+% set head witdth
+\setlength{\headwidth}{\textwidth}
+
+% set academic year in footer
+%\cfoot{\normalsize\textsc{Academic Year \\ \@academicYear}}
+
+% https://tex.stackexchange.com/questions/7355/how-to-suppress-page-number
+\pagenumbering{gobble}
+
+% set brands in header
+%\lhead{
+	%	\includegraphics[height=3cm]{res/ltunipd}
+	%}
+%\rhead{
+	%	\includegraphics[height=3cm]{UTR_Logo.png}
+	%}
+
+% content
+\begin{center}
+	
+	% master name
+	\null \vspace{\stretch{2}}
+	\normalsize\textsc{
+		Ph. D. Thesis in Theoretical Computer Science
+	} \\
+	
+	% title
+	\vspace{3ex}
+	\LARGE\textbf{The Set of Synchronizing Words and the Constrained Synchronization Problem} \\
+	\vspace{\stretch{3}}
+	
+	% authors, advisors etc...
+	\doublespacing
+	
+	\begin{flushleft}
+		\small
+		\textsc{Candidate} \hfill \textsc{Supervisor} \\
+		\large{\textbf{Stefan Hoffmann}} \hfill \large{\textbf{Prof. Dr. Henning Fernau}} \\
+		\small
+		\textbf{} \hfill \textbf{Trier University, Trier, Germany} \\
+		% insert co-advisor if not empty
+		\ifx\@coadvisor\empty \else
+		\hfill \\
+		\hfill \textsc{Co-supervisor} \\
+		\hfill \large{Igor K. Rystsov,  Professor (Associate)} \\
+		\small
+		\hfill \textbf{National Technical University of Ukraine, Kyiv, UA} \\
+		\fi
+	\end{flushleft}
+	
+	\vspace{\stretch{1}} \null
+\end{center}
+
+% set watermark
+\thiswatermark{
+	\centering
+	\put(-140,-240){ 		
+		\begin{tikzpicture}[remember picture, overlay, every node/.style={anchor=center}]
+			\node[opacity=0.05,inner sep=0pt] at (page cs:-.98,-0.14) %(current page.west)
+			{\includegraphics[width=1.41\linewidth]{triersiegel.pdf}};
+		\end{tikzpicture}				
+		%			\transparent{0.05} % transparent geht wohl nicht mit xelatex (dort tikz opacity lösung?)
+		%			\scalebox{1.01}{\includegraphics[width=1.4\linewidth]{triersiegel.pdf}}
+	}
+	% workaround
+	% https://tex.stackexchange.com/questions/86500/includegraphics-set-image-opacity
+	\put(0,0){%
+		\transparent{0.7}\textcolor{white}{\rule{\paperwidth}{\paperheight}} teste
+	}
+	\put(95,0){
+		\includegraphics[height=3.5cm]{UTR_Logo.png}
+	}
+}
+
+% reset fancy headers
+\setfancyhf
+
+\begin{flushright}
+	\noindent \parbox{8.5cm}{Am 31.07.2024 dem Fachbereich IV der Universität Trier zur Erlangung des akademischen Grades Doktorin oder Doktor der Naturwissenschaften (Dr.~rer.\ nat.) eingereichte Dissertation.}
+\end{flushright}
+
+% restore defaults
+\cleardoublepage
+\restoregeometry
+}
+
+
+
+\renewcommand{\frontmatter} {
+
+\pagenumbering{roman}
+	
+% set page style
+\pagestyle{fancy}
+
+% auskommentiert
+\maketitle 
+
+\onehalfspacing
+
+
+
+% set roman page numbering
+%\pagenumbering{roman}
+
+% set page style
+\pagestyle{fancy}
+
+% create cover
+%\maketitle
+
+% reset fancy headers
+\setfancyhf
+
+% set head witdth
+\setlength{\headwidth}{\textwidth}
+
+% custom titles
+\renewcommand{\listfigurename}{List of Figures}
+\renewcommand{\listtablename}{List of Tables}
+\renewcommand{\listalgorithmname}{List of Algorithms}
+\renewcommand{\lstlistingname}{Code} % Caption name of code snippets
+\renewcommand{\lstlistlistingname}{List of Code Snippets}
+\def\listacronymname{List of Acronyms}
+
+\def\abstractname{Abstract}
+\def\abstractnameit{Zusammenfassung}
+
+\renewcommand{\bibname}{References}
+
+\def\acknowledgmentsname{Acknowledgments}
+
+% insert dedication page
+%\dedicationpage
+
+
+% insert abstract
+% auskommentiert
+\abstractpage
+
+
+\cleardoublepage
+
+
+%\input{ack}
+% add acknowledgments
+%\addcontentsline{toc}{chapter}{\acknowledgmentsname}
+
+% auskommentiert
+\acknowledgments
+
+\clearpage 
+
+
+{
+
+\vspace*{6cm}
+
+\begin{flushright}
+	\rightskip=1.8cm\textit{``I've never been a good estimator of how long things are going to take.''} \\
+	\vspace{.2em}
+	\rightskip=.8cm-- Donald E. Knuth (1938 -- present)
+\end{flushright}%
+
+
+\vspace*{1cm}
+
+% https://www.chem-page.de/zitate/woehler-friedrich.html
+\begin{flushright}
+	\rightskip=1.8cm\textit{``Du glaubst nicht, wie müde ich bin, wie satt ich die Chemie habe, wie namentlich gewisse Teile mich ordentlich anekeln, mir wenigstens so langweilig sind, dass ich gähnen muss, wenn ich daran denke. Sind wir denn schon so alt, oder wie ist das? Diese nervenschwächende Wirkung muss wirklich der Chemie eigentümlich sein. Ich glaube, die materiellen Influenzen, die Dämpfe, Gerüche und all die Teufelsstinkereien haben großen Anteil daran. Besonders ist es das Praktikum, was einen so herunterbringt.''} \\
+	\vspace{.2em}
+	\rightskip=.8cm-- Friedrich Wöhler (1800 -- 1882) \\ Aus einem Brief an Justus von Liebig (22.07.1847)
+\end{flushright}%
+
+}
+
+\pagenumbering{roman}
+\setcounter{page}{14}
+% insert table of contents
+\tableofcontents
+\cleardoublepage
+
+% insert list of figures
+\phantomsection
+%\setcounter{page}{11}
+\addcontentsline{toc}{chapter}{\listfigurename}
+\listoffigures
+\cleardoublepage
+
+% insert list of tables
+\phantomsection
+%\setcounter{page}{13}
+\addcontentsline{toc}{chapter}{\listtablename}
+\listoftables
+\cleardoublepage
+
+%% insert list of algorithms
+%\phantomsection
+%\setcounter{page}{15}
+%\addcontentsline{toc}{chapter}{\listalgorithmname}
+%\listofalgorithms
+
+%% insert list of code snippets
+%\phantomsection
+%\setcounter{page}{17}
+%\addcontentsline{toc}{chapter}{\lstlistlistingname}
+%\lstlistoflistings
+%\cleardoublepage
+
+% insert list of abbreviations/acronyms
+%\setcounter{page}{19}
+%\acronyms
+
+
+\phantomsection
+\addcontentsline{toc}{chapter}{Notation Index}
+\chapter*{Notation Index} \todo{oder nomenclature notation index als name? den nach hinten verschieben?}
+
+
+\input{nomenclature}
+
+}
+
+
+
+
+
+
+
+\newenvironment{abstract}[1][en] {
+	% get argument (en/it)
+	\def\it{it}
+	\def\arg{#1}
+	
+	\null \vfill
+	\begin{center}
+		\bfseries
+		
+		% set title in english or italian
+		\ifx\arg\it
+		\abstractnameit
+		\else
+		\abstractname
+		\fi
+	\end{center}
+} {
+	\vfill \null
+}
+
+\newcommand{\abstractpage} {
+	% set empty style for this page (no headers and footers)
+	\thispagestyle{empty}
+	
+	% english version
+	\input{frontmatter/abstract}
+	
+	% italian version
+	\cleardoublepage
+	\thispagestyle{empty}
+	\input{frontmatter/sommario}
+}
+
+
+
+\renewcommand{\mainmatter} {
+	\cleardoublepage
+	
+	% reset page counter
+	\setcounter{page}{1}
+	
+	% set arabic page numbering
+	\pagenumbering{arabic}
+	
+	% reset chapter counter
+	\setcounter{chapter}{0}
+}
+
+
+
+
+
+
+% -- LINKS SETUP --
+
+% set all links to black color
+\hypersetup{
+	colorlinks,
+	citecolor=black,
+	filecolor=black,
+	linkcolor=black,
+	urlcolor=black
+}
+
+% -- ITEMS AND ENUMARATIONS --
+
+%% reduce spacing for items and enumerations
+%\let\saveditemize=\itemize
+%\let\savedenditemize=\enditemize
+%\renewenvironment{itemize}
+%{\begin{spacing}{0.5}\saveditemize}
+%	{\savedenditemize\end{spacing}}
+%
+%\let\savedenumerate=\enumerate
+%\let\savedendenumerate=\endenumerate
+%\renewenvironment{enumerate}
+%{\begin{spacing}{0.5}\savedenumerate}
+%	{\savedendenumerate\end{spacing}}
+%
+% italic for quotes
+\let\savedquote\quote
+\let\endsavedquote\endquote
+\renewenvironment{quote}
+{\itshape\savedquote}
+{\endsavedquote}
+
+
+\def\acknowledgmentsname{Acknowledgments}
+% -- ACKNOWLEDGMENTS --
+\newcommand{\acknowledgments} {
+	\phantomsection
+	\chapter*{\acknowledgmentsname}
+	\input{frontmatter/thanks}
+    \cleardoublepage
+}
+
+
+
+
+
+
+% https://tex.stackexchange.com/questions/53377/inspirational-quote-at-start-of-chapter
+% https://tex.stackexchange.com/questions/336361/how-to-write-text-after-part
+% https://tex.stackexchange.com/questions/659460/how-to-define-global-variables
+% https://tex.stackexchange.com/questions/83539/redefining-the-part-environment-to-add-a-page-border?rq=1
+% https://tex.stackexchange.com/questions/30432/styling-the-part-page
+% https://latex.org/forum/viewtopic.php?t=3194
+% https://stackoverflow.com/questions/1872706/writing-text-on-latex-part-page
+% https://latex.org/forum/viewtopic.php?t=4414
+\def\partquotetxt {
+	
+	
+	% https://www.science4all.org/article/algebra/
+	% https://mathshistory.st-andrews.ac.uk/Biographies/Al-Khwarizmi/quotations/
+	% https://www.quora.com/Is-Al-Khwarizmi-a-Shia
+	% https://proofwiki.org/wiki/Al-Khwarizmi/The_Algebra/Inheritance_Problem
+	% https://encyclopedia.pub/entry/28572
+	% https://proofwiki.org/wiki/Mathematician:Muhammad_ibn_Musa_al-Khwarizmi
+	% https://proofwiki.org/wiki/Book:Muhammad_ibn_Musa_al-Khwarizmi/Al-Kit%C4%81b_al-mu%E1%B8%ABta%E1%B9%A3ar_f%C4%AB_%E1%B8%A5is%C4%81b_al-%C4%9Fabr_wa-l-muq%C4%81bala
+	% https://mathematics.science.narkive.com/t6QGWJT3/muhammad-ibn-musa-al-khwarizmi-and-his-inheritance-to-his-children
+	% https://www.sapaviva.com/muhammad-ibn-musa-al-khwarizmi/
+	% https://nataatmadja.blogspot.com/2015/06/780-840-ce-abu-abdullah-mohammad-bin.html
+	% https://codepen.io/ksawalme/full/xLvGOv
+	% https://maa.org/press/periodicals/convergence/mathematical-treasures-al-khwarizmis-algebra
+	% https://www.oxfordreference.com/display/10.1093/oi/authority.20110803095403220
+	% https://www.spektrum.de/wissen/mohammed-al-khwarizmi-780-850/979324
+	% https://www.goodreads.com/author/quotes/20420208.Mu_ammad_ibn_M_s_al_Khw_rizm_#:~:text=When%20I%20consider%20what%20people,it%20always%20is%20a%20number.
+	% https://twitter.com/jcrabtree/status/1339078458270355457
+	% https://slideplayer.com/slide/17217691/
+    \begin{flushright}
+	\rightskip=1.8cm\textit{``That fondness for science has encouraged me to compose a short work on calculating by al-jabr (completion) and al-muqabala (balancing), confining it to what is easiest and most useful in arithmetic.''} \\
+	\vspace{.2em}
+	\rightskip=.8cm-- Muhammad ibn Musa Al-Khwarizmi (780 -- 850)
+\end{flushright}%
+
+
+
+\vspace*{1cm}
+
+\begin{flushright}
+	\rightskip=1.8cm\textit{``Es steht alles schon bei Dedekind.''} \\
+	\vspace{.2em}
+	\rightskip=.8cm-- Emmy Noether (1882 -- 1935)
+\end{flushright}%
+%Quelle: https://beruhmte-zitate.de/zitate/1950861-emmy-noether-es-steht-alles-schon-bei-dedekind/
+}
+
+\makeatletter
+\def\@part[#1]#2{%
+	\ifnum \c@secnumdepth >-2\relax
+	\refstepcounter{part}%
+	\addcontentsline{toc}{part}{\thepart\hspace{1em}#1}%
+	\else
+	\addcontentsline{toc}{part}{#1}%
+	\fi
+	\markboth{}{}%
+	{\centering
+		\interlinepenalty \@M
+		\normalfont
+		\ifnum \c@secnumdepth >-2\relax
+		\huge\bfseries \partname\nobreakspace\thepart
+		\par
+		\vskip 20\p@
+		\fi
+		\Huge \bfseries #2\par
+%		\noindent
+%		\begin{tikzpicture}[remember picture,overlay]% 
+%			\fill [red!20!black]
+%			([xshift=-10pt]current page.south east)
+%			rectangle
+%			(current page.north east);
+%			\fill [red!20!black]
+%			(current page.north east)
+%			rectangle
+%			([yshift=-10pt]current page.north west);
+%			\fill [red!20!black]
+%			(current page.south east)
+%			rectangle
+%			([yshift=20pt]current page.south west);
+%			\fill [red!20!black]
+%			(current page.south west)
+%			rectangle
+%			([xshift=20pt]current page.north west);
+%	\end{tikzpicture}
+}
+
+    \vspace*{1.5cm}
+    
+    \partquotetxt
+
+	\@endpart}
+\makeatother
+
+
+
+
+% https://tex.stackexchange.com/questions/20576/passing-newenvironment-parameters-to-the-end-block
+\usepackage{xparse}
+\NewDocumentEnvironment{proofitem}{m}{%
+    \noindent\emph{Proof of #1:}%
+	}{%
+	\emph{[End, Proof of #1]}%
+}
+
+
+
+
+
+
+
+
+
+\begin{document}	
+	
+\begin{center} 
+	% \textbf{Wissenschaftlicher Werdegang}
+	\textbf{Education} 
+\end{center} 
+
+\hspace*{-1.2cm}
+\begin{tabular}{lp{8cm}p{5cm}}
+	% 2011 & Intermediate Diploma in Mathematics                  & MLU Halle-Wittenberg, Halle (Saale), Germany \\
+	2004 & Abitur (High School Diploma)                           & Gymnasium im Bildungszentrum, Halle (Saale), Germany \\
+	2014 & Diploma in Computer Science (with Minor in Psychology) & MLU Halle-Wittenberg, Halle (Saale), Germany \\
+	2016 & Ph.D. Candidate in Theoretical Computer Science                  & Trier University, Trier, Germany \\
+	& \emph{Advisor:} Prof. Dr. Henning Fernau                    &
+\end{tabular}
+
+\begin{center} %\textbf{Berufserfahrung}
+	\textbf{Professional Experience}
+\end{center} 
+
+\hspace*{-1.2cm}
+\begin{tabular}{lp{12.8cm}}
+	2010-2014 & \emph{It Services / System Administrator}, Bioscience Center Weinberg Campus, Halle (Saale) \\ 
+	2014-2016 & \emph{Full Stack Database Programmer}, Psychiatric Hospital, Halle (Saale) \\
+	2016-2022 & \emph{Research and Teaching Assistant}, Trier University, Faculty of Computer Science, Trier \\
+	& Supervised Courses and Seminar: \\
+	& $\quad$ Foundations of Discrete Mathematics (each winter term) \\
+	& $\quad$ Automata and Formal Language Theory (each summer term) \\
+	& $\quad$ Student Seminars on Various Topics (Kernelization, Parameterized \\ 
+	& $\quad$ Algorithms, Graph Drawing, Data Compression, Classical \\ 
+	& $\quad$ Works from Theoretical Computer Science) \\
+	& $\quad$ Specialized Courses on Formal Language Theory \\ 
+	& $\quad$ (Descriptional Complexity, Formal Systems, Learning Algorithms)
+\end{tabular}
+
+%\input{note}
+\end{document}

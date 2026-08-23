@@ -1,0 +1,132 @@
+%!TEX root = ../../../thesis-trier.tex
+
+Here, we identify constraint languages (besides the finite languages) giving a constrained problem in \LOGSPACE. 
+\cref{constr_sync:thm:sparse_basic_L_cases}
+shows that \constrsync{u^*vw^*}
+is in \LOGSPACE, and \cref{constr_sync:cor:in_star_star,constr_sync:cor:u_star_finite_v_star}
+conclude this for languages in $u^*wv^*$ and $u^*Uv^*$ for finite~$U$, respectively.
+Intuitively, the problem is in \LOGSPACE when the only iterations of a single word are at the beginning
+or end of a synchronizing word. Thus, for constraint languages in $u^*wv^*$
+the constrained synchronization problem is either in $\AC^0$ if the language is finite
+or the problem is \LOGSPACE-complete.
+
+\begin{theorem}
+	\label{constr_sync:thm:sparse_basic_L_cases}
+	Let $u,v,w \in \Sigma^*$.	
+	Then $\constrsync{u^*vw^*}$	is in \LOGSPACE.
+\end{theorem}
+\begin{proof}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be 
+	an input automaton for $\constrsync{u^*wv^*}$ with $n$ states.
+	By \cref{prelim:automata:power:prop:S} 
+	for each $i \ge 0$ there exists $0 \le j < n$ such that 
+	$\applytrans{\delta}{Q}{u^iv} = \applytrans{\delta}{Q}{u^jv}$. 
+	Set $S_j = \applytrans{\delta}{Q}{u^jv}$ for $j \in \{0,1,\ldots,n-1\}$.
+	By \cref{prelim:fact:unary_sync_word} for each $j \in \{0,1,\ldots,n-1\}$
+	there exists $r \ge 0$ such that $|\applytrans{\delta}{S_j}{w^r}| = 1$
+	if and only if $|\applytrans{\delta}{S_j}{w^{n-1}}| = 1$. 
+	So, there exists a synchronizing word for~$\mathcal A$
+	in $u^* v w^*$ if and only if there
+	exists $j \in \{0, 1,\ldots,n-1\}$
+	such that $u^j v w^{n-1}$
+	synchronizes $\mathcal A$.
+	Since the set of synchronizing words is an ideal (\cref{prelim:thm:sync_words_is_ideal}),
+	this is equivalent to the fact that $u^{n-1} v w^{n-1}$
+	synchronizes $\mathcal A$.  Hence we can use  \DFASW to solve this problem.
+	A deterministic log-space transducer 
+	can produce the output 
+	$ (\mathcal A, u^{n-1}vw^{n-1})
+	$
+	by copying $\mathcal A$ and using a counter to write $u^{n-1}$, appending~$v$ and then writing~$w^{n-1}$ 
+	(since $u$, $v$, and $w$ are fixed they can be appended in constant time).
+	Since, by \cref{prelim:thm:finite_list_sync_word}, the problem \DFASW is in \LOGSPACE,
+	and, by \crefitem{prelim:thm:reductions}{prelim:thm:reductions:2},
+	\LOGSPACE\ is closed for $\lelogm$-reductions, the claim follows.
+\end{proof}
+
+Next, we state two corollaries of the previous result.
+
+\begin{corollary}
+	\label{constr_sync:cor:in_star_star}
+	Let $L \subseteq \Sigma^*$ be regular such that $L \subseteq u^*vw^*$ for $u,v,w \in \Sigma^*$.
+	Then \constrsync{L} is in \LOGSPACE.
+\end{corollary}
+\begin{proof}
+	By \cref{constr_sync:cor:bounded_normal_form_single_state_aut} 
+	the language $L$ is a finite union of languages
+	of the form $u^i (u^p)^* v w^j (w^r)^*$
+	where $i,j,p,r \ge 0$.
+	For $p = r = 0$, $\constrsync{u^i v w^j}$
+	is in $\AC^0$ by \cref{constr_sync:thm:finite}
+	and for $p > 0$ or $r > 0$ we have
+	\[
+	\fact{u^i(u^p)^* v w^j (w^r)^*}
+	= \begin{cases} 
+		\fact{u^* v w^*} & \text{if } p, r > 0, \\
+		\fact{u^i v w^*} & \text{if } p = 0, r > 0, \\
+		\fact{u^* v w^j} & \text{if } p > 0, r = 0.
+	\end{cases}
+	\]
+	Then, by \cref{gen_results:cor:factors_etc_complexity}, 
+	\cref{constr_sync:thm:sparse_basic_L_cases,constr_sync:thm:union} 
+	the claim follows.
+\end{proof}
+
+\begin{corollary}
+	\label{constr_sync:cor:u_star_finite_v_star}
+	Let $L \subseteq \Sigma^*$ be regular
+	and $L \subseteq \bigcup_{i=1}^n u_i^* v_i w_i^*$
+	for $u_i, v_i, w_i \in \Sigma^*$ with $i \in \{1,\ldots,n\}$.
+	Then $\constrsync{L}$
+	is in \LOGSPACE.	
+	In particular, for finite $U \subseteq \Sigma^*$  and $u,v \in \Sigma^*$
+	such that $L \subseteq u^* U v^*$, $\constrsync{L}$
+	is in \LOGSPACE.	
+\end{corollary}
+\begin{proof}
+	We have
+	\[
+	L = \bigcup_{i=1}^n ( L \cap u_i^* v_i w_i^* ).
+	\]
+	For $i \in \{1,\ldots,n\}$, since $L \cap u_i^* v_i w_i^* \subseteq u_i^* v_i w_i^*$
+	and $L \cap u_i^* v_i w_i^*$ is regular, by \cref{constr_sync:cor:in_star_star} 
+	the problem $\constrsync{L \cap u_i^* v_i w_i^*}$ is in \LOGSPACE.
+	By \cref{constr_sync:thm:union},
+	it follows that \constrsync{L}
+	is in~\LOGSPACE. 
+	Furthermore, since
+	$u^*Uv^* = \bigcup_{w \in U} u^*wv^*$,
+	the claim follows  for $L \subseteq u^*Uv^*$.
+\end{proof}
+
+\begin{corollary} \label{constr_sync:cor:letter-bounded-single-part-in-L}
+	Let $A_j \subseteq \{a_j\}^*$ be unary regular languages
+	for $j \in \{1,\ldots, k\}$.
+	If for all $j \in \{1,\ldots, k\}$, $A_j$ infinite implies that $A_i \subseteq \{a_j\}^*$
+	for all $i < j$ or $A_i \subseteq \{a_j\}^*$ for all $i > j$ (or both), then $\constrsync{ A_1 \cdots A_k }$
+	is in \LOGSPACE.
+\end{corollary}
+\begin{proof}
+	Set $L = A_1 \cdots A_k$.
+	Let $i,j \in \{1,\ldots,k\}$ be the maximal and minimal indices
+	such that $a_1 = \cdots = a_i$ and $a_j = \cdots = a_k$, respectively.
+	If $i \le j$,
+	then $L \subseteq a_i^* U a_j^*$
+	where $U = \{\varepsilon\}$ for $i = j$ and $U = A_{i+1} \cdots A_{j-1}$ for $i < j$.
+	The language $U$ is finite
+	since if $A_r$ would be infinite for some $r \in \{i+1,\ldots,j-1\}$ with $i < j$,
+	then either $a_i = \cdots = a_r$
+	or $a_r = \cdots = a_j$ by assumption, contradicting the choice of~$i$ and~$j$.
+	Thus, by \cref{constr_sync:cor:u_star_finite_v_star},
+	$\constrsync{L}$
+	is in \LOGSPACE.
+	Now, suppose, $j < i$.
+	Then we have $a_i = a_j$,
+	and thus, with
+	$a_1 = \cdots = a_i$
+	and $a_j = \cdots = a_r$,
+	we find $a_1 = \cdots = a_k$
+	and so $L \subseteq a_1^*$.
+	Then, by \cref{constr_sync:thm:sparse_basic_L_cases}, $\constrsync{L}$,
+	is in \LOGSPACE.
+\end{proof}

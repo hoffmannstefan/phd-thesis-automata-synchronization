@@ -1,0 +1,151 @@
+%!TEX root = ./../../thesis-trier.tex
+
+Here, we characterize strong $\{a,b\}$-primitivity through a property of the associated generated transformation monoid, reminiscent of $2$-homogeneity.  
+Via \cref{sync_max:prop:primitive_Aprimitive}, this yields a novel characterization of primitivity that appears to have gone unnoticed so far.  
+As before (see \cref{syncmax:rem:square-brackets}), we combine two statements using square brackets.
+
+ \begin{theorem}
+ \label{sync_max:thm:2-hom}
+ 	Let $n \ge 5$ and $a,b \in [n]$ be distinct.
+ 	A permutation group $G \le_G \mathcal S_n$
+ 	is strongly $\{a,b\}$-primitive 
+ 	if and only if for every [idempotent]
+    transformation $t \colon [n] \to [n]$
+    of defect one with $\applyfunc{a}{t} = \applyfunc{b}{t}$
+    and distinct $c,d \in [n]$
+    there exists $h \in \langle G \cup \{t\} \rangle_S$
+    such that $\applyfunc{\{c,d\}}{h} = \{a,b\}$. 
+ \end{theorem}
+\begin{proof} % wehere we assume t is a simple idempoetnt, which then gives 
+	We show the first conclusion for every defect-one transformation, % mapping $a$ and $b$ to a common point,
+	and the converse implication under the weaker assumption
+	that the condition holds for simple idempotents, which gives
+	the claim for  both types of mappings.	
+%	First, we show the claim for any defect-one transformation
+%	under the assumption of strong $\{a,b\}$-primitivity.
+%	Then, we show that in case the condition holds
+%	for simple idempotents, $G$ is strongly $\{a,b\}$-primitive.
+%	Both implications give the claim for both types of defect-one
+%	transformations.	
+	
+	Now, suppose $G$ is strongly $\{a,b\}$-primitive.
+	Let $t \colon [n] \to [n]$ be of defect one
+	with $t(a) = t(b)$.
+	By \cref{sync_max:prop:ab-prim-transitive}, $G$ is transitive.
+	So, by \cref{thm:separating_neumann}
+	and as $n \ge 5$,
+	$g(\{c,d\}) \cap \{c,d\} = \emptyset$ for some $g \in G$.
+	By \cref{sync_max:thm:stronglyab-idempotent}
+    there exists $h \in \langle G \cup \{t\} \rangle_S$
+    such that precisely one of $\{c,d\}$ or $g(\{c,d\})$
+    is mapped to a singleton set by $h$.
+	We can write \todo[inline]{makros concatenation nutzen}
+	$
+	h = g_m t g_{m-1} t \cdots g_2 t g_1 t g_0  
+	$
+	for some $m > 0$ and $g_i \in G$ for $i \in \{0,1,\ldots,m\}$.
+	%As $t$ is the only non-permutation, there exists a smallest $i \in \{1,\ldots,m\}$
+%	such that
+    Let $i \in \{1,\ldots,m\}$ be minimal such that
+	\[
+	|\applyfunc{\{c,d\}}{(t g_{i-1} t \cdots g_2 t g_1 t g_0)}|
+	\ne
+	|\applyfunc{\applyfunc{\{c,d\}}{g}}{(t g_{i-1} t \cdots g_2 t g_1 t g_0)}|,
+	\]
+	which is equivalent to the fact
+	that precisely one of $\{c,d\}$ or $g(\{c,d\})$ is mapped to a singleton.
+	Without loss of generality, 
+	assume $|\applyfunc{\{c,d\}}{(t g_{i-1} t \cdots g_2 t g_1 t g_0)}| = 1$.
+	By the minimal choice of $i$, 
+	we have $|\applyfunc{\{c,d\}}{(g_{i-1} t \cdots g_2 t g_1 t g_0)}| = 2$.
+	As $t$ has defect one, we find
+	$
+	\applyfunc{\{c,d\}}{(g_{i-1} t \cdots g_2 t g_1 t g_0)} = \{a,b\}.
+	$	
+	
+    Conversely, suppose for each simple idempotent $t \colon [n] \to [n]$
+    with $t(a) = t(b)$ and distinct $c,d \in [n]$
+    we have $h(\{a,b\}) = \{c,d\}$ for some $h \in \langle G \cup \{t\} \rangle_S$.
+    Now,  $h(\{a,b\}) = \{c,d\}$
+    implies $\applyfunc{\{c,d\}}{(\concat{h}{t})} = \{ \applyfunc{a}{t} \}$.
+    So,  by the transformation semigroup version 
+    of the pair criterion (\cref{prelim:remarks_trans_semigrp_semiautomata} \& \cref{prelim:thm:pair_sync_condition})
+    we can conclude that $\langle G \cup \{t\} \rangle_S$ contains a constant map. By \cref{sync_max:thm:idemp} 
+    it follows that $G$ is strongly $\{a,b\}$-primitive.    
+\end{proof}
+  
+  \begin{remark}
+  	By \cref{app:lem:SIsets},
+  	we can even chose an element $h \in \langle G \cup \{t\} \rangle_S$
+  	such that~$h$ maps distinct $2$-sets to distinct sets, i.e.,
+  	it induces an injective mapping on the $2$-sets.
+  \end{remark}
+   
+ By \cref{sync_max:prop:primitive_Aprimitive} 
+ we obtain the following characterization of primitivity,
+ which, to the best of our knowledge, is new.
+  
+\begin{corollary} \label{sync_max:cor:prim-2-hom}
+	A permutation group $G \le_G \mathcal S_n$ with $n \ge 5$
+	is primitive
+	if and only if for every [idempotent]
+	transformation $t \colon [n] \to [n]$
+	of defect one with $\applyfunc{a}{t} = \applyfunc{b}{t}$
+	and distinct $c,d \in [n]$
+	there exists $h \in \langle G \cup \{t\} \rangle_S$
+	such that $\applyfunc{\{c,d\}}{h} = \{a,b\}$. 		
+\end{corollary}
+
+\begin{example}
+	The group $G = \langle \{ (0 ~ 1 ~ \cdots n - 1) \} \rangle$
+	is $\{0,1\}$-primitive.
+	Thus in the transformation semigroup 
+	$\mathcal T_{\mathcal C_n}$ of the \Cerny automaton
+	we can map any $2$-set onto $\{0,1\}$.
+	We note that even more is true for $\mathcal T_{\mathcal C_n}$,
+	namely that for any two $2$-sets
+	$\{i_1, i_2\}$ and $\{j_1, j_2\}$
+	we have $h(\{i_1, i_2\}) = \{j_1, j_2\}$
+	for some $h \in \mathcal T_{\mathcal C_n}$.		
+	To show this, it is sufficient to show that we can map $\{0,1\}$
+	to any other $2$-set. So, consider some $2$-set $\{i_1, i_2\}$ with $i_1 < i_2$.
+	We have $\delta(\{0,1\}, b^{i_1}) = \{i_1, i_2\}$
+	if $\delta(i_1, b) = i_2$
+	and $\delta(\{0,1\}, b^{i_2}) = \{i_1, i_2\}$
+	if $\delta(i_2, b) = i_1$.
+	Otherwise, $\delta(i_1, b^m) = i_2$
+	for some $m \in \{2,\ldots,n-1\}$.
+	Then consider the words $u_i = b^{n - i} a b^i$
+	for $i \in [n]$ from the proof of \cref{sync_max:thm:cerny_compl_dist}.
+	We have $\delta(\{0,1\}, u) = \{0, i_2 - i_1\}$ for $u =  u_1 \cdots u_{i_2-i_1-1}$.
+	Now $\delta(\{0, i_2 - i_1\}, b^{i_1}) = \{i_1, i_2\}$
+	and so the word $u b^{i_1}$
+	maps $\{0,1\}$ to $\{i_1, i_2\}$.	
+\end{example}
+
+\begin{remark}
+	Let $t \colon X \to X$ be a simple idempotent mapping $a$ to $b$ with $a \ne b$
+	and $A \subseteq X$ be such that and $a \notin A$ (which holds for $|t(A)| = |A|$ and $t(A) \ne A$).
+	Then $g(A) = t(A)$ for the transposition $g = (a ~ b)$.
+	This follows since, if $b \notin A$, then $g(A) = A = t(A)$,
+	and otherwise, $g(A) = ( A \setminus \{ b \} ) \cup \{a\} = t(A)$.	
+		
+	Now, if we choose in \cref{sync_max:thm:2-hom} a product 
+	$
+	h = g_m t g_{m-1} t \cdots g_2 t g_1 t g_0  
+	$
+	of minimal length, then, by the previous paragraph,
+	$h$ and the permutation we obtain from the above
+	product by changing each~$t$ to~$(a ~ b)$,
+	both map $\{c,d\}$ to $\{a,b\}$.
+	Thus, $\langle G \cup \{(a ~ b)\} \rangle_G$
+	is $2$-homogeneous,
+	and since it contains a transposition
+	and, by \cref{prelim:conj},
+	also the transpositions $(g(a) ~ g(b))$ for $g \in G$,
+	and so all transpositions, it equals~$\mathcal S_n$ by \cref{prelim:fact:transpositions_generate_Sn}.
+	Thus, adding to a strongly $\{a,b\}$-primitive permutation group
+	the transposition~$(a ~ b)$ yields the full symmetric group.
+	In this way, applying \cref{sync_max:thm:2-hom} to all pairs,
+	we obtain a new proof of Jordan's theorem (\cref{sync_max:thm:prim_char:jordan}).
+\end{remark}

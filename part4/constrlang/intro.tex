@@ -1,0 +1,39 @@
+
+Here, we collect results for different classes of constraint languages. For some classes
+we classify the computational complexity of the constrained synchronization problem.
+
+\begin{enumerate}
+	\item In Section~\ref{sec:constr_sync:infinite} we show that for infinite languages the problem is~\LOGSPACE-hard. 
+	
+	\item \Cref{sec:constr_sync:letter_bounded} investigates
+	sparse languages. We show that the problem is in \NP\  for sparse constraint languages,
+    in $\AC^0$ for the subclass of finite languages,
+    and we state sufficient conditions for containment in \LOGSPACE.	
+	we conclude with a full classification for the subclass of letter-bounded constraint languages, characterizing
+	precisely when the problem is in $\AC^0$, \LOGSPACE-complete or \NP-complete.
+		
+	\item In \SEC~\ref{constr_sync:sec:monoid}
+	we investigate languages that are submonoids of $\Sigma^*$.
+	We show that algorithmic results and bounds on shortest synchronizing words
+	from the unconstrained setting can be transferred to this setting.
+	In particular, for these constrained problems the problem is 
+	always in \NL\ (characterizing \NL-hardness in this case is an open problem).
+	From this result, we also deduce in \cref{sec:constr_sync:SCC}
+	that constraint languages accepted by strongly connected PDFAs
+	yield constrained synchronization problems in \NL.
+		 
+	\item \Cref{sec:constr_sync:small_aut} is concerned with small constraint PDFAs.
+	\Cref{constr_sync:sec:two-state} gives a complexity classification
+	for two-state PDFAs that are not strongly connected.	
+	In \cref{sec:constr_sync:three_states}, for three-state binary constraint PDFAs 
+	that are not strongly connected we give a 
+	full classification into problems in $\AC^0$ and problems that are \LOGSPACE-, \NL-,
+	\NP-, or \PSPACE-complete.	
+	
+	\item Lastly, Section~\ref{sec:constr_sync:commutative} is concerned with commutative constraint languages.
+	We give a complete classification, stating precisely the conditions for containment in $\AC^0$,
+	\LOGSPACE-completeness, \NL-completeness, \NP-completeness,	or \PSPACE-completeness.	
+\end{enumerate}
+
+The complexity classifications for each class we give can all be used to give decision procedures
+to decide the complexity for a given constraint language from the class.

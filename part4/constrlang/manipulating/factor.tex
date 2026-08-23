@@ -1,0 +1,96 @@
+%!TEX root = ./../../../thesis-trier.tex
+
+Our first result is a consequence of Theorem~\ref{prelim:thm:sync_words_is_ideal}. Although it has a simple proof,
+it is quite important for many of the following results.
+
+\begin{theorem}
+	\label{constr_sync:thm:L_in_FactLbar}
+	Let $L, L' \subseteq \Sigma^*$ with $L \subseteq \factor{L'}$.
+	If $\semiautomat{A}{Q}{\Sigma}{\delta}$ 
+	has a synchronizing word in $L$, then it has one in $L'$.
+\end{theorem}
+\begin{proof}
+	Suppose $u \in L$ synchronizes $\mathcal A$.
+	By assumption there exist $v, w \in \Sigma^*$
+	such that $vuw \in L'$.
+	By Theorem~\ref{prelim:thm:sync_words_is_ideal} the
+	latter word synchronizes $\mathcal A$ as well.
+\end{proof}
+
+Note that $L \subseteq \factor{L'}$ is equivalent to $\factor{L} \subseteq \factor{L'}$.
+%As $L \subseteq L'$ implies $\factor{L} \subseteq \factor{L'}$
+%and $\factor{\factor{L}} = \factor{L}$, the next is implied.
+This gives the following consequence of Theorem~\ref{constr_sync:thm:L_in_FactLbar}.
+
+\begin{corollary}
+	\label{constr_sync:cor:factors_sets_included}
+	Let $L, L' \subseteq \Sigma^*$ with $\factor{L} = \factor{L'}$.
+	Then every automaton $\mathcal A$ has a synchronizing word in $L$
+	if and only if it has one in~$L'$.
+\end{corollary}
+
+For any $L \subseteq \Sigma^*$ we have
+$\factor{L} = \factor{\pref{L}} = \factor{\suff{L}}$. So with Corollary~\ref{constr_sync:cor:factors_sets_included},
+we conclude that a given automaton has a synchronizing word in one of
+the languages $L$, $\factor{L}$, $\pref{L}$, or $\suff{L}$ if and only if it has one in all of these languages.
+As a consequence, we obtain that the corresponding constrained synchronization problems
+are equivalent for $\leACZEROm$-reductions (in fact,
+the input can be passed through without any modifications
+and so these problems are also equivalent
+for reductions by projections as considered in~\cite{valiant1982rfducibility}).
+%, but $\leACZEROm$-reductions is sufficient for our applications). 
+
+\begin{corollary}
+	\label{gen_results:cor:factors_etc_complexity}
+	Let $L \subseteq \Sigma^*$ be a regular language. 
+	The following problems are equivalent for~$\leACZEROm$-reductions.
+	\begin{enumerate}
+		\item $\constrsync{L}$
+		\item $\constrsync{\factor{L}}$
+		\item $\constrsync{\pref{L}}$
+		\item $\constrsync{\suff{L}}$
+	\end{enumerate}
+	Furthermore, if for two languages $L, L'\subseteq \Sigma^*$ the factor, prefix, or suffix sets %closures
+	are equal, then $\constrsync{L} \equiv_m^{\AC^0} \constrsync{L'}$.
+\end{corollary}
+
+\begin{corollary} \label{constrsync:genresults:cor:union-fact}
+	Let $L, L' \subseteq \Sigma^*$ be regular languages.
+	Then we have  $\constrsync{L \cup L'} \eqACZEROm \constrsync{\fact{L}\cup L'}$
+\end{corollary}
+\begin{proof}
+	This follows from \cref{gen_results:cor:factors_etc_complexity}
+	since $\fact{L \cup L'} = \fact{\fact{L}\cup L'}$.
+\end{proof}
+
+\begin{corollary} \label{constrsync:genresults:cor:left-right-ideal}
+	Let $L \subseteq \Sigma^*$ be a regular language
+	containing a non-empty left or right ideal language.
+	Then we have $\constrsync{L} \eqACZEROm \constrsync{\Sigma^*}$.	
+\end{corollary}
+\begin{proof}
+	Without loss of generality, 
+	we have $I \subseteq L$
+	for some non-empty left ideal language~$I \subseteq \Sigma^*$ (which might be non-regular).
+	Pick some $u \in I$ and consider a word $v \in \Sigma^*$.
+	Then $vu \in I$
+	so that $v \in \fact{I}$.
+	This gives $\Sigma^* \subseteq \fact{I} \subseteq \fact{L}$.
+	Thus $\fact{L} = \Sigma^*$
+	and the claim follows from \cref{gen_results:cor:factors_etc_complexity}.
+\end{proof}
+
+\begin{corollary}
+	Let $I, J \subseteq \Sigma^*$ be a left and a right ideal, respectively,
+	which are both non-empty.
+	Then $\constrsync{I\cap J} \eqACZEROm \constrsync{\Sigma^*}$.
+\end{corollary}
+\begin{proof}
+	By assumption, we have $u \in I$ and $v \in J$ for some $u,v \in \Sigma^*$.
+	Let $w \in \Sigma^*$.
+	Then we have $vwu \in I$ since~$I$ is a left ideal 
+	and $vwu \in J$ since~$J$ is a right ideal.
+	Thus $vwu \in I \cap J$.
+	This gives $\Sigma^* \subseteq \fact{I \cap J}$
+	and the claim follows from \cref{gen_results:cor:factors_etc_complexity}. 
+\end{proof}

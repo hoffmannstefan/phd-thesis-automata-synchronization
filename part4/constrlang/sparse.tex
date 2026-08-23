@@ -1,0 +1,48 @@
+%!TEX root = ./../../thesis-trier.tex
+
+
+ In \cref{constr_sync:subsec:sparse_NP}, 
+we show that for sparse languages, the constrained synchronization problem is always in~\NP.
+Then, in Section~\ref{sec:constr_sync:finite}, 
+we show that for finite languages, which are sparse, the problem is in~$\AC^0$.
+\Cref{constr_sync:subsec:sparse_L}
+collects sufficient conditions for containment in \LOGSPACE. 
+In \cref{constrsync:sec:letter-bounded:trichotomy}, we conclude with a full classification for the subclass of letter-bounded constraint languages, characterizing
+precisely when the problem is in $\AC^0$, \LOGSPACE-complete or \NP-complete. %\todo{aussagen verlinken?}
+Recall that by Proposition~\ref{constr_sync:thm:cf_bounded_equals_sparse} the sparse regular languages are precisely the 
+bounded regular languages.
+
+%\bigskip 
+%
+%Here, we present results for sparse regular constraint languages.
+%First, we show (Section~\ref{constr_sync:subsec:sparse_NP}) that for sparse regular constraints, the constrained synchronization problem
+%is always in \NP. Finite languages are sparse and we show that for finite constraint languages
+%the constrained synchronization problem is in $\AC^0$ (\SEC~\ref{sec:constr_sync:finite}).
+%We then identify constraint languages (besides the finite languages)
+%giving problems in \LOGSPACE (Section~\ref{constr_sync:subsec:sparse_L}).
+%Finally, we use these results
+%to give a full classification of the computational complexity for letter-bounded constraint languages (\SEC~\ref{constrsync:sec:letter-bounded:trichotomy}) .
+%
+%Recall that by Proposition~\ref{constr_sync:thm:cf_bounded_equals_sparse} the sparse regular languages are precisely the 
+%bounded regular languages.
+
+
+\subsection{Containment in \NP}
+\label{constr_sync:subsec:sparse_NP}
+
+\input{../part4/constrlang/sparse/np}
+
+\subsection{Finite Languages}
+\label{sec:constr_sync:finite}
+
+\input{../part4/constrlang/finite}
+
+\subsection{Cases Contained in \LOGSPACE}
+\label{constr_sync:subsec:sparse_L}
+
+\input{../part4/constrlang/sparse/logspace}
+
+\subsection{Trichotomy Result for Letter-Bounded Languages}
+\label{constrsync:sec:letter-bounded:trichotomy}
+
+\input{../part4/constrlang/sparse/letterbounded}

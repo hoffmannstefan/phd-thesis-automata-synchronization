@@ -1,0 +1,532 @@
+%!TEX root = ./../../springer-mono-format/book.tex
+%!TEX root = ./../../thesis-trier.tex
+
+\IN{completely distinguishable!automaton}
+An automaton $\semiautomat{A}{Q}{\Sigma}{\delta}$ is called \emph{completely subset-pair distinguishable} (or just \emph{completely distinguishable} for short) 
+if every two distinct non-empty and non-singleton subsets $A,B \subseteq Q$ are distinguishable in~$\mathcal A$.
+
+Recall that $L(\mathcal P(\mathcal A)_{Q, F}) = \Syn(\mathcal A)$
+with $F = \{\{q\} \mid q \in Q\}$, see~\cref{sync_max:sec:power_automat_for_SynA}. 
+By \crefitem{prelim:thm:char_minaut}{thm:minaut:item:statesdist},
+distinguishability of pairs of distinct states is a necessary condition 
+for minimality.
+So, applying this to $\mathcal P(\mathcal A)_{Q, F}$,
+complete distinguishability
+is a necessary condition for the minimal automaton
+of $\Syn(\mathcal A)$ to have $2^{|Q|} - |Q|$ states.
+
+First, in \cref{sync_max:thm:cerny_compl_dist}, as an example,
+we prove that the \Cerny automata from \cref{intro:fig:cerny}
+are completely distinguishable (this also follows from \cref{sync_max:thm:circular_sync_max} given later,
+but as an example we give a self-contained proof here).
+Then, in \cref{sync_max:prop:dist_sync},
+we show that completely distinguishable automata
+with at least three states are synchronizing.
+\Cref{sync_max:thm:char_distinguishable} collects various equivalent characterizations,
+and \cref{sync_max:cor:sufficient-compl-dist,cor:compl-dist-transitive}
+are two consequences of these characterizations.
+\Cref{sync_max:ex:compl-dist-non-cr,sync_max:ex:compl-dist-non-cr2,syncmax:ex:compl-dist-not-SCC} 
+give completely distinguishable automata that are not completely reachable.
+\Cref{syncmax:prop:binary-rank-two-letter} 
+proves that in binary completely distinguishable automata where one letter has rank two,
+the other letter cyclically permutes the states.
+\cref{sync_max:prop:dist-n-1-set} lists an equivalence for a set missing one state being
+distinguishable from the whole state set (a condition that appears in \cref{sync_max:thm:char_distinguishable}
+for each set missing one state).
+
+\begin{theorem}
+	\label{sync_max:thm:cerny_compl_dist}
+	The \Cerny automata $\mathcal C_n = ([n], \{a,b\}, \delta_n)$ from \cref{intro:fig:cerny}
+	are completely distinguishable.
+\end{theorem}
+\begin{proof}
+For $i \in [n]$ 
+set $u_i = b^{n - i} a b^i$.
+Then, for $j \in [n]$,
+\begin{equation} \label{sync_max:thm:cerny_compl_dist:eqn}
+\applytrans{\delta_n}{j}{u_i} = \begin{cases}
+	(j + 1 ) \bmod n & \text{if } i = j, \\
+	j             & \text{if } i \ne j.	
+\end{cases}
+\end{equation}
+Now, let $A, B \subseteq [n]$ be distinct with $|A|, |B| \ge 2$. %two distinct non-empty and non-singleton subsets. 
+Without loss of generality, 
+suppose $i \in A \setminus B$. Set $u = u_{i+1} \cdots u_0 u_1 \cdots u_{i-1}$.
+Then $\delta(i, u) = i$, $\applytrans{\delta}{B}{u} \subseteq \applytrans{\delta}{[n] \setminus \{i\}}{u} = \{ i - 1 \}$
+and $\applytrans{\delta}{A}{u} = \{i,i-1\}$. So,~$u$
+distinguishes~$A$ from~$B$.
+\end{proof} % then u = ... disnigushes a from B as ...
+
+\crefitem{sync_max:cor:two-sets-containing-2set}{sync_max:cor:two-sets-containing-2set:item:kl} yields
+that completely distinguishable automata with at least three states are synchronizing.
+
+\begin{proposition}
+	\label{sync_max:prop:dist_sync}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ 
+	be a completely distinguishable automaton
+	with $|Q| \ge 3$. Then $\mathcal A$
+	is synchronizing.
+\end{proposition} 
+\begin{proof}
+	This follows from \crefitem{sync_max:cor:two-sets-containing-2set}{sync_max:cor:two-sets-containing-2set:item:kl},
+	since every $2$-set is distinguishable from every $3$-set.
+\end{proof}
+
+Since the empty set is distinguishable from every other set if and only if 
+the automaton is synchronizing, by \cref{sync_max:prop:dist_sync}
+an automaton with at least three states is completely distinguishable if every pair 
+of non-singleton subsets is distinguishable.
+
+\begin{remark}\label{syncmax:rem:two-state-compl-dist}
+	An automaton with at most two states admits no pair of distinct non-empty
+	and non-singleton subsets of states. Thus, it is
+	completely distinguishable, even if it is non-synchronizing.	
+\end{remark}
+
+Next, we formulate various equivalent characterizations.
+
+\begin{theorem}
+	\label{sync_max:thm:char_distinguishable}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be an $n$-state automaton
+	with $n \ge 3$.
+	The following are equivalent:
+	\begin{enumerate}
+		\item \label{dist:item:all_pairs}
+		$\mathcal A$ is completely distinguishable.
+		
+		\item \label{dist:item:subsets} 
+		For every $A, B \subseteq Q$
+		with $A \subsetneq B$ and $A$ non-empty
+		there exists $u \in \Sigma^*$
+		such that $1 = |\applytrans{\delta}{A}{u}| < |\applytrans{\delta}{B}{u}|$.
+		
+		\item \label{dist:item:subset_single_point} For every non-empty $A \subseteq Q$ and $q \in Q \setminus A$ there exists $u \in \Sigma^*$ 
+		such that $\applytrans{\delta}{q}{u} \notin \applytrans{\delta}{A}{u}$
+		and $|\applytrans{\delta}{A}{u}| = 1$.		
+						
+		\item \label{dist:item:single_point} For every $q \in Q$ there exists $u \in \Sigma^*$ such that
+		$1 = |\applytrans{\delta}{Q \setminus \{q\}}{u}|$ and $\applytrans{\delta}{q}{u} \notin \applytrans{\delta}{Q \setminus \{q\}}{u}$, i.e., $Q$ is distinguishable from every $(n-1)$-set.
+		
+		\item \label{dist:item:one-two-set} For two distinct non-empty and non-singleton subsets
+		there exists a word mapping one to a singleton and the other to a $2$-set.
+					
+		\item \label{dist:item:pqr-r-one-lane} For distinct $p,q,r \in Q$ there exists $u \in \Sigma^*$ 
+		such that $\delta(p, u) = \delta(q, u)$ and 
+		\[
+		\delta^{-1}(\{\delta(r,u)\}, u) = \{r\},
+		\] i.e.,
+		$\delta(s, u) \ne \delta(r, u)$ for all $s \in Q \setminus \{r\}$.
+		
+		\item \label{dist:item:compress-two-sets} For every $A, B \subseteq Q$ with $\min\{|A|, |B|\} \ge 2$
+		and $A \subsetneq B$ there exists $u \in \Sigma^*$ such that $|\delta(A, u)| < |\delta(B, u)| < |B|$.		
+				
+		\item \label{dist:item:compress} For every $A \subseteq Q$
+		with $|A| \ge 2$ and $p \in Q \setminus A$
+		there exists $u \in \Sigma^*$
+		such that $\applytrans{\delta}{p}{u} \notin \applytrans{\delta}{A}{u}$
+		and $|\applytrans{\delta}{A}{u}| < |A|$. 
+				
+		\item \label{dist:item:dcps-nondisjoint} For every distinct non-empty and non-singleton $A, B \subseteq Q$ with $A \cap B \ne \emptyset$
+		there exists $u \in \Sigma^*$
+		with $3 \le |\applytrans{\delta}{A}{u}| + |\applytrans{\delta}{B}{u}| < |A| + |B|$
+		and $\applytrans{\delta}{A}{u} \ne \applytrans{\delta}{B}{u}$.		
+		
+		\item \label{dist:item:dcps} For every distinct non-empty and non-singleton $A, B \subseteq Q$  
+		there exists $u \in \Sigma^*$
+		with $3 \le |\applytrans{\delta}{A}{u}| + |\applytrans{\delta}{B}{u}| < |A| + |B|$
+		and $\applytrans{\delta}{A}{u} \ne \applytrans{\delta}{B}{u}$.		
+	\end{enumerate}
+\end{theorem}
+\begin{proof}
+	$\ref{dist:item:all_pairs} \Rightarrow \ref{dist:item:subsets}$:
+	By assumption there exists $u \in \Sigma^*$
+	distinguishing $A$ from $B$.
+	As $A \subsetneq B$
+	we must have $|\applytrans{\delta}{A}{u}| = 1$
+	and $|\applytrans{\delta}{B}{u}| > 1$.
+	
+	$\ref{dist:item:subsets} \Rightarrow \ref{dist:item:subset_single_point}$:
+	For $A \subseteq Q$ and $q \in Q \setminus A$ the claim follows by applying Item~\ref{dist:item:subsets} to~$A$ and $B = A \cup \{q\}$.	
+	
+	$\ref{dist:item:subset_single_point} \Rightarrow \ref{dist:item:single_point}$: 
+	For $q \in Q$ the claim follows	by applying Item~\ref{dist:item:subset_single_point} to $A = Q \setminus \{q\}$ and $q \in Q \setminus A$.
+		
+	$\ref{dist:item:single_point} \Rightarrow \ref{dist:item:one-two-set}$:
+	Let $A,B \subseteq Q$ be two distinct subsets of size at least two.
+	Without loss of generality, suppose $q \in A \setminus B$.
+	By assumption, there exists $u \in \Sigma^*$
+	such that $|\delta(Q \setminus \{q\}, u)| = 1$
+	and $\delta(q, u) \notin \delta(Q \setminus \{q\})$.
+	Since $B \subseteq Q \setminus\{q\}$
+	and $A$ contains some state distinct from~$q$,    
+	we have $|\delta(B, u)| = 1$
+	and $|\delta(A, u)| = 2$.	
+	
+	$\ref{dist:item:one-two-set} \Rightarrow \ref{dist:item:pqr-r-one-lane}$:
+	Let $p,q,r\in Q$ be distinct. Consider
+	$Q \setminus \{r\}$ and $Q$.
+	By assumption, there exists a word $u \in \Sigma^*$ mapping one to a singleton
+	and the other to a $2$-set,
+	where we must have $|\delta(Q \setminus \{r\}, u)| = 1$
+	and $|\delta(Q, u)| = 2$, which gives $\delta(r, u) \notin \delta(Q \setminus \{r\}, u)$.
+	Then as $p,q \in Q \setminus\{r\}$ we have $\delta(p, u) = \delta(q, u)$
+	and, as for $s \in Q \setminus \{r\}$ we have $\delta(s, u) = \delta(p, u)$,
+	we have $\delta^{-1}(\{\delta(r,u)\}, u) = \{ s \in Q \mid \delta(s, u) = \delta(r, u)\} = \{ r \}$, i.e.,
+	$r$ is the only state mapped to $\delta(r, u)$.	
+		
+	$\ref{dist:item:pqr-r-one-lane} \Rightarrow \ref{dist:item:compress-two-sets}$: Pick distinct states $p,q \in A$ and $r \in B \setminus A$.
+	By assumption there exists $u \in \Sigma^*$
+	such that $\delta(p, u) = \delta(q, u)$
+	and $\delta(r, u) \ne \delta(s, u)$ for all $s \in Q \setminus \{r\}$.
+	So $\delta(r, u) \notin \delta(A, u)$
+	and thus $|\delta(A, u)| < |\delta(B, u)|$.
+	Furthermore, since $\{p,q\} \subseteq B$
+	we have $|\delta(B, u)| < |B|$.
+	
+	$\ref{dist:item:compress-two-sets} \Rightarrow \ref{dist:item:compress}$: 
+	Consider~$A$ and $B = A \cup \{p\}$.
+	By assumption, we have $|\delta(A, u)| < |\delta(B, u)| < |B|$
+	for some $u \in \Sigma^*$.
+	Since $|\delta(A, u)| < |\delta(B, u)|$,
+	we find $\delta(p, u) \notin \delta(A, u)$.	
+	We have $|B| = |A| + 1$ and $\delta(B, u) = \delta(A, u) \cup \delta(\{p\}, u)$
+	so that $|\delta(B, u)| = |\delta(A, u)| + 1$.
+	Thus,  $|\delta(B, u)| < |B|$
+	yields $|\delta(A, u)| < |A|$.
+			
+	$\ref{dist:item:compress} \Rightarrow \ref{dist:item:dcps-nondisjoint}$:
+	Let $A, B \subseteq Q$ be distinct with $|A|, |B| \ge 2$ and $A \cap B \ne \emptyset$.
+	Without loss of generality, suppose $p \in B \setminus A$ for some $p \in Q$.
+	By assumption we have $|\delta(A, u)| < |A|$
+	and $\delta(p, u) \notin \delta(A, u)$ for some $u \in \Sigma^*$.
+	Then we get $|\applytrans{\delta}{A}{u}| + |\applytrans{\delta}{B}{u}| < |A| + |B|$
+	and, as $\delta(p, u) \in \delta(B, u)$, we get
+	$\delta(A, u) \ne \delta(B, u)$.
+	Furthermore, $\delta(A \cap B, u) \cup \{\delta(p,u)\} \subseteq \delta(B, u)$ with $A \cap B \ne \emptyset$ and $\delta(p, u) \notin \delta(A \cap B, u)$ gives $|\delta(B, u)| \ge 2$ so that $|\applytrans{\delta}{A}{u}| + |\applytrans{\delta}{B}{u}| \ge 3$.
+	
+	$\ref{dist:item:dcps-nondisjoint} \Rightarrow \ref{dist:item:dcps}$: Let $A, B \subseteq Q$ be distinct with $|A|, |B| \ge 2$. Without loss of generality, let $p \in B \setminus A$ and $q \in B \setminus\{p\}$. By the assumption applied to the distinct non-empty and non-singleton sets $A \cup \{q\}$ and $A \cup \{p,q\}$ there exists $u \in \Sigma^*$ with $3 \le |\delta(A \cup \{q\}, u)| + |\delta(A \cup \{p, q\}, u)| < 2|A|+3$ (where we even have 
+	$|\delta(A \cup \{q\}, u)| + |\delta(A \cup \{p, q\}, u)| < 2|A| + 1$ for $q \in A$) and $\delta(A \cup \{q\}, u) \ne \delta(A \cup \{p, q\}, u)$. Since $\delta(A \cup \{p, q\}, u) = \delta(A \cup \{q\}, u) \cup \delta(\{p\}, u)$ we find $\delta(p, u) \notin \delta(A \cup \{q\}, u)$.
+	Hence, as $\delta(p, u) \in \delta(B, u)$, we have $\delta(A, u) \ne \delta(B, u)$ 
+	and $|\delta(B, u)| \ge 2$ as $\{\delta(p,u), \delta(q, u)\} \subseteq \delta(B, u)$
+	where $\delta(p, u) \ne \delta(q, u)$,	
+	which gives $3 \le |\delta(A, u)| + |\delta(B, u)|$. Next, for $\delta(\{p,q\}, u) \cap \delta(A, u) = \emptyset$ we have 
+	\begin{align*}
+		2|\delta(A, u)| + 3 & = |\delta(A, u)| + |\delta(\{q\}, u)| + |\delta(A, u)| + |\delta(\{p,q\}, u)| \\
+		& = |\delta(A \cup \{q\}, u)| + |\delta(A \cup \{p, q\}, u)| \\
+		& < 2|A| + 3.
+	\end{align*}
+	Now, $2|\delta(A, u)| + 3 < 2|A| + 3$ gives $|\delta(A, u)| < |A|$. So, we find $|\delta(A, u)| + |\delta(B, u)| < |A| + |B|$. Otherwise, suppose $\delta(\{p,q\}, u) \cap \delta(A, u) \ne \emptyset$, which gives $\delta(A, u) \cap \delta(B, u) \ne \emptyset$. In this case, either we have $|\delta(A, u)| + |\delta(B, u)| < |A| + |B|$ and the claim holds with~$u$, or $|\delta(A, u)| = |A| \ge 2$ and $|\delta(B, u)| = |B| \ge 2$, and by the assumption applied to $\delta(A, u)$ and $\delta(B, u)$ there exists $v \in \Sigma^*$ with $3 \le |\delta(A, uv)| + |\delta(B, uv)| < |\delta(A, u)| + |\delta(B, u)|$ and $\delta(A, uv) \ne \delta(B, uv)$. Then the claim holds with~$uv$ as $|\delta(A, u)| + |\delta(B, u)| \le |A| + |B|$.
+	
+	$\ref{dist:item:dcps} \Rightarrow \ref{dist:item:all_pairs}$:
+	Let $A,B \subseteq Q$
+	be distinct with $|A|, |B| \ge 2$.
+	We do induction on $|A| + |B|$.
+	First, suppose $|A| + |B| = 4$, which is the base case.
+	By assumption, there exists $u \in \Sigma^*$
+	such that $3 \le |\applytrans{\delta}{A}{u}| + |\applytrans{\delta}{B}{u}|  < 4$, which
+	implies that one of both sets must be a singleton and the other a $2$-set.
+	Hence, $u \in \Sigma^*$ distinguishes both subsets.
+	Next, suppose $|A| + |B| > 4$. Assume all pairs of distinct subsets $A', B' \subseteq Q$
+	with $4 \le |A'| + |B'| < |A| + |B|$
+	and $|A'|, |B'| \ge 2$ are distinguishable.
+	By the assumption from~\cref{dist:item:dcps} there exists
+	$u \in \Sigma^*$
+	such that  $3 \le |\applytrans{\delta}{A}{u}| + |\applytrans{\delta}{B}{u}|  < |A| + |B|$
+	and $\applytrans{\delta}{A}{u} \ne \applytrans{\delta}{B}{u}$.
+	If one of both subsets is a singleton, the other subset has size at least two.
+	So, $u$ distinguishes~$A$ and~$B$.
+	Otherwise, as $\applytrans{\delta}{A}{u} \ne \applytrans{\delta}{B}{u}$, by induction hypothesis, 
+	there exists $v \in \Sigma^*$
+	distinguishing $\applytrans{\delta}{A}{u}$ from $\applytrans{\delta}{B}{u}$.
+	Then~$uv$ distinguishes~$A$ from~$B$.
+\end{proof}
+
+\Crefitem{sync_max:thm:char_distinguishable}{dist:item:dcps} is useful for an inductive reasoning
+because of the fact that it only demands to compress the subsets (while retaining their distinctiveness)
+instead of instantly mapping precisely one to a singleton subset.
+
+\begin{remark}
+ By \cref{sync_max:ex:distinguishable-trap} 	
+ distinguishability of all pairs of distinct $(n-1)$-sets 
+ is not sufficient for complete distinguishability.
+ With \cref{sync_max:prop:ksets},
+ this also implies that there exists no~$k$
+ such that distinguishability of all pairs of distinct $k$-sets
+ implies complete distinguishability.
+\end{remark}
+
+\begin{remark}
+  Having for each $q \in Q$ a word $u_q \in \Sigma^*$
+  that distinguishes $Q$ form $Q \setminus \{q\}$
+  is necessary, and, by \crefitem{sync_max:thm:char_distinguishable}{dist:item:single_point}
+  also sufficient, for complete distinguishability.
+  Let $p,q,r \in Q$ be distinct.
+  Assume $\delta(r, u_q) = \delta(r, u_p)$.
+  Then we have $\delta(p, u_q) = \delta(r, u_q) = \delta(r, u_p) = \delta(q, u_p)$.
+  Since $\delta(q, u_q) \ne \delta(p, u_q)$,
+  we find  $\delta(q, u_q) \ne \delta(q, u_p)$.
+  Thus we conclude that each word $u_q$ induces a different
+  transformation on the states.
+  Hence, the transformation monoid of completely distinguishable
+  automata with at least three states contains at least~$|Q|$ different elements.
+\end{remark}
+
+\begin{corollary}\label{sync_max:cor:sufficient-compl-dist}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$.
+	If for all $r \in Q$
+	and $p, q \in Q \setminus \{q\}$
+	there exists $u \in \Sigma^*$
+	such that $\delta(p, u) = \delta(q, u)$, $\delta(r, u) = r$,
+	and $\delta(s, u) \ne r$ for all $s \in Q \setminus \{r\}$, then $\mathcal A$
+	is completely distinguishable.
+\end{corollary}
+\begin{proof}
+	This follows directly from \crefitem{sync_max:thm:char_distinguishable}{dist:item:pqr-r-one-lane}
+	since it equals this statement in the special case that the word fixes the state~$r$.
+\end{proof}
+
+\begin{corollary}\label{cor:compl-dist-transitive}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	be an automaton such that the group of units of~$\TM{\mathcal A}$
+	is transitive.
+	Then $\mathcal A$ is completely distinguishable
+	if and only if $Q$ is distinguishable from $Q \setminus \{q\}$
+	for some $q \in Q$.		
+\end{corollary}
+\begin{proof}
+	First, suppose $Q$ and $Q \setminus \{q\}$ are distinguishable for $q \in Q$.
+	Then $|\delta(Q \setminus \{q\}, u)| = 1$
+	with $\delta(q, u) \notin \delta(Q \setminus\{q\}, u)$
+	for some $u \in \Sigma^*$.
+	Let $p \in Q$.
+	Since~$\TM{\mathcal A}$ contains a transitive permutation group, 
+	there exists $v \in \Sigma^*$ inducing a permutation on $Q$
+	such that $\delta(p, v) = q$.
+	Then we have $\applytrans{\delta}{Q \setminus \{p\}}{vu} = \applytrans{\delta}{Q\setminus\{q\}}{u}$
+	and $\applytrans{\delta}{p}{vu} = \applytrans{\delta}{q}{u}$.
+	So $\applytrans{\delta}{p}{vu} \notin \applytrans{\delta}{Q \setminus\{p\}}{vu}$
+	and $|\applytrans{\delta}{Q\setminus \{p\}}{vu}| = 1$.
+	By~\crefitem{sync_max:thm:char_distinguishable}{dist:item:single_point},
+	it follows that $\mathcal A$ is completely distinguishable.	
+	The converse implication is clear.
+\end{proof}
+
+\begin{example}  \label{sync_max:ex:compl-dist-non-cr}
+	Consider the automaton
+	in \cref{sync_max:fig:compl_dist_not_compl_reach:1}.
+	The letter $a$ distinguishes $\{0,1,2,3\}$
+	from the whole state set. 
+	Since the letter $b$ generates a transitive permutation group,
+	the automaton is completely distinguishable by \cref{cor:compl-dist-transitive}.	
+	The automaton is not completely reachable
+	since it does not have a letter of defect one.
+\end{example}
+
+\begin{example} \label{sync_max:ex:compl-dist-non-cr2}
+	\Cref{sync_max:fig:compl_dist_not_compl_reach:2}
+	depicts an automaton that is easily seen
+	to be completely distinguishable
+	and that is not completely reachable
+	since it is not strongly connected.
+\end{example}
+
+\begin{example} \label{syncmax:ex:compl-dist-not-SCC}
+	The word $ab$ distinguishes $\{1,2,3\}$ and $\{4\}$.
+	The word $ecab$ distinguishes $\{2,3,4\}$ and $\{1\}$.
+	The word $bc$ distinguishes $\{1,2,4\}$ and $\{3\}$.
+	The word $ac$ distinguishes $\{1,3,4\}$ and $\{2\}$.
+	So, by \crefitem{sync_max:thm:char_distinguishable}{dist:item:single_point},
+	the automaton from \cref{sync_max:fig:compl_dist_example} is completely distinguishable,
+	but it is not completely reachable since it is not strongly connected.
+	Note that by adding a simple idempotent mapping $1$ to $2$, we obtain
+	a strongly connected SI-automaton that is completely distinguishable,
+	but whose automaton graph is not strongly $\frac{3}{2}$-connected
+	since all paths from $2$ to $4$ have to pass through~$1$.
+\end{example}
+
+\begin{figure}[ht]
+	\centering 
+	\begin{subfigure}[t]{0.37\textwidth}
+		\centering
+		\begin{tikzpicture}[shorten >=1pt,->,node distance=4cm]
+				\foreach \name/\angle/\text in {P-n-2/234/3, P-n-1/162/4, 
+					P-0/90/0, P-1/18/1, P-2/-54/2}
+				\node[state] (\name) at (\angle:7em) {$\text$};
+				
+				\path[->] (P-n-2) edge [left] node {$b$} (P-n-1);
+				\path[->] (P-n-1) edge [above,pos=0.35] node {$b$} (P-0);
+				\path[->] (P-0) edge [above] node {$b$} (P-1);
+				\path[->] (P-1) edge [right] node {$b$} (P-2);
+				\path[->] (P-2) edge [below] node {$a,b$} (P-n-2);
+				\path[->] (P-0)   edge [right] node {$a$} (P-n-2)
+		                  (P-1)   edge [above] node {$a$} (P-n-2);					
+			\end{tikzpicture}
+		\caption{The Strongly connected automaton from Example~\ref{sync_max:ex:compl-dist-non-cr}.}
+		\label{sync_max:fig:compl_dist_not_compl_reach:1}
+	\end{subfigure}\hfill
+	\begin{subfigure}[t]{0.29\textwidth}
+		\centering		
+		\begin{tikzpicture}
+			\node[state] (1) {$1$};
+			\node[state, above = of 1] (2) {$2$};
+			\node[state, left  = of 2] (3) {$3$};    		
+			
+			\path[->] (3) edge [left]  node {$a$} (1)
+			          (2) edge [right] node {$b$} (1)
+			          (2) edge [above] node {$c$} (3);
+		\end{tikzpicture}		
+		\caption{The automaton from Example~\ref{sync_max:ex:compl-dist-non-cr2}.} 
+		\label{sync_max:fig:compl_dist_not_compl_reach:2}
+	\end{subfigure}\hfill
+    \begin{subfigure}[t]{0.29\textwidth}
+    	\centering
+    		\begin{tikzpicture}[node distance = 3.5em and 1.5em]
+    		\node[state] (1) {$1$};
+    		\node[state, above right = of 1] (2) {$2$};
+    		\node[state, above left  = of 1] (3) {$3$};
+    		\node[state, below = of 1]       (4) {$4$};				
+    		
+    		\path[->] (3) edge [left]  node {$a$} (1)
+    		          (2) edge [right] node {$b$} (1)
+    		          (1) edge [bend left=10, right] node {$c$} (4)
+    		          (4) edge [bend left=10, left]  node {$d$} (1)
+    		          (4) edge [bend left, left]  node {$e$} (3);
+    	\end{tikzpicture}
+        \caption{The automaton from \cref{syncmax:ex:compl-dist-not-SCC}}     	
+        \label{sync_max:fig:compl_dist_example}    
+    \end{subfigure}	\caption[Completely distinguishable, but not completely reachable]{Completely 
+    distinguishable automata that are not completely reachable. Self-loops omitted.}
+	\label{sync_max:fig:compl_dist_not_compl_reach}
+\end{figure}
+
+It is easily seen that quotient automata of completely reachable automata
+are completely reachable. However, complete distinguishability is not preserved
+under taking quotient automata as shown in \cref{sync_max:fig:compl_dist_not_compl_reach} next.
+
+% Und sync-maximal erhalten unter Quotientautomaten?
+\begin{example} \label{sync_max:fig:compl_dist_not_compl_reach}
+	Automata  $\semiautomat{A}{Q}{\Sigma}{\delta}$ as in \cref{sync_max:ex:compl-dist-non-cr}
+	also show that complete distinguishability
+	is not preserved when taking quotient automata.
+	For consider the obvious generalization	where the letter~$b$ cyclically permutes $n$ states
+	and suppose we have some non-trivial $\TS{\mathcal A}$-congruence $\sim$.
+	%Let $p \in Q$ be the state fixed by~$a$.
+	Let $s \in Q$ be the state fixed by~$a$.
+	Since the letter $b$ cyclically permutes the whole state set,
+	all congruence classes for~$\sim$ have the same size
+	and we find $t \in Q$ with $s \ne t$
+	such that $s \sim t$.
+		
+	First, we show that for every $u \in \Sigma^*$ not permuting the set of states
+	we have $\delta(p, u) \sim \delta(q, u)$
+	for all $p,q \in Q$, i.e., the letter~$a$ induces a constant in $\mathcal A / {\sim}$).
+	Let $p,q \in Q$. We can assume $p \not\sim q$.
+	For $u \in \Sigma^*$ not permuting~$Q$
+	we can write $u = b^iav$ for some $v \in \Sigma^*$ and $i \ge 0$.
+	If $\delta(p, b^i) \ne s$ 
+	and $\delta(q, b^i) \ne s$,
+	then $\delta(p, b^ia) = \delta(q, b^ia)$
+	and so $\delta(p, u) = \delta(q, u)$.
+	Otherwise, without loss of generality, assume $\delta(p, b^i) = s$.
+	Then $\delta(q, b^i) \ne s$.
+	Now, we have $\delta(p, b^ia) = s$
+	and $\delta(q, b^ia) = \delta(t, a)$.
+	Furthermore, $s \sim t$
+	implies $\delta(p, b^ia) = s = \delta(s, a) \sim \delta(t, a) = \delta(q, b^ia)$
+	and thus $\delta(p, u) \sim \delta(q, u)$.
+		
+	Next, assume we want to distinguish $Q / {\sim}$
+	and $Q / {\sim} \setminus \{ [p]_{\sim} \}$
+	in $\mathcal A / {\sim}$ for some $p \in Q$.
+	Then a distinguishing word $u$
+	maps all $q \in Q$ with $q \not\sim p$
+	into an equivalence class
+	and for all $r \in Q$ with $r \sim p$
+	we have $\delta(r, u) \not\sim \delta(q, u)$ for $q \in Q$ with $q \not\sim p$.
+	However, since a distinguishing word cannot permute
+	the whole state set, as shown above this is not possible.	
+\end{example}
+
+Next, we show that a binary completely distinguishable automaton with a letter of rank two, such as the one from \cref{sync_max:fig:compl_dist_not_compl_reach:1}, must contain a letter cyclically permuting the states.
+
+\begin{proposition} \label{syncmax:prop:binary-rank-two-letter}
+	Let $\semiautomat{A}{Q}{\{a,b\}}{\delta}$ be a binary automaton with at least three states
+	where~$a$ has rank two.
+	If $\mathcal A$ is completely distinguishable,
+	then~$b$ cyclically permutes the states.
+\end{proposition}
+\begin{proof}
+	Assume $\delta(p_1, b) = \delta(p_2, b)$
+	for two distinct states $p_1, p_2 \in Q$.
+	Then a word distinguishing $\{p_1\}$ from $Q \setminus\{p_1\}$
+	must start with~$a$.
+	This implies $\delta(p_1, a) \notin \delta(Q \setminus \{p_1\}, a)$.
+	Since~$a$ has rank two,
+	we get $|\delta(Q \setminus \{p_1\}, a)| = 1$
+	and so~$a$ distinguishes both subsets.
+	By a similar reasoning with $\{p_2\}$ and $Q \setminus \{p_2\}$,
+	we find $|\delta(Q \setminus \{p_2\}, a)| = 1$.
+	Since~$|Q| \ge 3$,
+	this yields that $Q \setminus \{p_1\}$
+	and $Q \setminus \{p_2\}$ are mapped to the same
+	state and so $\delta(p_1, a) = \delta(p_2, a)$,
+	giving a contradiction
+	to $\delta(p_1, a) \notin \delta(Q \setminus \{p_1\}, a)$.
+	Thus, no two distinct states are mapped
+	to the same state by~$b$,
+	and by finiteness we find that~$b$
+	permutes the states.
+	
+	Next, by assumption we have $Q = A \cup B$
+	where $A = \delta^{-1}(p, a)$
+	and $B = \delta(q, a)$ for some $p,q \in Q$.
+	Assume there exist two distinct $|A|, |B| \ge 2$.
+	Each word distinguishing two subsets
+	must have the form $b^ia$ for some $i \ge 0$,
+	since~$a$ has rank two.
+	We have $\delta^{-1}(p, b^ia) = \delta^{-1}(A, b^i)$
+	and $\delta^{-1}(q, b^ia) = \delta^{-1}(B, b^i)$
+	and the two subsets have size at least two
+	and partition~$Q$ since~$b$ permutes the states.
+	However, a word distinguishes a state~$s$
+	from $Q \setminus \{s\}$
+	if and only if $\{s\}$
+	and $Q \setminus \{s\}$
+	are the $\delta^{-1}$-images of two states.
+	Thus, one of both subsets $A$ or $B$
+	must be a singleton.
+	Without loss of generality, let~$A = \{p_1\}$ and consider some state $p_2 \in Q$.
+	A word $b^ia$ distinguishes $p_2$ and $Q \setminus \{p_2\}$
+	if and only if $p_2$ is mapped to~$p_1$
+	by~$b^i$. Thus we find that~$b$ cyclically permutes the states.	
+\end{proof}
+
+Lastly, we also note a readily seen equivalence when the whole state set is distinguishable
+from a set of the form $Q \setminus\{q\}$, since these sets appear in \crefitem{sync_max:thm:char_distinguishable}{dist:item:single_point}
+
+% in beweis oben nutzen?
+\begin{proposition} \label{sync_max:prop:dist-n-1-set}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$. Then the following are equivalent.
+	\begin{enumerate}
+		\item $Q \setminus \{q\}$ is distinguishable from~$Q$.
+		
+		\item There exist $u_1, \ldots, u_m \in \Sigma$
+		such that for  $A_i = \delta(Q \setminus \{q\}, u_1 \cdots u_i)$
+		and $q_i = \delta(q, u_1 \cdots u_i)$ where $i \in \{1,\ldots,m\}$
+		we have  $|A_m| = 1$
+		and $q_i \notin A_i$ for all $i \in \{1,\ldots,m\}$.
+	\end{enumerate}
+\end{proposition}
+
+\begin{example}
+	Let $\semiautomat{A}{\{1,2,3,4\}}{\Sigma}{\delta}$
+	with 
+	\[
+	\Sigma = \{ a \mid \exists y_1, y_2 \in Q \colon y_1 \ne y_2 \land
+	|\delta^{-1}(y_1, a)| = |\delta^{-1}(y_1, a)| = 2 \}
+	\]
+	Then disjoint pairs of $2$-sets are indistinguishable
+	and non-disjoint pairs of $2$-sets are distinguishable.
+	Furthermore, two sets of size at least three are indistinguishable.
+	A set of size two is distinguishable from any set of size at least three.	
+\end{example}

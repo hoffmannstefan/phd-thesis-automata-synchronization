@@ -1,0 +1,208 @@
+\documentclass[graybox,envcountchap,envcountsame,sectrefs]{SNmono}
+
+% gives a bunch of errors
+% \input{../packages}
+
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{tikz}
+\usepackage{xparse}
+\usepackage{stackengine}
+\usepackage{mathtools}
+\usepackage{tabularx}
+\usepackage{environ}
+\usepackage{tcolorbox}
+\usepackage{cleveref}
+\usepackage{environ}
+\usepackage{xspace}
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{xparse}
+\usepackage{etoolbox}
+\usepackage{multirow}
+\usepackage{nicematrix}
+\usepackage[table]{xcolor}
+\usepackage{imakeidx}
+\usepackage{amsmath}
+\usepackage[english,ngerman]{babel}
+\usepackage{longtable}
+\usepackage{changepage} 
+\usepackage[url=false,sorting=anyt,backref=true]{biblatex}
+
+%\usepackage[color=gray!27]{todonotes}
+\usepackage[disable]{todonotes}
+
+\usepackage[T1]{fontenc}
+%\usepackage[utf8]{inputenc} % bei älteren Setups
+
+\usetikzlibrary{shapes,shapes.geometric,arrows,arrows.meta,fit,calc,bending}
+\usetikzlibrary{automata,positioning}
+\usetikzlibrary{shadows.blur}
+\usetikzlibrary{intersections}
+\usetikzlibrary{cd}
+\usetikzlibrary{matrix,patterns,shadings,backgrounds}
+\usetikzlibrary{babel} % https://tex.stackexchange.com/questions/331480/missing-endcsname-in-tikzcd
+\usetikzlibrary{fit}
+
+\addbibresource{../tidied5.bib}
+
+
+
+
+\input{../macros}
+
+% Package "complexity" gives nameing conflict
+% \mathrm{P} nutzen?
+\renewcommand{\PTIME}{\textup{\textsf{P}}\xspace}
+\newcommand{\XP}{\textup{\textsf{XP}}\xspace}
+\newcommand{\FPT}{\textup{\textsf{FPT}}\xspace}
+\newcommand{\DP}{\textup{\textsf{DP}}\xspace}
+\newcommand{\FP}{\textup{\textsf{FP}}\xspace}
+\newcommand{\FNP}{\textup{\textsf{FNP}}\xspace}
+\newcommand{\NP}{\textup{\textsf{NP}}\xspace}
+\newcommand{\PSPACE}{\textup{\textsf{PSPACE}}\xspace}
+\newcommand{\NL}{\textup{\textsf{NL}}\xspace}
+\newcommand{\NC}{\textup{\textsf{NC}}\xspace}
+\newcommand{\NPSPACE}{\textup{\textsf{NPSPACE}}\xspace}
+\newcommand{\AC}{\textup{\textsf{AC}}\xspace}
+\newcommand{\TC}{\textup{\textsf{TC}}\xspace}
+\newcommand{\SAT}{\textup{\textsc{SAT}}\xspace}
+\newcommand{\W}{\textup{\textsf{W}}}
+
+
+% noch für andere version
+\usepackage{makecell}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\makeatletter
+\newcommand{\partquote}{}
+
+\newcommand{\setpartquote}[2]{%
+	\gdef\partquote{%
+		\par\vspace{2.5cm}
+		\begin{flushright}
+			\normalfont \normalsize
+			\itshape #1\par
+			\vspace{0.2em}
+			\normalfont #2
+		\end{flushright}
+%\par\vspace{1.8cm}
+%	\begin{flushright}
+%			\rightskip=1.8cm\textit{#1} \\
+%			\vspace{.2em}
+%			\rightskip=.8cm#2
+%		\end{flushright}
+%	
+	}%
+}
+
+\def\@part[#1]#2{%
+	\ifnum \c@secnumdepth >-2\relax
+	\refstepcounter{part}%
+	\addcontentsline{toc}{part}{\partname\
+		\thepart\thechapterend\hspace{\betweenumberspace}#1}%
+	\else
+	\addcontentsline{toc}{part}{#1}%
+	\fi
+	\markboth{}{}%
+	{\raggedleft
+		\hyphenpenalty \@M
+		\interlinepenalty\@M
+		\ifnum \c@secnumdepth >-2\relax
+		\normalfont\partnumsize\partnumstyle
+		\partname\ \thepart
+		\par
+		\vskip 2\p@
+		\fi
+		\partsize\partstyle #2\par
+		\partquote
+	}%
+	\global\let\partquote\@empty
+	\@endpart
+}
+\makeatother
+
+\newcommand{\partwithquote}[3]{%
+	\setpartquote{#2}{#3}%
+	\part{#1}%
+}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\usepackage{mathptmx}
+%\usepackage{helvet}
+%\usepackage{courier}
+\usepackage{type1cm}         
+
+%\usepackage{makeidx}         % allows index generation
+
+\usepackage{graphicx}        % standard LaTeX graphics tool
+                             % when including figure files
+\usepackage{multicol}        % used for the two-column index
+\usepackage[bottom]{footmisc}% places footnotes at page bottom
+
+\usepackage{newtxtext}       % 
+\usepackage[varvw]{newtxmath}       % selects Times Roman as basic font
+
+\makeindex             % used for the subject index
+                       % please use the style svind.ist with
+                       % your makeindex program
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\selectlanguage{english}
+
+
+%\tableofcontents
+
+%\tableofcontents
+
+% todo: wonham arbeiten, siehe habil von oded maler
+
+% todo: references eigenes schapter
+
+\author{Stefan Hoffmann}
+\title{\thesistitle}
+\maketitle
+
+\frontmatter%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\extrachap{Abstract}
+
+\input{../frontmatter/abstract}
+
+\extrachap{Zusammenfassung}
+
+\input{../frontmatter/zusammenfassung}
+
+\extrachap{Acknowledgement}
+
+\input{../frontmatter/thanks}
+
+\extrachap{Notation Index}
+
+\input{../nomenclature}
+
+\listoffigures
+\listoftables
+
+\tableofcontents
+
+\mainmatter%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{../body}
+
+\selectlanguage{english}
+\printbibliography[heading=bibintoc, title={References}]
+\printindex
+\end{document}

@@ -1,0 +1,344 @@
+%!TEX root = ./../../springer-mono-format/book.tex
+%!TEX root = ./../../thesis-trier.tex
+
+\IN{bounded language}
+\IN{letter-bounded language}
+\IN{strictly bounded language}
+A language $L \subseteq \Sigma^*$ is \emph{bounded}~\cite{Ginsburg1964BOUNDEDAL}
+if there exist words $u_1, \ldots, u_r \in \Sigma^*$ such that
+$
+L \subseteq u_1^* \cdots u_r^*.
+$
+The language $L$ is called \emph{letter-bounded} if each $u_i$ is a letter, i.e.,
+$u_i \in \Sigma$ for all $i \in \{1,\ldots,r\}$.
+It is called \emph{strictly bounded} if it is letter-bounded and the letters
+$u_1,\ldots,u_r$ are pairwise distinct.
+
+For example, finite languages are letter-bounded.
+The bounded and letter-bounded languages
+are closed under finite unions and concatenation
+since for $L \subseteq u_1^* \cdots u_r^*$
+and $L' \subseteq v_1^* \cdots v_l^*$
+both $L\cup L'$ and $LL'$ are contained in $u_1^* \cdots u_r^*v_1^* \cdots v_l^*$.
+
+Our first result characterizes subset of $w^*$. It
+was also stated in \cite[Lem.~5.2]{Ginsburg1964BOUNDEDAL}.
+
+\begin{proposition}\label{constrsync:prop:slender}
+	Let $L \subseteq \Sigma^*$.
+	Then there exists $w \in \Sigma^*$
+	such that $L \subseteq w^*$
+	if and only if, for all $u,v \in L$, there exists $w \in \Sigma^*$ such that $\{u,v\}\subseteq w^*$.
+\end{proposition}
+\begin{proof}
+	If  $L \subseteq w^*$ for some $w \in \Sigma^*$,
+	then in particular $\{u,v\} \subseteq w^*$ for all $u,v \in L$.	
+	Conversely, suppose for all $u,v \in L$
+	there exists $w \in \Sigma^*$ with $\{u,v\} \subseteq w^*$.
+	Assume $L \not\subseteq w^*$ for all $w \in \Sigma^*$.
+	Then for each $w \in \Sigma^*$
+	with $v \in w^*$ for some $v \in L$
+	we have $u \notin w^*$ for some $u \in L$.
+	Now, pick a shortest word $w_1 \in \Sigma^*$  
+	such that $u \in L \setminus w_1^*$
+	and $v \in L \cap w_1^*$ for some $u,v \in \Sigma^+$.	
+	By assumption there exists $w_2 \in \Sigma^*$
+	such that $\{u, v\} \subseteq w_2^*$.
+	So $w_1^i = v = w_2^j$ for some $i,j \ge 0$.
+	We have	$i,j \ge 1$ and $w_1, w_2 \ne \varepsilon$ as~$|v| > 0$.
+	By \cref{constr_sync:lem:two-words-code} there exists $w_3 \in \Sigma^*$
+	such that $w_1, w_2 \in w_3^*$.
+	Let $k \ge 1$ be such that $w_1 = w_3^k$.
+	As $u \in w_2^* \subseteq w_3^*$ and $u \notin w_1^*$
+	we have $k \ge 2$ so that $0 < |w_3| < |w_1|$.
+	By the choice of $w_1$ and as $v \in L \cap w_3^*$ we find $L \subseteq w_3^*$, contradicting the 
+	assumption.\footnote{For a similar inductive argument: Let $L = \{u_0, u_1, u_2, \ldots \}$.
+		Inductively, for $i \ge 1$
+		construct words $w_i \in \Sigma^*$
+		with $w_i \in w_{i+1}^*$ and $\{u_{i-1},u_i\} \subseteq w_i^*$
+		in the following way:
+		Let $w_1 \in \Sigma^*$
+		be a word such that $\{u_0, u_1\} \subseteq w_1^*$.
+		For $i \ge 2$ we have $\{u_i, u_{i+1}\} \subseteq w^*$ 
+		for some $w \in \Sigma^*$.
+		Thus, $u_i \in w_i^*$ (by induction hypothesis) and $u_i \in w^*$.
+		By \cref{constr_sync:lem:two-words-code} 
+		we have $w_i, w \in w_{i+1}^*$ for some $w_{i+1} \in \Sigma^*$.
+		Now, having such a sequence, $w_i \in w_{i+1}^*$
+		implies $|w_{i+1}| \le |w_i|$.
+		Thus there exists $N \ge 0$ such that $|w_N| = |w_{N+i}|$ for all $i \ge 0$.
+		But then $w_i \in w_{i+1}^*$,
+		gives $w_N = w_{N+i}$ for all $i \ge 0$.
+		This yields $L \subseteq w_N^*$.}
+\end{proof}
+
+For regular subsets of $w^*$ we have the following representation.
+
+\begin{proposition}\label{constr_sync:prop:bounded_normal_form_single_word}
+	Let $L \subseteq w^*$ for some $w \in \Sigma^*$.
+	Then $L$ is regular if and only 
+	if $L = I \cdot (w^p)^* \cup F$
+	for finite sets $I, F \subseteq w^*$ and some $p > 0$.
+\end{proposition}
+\begin{proof} 
+	First, suppose $L \subseteq w^*$ is regular. By \cref{prelim:thm:regular_iff_quotients_finite}
+	there exist $0 \le i < j$ such that
+	$(w^{i})^{-1} L = (w^j)^{-1} L$. 
+	Set $p = j - i$. Then, for all $k \ge i$ this gives
+	\[
+	w^k \in L \Leftrightarrow w^{k + p} \in L.
+	\]
+	This yields that for $F = \{ w^k \mid 0 \le k < i \land w^k \in L \}$ and
+	$I = \{ w^k \mid i \le k < j \land w^k \in L \}$
+	we have $L = I\cdot (w^p)^* \cup F$.		
+	Conversely, a language of the form $L = I \cdot (w^p)^* \cup F$
+	for finite sets $I, F \subseteq w^*$ and some $p \ge 0$
+	is clearly regular and contained in $w^*$.
+\end{proof}
+
+The next representation theorem for bounded regular sets is from~\cite[Thm.~1.2]{GinsburgSpanier66}.
+
+\begin{theorem}[{Ginsburg and Spanier~\cite[Thm.~1.2]{GinsburgSpanier66}}]
+	\label{constr_sync:thm:bounded_normal_form}
+	Let $w_1, \ldots, w_r \in \Sigma^*$.
+	A~language $L \subseteq w_1^* \cdots w_r^*$ is regular if and only if
+	it is a finite union of sets of the form $L_1 \cdots L_r$,
+	where each $L_i$ is a regular language in $w_i^*$ for $i \in \{1,\ldots,r\}$.
+\end{theorem} 
+
+\begin{corollary}\label{constr_sync:cor:bounded_normal_form_single_state_aut}
+	$L \subseteq w_1^* \cdots w_r^*$ 
+	for $w_1, \ldots, w_r \in \Sigma^*$
+	is regular if and only if
+	it is a finite union of sets of the form $w_1^{i_1} (w_1^{p_1})^* \cdots w_r^{i_r} (w_r^{p_r})^*$
+	for numbers $i_1, \ldots, i_r, p_1, \ldots, p_r \ge 0$.
+\end{corollary}
+\begin{proof}
+	By \crefitem{prelim:langeqn}{prelim:langeqn:concatcup} 
+	we can write  $I \cdot (w^p)^* \cup F$ 
+	for finite $I$ and~$F$ as a finite union
+	of sets of the form $w^i (w^q)^*$
+	with $i, q \ge 0$ (note that $q = 0$ is allowed).
+	Thus, the claim follows
+	from \cref{constr_sync:thm:bounded_normal_form,constr_sync:prop:bounded_normal_form_single_word}.
+\end{proof}
+
+\IN{equal-letter run}
+\label{def:rho}
+The function $\rho \colon \Sigma^* \to \mathbb N_0$ given, for $w \in \Sigma^*$ and $a,b \in \Sigma$, by
+\[ 
+\rho(wab) = \begin{cases} 
+	\rho(wa) + 1 & \text{if } a \ne b, \\
+	\rho(wa)     & \text{if } a = b,
+\end{cases}
+\]
+and $\rho(\varepsilon) = \rho(a) = 0$ counts the number of \emph{symbol switches}, 
+or equivalently the number of \emph{equal-letter runs} minus one.
+
+\begin{example}
+\begin{enumerate}
+\item $\rho(abab) = \rho(aaabbab) = 3$.
+
+\item For $L = (ab)^+$
+we have $\{ \rho(u) \mid u \in L \} = \{ n \mid n \text{ is odd} \}$.
+\end{enumerate}	
+\end{example}
+
+We list a few properties of $\rho$.
+
+\begin{proposition}
+\label{constrsync:prop:rho}
+\begin{enumerate}
+\item $\rho(a^i) = 0$ for $a \in \Sigma$ and $i \ge 0$.
+
+\item \label{constrsync:prop:rho:2} For $w \in \Sigma^+$ we have $\rho(w) = |\{ i \in \{1,\ldots,n-1\} : w_{i} \ne w_{i+1} \}|$
+ where $w = w_1 \cdots w_n$ with $w_i \in \Sigma$ for $i \in \{1,\ldots,n\}$ and $n \ge 1$.
+
+\item \label{constrsync:prop:rho:3} For $w \in \Sigma^+$
+ we have $\rho(w) = k - 1$
+ if and only if  there exist letters $a_1, \ldots, a_k \in \Sigma$, $k \ge 1$, such that $w \subseteq a_1^+ \cdots a_k^+$ 
+ and $a_i \ne a_{i+1}$ for $i \in \{1,\ldots,k-1\}$.
+
+\item \label{constrsync:prop:rho:4} $\rho(w) = \min\{ k \ge 1 \mid \exists a_1, \ldots, a_k \in \Sigma \colon w \subseteq a_1^* \cdots a_k^* \} - 1$ for $w \in \Sigma^*$.
+
+\item \label{constrsync:prop:rho:item:uv} For $u,v \in \Sigma^*$ we have
+$
+\rho(u) + \rho(v) \le \rho(uv) \le \rho(u) + \rho(v) + 1.
+$
+In particular, $\rho(u) \le |u|$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+	The first four equations follow readily. 
+	For~\cref{constrsync:prop:rho:item:uv}, let $u,v \in \Sigma^*$ be two words.  We can assume $u,v \ne \varepsilon$.
+	By~\cref{constrsync:prop:rho:3}
+	there exist $a_1, \ldots, a_n, b_1, \ldots, b_m \in \Sigma$ for $n,m \ge 1$
+	such that $\rho(u) = n - 1$ and $\rho(v) = m - 1$ where $u \subseteq a_1^+ \cdots a_n^+$
+	with $a_i \ne a_{i+1}$ for $i \in \{1,\ldots,n-1\}$
+	and $v \subseteq b_1^+ \cdots b_{m}^+$
+	with $b_j \ne b_{j+1}$ for $j \in \{1,\ldots,m-1\}$.
+	Then $uv \subseteq a_1^+ \cdots a_n^+ b_1^+ \cdots b_m^+$
+	and we get
+	\[
+	\rho(uv) =
+	\begin{cases}
+		n + m - 1 & \text{if } a_n \ne b_1, \\
+		n + m - 2 & \text{if } a_n = b_1.
+	\end{cases}
+	\]
+	For an alternative argument,
+	write $u = u_1 \cdots u_n$ and $v = v_1 \cdots v_m$
+	for $n,m \ge 0$ and $u_i \in \Sigma$, $v_j \in \Sigma$ for $i \in \{1,\ldots,n\}$ and $j \in \{1,\ldots,m\}$.
+	Then, by \cref{constrsync:prop:rho:2}, we find
+	$\rho(uv) = |\{ i \in \{1,\ldots,n-1\} \mid u_i \ne u_{i+1} \}| + |\{ n \mid u_n \ne v_1 \}|
+	+ |\{ i \in \{1,\ldots,m\} \mid v_{i} \ne v_{i+1}\}|
+	= \rho(u) + \rho(v) +  |\{ n \mid u_n \ne v_1 \}|$.
+\end{proof}
+
+Next, we characterize letter-bounded languages with the mapping $\rho$.
+
+\begin{proposition}
+	\label{constr_sync:prop:letter_bounded_iff_equal_letter_runs_bounded}
+	A language $L \subseteq \Sigma^*$ is letter-bounded if and only if there
+	exists $n \ge 0$ such that $\applyfunc{u}{\rho} \le n$
+	for all $u \in L$.
+\end{proposition}
+\begin{proof}  
+	First, suppose $\rho(u) \le n$ for all $u \in L$.
+	Let $f_1, \ldots, f_m$ be some enumeration
+	of all functions  $\{1,\ldots,n\} \to \Sigma$
+	where $m = |\Sigma|^n$.
+	Let $u \in L$.
+	We have $u \in a_1^* \cdots a_n^*$
+	for some $a_1, \ldots, a_n \in \Sigma$.
+	Thus $u \in \prod_{i=1}^{m} f_i(1)^* \cdots f_i(n)^*$.
+	Hence $L$ is letter-bounded.	
+	Conversely, suppose $L \subseteq \Sigma^*$ is letter-bounded. Then there exist $a_1, \ldots, a_n \in \Sigma$
+	such that $L \subseteq a_1^* \cdots a_n^*$. So, we have $\rho(u) \le n - 1$ for all $u \in L$
+	by \crefitem{constrsync:prop:rho}{constrsync:prop:rho:4}.
+\end{proof}
+
+\begin{corollary} \label{syncmax:lem:necessary-letter-bounded}
+	Let $L \subseteq \Sigma^*$.
+	Suppose there exists $u \in  \Sigma^* a \Sigma^* b \Sigma^*$
+	for distinct $a,b \in \Sigma$
+	such that $\Sigma^* u^n \Sigma^* \cap L \ne \emptyset$
+	for infinitely many $n$.
+	Then $L$ is not letter-bounded.
+\end{corollary}
+\begin{proof}
+	We have $\rho(u) \ge 1$.
+	Thus for $vu^nw \in L$ with $n \ge 1$
+	we have $\rho(v u^n w) \ge \rho(u^n) \ge n$
+	by \crefitem{constrsync:prop:rho}{constrsync:prop:rho:item:uv}.
+	Whence, by~\cref{constr_sync:prop:letter_bounded_iff_equal_letter_runs_bounded},
+	the language~$L$ is not letter-bounded.
+\end{proof}
+
+For bounded languages, the condition from \cref{syncmax:lem:necessary-letter-bounded} also characterizes letter-boundedness, as we show next.
+
+\begin{proposition} \label{syncmax:lem:non-letter-bounded}
+	Let $L \subseteq \Sigma^*$ be bounded.
+	Then~$L$ is letter-bounded 
+	if and only if for all $u \in \Sigma^*$
+	such that $\Sigma^* u^n \Sigma^* \cap L \ne \emptyset$ for infinitely many $n$
+	we have $u \subseteq a^*$ for some $a \in \Sigma$.
+\end{proposition}
+\begin{proof}
+	First, suppose~$L$ is letter-bounded. Then, by \cref{syncmax:lem:necessary-letter-bounded},
+	for all $u \in \Sigma^*$ such that $\Sigma^* u^n \Sigma^* \cap L \ne \emptyset$ for infinitely many $n$
+	we must have $u \subseteq a^*$ for some $a \in \Sigma$.
+	
+	Conversely, suppose the stated condition holds.
+	Let $L \subseteq u_1^* \cdots u_k^*$ for some $u_1, \ldots, u_k \in \Sigma^*$. 
+	Suppose we have $u_j \in \Sigma^* a \Sigma^* b \Sigma^*$ for some $j \in \{1,\ldots,k\}$
+	with distinct $a,b \in \Sigma$
+	and such that for each $N \ge 0$
+	there exist $i_1, \ldots, i_k \ge 0$ with $i_j \ge N$
+	such that $u_1^{i_1} \cdots u_k^{i_k} \in L$. Then the the assumption is violated
+	with $u = u_j$.	
+	Thus, there exists $N \ge 0$
+	such that $u_1^{i_1} \cdots u_k^{i_k} \in L$
+	with $i_j > N$ for some $j \in \{1,\ldots,k\}$
+	implies $u_{j} \subseteq a^*$ for some $a \in \Sigma^*$.
+	Then pick all those indices $1 \le j_1 < \cdots < j_l \le k$ for some $l \in \{1,\ldots,k\}$
+	where for $i \in \{1,\ldots,l\}$ we have $u_{j_i} \in \Sigma^* a \Sigma^* b \Sigma^*$ for distinct $a,b \in \Sigma$.
+	Then for $u_1^{i_1} \cdots u_k^{i_k} \in L$,
+	by assumption, we have $i_{j_r} \le N$ for $r \in \{1,\ldots,l\}$
+	and $\rho(u_i) = 0$ for $i \notin \{j_1, \ldots, j_l\}$.
+	With \cref{constrsync:prop:rho}, for $M =i_1 + \cdots + i_k + k $ this gives
+	\[
+	\rho( u_1^{i_1} \cdots u_k^{i_k} ) - M
+	\le i_1 \rho(u_1) + \cdots + i_k \rho(u_k)
+	\le \sum_{r = 1}^l i_{j_r} \rho(u_{j_r}) 
+	\le N \cdot \sum_{r = 1}^l \rho(u_{j_r}).
+	\]
+	Thus, by \cref{constr_sync:prop:letter_bounded_iff_equal_letter_runs_bounded},
+	the language~$L$ is letter-bounded.
+\end{proof}
+
+Next, we characterize regular letter-bounded languages.
+
+\begin{proposition}\label{constr_sync:prop:letterboundedreg}
+	Let $L \subseteq \Sigma^*$ be regular. Then the following are equivalent.
+	\begin{enumerate}
+		\item \label{constr_sync:prop:letterboundedreg:item:letterbounded} $L$ is letter-bounded.
+		
+		\item \label{constr_sync:prop:letterboundedreg:item:uvw} If $uv^*w \subseteq L$ with $u,v,w \in \Sigma^*$, then $v^* \subseteq a^*$ for some $a \in \Sigma$.
+		
+		\item \label{constr_sync:prop:letterboundedreg:item:PDFA} For every PDFA $\automat{B}{P}{\Sigma}{\mu}{p_0}{F}$
+		with $L = L(\mathcal B)$ and state $p \in P$
+		that is accessible and coaccessible, we have $L(\mathcal B_{p,\{p\}}) \subseteq a^*$ for some $a \in \Sigma$.
+	\end{enumerate} 	
+\end{proposition}
+\begin{proof}
+	$\ref{constr_sync:prop:letterboundedreg:item:letterbounded} \Rightarrow~\ref{constr_sync:prop:letterboundedreg:item:uvw}$: Suppose there exist $u,v,w \in \Sigma^*$
+	with $uv^*w \subseteq L$ and $|v|_a, |v|_b > 0$ for two distinct $a,b \in \Sigma$.
+	Then, by \cref{syncmax:lem:necessary-letter-bounded}, $L$ is not letter-bounded.
+	
+	$\ref{constr_sync:prop:letterboundedreg:item:uvw}\Rightarrow~\ref{constr_sync:prop:letterboundedreg:item:PDFA}$: 
+	Let  $\automat{B}{P}{\Sigma}{\mu}{p_0}{F}$
+	be a PDFA.
+	Assume  $v \in L(\mathcal B_{p, \{p\}})$
+	for some  accessible and coaccessible $p \in P$ and 
+	$v \in \Sigma^*$ with $|v|_a > 0$ and $|v|_b > 0$
+	for distinct $a,b \in \Sigma$.
+	Then
+	$\mu(p_0, u) = p$
+	and $\mu(p, w) \in F$ for some $u,w \in \Sigma^*$.
+	Hence $uv^*w \subseteq L(\mathcal B)$
+	and~\cref{constr_sync:prop:letterboundedreg:item:uvw} 
+	is not true, giving the claim.	
+%	
+%	
+%	By assumption there exist $u,v \in \Sigma^*$ such that $\mu(p_0, u) = p$
+%	and $\mu(p, v) \in F$.
+%	Let $w \in L(\mathcal B_{p,\{p\}})$.
+%	Then $uw^*v \subseteq L$ and so $w \in a^*$ for some $a \in \Sigma$.
+%	Now, let $w' \in L(\mathcal B_{p,\{p\}})$.
+%	Similarly, we obtain $w' \in b^*$ for some $b \in \Sigma$.
+%	As $u(ww')^*v \subseteq L$ we conclude $a = b$
+%	and, as $w'$ was arbitrarily chosen, we get $L(\mathcal B_{p,\{p\}}) \subseteq a^*$.
+	
+	$\ref{constr_sync:prop:letterboundedreg:item:PDFA} \Rightarrow~\ref{constr_sync:prop:letterboundedreg:item:letterbounded}$:	
+	Suppose $L$ is not letter-bounded.
+	Let $\automat{B}{P}{\Sigma}{\mu}{p_0}{F}$
+	be a PDFA with $L = L(\mathcal B)$ and $n = |P|$.
+	By \cref{constr_sync:prop:letter_bounded_iff_equal_letter_runs_bounded}
+	there exists $u \in L(\mathcal B)$
+	with $\rho(u) \ge 2n - 1$.
+	By \crefitem{constrsync:prop:rho}{constrsync:prop:rho:3},
+	we have $u = a_1^{i_1} \cdots a_{2n}^{i_{2n}}$
+	for some $a_1, \ldots, a_{2n} \in \Sigma$ with $a_j \ne a_{j+1}$ for $j \in \{1,\ldots,2n-1\}$
+	and $i_j \ge 1$ for $j \in \{1,\ldots,2n\}$.
+	Set $p_j = \mu(p_0, a_1^{i_1} \cdots a_{i_{2j}}^{i_{2j}})$
+	for $j \in \{0,1,\ldots,n\}$.\footnote{We set $a_1^{i_1} \cdots a_{0}^{i_{0}} = \varepsilon$.}
+	By finiteness there exists $0 \le j < j' \le n$ such that $p_j = p_{j'}$.
+	Set $w = a_{2j}^{i_{2j}} \cdots a_{2j'}^{i_{2j'}}$.
+	Then we have $w^* \subseteq L(\mathcal B_{p_j, \{p_j\}})$.
+	Since $a_{2j} \ne a_{2j+1}$ the language $w^*$ is not contained in $a^*$
+	for each $a \in \Sigma$.
+	The PDFA $\mathcal B$ accepts~$u$,
+	and so the state $p_j$ is accessible and coaccessible.
+	Thus \cref{constr_sync:prop:letterboundedreg:item:PDFA} does not hold.
+\end{proof}

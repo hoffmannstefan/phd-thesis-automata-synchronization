@@ -1,0 +1,164 @@
+%!TEX root = ./../../thesis-trier.tex
+
+\IN{bottom-up method} 
+\IN{extension method}
+\IN{augmentative subset}
+Let $\semiautomat{A}{Q}{\Sigma}{\delta}$. A subset $W \subseteq \Sigma^*$
+is called \emph{augmentative (for $\mathcal A)$} if for every non-empty proper subset $S \subseteq Q$
+there exists $u \in W$ such that $|\applytrans{\delta^{-1}}{S}{u}| > |S|$. Let $W \subseteq \Sigma^*$ be augmentative.
+Since the number of subsets of states is finite, 
+every augmentative subset contains a finite augmentative subset.
+Hence, we can assume~$W$ is finite.
+Clearly, if~$\mathcal A$ admits an augmentative subset,
+then it is synchronizing
+and there exist $q \in Q$ and $a \in \Sigma$
+so that $|\applytrans{\delta^{-1}}{\{q\}}{a}| \ge 2$. Then, by using $W$ to successively enlarge
+this subset, we obtain the following bound (see also~\cite[Thm.~2]{Rystsov95a}):
+\begin{align}
+		\rt{\mathcal A} 
+		& \le \max\{ |u| : u \in W \} \cdot (n - |\applytrans{\delta^{-1}}{\{q\}}{a}|) + 1 \nonumber \\
+		& \le \max\{ |u| : u \in W \} \cdot (n - 2) + 1. \label{sync_max:eqn:rt_bound}
+\end{align}
+Obtaining bounds for the reset length by using an augmentative set with \cref{sync_max:eqn:rt_bound}
+is called the \emph{bottom-up} (or \emph{extension}) \emph{method}~\cite{DBLP:journals/ijfcs/Berlinkov11}. 
+
+The next statement from Rystsov~\cite{Rystsov95a,Rystsov2000}
+characterizes automata admitting an augmentative subset
+as the strongly connected synchronizing automata.
+
+\begin{theorem}[Rystsov~\cite{Rystsov95a,Rystsov2000}]
+	\label{sync_max:thm:augmentative}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$.	
+	Then $\mathcal A$ is strongly connected and synchronizing
+	if and only if $\mathcal A$ admits an augmentative subset $W \subseteq \Sigma^*$.	
+\end{theorem}
+\begin{proof}
+    First, assume $\mathcal A$ is strongly connected and synchronizing.
+	Then for every $q \in Q$ there exists $u_q \in \Sigma^*$
+	such that $\applytrans{\delta}{Q}{u_q} = \{q\}$.
+	In this case, since for a proper and non-empty $S \subseteq Q$
+	and $q \in S$ we have $|\applytrans{\delta^{-1}}{S}{u_q}| = |Q| > |S|$,
+	the set $W = \{ u_q \mid q \in Q\}$	is augmentative.
+	Conversely, assume $W \subseteq \Sigma^*$
+	is augmentative. Then, every state $q \in Q$ is synchronizing
+	as we can enlarge $\{q\}$ successively to obtain the whole state set.
+	So, by Corollary~\ref{prelim:cor:SCC_sync},
+	$\mathcal A$ is strongly connected.
+\end{proof}
+
+Recall that, for an OI-automaton $\mathcal A$,~$\Sigma_I$
+denotes the set of idempotent one-point singular letters and~$\Sigma_G$ the set of permutational letters.
+Rystsov~\cite[Lem.~2]{Rystsov2000} has shown the following for SI-automata.
+The proof works for OI-automata without modification. We give it for the convenience of the reader.
+
+\begin{proposition} \label{sync_max:prop:SI-augmentative-set-form}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	be an OI-automaton and $S \subseteq Q$.
+	If $u \in \Sigma^*$ is a shortest word such
+	that $|S| < |\applytrans{\delta^{-1}}{S}{u}|$,
+	then $u \in \Sigma_I\Sigma_G^*$.	
+\end{proposition}
+\begin{proof}
+	We can write $u = vaw$
+	with $v \in \Sigma^*$, $a \in \Sigma_I$ and $w \in \Sigma_G^*$.
+	Assume $|v| \ge 1$.
+	Then, by the minimal choice of $u$,
+	we have $|\applytrans{\delta^{-1}}{S}{aw}| \le |S|$.
+	Set $T = \applytrans{\delta^{-1}}{S}{w}$.
+	As~$w$ permutes $Q$, we have $|T| = |S|$.
+	By \cref{prelim:eqn:delta_inverse}
+	we have $\delta^{-1}(S, aw) = \delta^{-1}(T, a)$. Thus we find
+	$|\applytrans{\delta^{-1}}{T}{a}| \le |T|$.
+	Hence $T$ cannot be properly contained in $\applytrans{\delta^{-1}}{T}{a}$.
+	By~\crefitem{prelim:thm::one-attractor-idempotent}{prelim:prop:item:inverse_super_or_subset2},
+	this gives $\applytrans{\delta^{-1}}{T}{a} \subseteq T$.	
+	Then, with \cref{prelim:eqn:delta_inverse}, we find
+	\[
+	 \applytrans{\delta^{-1}}{S}{vaw}
+	 = \applytrans{\delta^{-1}}{\applytrans{\delta^{-1}}{T}{a}}{v}
+	 \subseteq \applytrans{\delta^{-1}}{T}{v} = \applytrans{\delta^{-1}}{S}{vw},
+	\]
+	which gives $|S| < |\applytrans{\delta^{-1}}{S}{vw}|$, 
+	contradicting the minimal choice of $u$. So $v = \varepsilon$ and this gives $u \in \Sigma_I\Sigma_G^*$.
+\end{proof}
+
+The next corollaries we give by Rystsov\cite{Rystsov2000,Rystsov2022} 
+for SI-automata, where \cref{sync_max:cor:aug:bounds:semiregular} was only stated
+for the case that the group of units is regular.
+
+\begin{corollary}
+	\label{sync_max:cor:augmentative_subset_IG}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be an OI-automaton.
+	If there exists an augmentative subset,
+	then there exists an augmentative subset in~$\Sigma_I \Sigma_G^*$. 
+\end{corollary}
+\begin{proof}
+	For each non-empty and proper subset $S \subseteq Q$
+	let $u_S \in \Sigma^*$ be a shortest
+	words such that $|\delta^{-1}(S, u_S)| > |S|$.
+	The set of all these words $u_S$ for some non-empty and proper $S \subseteq Q$
+	is augmentative and, by \cref{sync_max:prop:SI-augmentative-set-form},
+	a subset of $\Sigma_I \Sigma_G^*$.	
+\end{proof}
+
+The next bound also follows from \cref{prelim:prop:SI-without-perm:reach-bound} for SI-automata
+and is tight even for SI-automata.
+
+\begin{corollary} \label{syncmax:graph:cor:OI-sync}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be an $n$-state synchronizing OI-automaton without permutational letters.
+	Then a shortest synchronizing word has length at most $n - 1$.
+\end{corollary}
+\begin{proof}
+	Since~$\mathcal A$ is synchronizing, there exist $q \in Q$ and $u \in \Sigma^*$
+	such that $\delta^{-1}(q, u) = Q$.
+	Set $S_1 = \{q\}$ and, inductively, construct a sequence $S_1, \ldots, S_m$ with $m < |Q|$
+	such that $S_1 \subseteq \cdots \subseteq S_m$ with $S_m = Q$
+	and where, for each  $i \in \{2,\ldots,m\}$, 
+	\begin{enumerate}
+		\item $S_{i} = \delta^{-1}(S_{i-1}, a_i)$ for some $a_i \in \Sigma_I$ and
+			
+		\item $|S_i| > |S_{i-1}|$	
+	\end{enumerate}
+	in the following way: Let $i \in \{2,\ldots,m\}$. Let $i \in \{2,\ldots,m\}$. Since $q \in S_{i-1}$
+	and $S_{i-1} \ne Q$ we have $|\delta^{-1}(S_{i-1}, u)| > |S_{i-1}|$.
+	Thus there exists a shortest $v \in \Sigma^*$
+	such that $|\delta^{-1}(S_{i-1}, v)| > |S_{i-1}|$.
+	By \cref{sync_max:prop:SI-augmentative-set-form} 
+	we have $v \in \Sigma_I \Sigma_G^*$.
+	Since $\Sigma_G$ is empty, this yields $v = a_i$
+	for some $a_i \in \Sigma_I$.
+	Set $S_i = \delta^{-1}(S_{i-1}, a_i)$.
+	By~\crefitem{prelim:thm::one-attractor-idempotent}{prelim:prop:item:inverse_super_or_subset2},
+	we find $S_{i-1} \subseteq S_i$.
+	By finiteness the sets $S_i$ cannot grow indefinitely. Thus, 
+	this process must come to a halt after at most~$m$ steps with $m < |Q|$
+	and $S_m = Q$.
+	The word $a_m \cdots a_1$ synchronizes $\mathcal A$.
+\end{proof}
+
+\begin{corollary} \label{sync_max:cor:aug:bounds:semiregular} 
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be a strongly connected and synchronizing OI-automaton.
+	If the group of units of $\mathcal A$ is a semiregular permutation group,
+	then $\rt{\mathcal A} \le (n-1)^2$ and this bound is tight.
+\end{corollary}
+\begin{proof}
+	By \cref{sync_max:prop:grp_of_units_TA} for an OI-automaton the group of 
+	units is $G = \{ \fword{\delta}{u} \mid u \in \Sigma_G^* \}$.
+	For $g \in G$ let $u \in \Sigma_G^*$ be a shortest permutational word
+	such that $g = \fword{\delta}{u}$.	
+	Assume $|u| \ge n$. 
+	Then $\delta(q, u_1) = \delta(q, u_1 u_2) = \delta(\delta(q, u_1), u_2)$
+	for some $u_1, u_2, u_3 \in \Sigma_G^*$
+	with $u = u_1 u_2 u_3$, $|u_2| > 0$, and $|u_1| < n$. So $\fword{\delta}{u_2}$
+	has the fixpoint $\delta(q, u_2)$,
+	which gives $\fword{\delta}{u_1} = \operatorname{id}_{Q}$
+	as $G$ is semiregular.
+	Thus $g = \fword{\delta}{u_1 u_2}$, contradicting the minimal choice of~$u$.
+	Thus $|u| < n$, which gives $G = \{ \fword{\delta}{u} \mid u \in \Sigma_G^{< n} \}$.
+	This yields that every transformation induced by a word in $\Sigma_I \Sigma_G^*$
+	is also induced by a word in $\Sigma_I \Sigma_G^{< n}$,
+	and the claim follows from \cref{sync_max:cor:augmentative_subset_IG}
+	and \cref{sync_max:eqn:rt_bound}. Tightness of this bound
+	follows from the \v{C}ern\'y automata (\cref{intro:fig:cerny})
+	whose group of units is regular.
+\end{proof}

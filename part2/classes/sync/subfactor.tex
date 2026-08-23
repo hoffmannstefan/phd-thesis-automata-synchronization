@@ -1,0 +1,103 @@
+%!TEX root = ../../../thesis-trier.tex
+
+\Cref{prelim:prop:sync_word_factor} collects statements on
+how the set of synchronizing words related to subautomata, surjective morphic images,
+and quotient automata. \Crefitem{prelim:prop:sync_word_factor}{prelim:Synuv}
+is due to Rystsov~\cite[Prop.~2.3]{Rystsov97}.
+
+\begin{proposition}
+	\label{prelim:cor:fact_sync_word}
+	\label{prelim:prop:morphism_sync_word}
+%	\label{constr_input:prop:rho_trap_sync_factor}
+	\label{prelim:prop:sync_word_factor}
+	\label{prelim:prop:sync_words_restriction}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$. Then the following is true.
+	
+	\begin{enumerate}
+		\item \label{prelim:Synsurj} $\Syn(\mathcal A) \subseteq \Syn(\mathcal B)$ if we have a surjective morphism $\varphi \colon Q \to S$ onto $\semiautomat{B}{S}{\Sigma}{\mu}$.
+		
+		\item \label{prelim:Syncongr} $\Syn(\mathcal A) \subseteq \Syn(\mathcal A / {\sim})$ for a $\TS{\mathcal A}$-congruence $\sim$ on $\mathcal A$.
+		
+		\item \label{prelim:Synsubaut} $\Syn(\mathcal A) \subseteq \Syn(\mathcal A_{|S})$ for an upper set $S$.  So, 
+		if $\mathcal A$ is synchronizing, then $\mathcal A_{|S}$ is synchronizing.
+		
+		\item \label{prelim:Synuv} $\Syn(\mathcal A / {\sim_S}) \Syn(\mathcal A_{|S}) \subseteq \Syn(\mathcal A)$ for an upper set $S$ (Rystsov~\cite[Prop.~2.3]{Rystsov97}).
+%		More specifically, 
+%		for $u \in \Syn(\mathcal A / {\sim_S})$ and $v \in \Syn(\mathcal A_{|S})$ 
+%	    it is $\applytrans{\delta}{Q}{uv} = \applytrans{\delta}{S}{v}$.
+		
+	%	\item \label{prelim:Synrho} $\Syn(\mathcal A / \eqreach) \subseteq \Syn(\mathcal A)$ for a $\rho$-automaton $\mathcal A$ with a trap state.
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+	\ref{prelim:Synsurj} Suppose $|\delta(Q, u)| = 1$ for $u \in \Sigma^*$.
+	We have $\mu(S, u) = \mu(\varphi(Q), u) = \varphi(\delta(Q, u))$.
+	So $|\mu(S, u)| = 1$.	
+	
+	\ref{prelim:Syncongr} Applying~\ref{prelim:Synsurj} 
+	to the canonical morphism for $\sim$
+	from  \cref{prelim:prop:congruence_induces_morphism}
+	gives the claim.
+	
+%	By \cref{prelim:prop:congruence_induces_morphism}
+%	the canonical projection for $\sim$ is morphism.
+%	Then~\ref{prelim:Synsurj} 
+%    gives the claim.	
+	
+	
+%	This follows from~\ref{prelim:Synsurj}
+%	applied to the canonical morphism for $\sim$
+%	and \cref{prelim:prop:congruence_induces_morphism}.
+	
+	\ref{prelim:Synsubaut} The equation $\delta_{|S}(S, u) \subseteq \delta(Q, u)$ for $u \in \Sigma^*$
+	gives the claim.
+	
+	\ref{prelim:Synuv} Let $u \in \Syn(\mathcal A/{\sim_S})$.
+	The set $S$ is a trap state in $\mathcal A / {\sim_S}$.
+	So, this state must be the synchronizing state in $\mathcal A / {\sim_S}$, i.e., we have $\applytrans{\delta_{\sim_S}}{[q]_{\sim_S}}{u} = S$ for all $q \in Q$, or equivalently $\applytrans{\delta}{Q}{u} \subseteq S$.
+	Then for $v \in \Syn(\mathcal A_{|S})$ we get 
+	$\applytrans{\delta}{Q}{uv} = \applytrans{\delta}{\applytrans{\delta}{Q}{u}}{v} \subseteq \applytrans{\delta}{S}{v}$ where $|\delta(S, v)| = 1$.
+	Hence $uv \in \Syn(\mathcal A)$.
+\end{proof}
+
+\begin{corollary} \label{prelim:syncaut:cor:Syncongr}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ 
+	be an automaton with a trap state and a $\TS{\mathcal A}$-congruence~$\sim$ on its states
+	such that  $[t]_{\sim} = \{t\}$ for each trap state~$t$.
+	Then we have $\Syn(\mathcal A) = \Syn(\mathcal A / {\sim})$.
+\end{corollary} 
+\begin{proof}
+	By \crefitem{prelim:cor:fact_sync_word}{prelim:Syncongr} 
+	we only have to prove that $ \Syn(\mathcal A / {\sim})$
+	is contained in $\Syn(\mathcal A)$.
+	So, let $u \in \Syn(\mathcal A / {\sim})$.
+	Let~$t$ be some trap state in~$\mathcal A$.
+	By \cref{prelim:aut:prop:morph:trap-to-trap},
+	also $[t]_{\sim}$ is a trap state in $\mathcal A / {\sim}$.
+	By \cref{prelim:thm:sync_trap_state},
+	we have $\delta_{\sim}([q]_{\sim}, u) = [t]_{\sim}$
+	for all $q \in Q$,	i.e., $\delta(q, u) \sim t$ for all $q \in Q$.
+	Since $[t]_{\sim} = \{t\}$
+	this yields $\delta(q, u) = t$ for all $q \in Q$
+	and so $u \in \Syn(\mathcal A)$.	
+\end{proof}
+
+\begin{corollary} \label{lem:sub-quotient-extremal-linear}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	be a synchronizing $n$-state automaton
+	all whose synchronizing words have length at least $n - 1$
+	and $S \subseteq Q$ be an upper set. 	
+	Then all synchronizing words 
+	of $\mathcal A_{|S}$ and $\mathcal A / {\sim_S}$
+	have length at least $|S| - 1$
+	and $n - |S|$, respectively.
+\end{corollary}
+\begin{proof}
+	If $\mathcal A_{|S}$
+	or $\mathcal A / {\sim_S}$
+	have a synchronizing word
+	of shorter length,
+	then by \crefitem{prelim:cor:fact_sync_word}{prelim:Synuv}
+	also $\mathcal A$ would have a synchronizing
+	word of shorter length.	
+\end{proof}

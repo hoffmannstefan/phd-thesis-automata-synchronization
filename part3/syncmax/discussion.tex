@@ -1,0 +1,30 @@
+
+ \Cref{sync_maximal:thm:structure} and \cref{sync_max:cor:structure_letters}
+ gave structural results linking the class of sync-maximal automata
+ to completely reachable and completely distinguishable automata.
+ Later, in \cref{sync_max:sec:SI}, we will give more precise
+ structural results for classes of automata.
+ For example, an automaton whose transformation semigroup contains
+ a transitive group of units and where every letter has defect at most one is synchronizing
+ if and only if it is sync-maximal, see \cref{sync_max:sec:defectone}.
+ This statement applies to the the \Cerny automata from \cref{intro:fig:cerny}.
+ 
+We note that deciding sync-maximality is \PSPACE-complete, see
+the discussion in \cref{sync_max:decision:discussion}.
+
+\IN{reset complexity}
+By \cref{prelim:thm:sync_words_is_ideal}, languages of the form $\Syn(\mathcal A)$ are precisely the regular ideal languages.
+Thus, shortest words in regular ideal languages corresponds
+to shortest paths in accepting automata for sets of synchronizing words.
+Now, investigating the length of the shortest words in regular ideal languages as a language-theoretic approach to the \v{C}ern\'{y} conjecture has been pursued and extended by several authors~\cite{DBLP:journals/ijfcs/AlmeidaR16,DBLP:journals/jalc/FrigeriR25,DBLP:journals/jalc/FrigeriR19,DBLP:journals/fuin/MaslennikovaR18,DBLP:journals/iandc/PribavkinaR11,ReisR16,DBLP:journals/aam/Rodaro18}, based on a method introduced by Rodero et al.~\cite{DBLP:journals/fuin/MaslennikovaR18,ReisR16,DBLP:journals/aam/Rodaro18} that even associates a strongly connected synchronizing automaton with each regular ideal language.
+Maslennikova~\cite{DBLP:journals/corr/Maslennikova14,DBLP:journals/ijfcs/Maslennikova19} 
+introduced the \emph{reset complexity} 
+of a regular ideal language $I \subseteq \Sigma^*$ 
+as the number of states of a smallest automaton~$\mathcal A$ 
+such that $I = \Syn(\mathcal A)$.
+For a sync-maximal automaton $\mathcal A$,
+the gap between the size of an accepting automaton for $\Syn(\mathcal A)$, i.e., the state complexity of this set,
+and the size of an automaton having $\Syn(\mathcal A)$ as its set of synchronizing words, i.e., its reset complexity,
+is maximal possible (note that in this case, no automaton with fewer states than~$\mathcal A$ can have $\Syn(\mathcal A)$
+as its set of synchronizing words).
+In this sense, for sync-maximal automata the complexity of the set of synchronizing words is maximal.

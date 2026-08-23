@@ -1,0 +1,35 @@
+%!TEX root = ./../../thesis-trier.tex
+
+\IN{reachability order!automaton}
+\index{reachability (quasi-)order|see{reachability order}}
+Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ and $s,t \in Q$. We define the \emph{reachability (quasi)order} 
+\[
+s \lereach^{\mathcal A} t 
+\Leftrightarrow 
+\exists u \in \Sigma^* \colon \applytrans{\delta}{s}{u} = t. \label{def:reach_order}
+\]
+We say that $t$ is \emph{reachable} from $s$ (in $\mathcal A$) if $s \lereach^{\mathcal A} t$. 
+When the automaton we refer to is clear from context, we simply write~$\lereach$.
+The reachability order is characterized as the finest quasiorder such that $s \lereach \applytrans{\delta}{s}{u}$
+for all $s \in Q$ and~$u \in \Sigma^*$, as we formally state next.
+
+\begin{proposition}
+	\label{prelim:prop:reachability-finest}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$. We have $s \lereach \applytrans{\delta}{s}{u}$ for all $s \in Q$ and $u \in \Sigma^*$.
+	Further, if $\lesssim$ is a quasiorder on $Q$
+	such that $s \lesssim \applytrans{\delta}{s}{u}$
+	for all $s \in Q$ and $u \in \Sigma^*$,
+	then $s \lereach t$ implies $s \lesssim t$ for all $s,t \in Q$.
+\end{proposition} 
+\begin{proof}
+	Clearly, we have $s \lereach \applytrans{\delta}{s}{u}$ for $s \in S$ and $u \in \Sigma^*$.
+	Next, suppose $\lesssim$
+	is a quasiorder such that $s \lesssim \delta(s, u)$ for all $s \in Q$ and $u \in \Sigma^*$. 
+	Now, for $s,t \in Q$, $s \lereach t$ is equivalent to $\applytrans{\delta}{s}{u} = t$
+	for some $u \in \Sigma^*$. So $s \lesssim \applytrans{\delta}{s}{u} = t$.  
+\end{proof}
+
+\label{def:induced_reach_order} 
+\IN{reachability equivalence}
+By $\eqreach$ we denote the \emph{(reachability) equivalence relation} induced by $\lereach$ 
+according to~\cref{prelim:eqn:induced_eqrel}.

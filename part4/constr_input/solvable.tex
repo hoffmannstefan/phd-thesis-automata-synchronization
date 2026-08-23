@@ -1,0 +1,41 @@
+%!TEX root = ../thesis.tex
+
+
+Every synchronizing solvable automaton has a trap state (\cref{constr_sync:prop:solvable_sync_iff_reach_trap}).
+So, by~\cref{constr_input:prop:bound_rho},
+we get the following result.
+
+\begin{proposition}
+	\label{constr_input:prop:bound_solvable}
+	Let $\automat{B}{P}{\Sigma}{\mu}{p_0}{F}$ be a PDFA.
+	If $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	is a solvable $\rho$-automaton
+	having a synchronizing word in $L(\mathcal B)$,
+	then there exists a synchronizing word $u \in L(\mathcal B)$
+	with $|u| \le |P| \cdot \binom{|Q|}{2}$.	
+\end{proposition}
+\begin{proof}
+	If $\mathcal A$ is synchronizing, 
+	it has a trap state by~\cref{constr_sync:prop:solvable_sync_iff_reach_trap}.
+	So, it is a synchronizing $\rho$-automaton
+	with a trap state. 
+	Hence,
+	the result follows from~\cref{constr_input:prop:bound_rho}.
+\end{proof}
+
+As a synchronizing solvable automaton has a trap state,
+with the same argument as for $\rho$-automata
+with a trap state (see~\cref{contr_input:thm:rho_in_NP}), we can conclude that
+for solvable $\rho$-automata as input the constrained synchronization
+problem is in \NP. Furthermore, as partially ordered automata
+are solvable $\rho$-automata, by the results from \cref{constrinput:sec:two-state-pto},
+there exist constraint languages
+giving \NP-complete problems.
+
+\begin{theorem}
+	\label{constr_input:thm:solvable_in_NP}
+	The constrained synchronization problem
+	for solvable $\rho$-automata as input
+	is in \NP. Furthermore, there exist constraint languages
+	for which this problem is \NP-complete.
+\end{theorem}

@@ -1,0 +1,74 @@
+%!TEX root = ../../../thesis-trier.tex
+
+Here, in \cref{constr_sync:thm:letter_bounded}, we show that for letter-bounded
+regular constraint languages, the constrained synchronization problem 
+is either in $\AC^0$, \LOGSPACE-complete, or \NP-complete.
+
+
+\begin{theorem}[Trichotomy Theorem]
+	\label{constr_sync:thm:letter_bounded}
+	Let $L \subseteq \Sigma^*$ be letter-bounded and regular.
+	Then the problem \constrsync{L}
+	is
+	\begin{enumerate}
+		\item \label{constr_sync:thm:letter_bounded:NPc} \NP-complete if there exist $a,b,c \in \Sigma$ where $a,c \in \Sigma \setminus \{b\}$ and $u \in \Sigma^* a \Sigma^*$,
+		$v \in \Sigma^* c \Sigma^*$ such that $ub^*v \cap L$ is infinite,
+		
+		\item \LOGSPACE-complete %for log-space uniform $\leNCkm{1}$-reductions 
+		if the previous condition is not fulfilled and $L$ is infinite,
+		
+		\item in $\AC^0$ if $L$ is finite.
+	\end{enumerate}
+\end{theorem}
+\begin{proof}
+	First, assume~\cref{constr_sync:thm:letter_bounded:NPc} holds.
+	Since~$L$ is letter-bounded, 
+	$\rho(u)$ is bounded for each $u \in L$ by \cref{constr_sync:prop:letter_bounded_iff_equal_letter_runs_bounded}.
+	Since~$L$ is regular, it has a finite number~$n$
+	of quotients by \cref{prelim:thm:regular_iff_quotients_finite}. 
+	Thus pick $u,v \in \Sigma^*$ such that $uab^jcv \in L$
+	for some $j \ge n$ and $\rho(uab^jcv)$ is maximal
+	with $a,b,c \in \Sigma$ as in the statement.
+	By finiteness, $(uab^r)^{-1}L = (uab^s)^{-1}L$
+	for some  $0 \le r < s \le j$. 
+	So, $uab^jav = uab^{r + j - r}av \in L$ 
+	gives $uab^{s + j - r}av \in L$.
+	Inductively, we obtain
+	$uab^j(b^{s-r})^*cv \subseteq L$.
+	Set $p = s - r$ and $i = j + (|u| + |v| + 1) \cdot p$.
+	Thus $uab^i (b^p)^* cv \subseteq L$ and since $\rho(uab^icv)$ is maximal we have
+	\[
+	\Sigma^* uab^i (b^p)^* cv \Sigma^* \cap L
+	\subseteq x^* uab^i (b^p)^* cv y^*
+	\] % x = a möglich
+	for some $x,y \in \Sigma \cup \{\varepsilon\}$
+	such that $u = \varepsilon$ with $x \in \{a,\varepsilon\}$
+	or $u \in x\Sigma^*$,
+	or $v = \varepsilon$ with $y \in \{c,\varepsilon\}$
+	or $v \in \Sigma^*y$.
+	By \cref{constrsync:letterbounded:lem:NPhard,constr_sync:gen_results:thm:ideal_separation} 
+	we find that $\constrsync{L}$ is \NP-hard.
+	
+	Next, assume~\cref{constr_sync:thm:letter_bounded:NPc} does not hold.
+	We have $L \subseteq a_1^* \cdots a_k^*$ for some $a_1, \ldots, a_k \in \Sigma$.
+	Since~$L$ is regular, by \cref{constr_sync:thm:bounded_normal_form},
+	it is a finite union of sets of the form
+	\[
+	A_1 \cdots A_k
+	\]
+	with $A_i \subseteq a_i^*$ being regular for $i \in \{1,\ldots,k\}$.
+	Since the condition from~\cref{constr_sync:thm:letter_bounded:NPc} 
+	does not hold, if $A_j$ is infinite for some $j \in \{1,\ldots,k\}$
+	in a set of the above form, then we must have $A_i \subseteq \{a_j\}^*$
+	for all $i < j$ or $A_i \subseteq \{a_j\}^*$ for all $i > j$.
+	By \cref{constr_sync:cor:letter-bounded-single-part-in-L},
+	we get that $\constrsync{A_1\cdots A_k}$
+	is in \LOGSPACE.
+	Thus, \cref{constr_sync:thm:union} yields that $\constrsync{L}$
+	is in \LOGSPACE. If~$L$
+	is infinite, this problem is also \LOGSPACE-hard
+	by \cref{constr_sync:thm:infinite}.
+	
+	Lastly, if~$L$ is finite,
+	then $\constrsync{L}$ is in $\AC^0$ by \cref{constr_sync:thm:finite}.
+\end{proof}

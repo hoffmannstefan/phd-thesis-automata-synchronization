@@ -1,0 +1,427 @@
+%!TEX root = ./../../springer-mono-format/book.tex
+%!TEX root = ./../../thesis-trier.tex
+
+Here, we introduce the Myhill-Nerode relation,
+the minimal automaton of a given language, the canonical map of
+an accessible automaton onto the minimal automaton, and the notion of distinguishability of states.
+\Cref{prelim:min_aut:terminal_object} gives a characterization of regularity in terms of the Myhill-Nerode relation
+and shows that the canonical map is a surjective morphism.
+Then, in \cref{prelim:thm:char_minaut}, we characterize those automata
+with the least number of states accepting a given regular language.
+\Cref{prelim:cor:uniform-min} characterizes those automata %(which must be strongly connected)
+having the least number of states for every distribution of a start state and some non-empty and proper set of final states.
+
+\IN{Myhill-Nerode relation}
+\label{def:Nerode}
+
+Let $L \subseteq \Sigma^*$ be a language.
+\begin{enumerate}
+\item  For $u,v \in \Sigma^*$ define the 
+\emph{Myhill-Nerode relation} w.r.t.~$L$~\cite{myhill1957finite,nerode1958linear} by 
+\[ 
+u \equiv_L v
+\Leftrightarrow 
+u^{-1}L = v^{-1}L.
+\]
+The relation $\equiv_L$ is an equivalence relation that saturates $L$ and such that, for all
+$u,v,w \in \Sigma^*$, we have\footnote{Every word $w \in \Sigma^*$
+	can be associated to a unique transformation ${\sigma}_w \colon \Sigma^* \to \Sigma^*$
+	given by $\sigma_w(u) = uw$ for $u \in \Sigma^*$.
+	Then $\hat{\Sigma^*} = \{ {\sigma}_w \mid w \in \Sigma^* \}$
+	gives a transformation monoid on $\Sigma^*$
+	and \cref{prelim:eqn:Nerodecongruence} 
+	states that $\equiv_L$ is a $\hat{\Sigma^*}$-congruence.
+	%This construction can be carried out for any monoid
+	%	and the resulting congruences are called \emph{right-congruences}. \IN{right-congruence relation}
+} 
+\begin{equation}\label{prelim:eqn:Nerodecongruence}
+	u \equiv_L v \Rightarrow uw \equiv_L vw.
+\end{equation}
+
+\index{minimal automaton} 
+\label{def:minaut}
+
+\item The \emph{minimal automaton (of $L$)} is the
+(here possibly infinite) acceptor automaton 
+$\minaut{L} = (Q_L, \Sigma, \delta_L, [\varepsilon]_{\equiv_L}, F_L)$
+with 
+\begin{align*}
+	Q_L & = \Sigma^* / {\equiv_L}, \\
+	\delta_L([u]_{\equiv_L}, v) & = [uv]_{\equiv_L}, \\
+	F_L & = \{ [u]_{\equiv_L} \mid u \in L \}
+\end{align*}
+where $\delta_L$ is well-defined by \cref{prelim:eqn:Nerodecongruence}.
+Clearly, $\minaut{L}$ is accessible.
+
+\index{canonical map of $\mathcal A$ onto $\minaut{L}$}
+\label{def:Nerode-morphism}
+
+\item Suppose $L$ is regular
+ and $L = L(\mathcal A)$ for some accessible automaton $\automat{A}{Q}{\Sigma}{\delta}{q_0}{F}$.
+ Then, for $u,v \in \Sigma^*$,
+ \begin{equation}\label{prelim:eqn:can-map}
+ 	\applytrans{\delta}{q_0}{u} = \applytrans{\delta}{q_0}{v}
+ 	\Rightarrow
+ 	u \equiv_L v.
+ \end{equation} 
+ Let $\minaut{L} = (Q_L, \Sigma, \delta_L, [\varepsilon]_{\equiv_L}, F_L)$.
+ By \cref{prelim:eqn:can-map}, the map $\pi_{\mathcal A} \colon Q \to Q_L$, called the \emph{canonical map of~$\mathcal A$ onto~$\minaut{L}$},
+ given by \[ 
+ \applyfunc{q}{\pi_{\mathcal A}} = [u]_{\equiv_L}
+ \]
+ for some word $u \in \Sigma^*$ such that $\applytrans{\delta}{q_0}{u} = q$
+ is well-defined.
+ So, $\pi_{\mathcal A}(\delta(q_0, u)) = [u]_{\equiv_L}$
+ and $\pi_{\mathcal A}$ is surjective.
+  
+\IN{distinguishable states}
+\item Let $\automat{A}{Q}{\Sigma}{\delta}{q_0}{F}$ be an automaton. 
+Two states $p, q \in Q$ are \emph{distinguishable} (in $\mathcal A$) 
+if there exists $u \in \Sigma^*$
+such that 
+\begin{equation}\label{prelim:eqn:distinguish}
+	( \applytrans{\delta}{p}{u} \in F \land  \applytrans{\delta}{q}{u} \notin F )
+	\lor 
+	( \applytrans{\delta}{p}{u} \notin F \land \applytrans{\delta}{q}{u} \in F ).
+\end{equation}
+We call $p$ and $q$ \emph{indistinguishable} if they are not distinguishable. The indistinguishable relation
+is a quasiorder.
+\IN{indistinguishable states}
+\end{enumerate}
+
+Suppose $\sim$ is a~$\TS{\mathcal A}$-congruence that saturates $F \subseteq Q$
+for  $\automat{A}{Q}{\Sigma}{\delta}{q_0}{F}$.
+Then the following implication holds for $p,q \in Q$:
+\begin{equation} \label{prelim:eqn:congruence-implies-indist}
+	p \sim q \Rightarrow \text{$p$ and $q$ are indistinguishable},
+\end{equation}
+i.e., the indistinguishability relation is the coarsest $\TS{\mathcal A}$-congruence
+saturating~$F$. Note that, by \cref{prelim:eqn:distinguish}, two states $p,q$
+are indistinguishable in $\mathcal A$ if and only if
+\[
+ \forall u \in \Sigma^* \colon \delta(p, u) \in F \Leftrightarrow \delta(q, u) \in F.
+\]
+
+% before we characterize ...
+We aim to characterize minimality in terms of $\equiv_L$, congruences,
+morphisms, and the distinguishability relation in \cref{prelim:thm:char_minaut}.
+But before, % below in~\cref{prelim:lem:indist},
+we list relations, needed in the proof of~\cref{prelim:thm:char_minaut}, between $\equiv_L$, accessible automata~$\mathcal A$ and $\pi_{\mathcal A}$. The next 
+lemma follows readily from the definitions.
+
+\begin{lemma}\label{prelim:lem:indist}
+	Let $\automat{A}{Q}{\Sigma}{\delta}{q_0}{F}$ be accessible and $L = L(\mathcal A)$. 
+	Then, for $u,v \in \Sigma^*$, the following are equivalent:	
+	\begin{enumerate}
+		\item $\pi_{\mathcal A}(\applytrans{\delta}{q_0}{u}) = \pi_{\mathcal A}(\applytrans{\delta}{q_0}{v})$,
+		
+		\item $u \equiv_L v$, 
+		
+		\item $\applytrans{\delta}{q_0}{u}$ and $\applytrans{\delta}{q_0}{v}$ are indistinguishable.
+	\end{enumerate}
+\end{lemma}
+
+Next, we summarize the important properties of $\minaut{L}$ and~$\pi_{\mathcal A}$.
+
+\begin{theorem}
+	\label{prelim:min_aut:terminal_object}
+	Let $L \subseteq \Sigma^*$ and $\minaut{L} = (Q_L, \Sigma, \delta_L, [\varepsilon]_{\equiv_L}, F_L)$.
+	Then $L$ is regular if and only 
+	if $Q_L$ is finite. Further,
+	if $L$ is regular, then for every accessible $\automat{A}{Q}{\Sigma}{\delta}{q_0}{F}$
+	with $L = L(\mathcal A)$,
+	the map $\pi_{\mathcal A} \colon Q \to Q_L$
+	is a surjective morphism 
+    such that $\pi_{\mathcal A}(q_0) = [\varepsilon]_{\equiv_L}$, 
+    $\pi_{\mathcal A}^{-1}(F_L) = F$ and
+    $\minaut{L}$ accepts $L$.
+\end{theorem}
+\begin{proof}
+	First, suppose $Q_L$ is finite.
+	As $\equiv_L$ saturates $L$, for $u \in \Sigma^*$, we 
+	get
+	\[
+	u \in L \Leftrightarrow \exists v \in L \colon u \equiv_L v 
+	        \Leftrightarrow [u]_{\equiv_L} \in F_L
+	        \Leftrightarrow \delta_L([\varepsilon]_{\equiv_L}, u) \in F_L.
+	\]
+	So, $\minaut{L}$
+	is a finite automaton accepting $L$.
+	Hence, $L$ is regular.	
+	Conversely, suppose $L$ is regular.
+	Let $\automat{A}{Q}{\Sigma}{\delta}{q_0}{F}$ be
+	a finite automaton with $L = L(\mathcal A)$, which we can assume to be accessible.
+	As $\pi_{\mathcal A}$ is surjective, we find
+	that $Q_L$ is finite.	
+	Next, we show the remaining claims w.r.t.~$\mathcal A$.
+	Let $q \in Q$ and $u \in \Sigma^*$ with $\delta(q_0, u) = q$.
+	Then, by the definitions of~$\pi_{\mathcal A}$ and~$\delta_L$, 
+	we have, for $v \in \Sigma^*$,
+	\[
+	\pi_{\mathcal A}(\delta(q, v)) = \pi_{\mathcal A}(\delta(q_0, uv)) = [uv]_{\equiv_L} = \delta_L([u]_{\equiv_L}, v) 
+	= \delta_L(\pi_{\mathcal A}(q), v).
+	\]
+    So, $\pi_{\mathcal A}$ is a morphism from $\mathcal A$ onto $\minaut{L}$.
+	Lastly, by the definition of $F_L$, $\pi_{\mathcal A}$ and as~$\equiv_L$ saturates $L$, we have
+	\begin{align*}
+		\pi_{\mathcal A}(q) \in F_L 
+		& \Leftrightarrow \exists u \in L \ \exists v \in \Sigma^* \colon \delta(q_0, v) = q \land v \equiv_L u & \tag{Def.~$\pi_{\mathcal A}$ \& $F_L$} \\
+		& \Leftrightarrow \exists u \in L \ \exists v \in L \colon \delta(q_0, v) = q \land v \equiv_L u & \tag{$\equiv_L$ saturates $L$} \\
+		& \Leftrightarrow \exists v \in L \colon \delta(q_0, v) = q  \\
+		& \Leftrightarrow q \in F.
+	\end{align*}
+	Therefore, $\applyfunc{F_L}{\pi_{\mathcal A}^{-1}} = F$.
+	By \cref{prelim:prop:acceptor-morphism}, we find $L(\mathcal A) = L(\minaut{L})$.
+\end{proof}
+
+Brzozowski~\cite{DBLP:journals/jacm/Brzozowski64}
+has shown that a language is regular if and only if the set of its left quotients is finite, which follows from \cref{prelim:min_aut:terminal_object}.
+
+\begin{corollary}[Brzozowski~\cite{DBLP:journals/jacm/Brzozowski64}]
+	\label{prelim:thm:regular_iff_quotients_finite}
+	A language $L \subseteq \Sigma^*$
+	is regular if and only if $\{ u^{-1}L \mid u \in \Sigma^*\}$
+	is finite.
+\end{corollary}
+\begin{proof}
+ By the defining equation of the Myhill-Nerode relation, $[u]_{\equiv} \mapsto u^{-1}L$
+ is a bijection between~$Q_L$ and the different left quotients.
+ Thus, the claim follows from \cref{prelim:min_aut:terminal_object}.
+\end{proof}
+
+Next, we state various characterizations for an automaton
+to have the least number of states for its accepted language.
+
+\begin{theorem}\label{prelim:thm:char_minaut}
+	Let $L \subseteq \Sigma^*$ be regular, $\minaut{L} = (Q_L, \Sigma, \delta_L, [\varepsilon]_{\equiv_L}, F_L)$
+	and $\automat{A}{Q}{\Sigma}{\delta}{q_0}{F}$ with $L = L(\mathcal A)$.
+	Then the following are equivalent.
+\begin{enumerate}
+	
+\item \label{thm:minaut:item:leaststates} $\mathcal A$ has the least number of states such that $L = L(\mathcal A)$.
+
+\item \label{thm:minaut:item:morpism} $\mathcal A$ is accessible and there exists no automaton $\automat{B}{S}{\Sigma}{\mu}{s_0}{E}$
+and a morphism $\varphi \colon Q \to S$
+with $\varphi(q_0) = s_0$ and $\applyfunc{E}{\varphi^{-1}} = F$
+such that $|\applyfunc{Q}{\varphi}| < |Q|$. %$1 < |\applyfunc{Q}{\varphi}| < |Q|$.
+
+% den satz oben löschen	und eingangs sagen item 2 rechtfertig name minimal
+\item \label{thm:minaut:item:piA} $\mathcal A$ is accessible and $\pi_{\mathcal A} \colon Q \to Q_L$ is an isomorphism of $\mathcal A$ onto $\minaut{L}$.
+% with $\pi_{\mathcal A}(q_0) = [\varepsilon]_{\equiv_L}$ and $\pi_{\mathcal A}^{-1}(F_L) = F$.
+
+\item \label{thm:minaut:item:statesdist} $\mathcal A$ is accessible and all pairs of distinct states are distinguishable.
+
+\item \label{thm:minaut:item:congruence} $\mathcal A$ is accessible and the equality relation is the only $\TS{\mathcal A}$-congruence 
+ saturating~$F$.
+ 
+\end{enumerate}
+\end{theorem}
+\begin{proof} $\ref{thm:minaut:item:leaststates} \Rightarrow \ref{thm:minaut:item:morpism}$:
+	Set $T = \,\upperset{\{q_0\}}$.
+	The automaton $( \mathcal A_{|T} )_{q_0, T \cap F}$ is accessible 
+	and we have $L(( \mathcal A_{|T} )_{q_0, T \cap F}) = L(\mathcal A)$.
+	By assumption, we find $T = Q$. So, $\mathcal A$ is accessible.
+	Next, let $\mathcal B$ and $\varphi$ be as in the statement.
+	We can assume $\varphi$ is surjective, i.e., $S = \varphi(Q)$.
+	So, $\varphi(F) = \varphi(\varphi^{-1}(E)) = E$.
+	Furthermore, we have
+	\[
+	\varphi^{-1}(\varphi(F)) = \varphi^{-1}(\varphi(\varphi^{-1}(E))) = \varphi^{-1}(E) = F.
+	\]
+	Then, by \cref{prelim:prop:acceptor-morphism},
+	we find $L(\mathcal A) = L(\mathcal B)$.
+	Since $\mathcal A$ has the least number of states
+	among all automata accepting $L(\mathcal A)$,
+	we get $|S| = |Q|$.
+
+$\ref{thm:minaut:item:morpism} \Rightarrow \ref{thm:minaut:item:piA}$: 
+By \cref{prelim:min_aut:terminal_object}
+we have  $\pi_{\mathcal A}(q_0) = [\varepsilon]_{\equiv_L}$, $\pi_{\mathcal A}^{-1}(F_L) = F$
+and $\pi_{\mathcal A}$ is surjective so that $|Q_L| \le |Q|$.
+By assumption, we get $|Q| = |Q_L|$
+and so $\pi_{\mathcal A}$ is bijective.
+	
+$\ref{thm:minaut:item:piA} \Rightarrow~\ref{thm:minaut:item:statesdist}$: The automaton
+$\minaut{L}$ is accessible and as $\minaut{L} \cong \mathcal A$,
+also $\mathcal A$ is accessible.
+Let $p,q \in Q$ be two distinct states.
+As $\pi_{\mathcal A}$ is injective, we have $\pi_{\mathcal A}(p) \ne \pi_{\mathcal A}(q)$.
+By \cref{prelim:lem:indist},
+it follows that $p$ and $q$ are distinguishable.
+
+$\ref{thm:minaut:item:statesdist} \Rightarrow~\ref{thm:minaut:item:congruence}$: Suppose $\sim$ 
+is some $\TS{\mathcal A}$-congruence that saturates $F$.
+As any pair of distinct states $p,q \in Q$ is distinguishable,
+we find, by Formula~\eqref{prelim:eqn:congruence-implies-indist},
+that $p \not\sim q$. So $\sim$ equals the equality relation.
+
+$\ref{thm:minaut:item:congruence} \Rightarrow \ref{thm:minaut:item:leaststates}:$ Suppose there exists an accessible 
+automaton $\automat{B}{S}{\Sigma}{\mu}{s_0}{E}$ 
+with $|S| < |Q|$ and $L = L(\mathcal B)$.
+By \cref{prelim:min_aut:terminal_object}, as $\pi_{\mathcal B}$ is surjective, 
+we have $|Q_L| \le |S|$. 
+Thus $|Q_L| < |Q|$
+and so~$\pi_{\mathcal A}$ maps to distinct states to one state in $\minaut{L}$,
+giving that $\sim_{\pi_{\mathcal A}}$ does not equal the equality relation.
+By \cref{prelim:thm:homtheorem,prelim:min_aut:terminal_object}, $\sim_{\pi_{\mathcal A}}$
+is a $\TM{\mathcal A}$-congruence, which, as $\pi_{\mathcal A}^{-1}(F_L) = F$,
+saturates $F$.
+\end{proof}
+
+\IN{state complexity}
+For regular $L \subseteq \Sigma^*$, we call $\min\{ |Q| : \automat{A}{Q}{\Sigma}{\delta}{q_0}{F} \text{ with } L = L(\mathcal A)\}$
+the \emph{state complexity} of $L$,
+which equals, by \crefitem{prelim:thm:char_minaut}{thm:minaut:item:piA},
+the number of states of $\minaut{L}$.
+Furthermore, all automata with the least number of states
+accepting~$L$ are isomorphic by	\crefitem{prelim:thm:char_minaut}{thm:minaut:item:piA}, which justifies calling $\minaut{L}$
+the minimal automaton. 
+In view of this, we 
+also call $\automat{A}{Q}{\Sigma}{\delta}{q_0}{F}$ \emph{minimal}
+if~$\pi_{\mathcal A}$ is an isomorphism.
+Note that two non-coaccessible states are indistinguishable. So, a minimal automaton has at most one
+state that is not coaccessible and this state must be a trap state.
+
+\begin{remark}
+	Since the indistinguishability relation
+	is the coarsest $\TS{\mathcal A}$-congruence saturating~$F$,
+	by \crefitem{prelim:thm:char_minaut}{thm:minaut:item:congruence}
+	the automaton 	$\mathcal A = (Q,\Sigma,\delta,q_0,F)$ is minimal if and only if it is accessible
+	and the indistinguishability relation equals the equality relation.
+\end{remark}
+
+\begin{remark}
+ Accessibility in Items~\ref{thm:minaut:item:morpism},\ref{thm:minaut:item:statesdist} and~\ref{thm:minaut:item:congruence} 
+ of \cref{prelim:thm:char_minaut} 
+ is crucial. For example, in an automaton $\automat{A}{Q}{\Sigma}{\delta}{q_0}{F}$
+ whose state set forms two cycles of size at least two induced by different letters $a$ and~$b$ that induce self-loops on the other cycle
+ and with one final state on each cycle, all pairs of distinct states are distinguishable,
+ equality is the only $\TS{\mathcal A}$-congruence saturating~$F$,
+ and there exists no morphism as stated in Item~\ref{thm:minaut:item:morpism}.
+ This follows by considering $\mathcal A_{|\{a\}}$
+ it either permutes the states on the $a$-cycle or maps all those states
+ to a single state outside the $a$-cycle. But since this is also a morphism of $\mathcal A_{|\{b\}}$,
+ it must permute the full $b$-cycle if it maps outside the $a$-cycle.
+ The same argument for the $b$-cycle gives the it has to permute
+ the $a$-cycle and the $b$-cycle.
+ Thus it is an automorphism.
+\end{remark}
+
+Davies~\cite[Lem.~3.7]{DBLP:journals/mst/Davies18} (see also~\cite[Lem.~4.2.8]{DBLP:phd/basesearch/Davies19}) proved 
+that an automaton with a non-empty and proper final state set is minimal
+if and only if it admits no non-trivial $\TM{\mathcal A}$-congruence saturating
+the final state set. This readily follows 
+from \crefitem{prelim:thm:char_minaut}{thm:minaut:item:congruence},
+as the final state set is empty or equals the whole state
+set if and only if the accepted language is empty or equals $\Sigma^*$, respectively.
+Further, she also characterized
+strongly connected automata that are minimal for every start state and proper non-empty set of final states
+by the absence of non-trivial $\TS{\mathcal A}$-congruences~\cite[Prop.~4.2.3]{DBLP:journals/mst/Davies18} (or~\cite[Prop.~3.2]{DBLP:phd/basesearch/Davies19}).
+Next, we state this together with other characterizations as a corollary to \cref{prelim:thm:char_minaut}.
+
+Note that for strongly connected $\semiautomat{A}{Q}{\Sigma}{\delta}$ 
+with at least two states, $L(\mathcal A_{q,F})$
+is a non-empty proper subset of~$\Sigma^*$ for $q \in Q$
+and non-empty and proper $F \subsetneq Q$
+since $\delta(q, u) \in F$
+and $\delta(q, v) \notin F$
+for some $u,v \in \Sigma^*$ by accessibility and strong connectedness.
+
+\begin{corollary}\label{prelim:cor:uniform-min}
+Let $\semiautomat{A}{Q}{\Sigma}{\delta}$.
+Then the following are equivalent.
+\begin{enumerate}
+\item \label{prelim:cor:uniform-min:1} $\mathcal A_{q,F}$ is minimal for each~$q \in Q$ and non-empty and proper $F \subsetneq Q$.
+
+\item \label{prelim:cor:uniform-min:2} $\mathcal A$ is strongly connected and
+ all pairs of distinct states are distinguishable in~$\mathcal A_{q,F}$
+ for all $q \in Q$ and $\emptyset \ne F \subsetneq Q$.
+
+\item \label{prelim:cor:uniform-min:3} $\mathcal A$ is strongly connected and there exists no non-trivial $\TS{\mathcal A}$-congruence.
+
+\item \label{prelim:cor:uniform-min:4} $\mathcal A$ is strongly connected and there exists no $\semiautomat{B}{S}{\Sigma}{\mu}$
+with a morphism $\varphi \colon Q \to S$
+such that $1 < |\applyfunc{Q}{\varphi}| < |Q|$.
+\end{enumerate}
+\end{corollary} 
+\begin{proof}
+$\ref{prelim:cor:uniform-min:1} \Rightarrow \ref{prelim:cor:uniform-min:2}$:
+Suppose $\mathcal A_{q, F}$ is minimal for each $q \in Q$
+and $\emptyset \ne F \subsetneq Q$.
+By \crefitem{prelim:thm:char_minaut}{thm:minaut:item:statesdist},
+all pairs of distinct states are distinguishable in $\mathcal A_{q,F}$.
+Fix some $\emptyset \ne F \subsetneq Q$. By \crefitem{prelim:thm:char_minaut}{thm:minaut:item:statesdist},
+$\mathcal A_{q,F}$ is accessible w.r.t.~each state~$q$. Now,
+by \crefitem{prelim:prop:sink-comp}{prelim:eqn:sink-comp},
+ $\mathcal A_{q,F}$ being accessible for any $q \in Q$
+is equivalent to $\mathcal A$ being strongly connected. 
+Alternatively, let $S \subseteq Q$ be a sink component
+and $q \in S$. As the states in $Q \setminus S$ are not accessible
+in $\mathcal A_{q, S}$, we must have $Q = S$ since minimality implies that all states
+are accessible by \cref{prelim:thm:char_minaut}.
+So $\mathcal A$ is strongly connected. 
+
+$\ref{prelim:cor:uniform-min:2} \Rightarrow \ref{prelim:cor:uniform-min:3}$:
+This follows from \cref{prelim:eqn:congruence-implies-indist}. 
+
+$\ref{prelim:cor:uniform-min:3} \Rightarrow \ref{prelim:cor:uniform-min:4}$:
+This follows from \crefitem{prelim:thm:homtheorem}{prelim:thm:homtheorem:2}.
+
+$\ref{prelim:cor:uniform-min:4} \Rightarrow \ref{prelim:cor:uniform-min:1}$:
+Let $q \in Q$ and $\emptyset \ne F \subsetneq Q$. Since $\mathcal A$
+is strongly connected, $\mathcal A_{q,F}$ is accessible.
+As there exists no morphism onto an automaton with less states,
+by \crefitem{prelim:thm:char_minaut}{thm:minaut:item:morpism}, $\mathcal A_{q, F}$ is minimal.
+\end{proof}
+
+Note that the equivalences from \cref{prelim:cor:uniform-min} 
+also hold for $|Q| = 1$ vacuously since then there exists no
+proper and non-empty final state set and no morphism $\varphi$
+with $1 < |\varphi(Q)| < |Q|$. A one-state automaton
+only accepts $\emptyset$ or $\Sigma^*$.
+
+\Cref{prelim:cor:simpleaut} stated that an automaton admitting no non-trivial $\TM{\mathcal A}$-congruence
+is either strongly connected or the state set is partitioned into a trap state and a strongly connected component.
+\Cref{prelim:cor:uniform-min} gives more details in case the automaton is strongly connected
+and admits no non-trivial $\TM{\mathcal A}$-congruence.
+
+\begin{remark}
+	Strong connectivity is necessary in Items~\ref{prelim:cor:uniform-min:2},\ref{prelim:cor:uniform-min:3},
+	and~\ref{prelim:cor:uniform-min:4} of \cref{prelim:cor:uniform-min}.
+	For example, consider $\mathcal A = (\{0,1,\ldots,n\}, \{a,b\}, \delta)$
+	with $\fword{\delta}{a} = (0)(1 ~ 2 ~ \cdots n)$
+	and $\fword{\delta}{b} = \SI{1}{0}$ for some number $n > 1$. 
+	Then $\mathcal A_{0, \{0\}}$ is not minimal.
+	However, we have the following:
+	
+	\begin{enumerate}
+	\item All pairs of distinct states are distinguishable
+	in $\mathcal A_{q,F}$ for each $q \in Q$
+	and non-empty and proper $F \subseteq Q$,
+	for we can move one state to~$0$ while the other remains on the cycle, and
+	then can be moved to a state that is final if $0 \notin F$
+	or not final if $0 \in F$.
+		
+	\item The automaton admits no non-trivial $\TS{\mathcal A}$-congruence.
+	For suppose $\sim$ is a $\TS{\mathcal A}$-congruence
+	such that $p \sim q$ for $p,q \in Q$ with $p < q$.
+	Then $\delta(p, b^{n - p + 1}a) = 0$, $\delta(q, b^{n - p + 1}a) \ne 0$
+	and thus $\delta(q, b^{n - p + 1}a) \sim 0$.
+	This yields $\delta(q, b^{n - p + 1}a b^i ) \sim 0$ for each $i \ge 0$,
+	and since $p = \delta(q, b^{n - p + 1}a b^i )$ for some $i \ge 0$
+	for each $p \in Q \setminus \{0\}$,
+	we find that all pairs of states are congruent w.r.t.~$\sim$.
+	
+	\item There exists no morphism to a strictly smaller automaton
+	with at least two states.	
+	\end{enumerate}
+	So, each condition except strong connectivity is fulfilled.
+\end{remark}
+
+Note that any automaton $\mathcal A$ with at most two states, even those that are not strongly connected,
+admits no non-trivial $\TS{\mathcal A}$-congruence, no non-trivial morphic images,
+and has the property that distinct states are indistinguishable in~$\mathcal A_{q,F}$ for $q \in Q$ and $\emptyset \ne F \subsetneq Q$.
+
+Restivo \& Vaglica~\cite{DBLP:journals/tcs/RestivoV12,DBLP:journals/tcs/RestivoV12a}
+also investigated automata that are minimal for all $k$-sets of final states for some $k \ge 1$
+or for all non-empty and proper subsets of final states.

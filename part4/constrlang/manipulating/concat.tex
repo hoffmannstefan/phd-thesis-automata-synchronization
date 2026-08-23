@@ -1,0 +1,560 @@
+%!TEX root = ./../../../springer-mono-format/book.tex
+%!TEX root = ./../../../thesis-trier.tex
+
+In general, the computational complexity might increase or decrease
+when concatenating languages.
+For example, 
+by \cref{constr_sync:thm:introductory_examples},
+\cref{gen_results:cor:factors_etc_complexity}
+and as $\fact{(a+b+c)^*c(a+b)^*} = \fact{(a+b)^*}$,
+$\constrsync{(a+b)^*}$, $\constrsync{c(a+b)^*}$,
+and $\constrsync{(a+b+c)^*c(a+b)^*}$ are 
+complete for \NL, \PSPACE, and \NL, respectively.
+Here, we identify conditions on concatenating languages
+to obtain complexity lower bounds.
+First, we give two results
+for concatenating a language
+to the front of a constraint language such that hardness is preserved, where
+\cref{constrsync:prop:UanL} is related to languages contained in a subalphabet
+and \cref{constr_sync:thm:prefix_before} to prefix codes.
+Then, \cref{constr_sync:prop:Gamma_suffix}
+is concerned with concatenation to the back.
+The conditions presented here are used to deduce hardness results in later sections.
+
+The reductions of the present section involve operations
+as mentioned in \cref{prelim:rem:reductionsAC0}
+and can be realized by $\AC^0$ circuits.
+
+%\subsubsection{Concatenating to the Front}
+
+\begin{proposition}
+	\label{constrsync:prop:UanL}
+	Let $L \subseteq \Sigma^*$ 
+	and $U \subseteq \Gamma^*$ for some $\Gamma \subseteq \Sigma$
+	be regular languages and $w \in \Sigma^*$.
+	Suppose one of the following holds:
+	\begin{enumerate}
+	\item $L \cap \Gamma\Sigma^* = \emptyset$ with $w \in \Gamma^*$, or
+	
+	\item $w \notin \Gamma^*$.
+	\end{enumerate}
+	Then $\constrsync{wL} \leACZEROm \constrsync{UwL}$.
+\end{proposition}         
+\begin{proof} 
+	First, assume $L \cap \Gamma\Sigma^* = \emptyset$ and $w \in \Gamma^*$.	
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$. We construct a semiautomaton $\mathcal A'$ that has a synchronizing
+	word in $UwL$ if and only if $\mathcal A$ has a synchronizing word in $wL$.
+	
+	\medskip
+	\noindent\underline{Construction:} Let $\semiautomat{A'}{Q \times \{0,1\}}{\Sigma}{\delta'}$
+	where, for $i \in \{0,1\}$, $q \in Q$ and $x \in \Sigma$,
+	\[
+	\applytrans{\delta'}{(q, i)}{x} = 
+	\begin{cases}
+		(q, 0) & \text{if } i = 0 \text{ and } x \in \Gamma, \\
+		(\applytrans{\delta}{q}{wx}, 1) & \text{if } i = 0 \text{ and } x \notin \Gamma, \\
+		(\applytrans{\delta}{q}{x}, 1) & \text{if } i = 1.
+	\end{cases}
+	\]
+	
+	\noindent\underline{Properties:} Let $q \in Q$, $u \in U$ and $v \in L$.
+	Then, as $v \notin \Gamma\Sigma^*$ and $uw \in \Gamma^*$,
+	we have 
+	\begin{align}
+		\applytrans{\delta'}{(q, 0)}{uwv} & = \applytrans{\delta'}{(q, 0)}{v}, \label{constrsync:eqn:UL1} \\
+		\applytrans{\delta'}{(q, 0)}{v}     & = (\applytrans{\delta}{q}{wv}, 1), \label{constrsync:eqn:UL3} \\
+		\applytrans{\delta'}{(q, 1)}{uwv} & = (\applytrans{\delta}{q}{uwv}, 1). \label{constrsync:eqn:UL2}
+	\end{align} 
+	
+	\noindent\underline{Verification:} Let $u \in U$ and $v \in L$.
+	Then we have
+	\begin{align*}
+		\applytrans{\delta'}{Q \times \{0,1\}}{uwv} 
+		& = \applytrans{\delta'}{Q \times \{0\}}{uwv} \cup \applytrans{\delta'}{Q \times \{1\}}{uwv} \\
+		& = \applytrans{\delta'}{Q \times \{0\}}{v} \cup \applytrans{\delta'}{Q \times \{1\}}{uwv} & \tag{Eqn.~\eqref{constrsync:eqn:UL1}} \\
+		& = \delta(Q, wv) \times \{1\} \cup \delta'(Q \times \{1\}, uwv) & \tag{Eqn.~\eqref{constrsync:eqn:UL3}} \\
+		& = \delta(Q, wv) \times \{1\} \cup \delta(Q, uwv) \times \{1\} & \tag{Eqn.~\eqref{constrsync:eqn:UL2}} \\
+		& = \delta(Q, wv)  \times \{1\}.                                   & \tag{$\delta(\delta(Q, u), wv) \subseteq  \delta(Q, wv)$}
+	\end{align*}
+	So $|\applytrans{\delta'}{Q \times \{0,1\}}{uwv}| = 1$
+	is equivalent to $|\delta(Q,wv)| = 1$
+	and $\mathcal A'$ has a synchronizing word in $UwL$
+	if and only if $\mathcal A$ has a synchronizing word in $wL$.
+	
+    \medskip 
+    
+    Lastly, for the remaining case, assume $w \notin \Gamma^*$.
+    Then $w = ubv$  for some $u \in \Gamma^*$, $b \notin \Gamma$, and $v \in \Sigma^*$.
+    Set $L' = bvL$. We have $L' \cap \Gamma\Sigma^* = \emptyset$. 
+    So, applying the previous case to $L', u$ and $U$,
+    we get 
+    $\constrsync{uL'} \leACZEROm \constrsync{UuL'}$
+    where $uL' = wL$.
+\end{proof}             
+
+\begin{example}\label{constrsync:ex:PSPACEhard}
+	By~\crefitem{constr_sync:thm:introductory_examples}{constrsync:ex:item:abcL},
+	$\constrsync{c(a+b)^*}$	is \PSPACE-complete.
+	By \cref{constrsync:prop:UanL}, the problems
+	$\constrsync{aabbc(a+b)^*}$ and $\constrsync{a^*c(a+b)^*}$
+	are \PSPACE-complete as well.
+\end{example}
+
+For reference, we list two special cases  of~\cref{constrsync:prop:UanL}.
+
+\begin{corollary}
+	\label{constrsync:cor:UanL}
+	Let $L \subseteq \Sigma^*$ be regular.
+	
+	\begin{enumerate}
+		\item \label{constrsync:cor:UanL:1} If $L \cap \Gamma\Sigma^* = \emptyset$,
+		$\Gamma \subseteq \Sigma$ and $U \subseteq \Gamma^*$ is regular, then $\constrsync{L} \leACZEROm \constrsync{UL}$. 
+		
+		\item \label{constrsync:cor:UanL:2} $\constrsync{wL} \leACZEROm \constrsync{a^*wL}$	for $w \notin a^*$ and $a \in \Sigma$.
+	\end{enumerate}
+\end{corollary}                    
+
+Next, we present a condition related to prefix codes.
+
+\begin{theorem}
+	\label{constr_sync:thm:prefix_before}
+	\label{constr_sync:thm:in_font}
+	%Let $U, V \subseteq \Sigma^*$ be regular and $P = U \setminus U\Sigma^+$ (those words in $U$ 
+	%without a proper prefix in $U$).
+	%Then $\constrsync{V} \le_m^{\log} \constrsync{PV}$. 	
+	Let $L \subseteq \Sigma^*$ be regular 
+	and $P \subseteq \Sigma^*$ be a prefix code that is a regular language. 
+	Then 
+	$
+	\constrsync{L} \leACZEROm \constrsync{PL}.
+	$	
+\end{theorem}
+\begin{proof}    	
+	By~\crefitem{constr_sync:prop:aut_prefix_free}{constr_sync:prop:aut_prefix_free:item:trim} 
+	there exists a trim PDFA
+	$\automat{C}{R}{\Sigma}{\rho}{r_0}{\{e\}}$
+	such that $P = L(\mathcal C)$
+	and where the state~$e$ has no outgoing transitions.
+	Suppose $\semiautomat{A}{Q}{\Sigma}{\delta}$ is an input semiautomaton. 
+	
+	
+	% bild oder beispiel?
+	\medskip 	
+	\noindent\underline{Construction:} Let $\semiautomat{A'}{R \times Q}{\Sigma}{\delta'}$
+	where, for $(r,q) \in R \times Q$ and $x \in \Sigma$,
+	\[
+	\applytrans{\delta'}{(r, q)}{x} = \begin{cases}
+		(\applytrans{\rho}{r}{x}, q)   & \text{if } \applytrans{\rho}{p}{x} \text{ is defined,} \\
+		(e, \applytrans{\delta}{q}{x}) & \text{if } \rho(p, x) \text{ is undefined. }
+	\end{cases} 
+	\]
+	
+	
+	
+	 %Property~\ref{constrsync:prefix:prop:e} readily follows from the definition of $\delta'$.
+	%For the other properties, we give the proofs.  
+	\medskip 	
+	\noindent\underline{Properties:} Property~\ref{constrsync:prefix:defdeltastar} follows readily by induction.
+	We give the proof for Property~\ref{constrsync:prefix:prop:exactsync}.
+	\begin{enumerate}    	
+		
+		\item \label{constrsync:prefix:defdeltastar} For $r \in R$, $q \in Q$ and $u \in \Sigma^*$ we have
+		\begin{equation}\label{constrsync:prefix:eqn:transitionword}
+			\delta'((r, q), u)
+		=
+		\begin{cases}
+		(e, \delta(q, xu_2)) & \text{if } \exists u_1, u_2 \in \Sigma^* \ \exists x \in \Sigma \colon u = u_1 x u_2 \land \\ 
+		                    & \qquad \rho(r, u_1) \text{ is defined } \land \\ 
+		                    & \qquad \rho(r, u_1 x) \text{ is undefined}, \\
+		(\rho(r, u), q)     & \text{if } \rho(r, u) \text{ is defined. } 
+		\end{cases}
+		\end{equation}
+				
+\begin{comment} 				
+		\item \label{constrsync:prefix:defdeltastar}
+		For $r \in R$, $q \in Q$ and $u \in \Sigma^*$ we have	
+		\[
+		\delta'((r, q), u)
+		=
+		\begin{cases}
+		(e, \delta(q, u)) & \text{if } r = e, \\
+		(\rho(r, u), q) & \text{if } r \ne e \text{ and } \rho(r, u) \text{ is defined. }
+		\end{cases}
+		\]
+		
+		\begin{proofitem}{\ref{constrsync:prefix:defdeltastar}}
+		For $r = e$ the claim follows readily from the definition of $\delta'$
+		and the fact that $\rho(r, x)$ is undefined for each $x \in \Sigma$.
+		Next, suppose $r \ne e$ and $\rho(r,u)$ is defined. 
+		We do induction on $u$. For $u = \varepsilon$
+		the claim is clear. So, suppose we have $u = vx$
+		with $v \in \Sigma^*$ and $x \in \Sigma$.
+		Then $\rho(r, v)$ is defined and, by the definition of $\delta'$,
+		we obtain $\delta'((\rho(r, v), q), x) = (\rho(r, vx), q)$
+		and the claim follows by induction.		
+		\end{proofitem} 
+\end{comment}
+\begin{comment} 
+		\item \label{constrsync:prefix:prop:e} Let $u \in \Sigma^*$ and $q \in Q$. Then $\applytrans{\delta'}{(e, q)}{u} = (e, \applytrans{\delta}{q}{u})$.
+		
+		\item  \label{constrsync:prefix:prop:prefixP}  Let $u \in \pref{P} \setminus P$ and $q \in Q$.
+		Then $\rho(r_0, u)$ is defined and $\applytrans{\delta'}{(r_0, q)}{u} = (\rho(r_0, u), q)$
+		with $\rho(r_0, u) \ne e$.
+		
+		\begin{proofitem}{\ref{constrsync:prefix:prop:prefixP}}
+		We do induction on $u$. For $u = \varepsilon$ 
+		the claim is clear. So, suppose we have $u = u'x$ for some $u' \in \Sigma^*$ and $x \in \Sigma$.
+		Then, $u' \in \pref{P}\setminus P$ and, by induction hypothesis, 
+		$\rho(r_0, u')$
+		is defined, $\delta'((r_0, q), u') = (\rho(r_0, u'), q)$ and $\rho(r_0, u') \ne e$.    	 
+		So, as $P$ is a prefix code and $u$ a proper prefix,
+		$\rho(r_0, u'x)$ is defined with $\rho(r_0, u'x) \ne e$
+		and, by the definition of $\delta'$,
+		we find 
+		\[ 
+		\delta'((r_0, q), u) = \delta'((\rho(r_0, u'), q), x) = (\rho(r_0, u'x), q),
+		\]
+		which gives the claim by induction on the structure of $u$.
+		\end{proofitem}
+		
+		\item \label{constrsync:prefix:prop:wordP} Let $u \in P$ and $q \in Q$. Then $\applytrans{\delta'}{(r_0, q)}{u} = (e, q)$.
+		
+		\begin{proofitem}{\ref{constrsync:prefix:prop:wordP}}
+		Let $u = u'x$ for $u' \in \pref{P}$ and $x \in \Sigma$.
+		By Property~\ref{constrsync:prefix:prop:prefixP}
+		we get $\applytrans{\delta'}{(r_0, q)}{u'} = (\rho(r_0,u'), q)$
+		with $\rho(r_0, u') \ne e$.
+		Then, by the definition of $\delta'$, this yields
+		$\applytrans{\delta'}{(r_0, q)}{u} = \applytrans{\delta'}{(\applytrans{\rho}{r_0}{u'}, q)}{x}
+		= (\applytrans{\rho}{\applytrans{\rho}{r_0}{u'}}{x}, q) = (e, q)$.
+		\end{proofitem}
+\end{comment}
+\begin{comment} 
+		\item \label{constrsync:prefix:prop:undefined} Let $w \in \Sigma^*$ and $r \in R$. If $\rho(r, w)$ is undefined,
+		then $\delta'((r, q), w) \in \{e\} \times Q$ for each $q \in Q$.
+		
+		\begin{proofitem}{\ref{constrsync:prefix:prop:undefined}}
+		Let $w = w_1 x w_2$ with $w_1, w_2 \in \Sigma^*$, $x \in \Sigma$ and 
+		$w_1$ of maximal length
+		such that $\rho(r, w_1)$ is defined.
+		By Property~\ref{constrsync:prefix:defdeltastar} 
+		we have $\delta'((r, q), w_1) = (\rho(r, w_1), q)$.
+		Then, by the definition of $\delta'$, as $\rho(\rho(r, w_1), x)$ is undefined,
+		we find 
+		\[
+		\delta'((\rho(r, w_1), q), x) = (e, \delta(q, x)).
+		\]
+		By Property~\ref{constrsync:prefix:defdeltastar} 
+		we obtain $\delta'((e, \delta(q, x)), w_2) = (e, \delta(q, xw_2)) \in \{e\} \times Q$.
+		\end{proofitem}
+\end{comment}
+		
+		\item \label{constrsync:prefix:prop:exactsync} Let $w \in \Sigma^*$ be such that $\applytrans{\rho}{R}{w} = \{e\}$.
+		Then $\applytrans{\delta'}{R \times Q}{w} = \{e\} \times Q$.
+		
+		
+		\Cref{constrsync:prefix:eqn:transitionword} 
+		gives $\delta'(R \times Q, w) \subseteq \{e\} \times Q$.
+		Furthermore, there exists $r \in R$ such that $\rho(r, w) = e$.
+		Then, for each $q \in Q$, we have $\delta'((r, q), w) = (e,q)$
+		and this gives $\{e\} \times Q = \delta'(\{r\} \times Q, w) \subseteq \delta'(R \times Q, w)$. 	    	
+	\end{enumerate}   
+	
+	\medskip 
+	\noindent\underline{Verification:} 
+	By Property~\ref{constrsync:prefix:defdeltastar}
+	we have $\delta'(\{r_0\} \times Q, uv) = \{e\} \times \delta(Q, v)$
+	for $u \in P$ and $v \in \Sigma^*$. (note that, since~$P$ is a 
+	prefix code, $uv$ can only be factored into a word from~$P$
+	and an arbitrary word in one way)
+	So, $|\delta'(R \times Q, uv)| = 1$
+	for $u \in P$ and $v \in L$
+	implies $|\delta(Q, v)| = 1$.	
+	
+	Conversely, suppose $|\delta(Q, v)| = 1$
+	for $v \in L$. 
+	By Property~\ref{constrsync:prefix:defdeltastar} and as $\rho(e,x)$ is undefined for each $x \in \Sigma$
+	we have $\delta'(\{e\} \times Q, v) = \{e\} \times \delta(Q, v)$ (here, we used that~$P$ is a prefix code).
+	By \crefitem{constr_sync:prop:aut_prefix_free_exact_sync}{constr_sync:prop:aut_prefix_free:item:sync} 
+	there exists $w \in P$ with
+	$\rho(R, w) = \{e\}$.
+	Then, by Property~\ref{constrsync:prefix:prop:exactsync} 
+	we have $\applytrans{\delta'}{R \times Q}{w} \subseteq \{e\} \times Q$ (note that
+	we might have that $\rho(r, w)$ is undefined for some $r \in R$ 
+	and that, in fact, we have equality since $\delta'(\{r_0\}\times Q), w) = \{e\} \times Q$).
+	So $|\delta'(R \times Q, wv)| = 1$.
+\end{proof} 
+
+\begin{remark}
+	For $L = \{c\}$ and $P = \{a,b\}^*c$
+	we have that $\constrsync{L}$ 
+	and $\constrsync{PL}$
+	are in $\AC^0$
+	and \PSPACE-complete, respectively,
+	by \cref{constr_sync:thm:introductory_examples}.
+	However, the complexity does not have to increase when concatenating
+	a prefix code that is regular to the front of a constraint
+	language as can be seen with $L = \Sigma^*$.
+	Then $\constrsync{L} \eqACZEROm \constrsync{PL}$
+	by \cref{constrsync:genresults:cor:left-right-ideal}.		
+\end{remark}
+
+As $\{u\}$ for $u \in \Sigma^*$ is a prefix code, we obtain the following corollary.
+
+\begin{corollary}
+	Let $L \subseteq \Sigma^*$ be regular and $u \in \Sigma^*$.
+	Then $\constrsync{L} \leACZEROm \constrsync{uL}$.
+\end{corollary}
+
+%\subsubsection{Concatenating to the Back} 
+
+Next, we state a result on concatenating
+languages to the back of the constraint language.
+
+\begin{proposition}
+	\label{constr_sync:prop:Gamma_suffix}
+	Let $L \subseteq \Sigma^*$ be regular and $\Gamma \subseteq \Sigma$
+	such that $L \cap \Sigma^* \Gamma = \emptyset$.
+	If $U \subseteq \Gamma^*$ is a regular non-empty language,
+	then $\constrsync{L} \leACZEROm \constrsync{LU}$.   
+\end{proposition}
+\begin{proof}
+	We can assume $L \ne \emptyset$. 
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$. We construct a semiautomaton $\mathcal A'$ that has a synchronizing
+	word in $LU$ if and only if $\mathcal A$ has a synchronizing word in $L$.
+	\FIG~\ref{fig:irred-reduction} shows the basic idea of the construction graphically.
+	\begin{comment} 
+		For each $q \in Q$ and $a \in \Gamma$, set $S_{q,a} = \{ \applytrans{\delta}{q}{a^i} \mid i \ge 0 \}$.
+		Define  
+		$\semiautomat{A'}{Q'}{\Sigma}{\delta'}$ with
+		\[
+		Q' = \bigcup_{q \in Q} \bigcup_{a \in \Gamma} \{q\} \times S_{q,a}.
+		\]
+		and, for $(q, p) \in \{q\} \times S_{q,a}$, $x \in \Sigma$
+		and $p = \applytrans{\delta}{q}{a^i}$, \todo{repräsentantenunabhgängig zeigen.}
+		\[
+		\applytrans{\delta'}{(q, p)}{x} = \begin{cases}
+			(q, \applytrans{\delta}{p}{a})     & \text{if } x = a \\
+			(\applytrans{\delta}{q}{a^ix}, \applytrans{\delta}{q}{a^ix})  & \text{if } x \ne a.
+		\end{cases}
+		\]
+		
+		Let $uv$ with $u \in L$ and $v \in U$ be a synchronizing word for $\mathcal A'$.
+		Note that $u$ does not end with a letter in $\Gamma$.
+		So, if $|u| > 0$,\todo{genauer?}
+		we have $\applytrans{\delta'}{Q'}{u}\subseteq \{ (q,q) \mid q \in Q \}$.
+		For $(q,q)$ we have $\applytrans{\delta'}{(q,q)}{a^i} = (q, \applytrans{\delta}{q}{a^i})$
+		for all $i \ge 0$.
+		Hence, $|\applytrans{\delta'}{Q'}{u}| = |\applytrans{\delta'}{(q,q)}{v}|$
+	\end{comment} 
+	
+	\begin{figure}[t]
+		\centering
+		{			
+			\begin{tikzpicture}[rounded corners=10pt]						
+				% Main automaton
+				\node[yshift=1cm] (A) at (0,0)
+				{$\mathcal A'_{|\{(q,q)\mid q \in Q\},\,\Sigma\setminus\Gamma}
+					\cong
+					\mathcal A_{|\Sigma\setminus\Gamma}$};
+				
+				\node[draw, dashed, rectangle, fit={(-5,1.4) (5,-1.4)}] {};
+				
+				% Left column
+				\node (q) at (-3.5,-1) {$(p,p)$};				
+				\node[draw,circle,inner sep=2pt] (dummyq) at (-3.5,-2.5) {};
+				\node at (-3.5,-2.75) {$\vdots$};				
+				\node (labSq) at (-3.5,-3.7) {$\{p\}\times Q$};
+				\node[draw,dashed,rectangle,inner sep=14pt, fit={(q) (labSq)}] (Sq) {};
+				
+				% Right column
+				\node (p) at (3.5,-1) {$(q,q)$};				
+				\node[draw,circle,inner sep=2pt] (dummyp) at (3.5,-2.5) {};
+				\node at (3.5,-2.75) {$\vdots$};				
+				\node (labSp) at (3.5,-3.7)	{$\{q\}\times Q$};
+				\node[draw,dashed,rectangle,inner sep=14pt,	fit={(p) (labSp)}] (Sp) {};
+				
+				% Target states
+				\node[draw,circle,inner sep=2pt] (r)  at (-1.3,-0.4) {};				
+				\node[draw,circle,inner sep=2pt] (r2) at (1.3, -0.4) {};
+				\node[above=0.15cm of r,  xshift=-0.4cm] {$(\delta(p,ua),\delta(p,ua))$};
+				\node[above=0.15cm of r2, xshift=+0.4cm] {$(\delta(q,ua),\delta(q,ua))$};
+				
+				% Arrows
+				\path[->] (q) edge[left,pos=.7] node {$u\in\Gamma^*$} (dummyq);				
+				\path[->] (p) edge[right,pos=.7] node {$u\in\Gamma^*$} (dummyp);
+				
+				\path[->] (dummyq) edge[bend right,below,pos=.4] node [fill=white, anchor=center] 
+				{$a \in \Sigma \setminus \Gamma$} (r);
+				\path[->] (dummyp) edge[bend left,below,pos=.4]  node [fill=white, anchor=center] 
+				{$a \in \Sigma \setminus \Gamma$} (r2);			
+			\end{tikzpicture}
+					
+		}
+		\caption[Schematic of reduction from the proof of Proposition~\ref{constr_sync:prop:Gamma_suffix}]{Schematic of the reduction from the proof of Proposition~\ref{constr_sync:prop:Gamma_suffix}.
+			For a state $q$ and word $u \in \Gamma^*$ we ``branch out'' into a copy $\{q\} \times Q$.
+			For a letter from $a \in \Sigma \setminus \Gamma$,
+			we return to the state $(\applytrans{\delta}{q}{ua}, \applytrans{\delta}{q}{ua})$.
+%			corresponding to the state in $\mathcal A$ when reading~$ua$.
+			This is indicated 
+			for two states $p$ and $q$.
+		}
+		\label{fig:irred-reduction}
+	\end{figure}
+	
+	
+	\medskip
+	\noindent\underline{Construction:} Let 
+	$\semiautomat{A'}{Q'}{\Sigma}{\delta'}$
+	where\footnote{Actually, setting
+		\[
+		Q' = \bigcup_{q \in Q} \{q\} \times S_q
+		\]
+		where $S_{q} = \{ \applytrans{\delta}{q}{u} \mid u \in \Gamma^* \}$
+		for $q \in Q$
+		would be sufficient. However, it is not clear whether the
+		sets $S_q$ can be computed by an \LOGSPACE-uniform $\AC^0$ circuit family
+		whereas $Q \times Q$
+		can be computed by such a circuit family.} 
+	$Q' = Q\times Q$
+	and, for $(q, p) \in \{q\} \times Q$, $x \in \Sigma$,
+	\[
+	\applytrans{\delta'}{(q, p)}{x} = \begin{cases}
+		(q, \applytrans{\delta}{p}{x})     & \text{if } x \in \Gamma, \\
+		(\applytrans{\delta}{p}{x}, \applytrans{\delta}{p}{x})  & \text{if } x \notin \Gamma.
+	\end{cases}
+	\]
+		
+	\noindent\underline{Properties:} Next, we collect some properties of the given construction.	
+	\begin{enumerate} 
+		
+		\item \label{constr_sync:item:word_in_Gamma} For $w \in \Gamma^*$ and $q,p \in Q$, we have
+		$
+		%\begin{equation}\label{constr_sync:eqn:word_in_Gamma}
+		\applytrans{\delta'}{(q,p)}{w}
+		= (q, \applytrans{\delta}{p}{w}).
+		%\end{equation} 
+		$
+		
+		\begin{proofitem}{\ref{constr_sync:item:word_in_Gamma}} 
+		This is clear for $w = \varepsilon$.
+		Next, let $w = ux$ for some $x \in \Sigma$ and $u \in \Sigma^*$.
+		Inductively, we have $\applytrans{\delta'}{(q,p)}{ux}
+		= \applytrans{\delta'}{(q,\delta(p, u))}{x}$.
+		Since $x \in \Gamma$,
+		by the definition of the transition function
+		we find $\applytrans{\delta'}{(q,\delta(p, u))}{x} = (q, \delta(p,w))$.			
+		\end{proofitem}		
+		
+		\item \label{constr_sync:item:Gamma_suffix} If $w \in \Sigma^* (\Sigma \setminus \Gamma)$ and $q,p \in Q$, then
+		$
+		%\begin{equation}\label{constr_sync:eqn:Gamma_suffix}
+		\applytrans{\delta'}{(q,p)}{w} = (\applytrans{\delta}{p}{w}, \applytrans{\delta}{p}{w}).
+		%
+		%\end{equation}
+		$
+				
+		\begin{proofitem}{\ref{constr_sync:item:Gamma_suffix}} 
+		By assumption, we can write $w = w_0 u_1 w_1 \cdots u_n w_n$ for some $n \ge 0$
+		with $w_0, w_1, \ldots, w_n \in (\Sigma \setminus \Gamma)^+$
+		and $u_1, \ldots, u_n \in \Gamma^*$. For $n = 0$,
+		the claim follows by an easy induction from the defining equation of~$\delta'$.
+		Next, suppose $n \ge 1$. Since $|w_{n-1}| \ge 1$,
+		inductively, we obtain
+		\[
+		\delta'((q,p), w') 
+		= (\delta(p, w'), \delta(p, w'))
+		\]
+		for $w' = w_0 u_1 w_1 \cdots w_{n-1}$. By Property~\ref{constr_sync:item:word_in_Gamma}
+		we have
+		\[
+		\delta'((\delta(p, w'), \delta(p, w')), u_n) = (\delta(p, w'), \delta(p, w'u_n)).
+		\]
+		Then applying the claim for $n = 0$ again, we find 
+		\[ 
+		\delta'((\delta(p, w'), \delta(p, w'u_n)), w_n) = (\delta(p, w'u_n w_n), \delta(p, w'u_n w_n)).
+		\]
+		Thus we have
+		$
+		\applytrans{\delta'}{(q,p)}{w} = (\applytrans{\delta}{p}{w}, \applytrans{\delta}{p}{w}).
+		$		
+		\end{proofitem}		
+	
+		\item \label{constr_sync:item:QxQ}  For $v \in L \cap \Sigma^+$, 
+		we have  $\delta'(Q', v) = \{(q,q) \mid q \in \delta(Q, v) \}$.
+		
+		\begin{proofitem}{\ref{constr_sync:item:QxQ}}
+		By assumption on~$L$,
+		we have $L \cap \Sigma^+ \subseteq \Sigma^*( \Sigma \setminus \Gamma )$
+		and so $v \in \Sigma^* (\Sigma \setminus \Gamma)$.
+		Thus, the claim follows from Property~\ref{constr_sync:item:Gamma_suffix}.		
+		\end{proofitem}
+	\end{enumerate}	
+	
+	\medskip 
+	\noindent\underline{Verification:} We can assume $|Q| \ge 2$.
+	First, suppose $|\delta(Q, v) | = 1$ for some $v \in L$.
+	Then, by Property~\ref{constr_sync:item:QxQ}, $|\delta'(Q \times Q, v)| = 1$.
+	So, $|\delta'(Q', vu)| = 1$ for $u \in U$.	
+	
+	Conversely, assume $|\delta'(Q', vu)| = 1$
+	for $v \in L$ and $u \in U$. %, where we can assume $|v| > 0$.
+%	By Property~\ref{constr_sync:item:Gamma_suffix}, as $v \notin \Sigma^*\Gamma$,
+%	we have $\delta'(Q\times Q, v) = \{(q,q) \mid q \in \delta(Q, v) \}$.
+	By Property~\ref{constr_sync:item:word_in_Gamma}, for $p,q \in Q$ and $u \in \Gamma^*$,
+	we have $\delta'((q,q), u) = (q, \delta(q, u))$ and $\delta'((p,p), u) = (p, \delta(p, u))$.
+	So,
+	\[
+	\delta'((q,q), u) = \delta'((p,p), u)
+	\Leftrightarrow 
+	q = p.
+	\]
+	Hence, with Property~\ref{constr_sync:item:QxQ}, $|\delta'(Q', vu)| = 1$
+	implies $|\delta'(Q', v)| = 1$,
+	which, again by Property~\ref{constr_sync:item:QxQ}, then implies $|\delta(Q, v)| = 1$.	
+%	
+%	
+%	
+%	
+%	
+%	
+%	\bigskip 
+%	
+%	Let $v \in L$ and $u \in U$. We can assume $|v| > 0$.
+%	By Property~\ref{constr_sync:item:Gamma_suffix}, as $v \notin \Sigma^*\Gamma$,
+%	we have $\delta'(Q\times Q, v) = \{(q,q) \mid q \in \delta(Q, v) \}$.
+%	So,  $|\delta(Q, v) | = 1$,
+%	implies $|\delta'(Q \times Q, vu)| = 1$.
+%	
+%	%By Property~\ref{} for $v \in \Gamma^*$ 
+%	%we have $\delta'(S \times T, v) = \bigcup_{q \in S} \{q\} \times \delta(T, v)$.
+%	
+%	Furthermore, by Property~\ref{constr_sync:item:word_in_Gamma}, as $u \in \Gamma^*$, we have $(q, \delta(q, u)) = \delta'((q,q), u)$ and $(p, \delta(p, u)) = \delta'((p,p), u)$,
+%	and so $\delta'((q,q), u) = \delta'((p,p), u) = (p, \delta(u, p))$
+%	if and only if $q = p$ for $q,p \in Q$. This yields
+%	that $|\delta'(Q \times Q, vu)| = 1$
+%	implies $|\delta'(Q \times Q, v)| = 1$,
+%	which then implies $|\delta(Q, v)| = 1$.
+\end{proof} 
+
+Lastly, we give a condition for preservation of the complexity w.r.t.~concatenation.
+
+\begin{proposition} \label{constrsync:genresults:prop:concat}
+	Let $L_1, L_2, L_3 \subseteq \Sigma^*$ be regular languages.
+	If $L_1 L_2 L_3 \subseteq \fact{L_2}$, then $
+	\constrsync{L_1 L_2 L_3} \eqACZEROm \constrsync{L_2}.
+	$
+\end{proposition}
+\begin{proof}
+	In general, it is $\fact{L_2} 
+	\subseteq 
+	\fact{L_1 L_2 L_3}$.
+	By assumption, $\fact{L_1 L_2 L_3}
+	\subseteq \fact{L_2}$.
+	So, the claim follows from~\cref{gen_results:cor:factors_etc_complexity}.
+\end{proof}
+
+\begin{corollary}
+ 	For $u,v \in \Sigma^*$ and $L \subseteq \Sigma^*$ with $uLv \subseteq \fact{L}$
+ 	we have $\constrsync{uLv} \eqACZEROm \constrsync{L}$.
+\end{corollary}

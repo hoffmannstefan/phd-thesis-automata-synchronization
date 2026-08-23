@@ -1,0 +1,102 @@
+
+
+\Cref{constrsync:thm:SCC-prefix-code} yields with \cref{constr_sync:thm:regular_prefix_codes_and_automata}
+that the the computational complexities arising from 
+strongly connected constraint PDFAs equal those arising
+from constraint languages of the form $C^*$ (which are monoids)
+for $C=\emptyset$ or a prefix code $C$ that is a regular language. (Recall that these
+languages equal those of the form $L(\mathcal B_{p_0, \{p_0\}}$ by \cref{constr_sync:thm:regular_prefix_codes_and_automata}.)
+\Cref{constrsync:cor:SCC} shows that the constrained synchronization problem is always in \NL\ 
+for strongly connected constraint automata. As a special case, in
+\cref{constr_sync:cor:one-state} we classify the complexity for one-state constraint automata.
+
+Observe that for a strongly connected PDFA $\automat{B}{P}{\Sigma}{\mu}{p_0}{F}$, $L(\mathcal B)$ is finite if and only
+if $L(\mathcal B) = \emptyset$ (equivalently $F = \emptyset$)
+or $L(\mathcal B) = \{\varepsilon\}$ (equivalently $P = \{p_0\}$ and we have no 
+outgoing transitions at $p_0$).
+
+\begin{theorem} \label{constrsync:thm:SCC-prefix-code}
+	Let $\automat{B}{P}{\Sigma}{\mu}{p_0}{F}$ be a strongly connected PDFA with $F \ne \emptyset$.
+	Then $\constrsync{L(\mathcal B)} \eqACZEROm \constrsync{C^*}$
+	where $C$ is some prefix code $C \subseteq \Sigma^+$
+	that is regular or we have  $C = \emptyset$.
+\end{theorem}
+\begin{proof}
+	A strongly connected PDFA is trim and every state is accessible
+	and coaccessible. Thus, by \cref{gen_results:cor:factors_etc_complexity,constr_sync:prop:final_states}, 
+	we find\footnote{For language of the form $L(\mathcal B_{p_0, \{p_0\}})$
+		by discarding useless states, i.e., assming~$\mathcal B$ to be trim,
+		we can assume that $\mathcal B$ is strongly connected.}
+	\[
+	\constrsync{L(\mathcal B)} \eqACZEROm \constrsync{L(\mathcal B_{p_0, \{p_0\}})}.
+	\]
+	Let $C \subseteq \Sigma^+$ be the set of shortest non-empty
+	words $u \in \Sigma^+$ such that $\mu(p_0, u) = p_0$.
+	Then $C = \emptyset$ (if $p_0$ has no outgoing transitions)
+	or $C$ is a prefix code.
+	We then have $L(\mathcal B_{p_0,\{p_0\}}) = C^*$.	
+	
+	For a direct proof, first note that we have $L(\mathcal B_{p_0,\{p_0\}}) 
+	\subseteq \pref{L(\mathcal B)}$
+	since for $u \in \Sigma^*$ with $\mu(p_0, u) = p_0$
+	we have $\mu(p_0, uv) \in F$
+	for some $v \in \Sigma^*$.
+	We also have $L(\mathcal B) \subseteq \pref{L(\mathcal B_{p_0,\{p_0\}})}$
+	since for $u \in L(\mathcal B)$ we have $\mu(p_0, uv) = p_0$
+	for some $v \in \Sigma^*$.
+	This gives $\pref{L(\mathcal B)} = \pref{L(\mathcal B_{p_0,\{p_0\}})}$.
+	Then proceed as above.
+\end{proof}
+
+Note that $C^*$ is sparse if and only if $|C| \le 1$ for a prefix code $C \subseteq \Sigma^+$ by \cref{constr_sync:lem:two-words-code,constr_sync:cor:code_growth_of_star}.
+
+\begin{corollary}
+\label{constrsync:cor:SCC}
+Let $\automat{B}{P}{\Sigma}{\mu}{p_0}{F}$ be a strongly connected PDFA.
+Then the problem $\constrsync{L(\mathcal B)}$ is in \NL,
+and we have $L(\mathcal B) = \{\varepsilon\}$ (and so $\constrsync{L(\mathcal B)}$ is solvable in constant time)
+or $L(\mathcal B)$ is infinite
+and thus $\constrsync{L(\mathcal B)}$ is \LOGSPACE-complete if $L(\mathcal B)$ is also sparse.
+\end{corollary}
+\begin{proof}
+	By \cref{constrsync:thm:SCC-prefix-code}
+	we have $\constrsync{L(\mathcal B)}
+	\eqACZEROm \constrsync{C^*}$
+	for $C = \emptyset$ or some prefix code $C \subseteq \Sigma^+$.
+	We have $C = \emptyset$
+	precisely if $L(\mathcal B) = \{\varepsilon\}$.
+	So, suppose $C \ne \emptyset$ in the following.
+	By \cref{thm:reg_monoid} (or \cref{constr_syn:cor:start_equals_final_state}
+	since $C^*$ is acceptable by a PDFA with a single final state equal to its start state),
+	we find that $\constrsync{L(\mathcal B)}$ is in $\NL$.
+	For $C \ne \emptyset$,
+	from the method of proof of \cref{constrsync:thm:SCC-prefix-code} and construction of~$C$,
+	we find that $\constrsync{L(\mathcal B)}$
+	is infinite (we also find that it is sparse if $C = \{u\}$
+	for some $u \in \Sigma^*$).	
+\end{proof}
+
+Showing \NL-hardness for general regular monoid languages of exponential growth is an \emph{open problem},
+even for those of the form~$C^*$ for a prefix code $C$ that is regular and contains at least two words.
+
+\begin{corollary}
+	\label{constr_sync:cor:one-state}
+	Let $\automat{B}{\{p_0\}}{\Sigma}{\mu}{p_0}{\{p_0\}}$ 
+	be a one-state PDFA and $\Gamma = \{ a \in \Sigma \mid \applytrans{\mu}{p_0}{a} = p_0 \}$.
+	Then $L(\mathcal B) = \Gamma^*$ and $\constrsync{L(\mathcal B)}$
+	has the following complexities:
+	\[
+	\begin{cases}
+		\text{constant time} & \text{if } \Gamma = \emptyset, \\
+		\text{\LOGSPACE-complete} & \text{if } |\Gamma| = 1, \\
+		\text{\NL-complete} 	& \text{if } |\Gamma| \ge 2.
+	\end{cases}
+	\]	
+\end{corollary}
+\begin{proof}
+	By \cref{constrsync:rem:alphabet}, 
+	we can assume $\Sigma = \Gamma$.
+	By \cref{constrsync:cor:SCC}
+	the claim follows for $|\Gamma| \le 1$.
+	For $|\Gamma| \ge 2$, the claim follows from \crefitem{constr_sync:thm:introductory_examples}{constrsync:ex:item:ab}.		
+\end{proof}

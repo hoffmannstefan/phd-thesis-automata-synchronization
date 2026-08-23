@@ -1,0 +1,450 @@
+
+Here, in \cref{sync_max:thm:SI-automata},
+we show that for strongly connected SI-automata,
+synchronizability, complete reachability,
+and distinguishability of pairs of $2$-sets
+are equivalent properties. As a consequence, stated in \cref{sync_max:cor:SIcr},
+completely reachable SI-automata are precisely those that
+are synchronizing and strongly connected.
+\Cref{cor:SI_CR} and \cref{prelim:classes:SI:without-perm-letters-SCC} 
+link strong connectivity and strong trap-connectivity
+to complete reachability and absence of non-trivial congruences
+in SI-automata without permutational letters.
+\cref{syncmax:SI-aut:cor:single-idempotent} states various equivalences for SI-automata with a single non-permutational letter,
+and \cref{sync_max:prop:binary-SI} for binary SI-automata.
+
+\begin{theorem}
+	\label{sync_max:thm:SI-automata}
+	For a strongly connected $n$-state SI-automaton $\semiautomat{A}{Q}{\Sigma}{\delta}$ with $n \ge 3$ the following are equivalent.
+	\begin{enumerate}
+		\item \label{sync_max:thm:SI-automata:1} $\mathcal A$ is synchronizing.
+		
+		\item \label{sync_max:thm:SI-automata:2} $\mathcal A$ is completely reachable. 
+		
+		\item \label{sync_max:thm:SI-automata:4} Every automaton for $\Syn(\mathcal A)$ needs $\binom{n}{2} + 1$ states.
+		
+		\item \label{sync_max:thm:pairs-2-sets} All pairs of distinct $2$-sets of states are distinguishable.
+	\end{enumerate}
+\end{theorem}
+\begin{proof}
+	$\ref{sync_max:thm:SI-automata:1} \Rightarrow \ref{sync_max:thm:SI-automata:2}$:
+	Suppose $\mathcal A$ is synchronizing. 
+	Let $I(\mathcal A) = (Q, E)$ be the Rystsov graph of $\mathcal A$. 
+	By \cref{sync_max:thm:rystsov_SI}
+	this graph is strongly connected.
+	By \cref{sync_max:prop:Rystsov_graph_vs_SI_graph}
+	it is a subgraph of $I(\TM{\mathcal A})$.
+	From Theorem~\ref{sync_max:thm:IS_SCC}
+	it follows that~$\TM{\mathcal A}$, and so $\mathcal A$,
+	is completely reachable.\footnote{For an alternative proof:
+			Let $a_1, \ldots, a_k$ be the simple idempotent letters where we have $k \ge 1$ since $\mathcal A$ is synchronizing.
+			By assumption, for each $q \in Q$
+			there exists $t \in \TM{\mathcal A}$
+			such that $t(Q) = \{q\}$.
+			We can write $t = g_0 a_{i_1} g_1 a_{i_2} \cdots g_{m-1} a_{i_m} g_m$
+			for permutations $g_0, g_1, \ldots, g_m \in \TM{\mathcal A}$
+			and numbers $1 \le i_1, i_2, \ldots, i_m \le k$
+			where we write $a_i$ for~$\fword{\delta}{a_i}$ here as a shorthand.
+			Since 
+			\[
+			t = a_{i_1}^{g_0} a_{i_2}^{g_0 g_1} \cdots  a_{i_m}^{g_0 g_1 \cdots g_m} g_0 g_1 \cdots g_m,
+			\]
+			we conclude that $a_{i_1}^{g_0} a_{i_2}^{g_0 g_1} \cdots  a_{i_m}^{g_0 g_1 \cdots g_m}$
+			already maps $Q$ to $\{q\}$.
+			By considering the transformations $a_i^g$ for a permutation $g \in \TM{\mathcal A}$
+			as letters in a new automaton $\mathcal B$ (Automata constructed
+					by introducing new symbols for existing words or transformations were also considered in~\cite[p.~270]{AnaVolGus2013}.
+					We will also define automata in this way in \cref{sync_max:chap:slowly}, for example, in the proof of \cref{syn_max:thm:Mn}.), we find 
+			that $\mathcal B$ must be synchronizing and, since each state is synchronizing,
+			strongly connected.
+			Each $a_i^g$ induces a letter of simple idempotent,
+			and so it induces an edge in $\Gamma_1(\mathcal A)$.
+			Now, the automaton graph of~$\mathcal B$
+			with its self-loops omitted is a subgraph of $\Gamma_1(\mathcal A)$
+			since the unique transition of a simple idempotent that is not a self-loop
+			correspond to an edge of $\Gamma_1(\mathcal A)$ (this does not hold in general, since some transitions for a letter might not induce edges in $\Gamma_1(\mathcal A)$).
+			So $\Gamma_1(\mathcal A)$ is strongly connected.
+			By \cref{sync_max:thm:char_compl_reach}
+			we find that~$\mathcal B$, and so~$\mathcal A$,
+			is completely reachable.
+	}
+	
+	$\ref{sync_max:thm:SI-automata:2} \Rightarrow \ref{sync_max:thm:SI-automata:4}$:
+	Since a completely reachable automaton is synchronizing, from \cref{syncmax:cor:SI-2-sets}
+	we get that distinct pairs of $2$-sets are distinguishable
+	(alternatively, it also follows 
+	from \cref{sync_max:thm:IS_SCC}
+	as in the proof of the previous implication).
+	Furthermore, all $2$-sets are reachable
+	and so $\{ \{p,q\} \mid p,q \in Q, p \ne q \} \cup \{\{s\}\}$ for some $s \in Q$
+	yields a family of pairwise distinguishable
+	and reachable subsets. By \cref{sync_max:thm:lower_bound_SynA}, 
+	it follows that $\Syn(\mathcal A)$
+	has at least $\binom{n}{2} + 1$ states.
+	
+	$\ref{sync_max:thm:SI-automata:4} \Rightarrow \ref{sync_max:thm:pairs-2-sets}$:
+	As $n \ge 3$
+	the minimal automaton for $\Syn(\mathcal A)$ has at least
+	five states. 
+	So, $\Syn(\mathcal A) \ne \emptyset$, i.e., $\mathcal A$ is synchronizing,
+	and from \cref{syncmax:cor:SI-2-sets}
+	we get that distinct pairs of $2$-sets are distinguishable.
+	
+	$\ref{sync_max:thm:pairs-2-sets} \Rightarrow \ref{sync_max:thm:SI-automata:1}$:
+	As $\mathcal A$ is strongly connected and $n \ge 3$, by 
+	Proposition~\ref{sync_max:prop:2-sets-dist-SCC-implies-sync}
+	the automaton $\mathcal A$ is synchronizing. 
+\end{proof}
+
+\Cref{sync_max:fig:sync-two-sets-dist} 
+gives examples of strongly connected and completely
+reachable SI-automata that are not completely distinguishable (and so not sync-maximal).
+
+\Cref{sync_max:thm:SI-automata}
+fails for synchronizing SI-automata
+that are not strongly connected since they are not completely reachable,
+as, for example, the SI-automaton from \cref{prelim:fig:binarySI-sync-trap}.
+
+\begin{corollary}\label{sync_max:cor:SIcr}
+	An SI-automaton is strongly connected
+	and synchronizing if and only if it is completely reachable.
+\end{corollary}
+\begin{proof}
+	By \crefitem{sync_max:thm:SI-automata}{sync_max:thm:SI-automata:2},
+	a strongly connected and synchronizing
+	SI-automaton is completely reachable.
+	\Cref{prelim:lem:compl_reach_implies_SCC_sync} yields the other implication.
+\end{proof}
+
+Strong connectivity and synchronizability do not imply complete reachability
+even for automata where every letter has defect at most one,
+see \cref{syncmax:fig:SCC-sync-not-cr}.
+
+\begin{figure}[htb]
+	\centering
+\begin{tikzpicture}[->, >=stealth, node distance=3cm, on grid, auto,
+	state/.style={circle, draw, minimum size=6mm, inner sep=1pt}
+	]
+	\node[state] (q1) {};
+	\node[state] (q2) [right=of q1] {};
+	\node[state] (q3) [right=of q2] {};
+	
+	\path
+	(q1) edge [bend left=15] node {$a, b$} (q2)
+	(q2) edge [bend left=15] node {$a$} (q3)
+	(q3) edge [bend left=15] node {$a,b$} (q2)
+	(q2) edge [bend left=15] node {$b$} (q1);
+\end{tikzpicture}
+	\caption{Strongly connected and synchronizing automaton that is not completely reachable.}
+	\label{syncmax:fig:SCC-sync-not-cr}
+\end{figure}
+
+\begin{corollary} \label{syncmax:cor:SI-transitive-grp-of-units}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	be an SI-automaton such that the group of units of $\TM{\mathcal A}$ is transitive.
+	Then the following are equivalent.
+	
+	\begin{enumerate}
+		\item $\mathcal A$ is synchronizing.
+		
+		\item $\mathcal A$ is completely reachable.
+		
+		\item $\mathcal A$ is completely distinguishable.
+		\end{enumerate}
+\end{corollary}
+
+Note that we also have the equivalences from \cref{cor:defectatmostone-weaker} for SI-automata
+where the group of units of its transformation monoid is transitive.
+
+\begin{corollary}
+	\label{cor:SI_CR}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be an SI-automaton without permutational letters.
+	Then $\mathcal A$ is completely reachable
+	if and only if it is strongly connected.
+\end{corollary}
+\begin{proof}
+	Suppose $\semiautomat{A}{Q}{\Sigma}{\delta}$ is a strongly connected
+	SI-automaton without permutational letters.	
+	Let $A \subseteq Q$ be a maximal subset such that $|\delta(A, u)| = 1$
+	for some $u \in \Sigma^*$.
+	Assume $|A| < |Q|$.
+	As $\mathcal A$ is strongly connected,
+	there exists a transition labeled by some letter $a \in \Sigma$
+	starting from some state in $Q \setminus A$
+	and ending in $A$, i.e. $\delta(p, a) \in A$
+	for some $p \in Q \setminus A$.
+	As~$a$ is a simple idempotent,
+	we have $\delta(A \cup \{p\}, a) = A$.
+	Then $|\delta(A \cup \{p\}, au)| = 1$, contradicting
+	the maximal choice of~$A$.
+	So, we must have $A = Q$ and $\mathcal A$
+	is synchronizing.		
+	Then the claim follows from \cref{sync_max:cor:SIcr}.\footnote{For an alternative argument,
+	for such an automaton, the automaton graph with its self-loops omitted
+	equals its Rystsov graph $I(\mathcal A)$. Thus it is strongly connected
+	and so $\mathcal A$ is completely reachable by \cref{sync_max:thm:IS_SCC}.}
+\end{proof}
+
+\begin{proposition}  \label{sync_max:prop:sufficient-primitive-SI}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be an SI-automaton with at least three states.
+	Then $\mathcal A$ does not admit some non-trivial $\TS{\mathcal A}$-congruence and has some simple idempotent letter
+	if and only if it is strongly trap-connected, or it is
+	strongly connected and synchronizing.
+\end{proposition}
+\begin{proof}
+	First, assume $\mathcal A$ does not admit some non-trivial $\TS{\mathcal A}$-congruence and 
+	has some simple idempotent letter.
+	By~\cite[Cor.~2.3]{Volkov24} an automaton not admitting non-trivial congruences
+	and having a letter inducing a one-point singular is synchronizing.
+	Thus, $\mathcal A$ is synchronizing.
+	By \cref{prelim:cor:simpleaut}, 
+	it is strongly connected or strongly trap-connected.	
+	
+	Conversely, first suppose~$\mathcal A$ is strongly trap-connected with trap state $t$.
+Let $\sim$ be some $\TS{\mathcal A}$-congruence
+and suppose $p \sim q$ for distinct states $p,q \in Q$.
+Consider a shortest word $u$
+mapping $p$ or $q$ to~$t$.
+By \cref{app:cor:SIsets} it
+maps only one of both states to~$t$
+and the other state remains in~$Q \setminus \{t\}$.
+Without loss of generality,
+let $\delta(p, u) = t$
+and $\delta(q, u) \in Q \setminus \{t\}$.
+Let $r \in Q$ be some state with $r \ne t$.
+Since~$Q \setminus \{t\}$ is strongly connected,
+we have $\delta(q, uv) = r$
+for some $v \in \Sigma^*$.
+With $\delta(p, u) \sim \delta(q, u)$, this implies $t \sim r$.
+Since~$r$ was chosen arbitrarily in~$Q \setminus \{t\}$,
+we find that every state is congruent to~$t$
+and thus~$\sim$ is the universal relation.
+
+Next, suppose~$\mathcal A$
+is strongly connected and synchronizing.
+By \cref{sync_max:thm:rystsov_SI}, $I(\mathcal A)$
+is strongly connected. Since $I(\mathcal A)$ is a subgraph of $I(\TS{\mathcal A})$
+by \crefitem{sync_max:prop:Rystsov_graph_vs_SI_graph}{sync_max:prop:item:IAsubgraphIS},
+from \cref{thm:primitive} we get that $\mathcal A$
+admits no non-trivial $\TS{\mathcal A}$-congruence. 
+\end{proof}
+
+
+	SI-automata without simple idempotent letters
+	whose group of units is primitive do not admit non-trivial congruences
+	and are not synchronizing (and so also not strongly trap-connected).
+	
+	
+	\begin{corollary} \label{prelim:classes:SI:without-perm-letters-SCC}
+		Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be an SI-automaton with at least three states without permutational letters.
+		Then~$\mathcal A$ does not admit some non-trivial $\TS{\mathcal A}$-congruence
+		if and only if it is strongly trap-connected or strongly connected.	
+	\end{corollary}
+	\begin{proof}
+		If~$\mathcal A$
+		does not admit any non-trivial $\TS{\mathcal A}$-congruence,
+		then, by \cref{prelim:cor:simpleaut}, 
+		it is strongly connected or strongly trap-connected.	
+		The converse implication follows from \cref{sync_max:prop:sufficient-primitive-SI} 
+		and the fact that if $\mathcal A$ is strongly connected, then it is synchronizing
+		by \cref{cor:SI_CR}.
+		%	% Alter, direkter Beweis ohne die \cref{sync_max:prop:sufficient-primitive-SI} 
+		%		First, suppose~$\mathcal A$ is strongly connected or strongly trap-connected.
+		%		Let $A \subseteq Q$ be a proper subset with $|A| \ge 2$.
+		%		There exists an edge connecting a state in~$A$
+		%		to some state state outside of~$A$, i.e., $\delta(q, a) \notin A$
+		%		for some $q \in A$ by the following argument: if $\mathcal A$ is strongly connected,
+		%		this follows from \cref{prelim:lem:partition_SCC},
+		%		if $\mathcal A$ is strongly trap-connected with trap state~$t$,
+		%		then for $A \ne Q \setminus \{t\}$
+		%		this follows from \cref{prelim:lem:partition_SCC}
+		%		and for $A = Q \setminus\{t\}$
+		%		we can choose $\delta(q, a) = t$.
+		%		Let $p \in A$ with $p \ne q$.
+		%		Then $p, q \in A$ but $\delta(p, a) = p \in A$
+		%		and $\delta(q, a) \notin A$ since~$a$ is a simple idempotent.
+		%		Thus, $A$ cannot be the congruence class of some $\TS{\mathcal A}$-congruence.
+		%		Since~$A$ was arbitrarily chosen, this implies
+		%		that $\mathcal A$ only admits the trivial $\TS{\mathcal A}$-congruences.
+	\end{proof}
+	
+
+\begin{proposition} \label{syncmax:prop:SI-grp-units-transitive}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	be an SI-automaton with at least three states and 
+	a single simple idempotent letter.
+	Then the following implies that the group of units $G$ of $\TM{\mathcal A}$ is transitive:
+	
+	\begin{enumerate}
+	\item \label{syncmax:prop:SI-grp-units-transitive:1} $\mathcal A$ is strongly connected.
+	
+	\item \label{syncmax:prop:SI-grp-units-transitive:2} Every $k$-set is distinguishable from every distinct $l$-set of states
+	for some $2 \le k, l \le |Q|$ with $\min\{k,l\} < |Q|$ and $\max\{k, l\} > 2$.
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+\ref{syncmax:prop:SI-grp-units-transitive:1}:	Suppose $G$ is not transitive and let $\Orbit{p}{G}$
+	and $\Orbit{q}{G}$ be two distinct orbits for $p,q \in Q$.
+	If the single idempotent letter connects two states
+	in one of these orbits, then no state from one orbit
+	is reachable from a state from the other orbit
+	and so $\mathcal A$ is not strongly connected.
+	Otherwise, if, without loss of generality,
+	this letter connects a state from $\Orbit{p}{G}$
+	with a state from $\Orbit{q}{G}$,
+	then no state from  $\Orbit{p}{G}$
+	is reachable from a state from  $\Orbit{q}{G}$
+	and so~$\mathcal A$ is not strongly connected.
+	
+\ref{syncmax:prop:SI-grp-units-transitive:2}: Without loss of generality, suppose $k \le l$. 
+Let $a \in \Sigma$ be the simple idempotent letter
+and $\delta(p, a) = q$ with $p \ne q$.
+From \cref{prelim:autsyncw:prop:two-sets-min-rank} 
+we get that~$\mathcal A$ is synchronizing.
+The orbits $\Orbit{p}{G}$ and $\Orbit{q}{G}$ are the only orbits of~$G$,
+for if there exists another orbit, then it is mapped to itself by every letter
+and no letter maps some state into it, which
+implies that~$\mathcal A$ cannot be synchronizing.
+For $\Orbit{p}{G} \ne \Orbit{q}{G}$,
+there is no letter mapping two distinct states in~$\Orbit{q}{G}$
+to one state and so $\Orbit{q}{G} = \{q\}$
+and~$q$ is a trap state.
+We can pick distinct $s, t \in A$ as $|Q| \ge 3$.
+Since $l > 2$ and $2 \le k < |Q|$
+there exists a $k$-set $A$ with $s,t \in A$
+and an $l$-set $B$ with $q, s,t \in B$ such that $A \ne B$.
+The only way to map two states to one state is to use the letter~$a$,
+which yields that a word mapping two states to one state maps them both to~$q$.
+Thus, $|\delta(A, u)| = 1$
+if and only if $\delta(A, u) = \{q\}$
+if and only if $\delta(B, u) = \{q\}$
+if and only if $|\delta(B, u)| = 1$,
+which yields that~$A$ and~$B$ are indistinguishable.
+So, $G$ must be transitive.
+\end{proof}
+
+\begin{corollary}\label{syncmax:SI-aut:cor:single-idempotent}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	be an SI-automaton with at least three states and a single simple idempotent letter.
+	Then the following are equivalent.
+	\begin{enumerate}
+		\item \label{syncmax:SI-aut:cor:single-idempotent:1} $\mathcal A$ is strongly connected and synchronizing. 
+		
+		\item \label{syncmax:SI-aut:cor:single-idempotent:2} $\mathcal A$ is completely reachable.
+		
+		\item \label{syncmax:SI-aut:cor:single-idempotent:3} $\mathcal A$ is sync-maximal.
+		
+		\item \label{syncmax:SI-aut:cor:single-idempotent:4} $\mathcal A$ is completely distinguishable.		
+
+		\item \label{syncmax:SI-aut:cor:single-idempotent:5} Every $k$-set is distinguishable from every distinct $l$-set of states for some $2 \le k, l \le |Q|$ with $\min\{k,l\} < |Q|$ and $\max\{k, l\} > 2$.
+		
+		\item \label{syncmax:SI-aut:cor:single-idempotent:6} $\mathcal A$ is strongly connected and all pairs of distinct $2$-sets are distinguishable.
+	\end{enumerate}
+\end{corollary}
+\begin{proof}
+	$\ref{syncmax:SI-aut:cor:single-idempotent:1} \Rightarrow \ref{syncmax:SI-aut:cor:single-idempotent:2}$:
+	This follows from \cref{sync_max:cor:SIcr}, 
+	
+	$\ref{syncmax:SI-aut:cor:single-idempotent:2} \Rightarrow \ref{syncmax:SI-aut:cor:single-idempotent:3}$:	
+	As it has only one non-permutational letter, by \cref{sync_max:cor:single-non-permutation}, 
+	we find that the group of units of of $\TM{\mathcal A}$  is transitive.\footnote{Alternatively,
+		this also follows from \cref{syncmax:prop:SI-grp-units-transitive},
+		or with the following argument: for a completely reachable SI-automaton $\mathcal A$, by \cref{prelim:lem:compl_reach_implies_SCC_sync} and \cref{sync_max:thm:rystsov_SI},~$I(\mathcal A)$ 
+		is strongly connected. In case $\mathcal A$ has only a single simple idempotent mapping~$s$ to~$t$,~$I(\mathcal A)$ equals
+		the directed orbital graph of $(s,t)$ w.r.t.~the group of units $G$ of $\TM{\mathcal A}$.
+		Then, strong connectivity implies
+		that each $q \in Q$ has an outgoing edge $(g(s), g(t))$, $g \in G$.
+		So, $q = g(s)$ for some $g \in G$ and so $G$ is transitive.}
+	So, since $|Q| \ge 3$,
+	$\mathcal A$ is completely distinguishable by \cref{cor:defectatmostone-weaker}
+	and thus it is sync-maximal by \cref{sync_max:cor:SCC}.\footnote{For an alternative proof of complete distinguishability:
+		Let $p, q \in Q$
+		with $\excl{a} = \{p\}$ and $\dupl{a} = \{q\}$
+		for the unique simple idempotent letter $a \in \Sigma$.
+		Consider the automaton~$\mathcal B$
+		with letters $a^g$
+		where $a^g$ acts as the conjugate of the action of the letter~$a$
+		for some $g$ from the group of units of $\TM{\mathcal A}$.
+		Since~$\mathcal A$ is completely reachable, as in the proof of \cref{sync_max:thm:SI-automata}
+		presented in the footnote, we find that this automaton is strongly connected.
+		Since $a^g$ maps $g(p)$ to $g(q)$ by \cref{prelim:conj},
+		the automaton graph of $\mathcal B$ equals the orbital digraph
+		of $(p,q)$ of the group of units of $\TM{\mathcal A}$
+		and it also equals $I(\mathcal A)$.
+		In this orbital digraph, by strong connectivity,
+		every state has an outgoing transition, which
+		implies that the group of units must be transitive
+		since then there must exist a permutation mapping~$p$
+		to every other state.
+		Thus it is vertex-transitive and since $p \ne q$ it has no self-loops, by \cref{prelim:prop:vertex-transitive-SCC-32-connected},
+		we find that the orbital digraph is strongly $\frac{3}{2}$-connected.
+		Since $I(\mathcal A)$ is a subgraph of $I(\TM{\mathcal A})$
+		by \cref{sync_max:prop:Rystsov_graph_vs_SI_graph},
+		from \cref{sync_max:thm:IS_32SCC}, 
+		we find that~$\mathcal A$
+		is completely distinguishable.}	
+	
+	$\ref{syncmax:SI-aut:cor:single-idempotent:3} \Rightarrow \ref{syncmax:SI-aut:cor:single-idempotent:4}$: By \cref{sync_max:thm:char_sync_max_aut}, $\mathcal A$ is completely distinguishable.
+	
+	$\ref{syncmax:SI-aut:cor:single-idempotent:4} \Rightarrow \ref{syncmax:SI-aut:cor:single-idempotent:5}$: This is obvious.
+	
+	$\ref{syncmax:SI-aut:cor:single-idempotent:5} \Rightarrow \ref{syncmax:SI-aut:cor:single-idempotent:6}$:  
+	By \cref{syncmax:prop:SI-grp-units-transitive}, the group of units of $\TM{\mathcal A}$
+	is transitive.
+	Since every state can be mapped to any other state
+	by a permutational word, $\mathcal A$
+	is strongly connected.
+	By \cref{sync_max:thm:SI-automata} we find
+	that all pairs of distinct $2$-sets are distinguishable.	
+	
+	$\ref{syncmax:SI-aut:cor:single-idempotent:6} \Rightarrow \ref{syncmax:SI-aut:cor:single-idempotent:1}$: 
+	This follows from \cref{sync_max:prop:2-sets-dist-SCC-implies-sync}.
+\end{proof}
+
+Next, we state equivalences for binary SI-automata
+derived from \cref{syncmax:SI-aut:cor:single-idempotent}.
+
+\begin{corollary} \label{sync_max:prop:binary-SI}
+	Let  $\semiautomat{A}{Q}{\{a,b\}}{\delta}$ be a binary SI-automaton with at least three states.
+	Then the following are equivalent.
+	
+	\begin{enumerate}
+		\item \label{sync_max:cor:binary-SI:1} $\mathcal A$ is strongly connected and synchronizing.
+		
+		\item \label{sync_max:cor:binary-SI:2} $\mathcal A$ is completely reachable.
+		
+		\item \label{sync_max:cor:binary-SI:3} $\mathcal A$ is sync-maximal.
+		
+		\item \label{sync_max:cor:binary-SI:4a} $\mathcal A$ is completely distinguishable.
+		
+		\item \label{sync_max:cor:binary-SI:4b} Every $k$-set is distinguishable from every distinct $l$-set of states for some $2 \le k, l \le |Q|$ with $\min\{k,l\} < |Q|$ and $\max\{k, l\} > 2$.
+			
+		\item \label{sync_max:cor:binary-SI:5} $\mathcal A$ is strongly connected and all pairs of distinct $2$-sets are distinguishable.
+		
+		\item \label{sync_max:cor:item:form} In $\mathcal A$, one letter, say $b \in \Sigma$, cyclically permutes
+		the states and the other letter $a \in \Sigma$
+		is a simple idempotent 
+		such that $\applytrans{\delta}{q}{a} = \applytrans{\delta}{q}{b^d a}$
+		for some $q \in Q$ and $0 < d < n$ coprime to~$n$ (see \cref{prelim:fig:binarySI-sync-SCC}).
+	\end{enumerate}
+\end{corollary} 
+\begin{proof}
+	It is easily seen that the only synchronizing binary SI-automata
+	without permutational letters and $|Q| \ge 3$
+	have three states and fulfill neither of the
+	mentioned properties. Thus, we can assume~$\mathcal A$
+	has a single simple idempotent letter.
+	Then, by \cref{syncmax:SI-aut:cor:single-idempotent},
+	we obtain the equivalences
+	between~\cref{sync_max:cor:binary-SI:1,sync_max:cor:binary-SI:2,sync_max:cor:binary-SI:3,sync_max:cor:binary-SI:4a,sync_max:cor:binary-SI:4b,sync_max:cor:binary-SI:5}.
+	
+	A synchronizing binary SI-automaton has
+	only the two forms from \cref{prop:structure_simp_idem_binary},
+	where only the type of automaton as claimed 
+	is strongly connected and synchronizing. 
+	This gives the equivalence between \cref{sync_max:cor:binary-SI:1,sync_max:cor:item:form}.
+\end{proof}
+
+In the binary automaton from \cref{prelim:fig:binarySI-sync-trap},
+pairs of distinct $2$-set are distinguishable, 
+but it is neither strongly connected nor completely distinguishable.

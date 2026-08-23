@@ -1,0 +1,298 @@
+%!TEX root = ./../../springer-mono-format/book.tex
+%!TEX root = ./../../thesis-trier.tex
+ 
+\IN{strongly regular codes}
+Solid codes provide outstanding fault-tolerance when used for information transmission through a noisy channel w.r.t.~symbol substitutions and synchronization errors. In this context,
+they were introduced by Levenshtein~\cite{Lev64} under the name \emph{strongly regular codes}, 
+and further investigated by Romanov~\cite{Rom66}.
+Shyr and Yu~\cite{ShyrYu90} introduced solid codes to investigate disjunctive domains, 
+but did not recognize the connection to the earlier work by Levenshtein and Romanov. 
+Later, Jürgensen and Yu~\cite{DBLP:journals/eik/JurgensenY90} observed that strongly 
+regular codes describe precisely the solid codes.
+For further information, we refer to the surveys~\cite{DBLP:journals/iandc/Jurgensen08,DBLP:reference/hfl/JurgensenK97},
+or the introductory section of~\cite{DBLP:journals/tcs/JurgensenS21}. 
+Recall that \cref{constrsync:ex:binarysolidcodeitem,constrsync:ex:constr-solid-code}
+from \cref{constrsync:ex:binarysolidcode} gave an infinite binary solid code 
+and a method to construct a solid codes, respectively.
+
+In our investigation on the constrained synchronization problem and synchronization conditions
+for automata obtained in reductions, we discovered (to the best of our knowledge)
+new characterizations of solid codes, which we present in the following
+(see the discussion section,
+\cref{constr_sync:sec:gen_results:discussion}, page~\pageref{discussion:strongly-self-sync-codes}, 
+for some background on how this characterization arose in the context
+of the constrained synchronization problem).
+
+Here, first, in \cref{thm:char-solid-codes}, we recap known characterizations. 
+\Cref{thm:solidcode} collects further characterizations of solid codes
+which are new and connect solid codes to various language equations.
+Lastly, \cref{thm:solidcode-char2,cor:solidcode-char3,constrsync:prop:sigma-solid-code-char} 
+give two other new characterizations.
+
+\begin{theorem} \label{thm:char-solid-codes}
+Let $L \subseteq \Sigma^+$ with $L \ne \emptyset$. Then the following are equivalent.
+\begin{enumerate}
+	
+\item  \label{thm:char-solid-codes:1} $L$ is a solid code.
+	
+\item  \label{thm:char-solid-codes:2} (Jürgensen \& Yu~\cite{DBLP:journals/eik/JurgensenY90}) For every word $w \in \Sigma^*$ 
+ we have $w = u_0 w_1 u_1 w_2 u_2 \cdots w_n u_n$
+ for some $n \ge 0$ and unique words $u_0, u_1, \ldots, u_n \in \Sigma^* \setminus \Sigma^* L \Sigma^*$
+ and $w_1, w_2, \ldots, w_n \in L$.
+	
+\item \label{thm:char-solid-codes:3} (Staiger~\cite{DBLP:journals/tcs/JurgensenS21}, Romanov~\cite{Rom66}, Levenshtein~\cite{Lev64})
+ There exists a state-invariant decoder without look-ahead for $L$ (see \cite[Def.~9]{DBLP:journals/tcs/JurgensenS21}
+ for a definition of these decoders for finite solid codes and extensions to infinite solid codes).
+
+\item \label{thm:char-solid-codes:4} (Liu, Guo \& Shum~\cite[Thm.~2.4]{Liu2021}) $L$ is an infix code and $\{ u_1\cdots u_n \}$ is overlap-free for 
+ all sequences of distinct words $u_1, \ldots, u_n \in L$ with $n \ge 1$.\footnote{In~\cite[Thm.~2.4]{Liu2021},
+ 	if~$L$ is finite, then overlap-freeness is only stated to hold for $\{u_1\cdots u_n\}$
+ 	if $2 \le n \le |L|$. However, this seems to be a typo,
+ 	as for example $L = \{ aba, bcb \}$
+ 	is an infix code
+ 	and $\{ ababcb\}$ and $\{ bcbaba \}$
+ 	are each overlap-free, while~$L$
+ 	is not overlap-free and so not a solid code.} 
+ 
+\item \label{thm:char-solid-codes:5} (Liu, Guo \& Shum~\cite[Thm.~2.4]{Liu2021}) $L$ is an infix code such that $\{u\}$ is overlap-free for all $u \in L$ and $\{uv\}$ is overlap-free for $u,v \in L$ with $u \ne v$.
+\end{enumerate}	
+\end{theorem}
+
+\begin{remark}
+	Since for distinct $u_1, \ldots, u_n \in L$
+	we have $u_i \cdots u_n \ne u_1 \cdots u_{n - i + 1}$
+	for all $i \in \{1,\ldots,n\}$.
+	Thus~$L$ is overlap-free
+	if $\{ u_1 \cdots u_n \}$
+	is overlap-free for distinct $u_1, \ldots, u_n \in L$.
+	Next, if for distinct $u,v \in L$
+	we have $u = xy$ and $v = yz$
+	for non-empty $x,y,z \in \Sigma^+$,
+	then $vu = yzxy$ and so $\{vu\}$
+	is not overlap-free.
+	Thus, if $\{u\}$ for $u \in L$ and $\{uv\}$
+	for distinct $u,v \in L$ are overlap-free,
+	then~$L$ is overlap-free.
+	This shows that the additional conditions in Items~\ref{thm:char-solid-codes:4} and~\ref{thm:char-solid-codes:5} of \cref{thm:char-solid-codes}, beyond being an infix code, are equivalent to overlap-freeness (without any additional assumptions on~$L$).
+\end{remark}
+
+\begin{theorem} \label{thm:solidcode}
+Let $L \subseteq \Sigma^+$. Then the following are equivalent:
+\begin{enumerate}
+\item  \label{thm:solidcode:1} $L$ is a solid code.
+
+\item  \label{thm:solidcode:1a} $L$ is a bifix code and $(\pref{L} \setminus L) L \cap \Sigma^* L \Sigma^+ = \emptyset$.
+
+\item  \label{thm:solidcode:1b}  $L$ is a suffix code and $\left( \bigcup_{u \in L} ( \pref{u}\setminus\{u\} ) \right)L \cap \Sigma^*L\Sigma^+ = \emptyset$.
+
+\item \label{thm:solidcode:2} $L$ is an infix code and $(\pref{L} \setminus L) L \cap L \Sigma^+ = \emptyset$.
+
+\item \label{thm:solidcode:3} $L$ is an infix code and $\pref{L} \cap \suff{L} = L \cup \{\varepsilon\}$.	
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+$\ref{thm:solidcode:1}\Rightarrow \ref{thm:solidcode:1a}$: A solid code is an infix code, and so a bifix code, and overlap-free.
+Suppose $vw = xuy$
+with $x \in \Sigma^*$, $y \in \Sigma^+$, $u, w \in L$, and
+$v \in \pref{L} \setminus L$.
+By \cref{lem:overlap-free-prefix}
+we have $|x| > 0$.
+For $|x| \ge |v|$ (resp.~$|y| \ge |w|$), we have $u \in \factor{w}$ (resp.~$u \in \factor{v}$).
+For $0 < |x| < |v|$ and $0 < |y| < |w|$,
+we have $u = v'w'$ for a non-empty
+and proper suffix $v'$ (resp.~prefix~$w'$)
+of $v$ (resp.~$w$), so that $L$ is not overlap-free.
+Hence, for $(\pref{L} \setminus L) L \cap \Sigma^+ L \Sigma^+  \ne \emptyset$,
+we get that $L$ is not a solid code, which gives the claim.
+
+$\ref{thm:solidcode:1a}\Rightarrow \ref{thm:solidcode:1b}$: Since~$L$ is a prefix code,
+ its set of proper prefixes equals $\pref{L}\setminus L$, which gives the claim.
+
+$\ref{thm:solidcode:1b}\Rightarrow \ref{thm:solidcode:2}$: Suppose~$L$ is a suffix code as stated.
+Assume we have $uvw \in L$ with $u \in \Sigma^*$, $v \in L$,
+and $w \in \Sigma^+$.
+Let $x$ be a proper prefix of some word in~$L$.
+Then $xuvw \in \Sigma^* L \Sigma^+$
+and this is excluded by assumption.
+Thus, $L$ is an infix code.
+The assumption yields that $( \pref{L}\setminus L ) L \cap L \Sigma^+ = \emptyset$.
+
+$\ref{thm:solidcode:2} \Rightarrow \ref{thm:solidcode:3}$: 	By \cref{lem:overlap-free-prefix}, $L$ is overlap-free.
+Thus, \cref{constrsync:prop:overlap-free-inclusion-eqn}
+gives $\pref{L} \cap \suff{L} \subseteq L \cup \{\varepsilon\}$.
+The inclusion
+$L \cup \{\varepsilon\} \subseteq \pref{L} \cap \suff{L}$
+holds for any language.	
+
+$\ref{thm:solidcode:3} \Rightarrow \ref{thm:solidcode:1}$: 
+By \cref{constrsync:prop:pref-suff-overlap-free-inclusion-eqn}, $L$
+is overlap-free and thus a solid code.	
+\end{proof}
+
+\begin{remark}
+	As far as we are aware of,
+	the condition $(\pref{L} \setminus L) L \cap \Sigma^* L \Sigma^+ = \emptyset$
+	was never investigated in the literature before (apart
+	from our own work~\cite{DBLP:conf/fct/Hoffmann21} 
+	whose results are presented and extended
+	in the present thesis).
+	Note that $\pref{L}L \subseteq L\Sigma^+$ holds for every language $L \subseteq \Sigma^*$.
+\end{remark}
+
+We mention an implication for languages  $L \subseteq \Sigma^*$
+such that $(\pref{L} \setminus L) L \cap \Sigma^* L \Sigma^+ = \emptyset$.
+
+\begin{proposition}
+	Let $L \subseteq \Sigma^*$
+	such that $(\pref{L} \setminus L) L \cap \Sigma^* L \Sigma^+ = \emptyset$.
+	Then $\pref{L}\subseteq L$
+	or $uvw \in L$ with $u,v \in \Sigma^*$ and $v \in L$ implies $w = \varepsilon$.
+\end{proposition}
+\begin{proof}
+	Suppose we have  $x \in \pref{L} \setminus L$
+	for some $x \in \Sigma^*$.
+	Let $v \in L$
+	with $uvw \in L$ for some $u,w \in \Sigma^*$.
+	Assume $|w| > 0$.
+	Then we have $xuvw \in (\pref{L}\setminus L) L \cap \Sigma^* L \Sigma^+$.
+	Thus, we must have $|w| = 0$.
+\end{proof}
+
+\begin{theorem} \label{thm:solidcode-char2}
+	Let $L \subseteq \Sigma^+$.
+	Then $L$ is a solid code
+	if and only if for all $u \in \pref{L}$ and $v \in L$
+	such that $uv = xwy$ for  $x \in \Sigma^*$ and $y \in \Sigma^+$ and $w \in L$
+	we have $x = \varepsilon$ and $u = w$.			
+\end{theorem}
+\begin{proof}
+	First, suppose $L$ is a solid code.
+	Let $u \in \pref{L}$, $v, w \in L$,
+	and $uv = xwy$ for $x \in \Sigma^*$ and $y \in \Sigma^+$.	
+	By \crefitem{thm:solidcode}{thm:solidcode:1a}, we must have $u \in L$.
+	By \crefitem{constr_sync:prop:selfsync_implies_avoiding}{constr_sync:prop:item:sc-in-cf}, 
+	$L$ is comma-free.
+	So $u, v \in L$	imply $x = \varepsilon$ and, as $L$ is a prefix code, $w = u$.	
+	Conversely, suppose the stated condition holds.
+	Then, clearly, $L$ is comma-free.
+	Next, suppose $u \in \pref{L} \setminus L$ and $v,w \in L$
+	with $uv = xwy$ for some $x \in \Sigma^*$ and $y \in \Sigma^+$.
+	By assumption, $x = \varepsilon$ and $u = w$.
+	However, as $u \notin L$ we have $u \ne w$.
+	So we must have $(\pref{L} \setminus L)L \cap L \Sigma^+ = \emptyset$.
+\end{proof}
+
+\begin{corollary} \label{cor:solidcode-char2}
+	Let $C \subseteq \Sigma^+$ be a solid code.
+	Then $\pref{C}C \cap \Sigma^+ C \Sigma^+ = \emptyset$.
+\end{corollary}
+
+The condition $\pref{C}C \cap \Sigma^+ C \Sigma^+ = \emptyset$
+clearly implies that~$C$ is comma-free,
+but not every comma-free code fulfills it.
+For example, for the comma-free code $C = \{aba,cd,bc\}$
+we have $abcd \in (\pref{C}\setminus C)C \cap \Sigma bc \Sigma$.
+
+The next examples show that $\pref{C}C \cap \Sigma^+ C \Sigma^+ = \emptyset$
+does not characterize solid codes.
+
+\begin{example}
+	\begin{enumerate}
+		\item For the comma-free code $C = \{abb,aba\}$ from \crefitem{constrsync:ex:binarysolidcode}{constrsync:ex:comma-free-not-solid}
+		that is not a solid code we have $\pref{C}C \cap \Sigma^+ C \Sigma^+ = \emptyset$.
+		
+		\item Let $C = \{ab,bc\}$. Then $C$ is not a solid code,
+		but we have $\pref{C}C \cap \Sigma^+ C \Sigma^+ = \emptyset$.
+	\end{enumerate} 	
+\end{example}
+
+\begin{proposition} \label{constrsync:prop:prefLintersect}
+	Let $L \subseteq \Sigma^+$.
+	Then $\pref{L}L \cap \Sigma^+ L \Sigma^+ = \emptyset$
+	if and only if for all $u \in \pref{L}$ and $v \in L$
+	such that $uv = xwy$ for $x \in \Sigma^+$ and $y \in \Sigma^*$ and $w \in L$
+	we have $y = \varepsilon$ and $w = v$.
+\end{proposition}
+\begin{proof}
+	First, suppose $\pref{L}L \cap \Sigma^+ L \Sigma^+ = \emptyset$.
+	In this case, we must have $y = \varepsilon$ since
+	otherwise $uv \in \Sigma^+ L \Sigma^+$.
+	Since~$L$ is a suffix code, this implies $w = v$.
+	
+	Conversely, the condition 
+	implies $\pref{L}L \cap \Sigma^+ L \Sigma^+ = \emptyset$.	
+\end{proof}
+
+\begin{corollary} \label{cor:solidcode-char3}
+	Let $L \subseteq \Sigma^+$.
+	Then $L$ is a solid code
+	if and only if for all $u \in \pref{L}$ and $v \in L$,
+	if $uv = xwy$ for  $w \in L$ and $x,y \in \Sigma^*$,
+	then $x = \varepsilon$ and $w = u$
+	or $y = \varepsilon$ and $w = v$.
+\end{corollary}
+\begin{proof}
+	\Cref{thm:solidcode-char2,cor:solidcode-char2,constrsync:prop:prefLintersect} show 
+	that a solid code fulfills the condition.
+	Conversely, it implies the condition
+	from \cref{thm:solidcode-char2} if $|y| > 0$
+	and thus that~$L$ is a solid code.
+\end{proof}
+
+Lastly, we give a characterization using the Levenshtein-Romanov mapping. It basically combines results
+from \cref{constrsync:sec:codes:levensthein-romanov}.
+
+\begin{proposition} \label{constrsync:prop:sigma-solid-code-char}
+	Let $L \subseteq \Sigma^+$ be non-empty.
+	Then $L$ is a solid code if and only if
+	for all $u,v \in \Sigma^*$ the following is true:
+	\begin{enumerate}
+		\item \label{constrsync:prop:sigma-solid-code-char:1} 
+		$\sigma_L(uv) = uv$ implies $u \notin L$ or $v = \varepsilon$,
+		
+		\item \label{constrsync:prop:sigma-solid-code-char:2} $\sigma_L(uv) \in L$ implies $v \notin \pref{L}\setminus L$ or $v = \varepsilon$,
+		
+		\item \label{constrsync:prop:sigma-solid-code-char:3} $\sigma_L(uv) \ne v$ implies $v \notin L$. 	
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+	First, suppose~$L$ is a solid code.	
+	Assume $\sigma_L(uv) = uv$.
+	Since~$L$ is a prefix code,
+	by \cref{constrsync:prop:prefix-code:4} of \cref{constrsync:prop:prefix-code}
+	we find that~$u \notin L$
+	or $v = \varepsilon$.
+	Next, let $\sigma_L(uv) \in L$ and $v \in \pref{L}\setminus L$.
+	Then $\sigma_L(uv) = wv$ for some $w \in \Sigma^*$
+	with $|w| > 0$ since $wv \in L$.
+	By overlap-freeness, this yields $v = \varepsilon$.	
+	\Cref{constrsync:prop:sigma-solid-code-char:3}
+	follows from \cref{constrsync:prop:infix-code:6} of \cref{constrsync:prop:infix-code}
+	since~$L$ is an infix code.
+		
+	Conversely, \cref{constrsync:prop:sigma-solid-code-char:1} 
+	yields that~$L$ is a prefix code by \crefitem{constrsync:prop:prefix-code}{constrsync:prop:prefix-code:4}.
+	Then, \cref{constrsync:prop:sigma-solid-code-char:3} 
+	yields that~$L$ is an infix code by \cref{constrsync:prop:infix-code:6} 
+	of \cref{constrsync:prop:infix-code}.
+	Next, assume $uv, vw \in L$ for non-empty $u,v,w \in \Sigma^+$.
+	We have $v \in \pref{L}\setminus L$ since~$L$ is a prefix code
+	and $\sigma_L(uv) = uv$. Thus, \cref{constrsync:prop:sigma-solid-code-char:2} 
+	does not hold. So, if all these conditions hold,
+	we find that~$L$ is overlap-free.
+\end{proof}
+
+\begin{remark}
+	By \cref{constrsync:prop:sigma-solid-code-char:3} 
+	from \cref{constrsync:prop:sigma-solid-code-char},
+	for a solid code~$C$ and $v \in C$,
+	we have $\sigma_C(uv) = v$ for $u \in \Sigma^*$.
+	By \cref{constrsync:prop:sigma-solid-code-char:2},
+	we also have $\sigma_C(uw) \notin L$
+	for every proper and non-empty prefix $w$
+	of a word from~$C$.
+	However, note that we do not have $\sigma_C(uw) = w$
+	in this case. For example, for the solid code $C = \{abb, aac\}$
+	we have $\sigma_C(uw) = uw$ for $u = a$
+	and $w = a$.
+\end{remark}

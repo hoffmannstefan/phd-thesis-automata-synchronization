@@ -1,0 +1,64 @@
+%!TEX root = ./../../thesis-trier.tex
+
+\IN{completely reachable!automaton}
+Bondar and Volkov~\cite{BondarV16,BondarCV23}
+called $\semiautomat{A}{Q}{\Sigma}{\delta}$ \emph{completely reachable} if  every non-empty 
+subset $S \subseteq Q$ is reachable, i.e., 
+there exists a word $u \in \Sigma^*$ such that $\applytrans{\delta}{Q}{u} = S$. 
+Equivalently, in the power automaton with the empty set removed, $Q$ is the unique minimum element for the reachability quasiorder.
+
+Completely reachable automata are strongly connected and synchronizing.
+
+\begin{lemma}[Bondar \& Volkov~\cite{BondarV16,BondarCV23}]
+	\label{prelim:lem:compl_reach_implies_SCC_sync} 
+	If $\semiautomat{A}{Q}{\Sigma}{\delta}$ is completely reachable, then~$\mathcal A$
+	is synchronizing and strongly connected.
+\end{lemma}
+\begin{proof}
+	Let $p, q \in Q$.
+	Then $\applytrans{\delta}{Q}{u} = \{q\}$ for some word $u \in \Sigma^*$.
+	Thus $u \in \Syn(\mathcal A)$ and since $\applytrans{\delta}{p}{u} = q$
+	we also conclude that~$\mathcal A$ is strongly connected.
+\end{proof}
+
+In a completely reachable automaton there exists
+for each non-empty subset a word mapping the whole state set to this subset.
+So, its transformation monoid has size at least $2^n - 1$.
+
+Next we show that the automata from the \Cerny family (\cref{intro:sec:cerny,intro:fig:cerny})
+are completely reachable for each $n \ge 1$. This fact also follows from \cref{sync_max:thm:circular_sync_max}, a more general result
+stated later, but it might be instructive to have a concrete example together with a self-contained proof.
+
+\begin{theorem}
+	\label{sync_max:thm:cerny_compl_reach}
+	The automata $\mathcal C_n$ from the \Cerny family (Section~\ref{intro:sec:cerny} \& Figure~\ref{intro:fig:cerny})
+	are completely reachable.
+\end{theorem}
+\begin{proof}
+	Let $\semiautomat{C_n}{[n]}{\{a,b\}}{\delta_n}$.
+	The whole state set is reachable by the empty word.
+	Next, consider a non-empty and proper set $S \subseteq Q$.
+	We have $0 \notin \delta_n(S, b^i)$ and $1 \in \delta_n(S, b^i)$
+	for some $0 \le i < n$.
+	Inductively, there exists $u \in \{a,b\}^*$ such that
+	$\delta_n(S, b^i) \cup \{0\} = \delta_n(Q, u)$.
+	Then we have $\delta(Q, uab^{n - i}) = S$.
+%	
+%	An alternative proof can be obtained by considering the words $u_i = b^{n - i} a b^i$ for $i \in [n]$
+%	for which we have $\delta(j, u_i) = j + 1$ for $j = i$
+%	and $i \in \{0,1,\ldots,n-2\}$, $\delta(n-1, u_{n-1}) = 0$,
+%	and $\delta(j, u_i) = j$ in all other cases. 
+%	Then the claims follows since for distinct $i_0, \ldots, i_m \in [n]$
+%	with $\delta(i_j, b^{i_{j+1} - i_{j}}) = i_{j+1}$
+%	for $j \in \{0,\ldots,n-2\}$
+%	and $i_m + 1 \not\equiv i_1 \pmod{n}$
+%	%and $i_j + s_j \equiv i_{j+1}
+%	%with $0 \le i_1$ and $i_m \le n - 2$,
+%	%or $1 \le i_1$ and  $i_m \le n - 1$,
+%	we have
+%	$
+%		\delta([n], u_{i_1} \cdots u_{i_m}) = [n] \setminus \{ i_1, \ldots, i_m \}.
+%	$
+%	For example, for $n > 2$ we have $\delta([n], u_{n-1} u_0) = \{1,\ldots,n-2\}$,
+%	but note that $\delta([n], u_0 u_{n-1}) = \{0,\ldots,n-2\}$.	
+\end{proof}

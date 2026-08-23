@@ -1,0 +1,159 @@
+%!TEX root = ../../../thesis-trier.tex
+
+First, in \cref{prelim:subclasses:sync:alg-unique-trap,prelim:subclasses:sync:thm:alg-unique-trap},
+we investigate the running time of the problem of deciding synchronizability for automata with a trap state.
+Then, \cref{thm:test_sync,prelim:thm:compute_sync_word}
+make algorithmic statements for general automata. 
+Lastly, in \cref{prelim:thm:comp_sync_states_if_sync},
+we prove that for synchronizing automata
+we can compute in linear time the set of synchronizing
+states. As a consequence, stated in \cref{prelim:cor:set_sync_words_in_P},
+for general automata the set of synchronizing states can be computed in quadratic time.
+
+Later, in \cref{compl:sec:problems}, we will introduce a decision variant of the problem of computing a shortest synchronizing word.
+In general, this problem is \NP-complete even for partially ordered binary automata, see~\cref{prelim:compl:sec:discussion}.
+
+\begin{proposition}\label{prelim:subclasses:sync:alg-unique-trap}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$.
+	We can test in time $O(|Q|)$ and space $O(1)$
+	whether $\mathcal A$ has a trap state, and also whether it has a unique trap state
+	and compute this state if it exists.
+\end{proposition}
+\begin{proof}
+	Iterating through all states and checking whether
+	we find precisely one trap state can be done in the mentioned time and space bounds.
+\end{proof} 
+
+By \crefitem{prelim:thm:sync_trap_state}{prelim:subclasses:thm:trap:item:unique-max} 
+an automaton with a trap state
+is synchronizing precisely if this trap state is reachable
+from every other state, which gives the following time and space bounds
+to test synchronizability for automata with a trap state
+that were also noted by Martyugin~\cite[Prop.~3.2]{Mar2009b}.
+
+\begin{theorem}[{Martyugin~\cite[Prop.~3.2]{Mar2009b}}]\label{prelim:subclasses:sync:thm:alg-unique-trap}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ 
+	be an automaton with a trap state.
+	Then we can test in time $O(|Q| + |Q|\cdot |\Sigma|)$
+	and space $O(|Q|)$ whether it is synchronizing.
+\end{theorem} 
+\begin{proof}
+	By \cref{prelim:subclasses:sync:alg-unique-trap} 
+	we can test whether the automaton has a unique trap, and if so compute it, in time $O(|Q|)$ and space $O(1)$.
+	If this is the case, then checking whether there exists a path from every other state
+	to this trap state can be done in time $O(|Q| + |\Sigma||Q|)$
+	and space $O(|Q|)$ with a breadth-first search
+	by following the edges in the automaton graph 
+	in reverse order starting from the trap state (see, for example, the textbook~\cite{cormen01introduction} for an explanation of this algorithm
+	and a statement of its resource requirements).	
+\end{proof}
+
+\begin{corollary} \label{prelim:subclasses:sync:cor:alg-unique-trap}
+ For a class of automata with the property that a synchronizing state is a trap state,
+ we can test whether an automaton from this class is synchronizing
+ in time $O(|Q| + |Q|\cdot |\Sigma|)$
+ and space $O(|Q|)$.
+\end{corollary}
+\begin{proof}
+	First test in linear time and constant space whether an input automaton
+	has a trap state, which can be done in the stated time and space bounds
+	by \cref{prelim:subclasses:sync:alg-unique-trap}.
+	If this is not the case, then it is not synchronizing by assumption
+	Otherwise, by \cref{prelim:subclasses:sync:thm:alg-unique-trap},
+	we can test in the given time and space bounds whether it is synchronizing.		
+\end{proof}
+
+By \cref{prelim:subclasses:sync:Aiffpairaut},
+$\mathcal A$
+is synchronizing if and only if
+$\mathcal A^{\le 2} / {\sim_F}$ with $F = \{\{q\}\mid q \in Q\}$
+is synchronizing.
+As the pair automaton $\mathcal A^{\le 2} / {\sim_F}$ has the trap state~$F$,
+$\frac{|Q|(|Q|-1)}{2} + 1$ states,
+and $\left( \frac{|Q|(|Q|-1)}{2} + 1 \right) \cdot |\Sigma|$ transitions,
+to test synchronizability of $\mathcal A$ we obtain the following time and space bounds from \cref{prelim:subclasses:sync:thm:alg-unique-trap}.
+
+\begin{theorem}
+	\label{thm:test_sync}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$.
+	We can test in  time $O\left(|Q|^2 + |Q|^2 \cdot |\Sigma|\right)$
+	and space $O\left(|Q|^2\right)$	whether $\mathcal A$ is synchronizing.
+\end{theorem}
+
+However, the algorithm behind \cref{thm:test_sync} 
+does not give us a synchronizing word. Natarajan~\cite[p.~138]{DBLP:conf/focs/Natarajan86}
+has given a greedy algorithm to compute some synchronizing word of length at most $O(|Q|^3 \cdot |\Sigma|)$ in time $O(|Q|^4|\Sigma|)$.
+Eppstein~\cite[Thm.~5, 6 \& 7]{Eppstein90} analyzed this algorithm further,
+optimized it to run in $O(|Q|^3 + |Q|^2 \cdot |\Sigma|)$ time and $O(|Q|^2 + |Q| \cdot |\Sigma|)$ space, and proved that some synchronizing word of length at most $O(|Q|^3)$ 
+can be computed by it (see also the surveys by Sandberg~\cite[Thm. 1.15]{Sandberg04}, Volkov~\cite[p.~16]{DBLP:conf/lata/Volkov08} 
+and Kari \& Volkov~\cite[p.~531]{KariVolkov2021}).
+Later, in \cref{compl:sec:subclasses:known-results}, we will also prove
+that the deciding whether there exists a synchronizing word bounded by some given length-parameter
+is \NP-complete.
+
+\begin{theorem}[Eppstein~\cite{Eppstein90}, Natarajan~\cite{DBLP:conf/focs/Natarajan86}]
+	\label{prelim:thm:compute_sync_word}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$.
+	We can test in time $O(|Q|^3 + |Q|^2 \cdot |\Sigma|)$
+	and (not counting the space for the output)
+	working space $O(|Q|^2 + |Q| \cdot |\Sigma|)$ whether $\mathcal A$
+	is synchronizing and compute a synchronizing word of length $O(|Q|^3)$.
+\end{theorem}
+
+Now, for a synchronizing automaton, we can compute the set of synchronizing states in linear time. %time $O(|Q||\Sigma| + |Q|)$.
+
+\begin{theorem}
+	\label{prelim:thm:comp_sync_states_if_sync}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	be a synchronizing automaton.
+	Then we can compute in time $O(|Q| + |Q||\Sigma|)$ and space $O(|Q|)$
+	the set of synchronizing states.	
+\end{theorem}
+\begin{proof}
+	First, compute the strongly connected
+	components, which can be done
+	in the mentioned time and space bounds~\cite{cormen01introduction,DBLP:journals/siamcomp/Tarjan72}.
+	Since~$\mathcal A$ is synchronizing,
+	it follows from \cref{prelim:thm:SCC_sync_words} and \cref{prelim:prop:maximal-states-SCC}
+	there exists
+	a unique sink component, i.e., a strongly connected component
+	with no outgoing transitions, 
+	which can be easily identified and coincides with the set of synchronizing states.
+	
+	Alternatively, we can pick some state and start a breath-first search or a depth-first search
+	in the automaton graph from this state.
+	The first state $q$ we encounter with no unvisited 
+	neighbors is a maximal state.
+	Since~$\mathcal A$
+	is synchronizing, $[q]_{\eqreach}$
+	equals the set of synchronizing states
+	by \cref{prelim:thm:SCC_sync_words}.
+\end{proof}
+
+For a synchronizing automaton with a trap state~$t$,
+the set of synchronizing states equals $\{t\}$
+and this set can be computed in linear time 
+by \cref{prelim:subclasses:sync:alg-unique-trap}.
+
+Combining Theorem~\ref{thm:test_sync} 
+and~\ref{prelim:thm:comp_sync_states_if_sync}
+gives the next result.
+
+\begin{corollary}
+	\label{prelim:cor:set_sync_words_in_P}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$.
+	We can compute in time 
+	$
+	O\left( |Q|^2 \cdot |\Sigma|\right)
+	$
+	and space $O\left(|Q|^2\right)$	
+	the set of synchronizing states of $\mathcal A$.
+\end{corollary}
+\begin{proof}
+	First, test whether $\mathcal A$ is synchronizing.
+	If $\mathcal A$ is not synchronizing, then return the empty set.
+	Otherwise, compute the set of synchronizing states and return
+	this set. Combining the time and space bounds from Theorem~\ref{thm:test_sync} 
+	and~\ref{prelim:thm:comp_sync_states_if_sync}
+	for these computations gives the claim.
+\end{proof}

@@ -1,0 +1,100 @@
+
+
+
+
+
+
+\usepackage[skip=4pt]{parskip}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{titlesec}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage[export]{adjustbox}
+\usepackage{setspace}
+\usepackage{hyperref}
+\usepackage{imakeidx}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{url}
+\usepackage[ngerman,english]{babel}
+\usepackage{comment} 
+
+% slashbox veraltet
+%\usepackage{slashbox}
+\usepackage{diagbox}
+%
+%Und dann
+%
+%\diagbox{A}{B}
+
+
+\usepackage{xspace} 
+\usepackage{enumitem}
+\usepackage{mathrsfs}
+\usepackage{subcaption}
+\usepackage{color}
+\usepackage{multirow}
+\usepackage{colortbl}
+\usepackage{booktabs}
+\usepackage{citeall}
+\usepackage{longtable}
+\usepackage{changepage}
+\usepackage{nicematrix}
+\usepackage{MnSymbol}
+\usepackage{makecell}
+\usepackage{tcolorbox}
+\usepackage{diagbox} % https://tex.stackexchange.com/questions/7262/diagonally-divided-table-cell?noredirect=1&lq=1
+\usepackage{accents} 
+\usepackage{dirtree}
+\usepackage{tikz}
+\usepackage{xparse}
+\usepackage{stackengine}
+\usepackage{mathtools}
+\usepackage{tabularx}
+\usepackage{environ}
+\usepackage{cleveref}
+
+\usetikzlibrary{shapes,shapes.geometric,arrows,arrows.meta,fit,calc,bending}
+\usetikzlibrary{automata,positioning}
+\usetikzlibrary{shadows.blur}
+\usetikzlibrary{intersections}
+\usetikzlibrary{cd}
+\usetikzlibrary{matrix,patterns,shadings,backgrounds}
+\usetikzlibrary{babel} % https://tex.stackexchange.com/questions/331480/missing-endcsname-in-tikzcd
+
+\tikzstyle{transition} = [font=\small]
+\tikzstyle{line} = [draw,thick,-latex]
+
+\setlength{\extrarowheight}{3pt}
+
+
+
+\usepackage[color=gray!27]{todonotes}
+%\usepackage[disable]{todonotes}
+
+\usepackage[url=false,sorting=anyt,backref=true]{biblatex}
+\addbibresource{../tidied5.bib}
+
+
+\DefineBibliographyStrings{english}{%
+	backrefpage = {cited on page},% originally "cited on page"
+	backrefpages = {cited on pages},% originally "cited on pages"
+}
+
+
+\setenumerate[1]{label={(\arabic*)}}
+
+\newcommand{\mathaord}{} % sonst gibt es eine Fehlermeldung mit "accents"
+
+
+\makeindex
+
+%
+%\usepackage{ifdraft}
+%% https://tex.stackexchange.com/questions/59530/draft-option-in-tikz-like-graphicx
+%\ifoptionfinal{}{%
+%	\usetikzlibrary{external}\tikzexternalize
+%}

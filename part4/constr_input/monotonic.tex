@@ -1,0 +1,101 @@
+%!TEX root = ../../thesis-trier.tex
+
+Here, we investigate the constrained synchronization problem for monotonic input automata.
+When not said otherwise, by $\le$ we denote the linear order given on the states
+of some monotonic automaton.
+
+\Cref{constr_sync:lem:monotonic_min_max_sync} first states 
+a characterization of synchronizing monotonic automata.
+Then, in~\cref{constr_sync:prop:monotonic_bound} 
+we give a quadratic upper bound for a synchronizing word in a given constraint language.
+\Cref{constr_sync:thm:monotonic_in_NL}
+states that the constrained synchronization problem
+for monotonic input automata is in~\NL, 
+even when we have no access to the linear order on the states.
+%where we make no assumption on the encoding of the linear order, or that it is given with the automaton
+%apart from mere existence of this order. 
+
+\begin{lemma}
+	\label{constr_sync:lem:monotonic_min_max_sync}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be a monotonic automaton
+	where $s \in Q$ is the minimum in the linear order on the states
+	and $t \in Q$ the maximum.
+	Then $u \in \Sigma^*$ synchronizes $\mathcal A$
+	if and only if $\applytrans{\delta}{s}{u} = \applytrans{\delta}{t}{u}$.
+\end{lemma}
+\begin{proof}
+	If $u \in \Sigma^*$ synchronizes $\mathcal A$,
+	then in particular  $\applytrans{\delta}{s}{u} = \applytrans{\delta}{t}{u}$.
+	Conversely, for every $q \in Q$ we have $s \le q \le t$
+	and so $\applytrans{\delta}{s}{u} \le \applytrans{\delta}{q}{u} \le \applytrans{\delta}{t}{u}$
+	for $u \in \Sigma^*$.
+	Hence, if $\applytrans{\delta}{s}{u} = \applytrans{\delta}{t}{u}$,
+	then we get $\applytrans{\delta}{Q}{u} = \{ \applytrans{\delta}{t}{u} \}$. 
+\end{proof}
+
+The following proof uses the pair automaton (defined in Section~\ref{sec:pair_aut}).
+
+\begin{proposition}
+	\label{constr_sync:prop:monotonic_bound}
+	Let $\automat{B}{P}{\Sigma}{\mu}{p_0}{F}$ be a PDFA. % constraint PDFA.
+	If $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	is an $n$-state monotonic automaton with a synchronizing word in $L(\mathcal B)$,
+	then a shortest word in~$\Syn(\mathcal A) \cap L(\mathcal B)$
+	has length at most $\left( \binom{n}{2} + 1 \right) \cdot |P| - 1$.
+\end{proposition}
+\begin{proof} 
+	We can assume $s \ne t$. Consider the pair automaton $\mathcal C = \mathcal A^{\le 2} / {\sim_S}$
+	where $S = \{ \{q\} \mid q \in Q \}$.
+	Let $s \in Q$ be the minimum and $t \in Q$
+	be the maximum state.
+	By~\cref{constr_sync:lem:monotonic_min_max_sync} 
+	we have $\Syn(\mathcal A) = L(\mathcal C_{\{s,t\}, \{S\}})$.
+	By \cref{prelim:eqn:product-intersection} 
+	the language $L(\mathcal C_{\{s,t\}, \{S\}}) \cap L(\mathcal B)$
+	is accepted by the product PDFA
+	of~$\mathcal C$ and~$\mathcal B$
+	with start state $(\{s,t\}, p_0)$ and final state set $\{S\}\times F$,
+	which has 
+	$\left(\binom{n}{2} + 1 \right) \cdot |P|$ states in total.
+	So, a shortest path from from $(\{s,t\}, p_0)$
+	to a state $(S, p)$ with $p \in F$
+	has length at most $\left(\binom{n}{2} + 1 \right) \cdot |P| - 1$.	
+\end{proof} 
+
+\begin{theorem}
+	\label{constr_sync:thm:monotonic_in_NL}	
+	Let $L \subseteq \Sigma^*$ be fixed regular language. The problem to decide whether a given monotonic input automaton $\semiautomat{A}{Q}{\Sigma}{\delta}$ 
+	has a synchronizing word in $L$ is in~\NL.
+\end{theorem}
+\begin{proof}
+	Set $n = |Q|$. We can assume $n \ge 2$.
+	Let $\automat{B}{P}{\Sigma}{\mu}{p_0}{F}$ be a PDFA
+	with $L = L(\mathcal B)$. 
+	Loop through distinct pairs of states
+	$p, q \in Q$ and nondeterministically guess a word $u \in \Sigma^*$ of length at most $\left( \binom{n}{2} + 1 \right) \cdot |P| - 1$
+	letter-by-letter %while updating $\applytrans{\delta}{\{p,q\}}{u}$.
+	with $\applytrans{\mu}{p_0}{u} \in F$ and $|\applytrans{\delta}{\{p,q\}}{u}| = 1$.
+	%After each iteration for two states $p,q \in Q$, 
+	%check whether $\applytrans{\mu}{p_0}{u} \in F$
+	%and $|\applytrans{\delta}{\{p,q\}}{u}| = 1$.
+	This procedure can run in log-space by using counters (or storage space) with a binary encoding
+	for the states and the length of the word.
+	Then $\mathcal A$ has a synchronizing word  in $L(\mathcal B)$
+	if and only if a word $u \in L(\mathcal B)$ as above
+	can be found for each pair of states $p, q \in Q$.
+	For if there exists a synchronizing word in~$L(\mathcal B)$,
+	then by~\cref{constr_sync:prop:monotonic_bound} it has length at most $\left( \binom{n}{2} + 1 \right) \cdot |P| - 1$.
+	Hence, in each iteration for two states, by nondeterminism,
+	a word in $L(\mathcal B)$ is guessed that maps both states to a single 
+	state.
+	Conversely, if each iteration for two states finds a word in $L(\mathcal B)$
+	mapping both to a single state,
+	then in particular for
+	the minimum state $s \in Q$ and the maximum state $t \in Q$
+	we find a word $u \in L(\mathcal B)$ such that $\applytrans{\delta}{s}{u} = \applytrans{\delta}{t}{u}$.
+	So, by~\cref{constr_sync:lem:monotonic_min_max_sync},
+	the word $u \in L(\mathcal B)$ synchronizes~$\mathcal A$. 	
+\end{proof} 
+
+However, we do not know whether the above problem for monotonic automata 
+is \NL-hard.

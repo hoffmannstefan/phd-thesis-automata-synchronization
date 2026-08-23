@@ -1,0 +1,391 @@
+%!TEX root = ./../../springer-mono-format/book.tex
+%!TEX root = ./../../thesis-trier.tex
+
+Levenshtein~\cite{Lev64} and Romanov~\cite{Rom66} introduced the following mapping.
+
+\IN{Levenshtein-Romanov mapping}
+\begin{definition} \label{def:levenshtein-romanov-mapping}
+	Let $L \subseteq \Sigma^*$ with $L \ne \emptyset$. %be a non-empty language.
+	The \emph{Levenshtein-Romanov mapping} is $\sigma_L \colon \Sigma^* \to \Sigma^*$
+	where $\sigma_L(u)$ for $u \in \Sigma^*$ equals the longest suffix of $u$ that is also a prefix of a word in $L$.
+\end{definition} 
+
+For example $\sigma_{\{a,bba\}}(ababb) = bb$. 
+Note that $\sigma_L$ is only defined for non-empty languages~$L$.
+
+Let $L \subseteq \Sigma^*$ be non-empty and $u,v\in \Sigma^*$. The following relations
+are readily verified:
+\begin{align}
+	\sigma_L(u) & \in \suff{u}\cap \pref{L}  \label{constrsync:eqn:sigmaL-in-suffpref} \\
+	\sigma_L(uv) & \in \Sigma^*v  \text{ for } v \in \pref{L} \\
+%	\sigma_L(u) & \in \Sigma^* L \text{ for } u \in \Sigma^* L \\
+	\sigma_L(u) & = \sigma_{\pref{L}}(u) \label{constr_sync:prop:sigma_L_prefix:1} \\	
+	\sigma_{L}(v) = v & \Leftrightarrow v \in \pref{L}  \label{constr_sync:eqn_sigma_pref1}  \\
+	\sigma_{L}(v) = v & \Leftrightarrow v \in \pref{L\setminus \{v\}} \text{ for } v \notin L \label{constrsync:prop:suffsigma:5} \\	
+	\sigma_{\{u\}}(v) = u & \Leftrightarrow u \in \suff{v} \label{constr_sync:eqn_sigma_suff0} \\
+	\sigma_{\{u\}}(v)  & = \sigma_{\pref{u}\setminus \{u\}}(v) \text{ for } u \notin \suff{v}
+\end{align}
+By \cref{constr_sync:eqn_sigma_suff0,constr_sync:eqn_sigma_pref1} we have
+$\sigma_{\{u\}}(v) \in \{u,v\}$ if and only if $v \in \pref{u} \text{ or } u \in \suff{v}$.
+Note that $v \in \pref{L\setminus\{v\}}$ if and only if $v$ is a proper prefix of some word
+from~$L$.
+
+We need the following two properties
+from~\cite[Prop.~2]{DBLP:journals/tcs/JurgensenS21}. For the convenience of the reader, we include their proofs.
+
+\begin{proposition}[{\cite[Prop.~2]{DBLP:journals/tcs/JurgensenS21}}]
+	\label{constr_sync:prop:sigma_L_properties}
+	Let $L \subseteq \Sigma^*$ be non-empty and $u,v \in \Sigma^*$.
+	\begin{enumerate}
+	\item  \label{constr_sync:item:sigma_L_respects_suffix_relation}
+		$\sigma_L(v)$ is a suffix of $\sigma_L(uv)$.
+		So, $\sigma_L$ preserves the suffix relation, i.e.,
+		if $u$ is a suffix of $v$, then $\sigma_L(u)$ is a suffix of $\sigma_L(v)$. 
+		
+   	\item \label{constr_sync:sigme_L:item:concatenation} $\applyfunc{uv}{\sigma_L} = \applyfunc{\applyfunc{u}{\sigma_L}v}{\sigma_L}$.
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+\ref{constr_sync:item:sigma_L_respects_suffix_relation}: Since $\sigma_L(v)$ is a suffix of $uv$
+in $\pref{L}$ and $\sigma_L(uv)$ is the longest suffix of $uv$ in $\pref{L}$,
+the suffix $\sigma_L(uv)$ is at least as long as the suffix $\sigma_L(v)$ of~$uv$.
+Thus, $\sigma_L(v)$ is a suffix of $\sigma_L(uv)$.
+
+\ref{constr_sync:sigme_L:item:concatenation}: In general, we have
+\begin{equation}\label{eqn:sigmaL}
+	\sigma_L(uv)
+	= 
+	\begin{cases}
+		\sigma_L(v) & \text{if } \suff{u}v \cap \pref{L} = \emptyset, \\
+		wv          & \text{otherwise, where $w \in \suff{u}$ is maximal with $wv \in \pref{L}$.}
+	\end{cases}
+\end{equation}
+(this equation also gives \cref{constr_sync:item:sigma_L_respects_suffix_relation} since $v = x\sigma_L(v)$ for some $x \in \Sigma^*$.)
+Now, first suppose $\suff{u}v \cap \pref{L} = \emptyset$.
+Then $\suff{\sigma_L(u)}v \cap \pref{L} = \emptyset$,
+and so we obtain $\sigma_L(uv) = \sigma_L(v) = \sigma_L(\sigma_L(u)v)$.
+Next, suppose $\suff{u}v \cap \pref{L} \ne \emptyset$.
+Then $\sigma_L(uv) = wv$ for the longest $w \in \suff{u}$
+such that $wv \in \pref{L}$.
+As $w \in \pref{L} \cap \suff{u}$,
+we find that $w$ is a suffix of $\sigma_L(u)$.
+So, $wv$ is also the longest suffix of $\sigma_L(\sigma_L(u)v)$
+in $\pref{L}$, i.e., $\sigma_L(\sigma_L(u)v) = wv$.\footnote{For an alternative argument:
+	Note that, by \cref{constr_sync:item:sigma_L_respects_suffix_relation}, we have
+	$
+	\suff{\sigma_L(v)} \subseteq \suff{\sigma_L(\sigma_L(u)v)} \subseteq \suff{\sigma_L(uv)}.
+	$
+	So, for $\sigma_L(uv) = \sigma_L(v)$
+	we get $\sigma_L(\sigma_L(u)v) = \sigma_L(uv)$.
+	Otherwise, we have $\sigma_L(uv) = wv$ for some $w \in \Sigma^*$.
+	As $w \in \pref{L}$ this yields that $w$ is a suffix of $\sigma_L(u)$
+	and so $\sigma_L(\sigma_L(u)v) = wv$.}
+\end{proof}
+
+\begin{proposition} \label{constr_sync:prop:sigma_L_prefix}
+	Let $L, L' \subseteq \Sigma^*$ be non-empty and $u \in \Sigma^*$.
+	\begin{enumerate}		
+	\item \label{constr_sync:prop:sigma_L_prefix:2} If $\pref{L}\subseteq \pref{L'}$,
+	then $\sigma_{L}(u)$ is a suffix of $\sigma_{L'}(u)$.
+		
+	\item \label{constr_sync:prop:sigma_L_prefix:3} $\sigma_{L}(u)$ is a suffix of $\sigma_{L L'}(u)$.	
+
+	\item \label{constr_sync:prop:sigma_L_prefix:4a} We have
+	\begin{equation} \label{constrsync:notions:eqn:sigmaL-union}
+		\sigma_{L \cup L'}(u) 
+		=
+		\begin{cases}
+			\sigma_{L}(u)  & \text{if } \sigma_{L \cup L'}(u)  \in \pref{L}, \\
+			\sigma_{L'}(u) & \text{otherwise.}
+		\end{cases}	
+	\end{equation}
+	
+	\item \label{constr_sync:prop:sigma_L_prefix:4} We have
+	\begin{equation}\label{constrsync:notions:eqn:LR-mapping-equiv-union}
+	\sigma_{L \cup L'}(u)  \in \pref{L}
+	\Leftrightarrow
+	\sigma_{L'}(u) \in \suff{\sigma_L(u)}
+	\Leftrightarrow
+	|\sigma_L(u)| \ge |\sigma_{L'}(u)|
+	\end{equation}
+
+	\item \label{constr_sync:prop:sigma_L_prefix:5} We have
+	$
+	\sigma_L(u) \in \suff{L'}
+	$
+	if and only if $\sigma_{\{v\}}(u) \in \suff{L'}$ for all $v \in L$.
+	
+	\item \label{constr_sync:prop:sigma_L_prefix:6} We have
+	$
+	\suff{\sigma_L(u)} = \bigcup_{v \in L} \suff{\sigma_{\{v\}}(u)}. 
+	$
+	
+	\item\label{constr_sync:prop:sigma_L_prefix:7}
+	We have $\sigma_L(u) = \varepsilon$ if and only if $\sigma_{\{v\}}(u) = \varepsilon$ for each $v \in L$.
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+\ref{constr_sync:prop:sigma_L_prefix:2}: Every suffix of~$u$ that is a prefix of a word from~$L$
+is also a suffix that is a prefix of a word from~$L'$. Thus, $\sigma_{L'}(u)$
+is longer than $\sigma_{L}(u)$, which yields that $\sigma_{L}(u)$
+is a suffix of~$\sigma_{L'}(u)$.
+
+\ref{constr_sync:prop:sigma_L_prefix:3}: We have $\pref{L} \subseteq \pref{L L'}$.
+So this follows from~\cref{constr_sync:prop:sigma_L_prefix:2}.	
+
+\ref{constr_sync:prop:sigma_L_prefix:4a}: Suppose $\sigma_{L \cup L'}(u) \in \pref{L}$.
+By \cref{constr_sync:prop:sigma_L_prefix:2}, $\sigma_L(u)$ is a suffix of $\sigma_{L\cup L'}(u)$.
+Since $\sigma_{L \cup L'}(u)  \in \pref{L}$, $\sigma_{L\cup L'}(u)$
+is a suffix of $\sigma_L(u)$ by the definition of~$\sigma_L$.
+Thus $\sigma_{L\cup L'}(u) = \sigma_{L}(u)$.
+%
+% Then the longest suffix of~$u$ in $\pref{L\cup L'}$ 
+% is contained in $\pref{L}$, and thus equals
+% the longest suffix of~$u$ in $\pref{L}$, i.e.,
+% we have $\sigma_{L\cup L'}(u) = \sigma_{L}(u)$.
+ Otherwise, suppose $\sigma_{L \cup L'}(u) \notin \pref{L}$. 
+ Since $\sigma_{L \cup L'}(u) \in \pref{L \cup L'}$,
+ this yields $\sigma_{L \cup L'}(u) \in \pref{L'}$.
+ With the same argument as before, we find 
+ $\sigma_{L \cup L'}(u) = \sigma_{L'}(u)$.
+
+\ref{constr_sync:prop:sigma_L_prefix:4}: First, suppose $\sigma_{L \cup L'}(u)  \in \pref{L}$.
+ Then $\sigma_{L \cup L'}(u) = \sigma_L(u)$ by \cref{constr_sync:prop:sigma_L_prefix:4a}.
+ Thus, by \cref{constr_sync:prop:sigma_L_prefix:2}, we have $\sigma_{L'}(u) \in \suff{\sigma_L(u)}$.
+ 
+ Next, suppose $\sigma_{L'}(u) \in \suff{\sigma_L(u)}$. 
+ Then the longest suffix of~$u$ in~$L$ is longer than the longest
+ suffix of~$u$ in~$L'$.
+ This gives $\sigma_{L \cup L'}(u) = \sigma_L(u) \in \pref{L}$.
+ 
+ The last equivalence follows easily since $\sigma_L(u)$ and $\sigma_{L'}(u)$
+ are both suffixes of~$u$. This shows \cref{constrsync:notions:eqn:LR-mapping-equiv-union}.
+ 
+\ref{constr_sync:prop:sigma_L_prefix:5}: First, suppose $\sigma_L(u) \in \suff{L'}$.
+By \cref{constr_sync:prop:sigma_L_prefix:2}, $\sigma_{\{v\}}(u)$ is a suffix of~$\sigma_L(u)$ for $v \in L$.
+Thus we find $\sigma_{\{v\}}(u) \in \suff{L'}$.
+
+Conversely, suppose $\sigma_{\{v\}}(u) \in \suff{L'}$ for all $v \in L$.
+We have $\sigma_L(u) = \sigma_{\{v\}}(u)$ for some $v \in L$.
+This yields $\sigma_L(u) \in \suff{L'}$.
+
+\ref{constr_sync:prop:sigma_L_prefix:6}: By \cref{constr_sync:prop:sigma_L_prefix:2}, we have $\sigma_{\{v\}}(u) \in \suff{\sigma_L(u)}$ for $v \in L$.
+ Thus $\bigcup_{v \in L} \suff{\sigma_{\{v\}}(u)} \subseteq \suff{\sigma_L(u)}$.
+ 
+ Since $\sigma_L(u) \in \suff{\sigma_L(u)}$,
+ by \cref{constr_sync:prop:sigma_L_prefix:6} we find $\sigma_{\{v\}}(u) \in \suff{\sigma_L(u)}$
+ for all $v \in L$. This gives $\bigcup_{v \in L} \suff{\sigma_{\{v\}}(u)} \subseteq \suff{\sigma_L(u)}$.
+ 
+\ref{constr_sync:prop:sigma_L_prefix:7}: This follows from \cref{constr_sync:prop:sigma_L_prefix:5} 
+by considering $L' = \{\varepsilon\}$.
+\end{proof}
+
+\begin{proposition}
+	Let $L \subseteq \Sigma^*$ and $u \in \Sigma^*$ such that $L \setminus\{u\} \ne \emptyset$.
+	Then we have 
+	\begin{equation}\label{constrsync:eqn:sigma_prefL}
+		\sigma_{\pref{L} \setminus \{u\}}(u) 
+		=
+		\begin{cases}
+			\sigma_{L\setminus \{u\}}(u) & \text{if } \sigma_{\pref{L}\setminus \{u\}}(u) \in \pref{L \setminus \{u\}}, \\
+			\sigma_{\pref{u}\setminus\{u\}}(u) & \text{otherwise.}
+		\end{cases}
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	We have
+	\[
+	\pref{\pref{L} \setminus \{u\}} = 
+	\begin{cases}
+		\pref{L \setminus \{u\}} \cup ( \pref{u} \setminus \{u\} ) & \text{if } u \in \pref{L}, \\
+		\pref{L \setminus \{u\}} & \text{otherwise.}
+	\end{cases}
+	\]
+	
+	First, suppose $u \notin \pref{L}$.
+	Then $u \notin L$
+	and $\pref{L} = \pref{L \setminus \{u\}}$.
+	By \cref{constrsync:eqn:sigmaL-in-suffpref}, we have $\sigma_{\pref{L}\setminus\{u\}}(u) \in \pref{L}$.
+	Thus, in this case, the first case from \cref{constrsync:eqn:sigma_prefL}
+	applies.
+	Since we have $\sigma_{\pref{L}\setminus\{u\}}(u) = \sigma_{\pref{L}}(u) = \sigma_L(u) = \sigma_{L\setminus \{u\}}(u)$,
+	we find that \cref{constrsync:eqn:sigma_prefL} holds.
+	
+	Next, suppose $u \in \pref{L}$.
+	Then we find	
+	\begin{align*}
+		& \sigma_{\pref{L} \setminus \{u\}}(u) \\
+		& = \sigma_{\pref{\pref{L} \setminus \{u\}}}(u) & \tag{Eqn.~\eqref{constr_sync:prop:sigma_L_prefix:1}} \\
+		& = \sigma_{\pref{L \setminus \{u\}} \cup ( \pref{u} \setminus \{u\} )}(u) \\
+		& = \begin{cases}
+			\sigma_{\pref{L \setminus \{u\}}}(u) & \text{if } \sigma_{\pref{L} \setminus \{u\}}(u) \in \pref{L \setminus \{u\}} \\
+			\sigma_{\pref{u}\setminus\{u\}}(u) & \text{otherwise}		
+		\end{cases}	& \tag{Eqn.~\eqref{constrsync:notions:eqn:sigmaL-union}}
+	\end{align*}
+	Since, by \cref{constr_sync:prop:sigma_L_prefix:1}, we have $\sigma_{\pref{L \setminus \{u\}}}(u) = \sigma_{L \setminus \{u\}}(u)$,
+	the claim follows.
+\end{proof}
+
+The Levenshtein-Romanov mapping can be used to describe the Myhill-Nerode equivalence classes
+for a left ideal as shown next. 
+
+Note that for a non-empty left ideal $I$, 
+we always have $\sigma_I(u) = u$ since $\pref{I} = \Sigma^*$.
+
+\begin{proposition} \label{prelim:formlang:prop:left-ideal}
+	Let $L \subseteq \Sigma^*$ be non-empty and consider the left ideal $I = \Sigma^*L$.
+	Then for $u \in \Sigma^*$ we have $u \equiv_I \sigma_L(u)$.	
+\end{proposition}
+\begin{proof}
+	Let $u \in \Sigma^*$. Next, we show that $uv \in I$
+	if and only if $\sigma_L(u)v \in L$ for all $v \in \Sigma^*$,
+	which is equivalent to $u \equiv_L \sigma_L(u)$.
+		
+	First, suppose we have $uv \in I$ for some $v \in \Sigma^*$.
+	If $v \in I$, then $\sigma_L(u)v \in I$ since~$I$ is a left ideal.
+	Next, let $v \notin I$.
+	In this case, since $uv \in I$,
+	there must exist $x,y \in \Sigma^*$
+	with $y \ne \varepsilon$
+	such that $u = xy$ and $yv \in L$.
+	Since $y \in \pref{L}$, $y$	is a suffix of $\sigma_L(u)$.
+	Thus we also have $\sigma_L(u)v \in I$.
+	
+	Conversely, suppose $\sigma_L(u)v \in I$.
+	Since $\sigma_L(u)$ is a suffix of~$u$,
+	this clearly gives $uv \in I$. 	
+\end{proof}
+
+\begin{corollary} \label{prelim:formlang:cor:left-ideal}
+	Let $I = \Sigma^*L$ for some $L \subseteq \Sigma^*$.
+	Then $\{ [w]_{\equiv_I} \mid w \in \Sigma^* \}
+	= \{ [w]_{\equiv_I} \mid w \in \pref{L} \}$.	
+\end{corollary}
+\begin{proof}
+	This follows from \cref{prelim:formlang:prop:left-ideal} 
+	and since $\sigma_L(u) \in \pref{L}$ for all $u \in \Sigma^*$.
+\end{proof}
+
+Next, we give some equalities involving suffix sets.
+
+\begin{proposition} \label{constrsync:prop:suffsigmaB}
+	Let $L \subseteq \Sigma^*$ and $u \in \Sigma^+$. Then the following holds:
+	\begin{enumerate}
+		\item \label{constrsync:prop:suffsigma:1B} $\suff{\sigma_L(u)} \cap \pref{L} = \suff{u}\cap \pref{L}$.
+		
+		\item \label{constrsync:prop:suffsigma:B4} $\suff{\sigma_{\pref{L}\setminus\{u\}}(u)} \cap \pref{\pref{L} \setminus\{u\}}
+		=
+		\suff{u} \cap \pref{\pref{L} \setminus \{u\}}$.
+		
+		\item \label{constrsync:prop:suffsigma:2B} $\suff{\sigma_{\pref{L}\setminus\{u\}}(u)} \cap L = \suff{\sigma_{L\setminus \{u\}}(u)} \cap L$ if $L \setminus \{u\}$ is non-empty.
+				
+		\item \label{constrsync:prop:suffsigma:3B} $\suff{\sigma_{\pref{L}\setminus \{u\}}(u)} \cap L = ( \suff{u}  \cap ( L \setminus \{u\} ) ) \cup( \{u\} \cap L \cap \pref{L\setminus\{u\}} )$.
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+	\ref{constrsync:prop:suffsigma:1B}: Since $\sigma_L(u)$ is a suffix of $u$,
+	we have $\suff{\sigma_L(u)} \subseteq \suff{u}$
+	and so $\suff{\sigma_L(u)} \cap \pref{L} \subseteq \suff{u} \cap \pref{L}$.
+	Next, let $v \in \suff{u}\cap \pref{L}$.
+	Since $\sigma_L(u)$ equals the longest suffix of~$u$ that is in $\pref{L}$,
+	this suffix has length at least $|v|$. Thus~$v$
+	is a suffix of $\sigma_L(u)$, which gives $v \in \suff{\sigma_L(u)} \cap \pref{L}$.	
+	
+	\ref{constrsync:prop:suffsigma:B4}: This follows from \cref{constrsync:prop:suffsigma:1B} 
+	applied to $\pref{L}\setminus\{u\}$.
+	
+	\ref{constrsync:prop:suffsigma:2B}:
+	Since $L \setminus \{u\} \subseteq \pref{L}\setminus\{u\}$, by \cref{constr_sync:prop:sigma_L_prefix:2} of \cref{constr_sync:prop:sigma_L_prefix} we have
+	\[
+	\suff{\sigma_{L\setminus \{u\}}(u)} \cap L \subseteq
+	\suff{\sigma_{\pref{L}\setminus\{u\}}(u)} \cap L.
+	\]
+	Next, let $v \in \suff{\sigma_{\pref{L}\setminus\{u\}}(u)} \cap L$.
+	Suppose $v = u$.
+	Then $u = \sigma_{\pref{L}\setminus\{u\}}(u)$.
+	This yields that $u$ is a proper prefix of a word from $L$
+	and thus $u = \sigma_{L\setminus\{u\}}(u)$.
+	If $v \ne u$, then~$v$ is a suffix of $u$ in $L \setminus\{u\}$
+	and thus it is a suffix of $\sigma_{L\setminus\{u\}}(u)$.
+	In both cases, we find $v \in \suff{\sigma_{L\setminus\{u\}}(u)} \cap L$.
+	
+	\ref{constrsync:prop:suffsigma:3B}:
+	By \cref{constrsync:prop:suffsigma:B4} we have 
+	$\suff{u}  \cap ( L \setminus \{u\} ) = \suff{\sigma_{\pref{L}\setminus\{u\}}(u)} \cap ( L \setminus \{u\} )$.
+	By \cref{constrsync:prop:suffsigma:5},
+	$\sigma_{\pref{L}\setminus\{u\}}(u) = u$
+	if and only if $u$ is a proper prefix of a word from $\pref{L}\setminus\{u\}$.
+	This is equivalent to~$u$ being a proper prefix of a word from~$L$, i.e,
+	$u \in \pref{L \setminus \{u\}}$.
+	Thus $u \in \suff{\sigma_{\pref{L}\setminus\{u\}}(u)} \cap L$
+	if and only if $u \in L \cap \pref{L\setminus\{u\}}$,
+	which gives the claim.
+\end{proof}
+
+\begin{proposition} \label{constrsync:prop:sigma-uvA}
+	Let $L, U, V \subseteq \Sigma^*$ and $v \in \pref{L}$.
+	Then the following are equivalent.
+	\begin{enumerate}
+			
+	\item \label{constrsync:prop:sigma-uvA:1} $\sigma_L(uv) \in U$ for some $u \in \pref{L} \cap \suff{V}$.
+		
+	\item \label{constrsync:prop:sigma-uvA:2} $\sigma_L(uv) \in U$ for some $u \in \suff{V}$. 
+		
+	\item \label{constrsync:prop:sigma-uvA:3} $( \pref{L}\cap U ) \cap ( \pref{L} \cap \suff{V} ) v \ne \emptyset$.
+		
+	\item \label{constrsync:prop:sigma-uvA:4} $( \pref{L}\cap U ) \cap \suff{V}v \ne \emptyset$.
+			
+	\item \label{constrsync:prop:sigma-uvA:5} $\sigma_L(uv) = uv$ and $uv \in U$ for some $u \in \suff{V}$.
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+$\ref{constrsync:prop:sigma-uvA:1}\Rightarrow\ref{constrsync:prop:sigma-uvA:2}$: This is clear.
+
+$\ref{constrsync:prop:sigma-uvA:2}\Rightarrow\ref{constrsync:prop:sigma-uvA:3}$: Since $v \in \pref{L}$, we have $\sigma_L(uv) = wv \in \pref{L}$ for some $w \in \Sigma^*$.
+We have $w \in \pref{L}$ and the word~$w$ is a suffix of~$u$, and so $w \in \suff{V}$.
+ Thus we have $wv \in \pref{L}\cap U$ and $wv \in \suff{V}v$.
+ 
+$\ref{constrsync:prop:sigma-uvA:3}\Rightarrow\ref{constrsync:prop:sigma-uvA:4}$: This is clear.
+
+$\ref{constrsync:prop:sigma-uvA:4}\Rightarrow\ref{constrsync:prop:sigma-uvA:5}$: Let $u \in \suff{V}$ with $uv \in \pref{L}\cap U$.
+ By \cref{constr_sync:eqn_sigma_pref1} we have $\sigma_L(uv) = uv$.
+
+$\ref{constrsync:prop:sigma-uvA:5}\Rightarrow\ref{constrsync:prop:sigma-uvA:1}$: Since $\sigma_L(uv) \in \pref{L}$,
+ we get $uv \in \pref{L}\cap U$ and $u \in \pref{L} \cap \suff{V}$.
+\end{proof}
+
+\begin{proposition} \label{constrsync:prop:sigma-uvpref}
+	Let $L, U, V \subseteq \Sigma^*$ with $v \in \pref{L}$
+	and $U \subseteq \pref{L}$.	Then the following are equivalent.
+	\begin{enumerate}
+		\item \label{constrsync:prop:sigma-uvpref:1} $\sigma_L(uv) \in U$ for some $u \in \suff{V}$.
+				
+		\item \label{constrsync:prop:sigma-uvpref:2} $uv \in U$ for some $u \in \suff{V}$.
+		
+		\item \label{constrsync:prop:sigma-uvpref:3} $uv \in U$ for some $u \in \pref{L} \cap \suff{V}$.
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+$\ref{constrsync:prop:sigma-uvpref:1}\Rightarrow\ref{constrsync:prop:sigma-uvpref:2}$: Since $v \in \pref{L}$ 
+we have $\sigma_L(uv) = wv$ for some $w \in \suff{V}$. This gives the claim.
+
+$\ref{constrsync:prop:sigma-uvpref:2}\Rightarrow\ref{constrsync:prop:sigma-uvpref:3}$: Since $uv \in \pref{L}$ 
+we have $u \in \pref{L}$, which gives the claim.
+
+$\ref{constrsync:prop:sigma-uvpref:3}\Rightarrow\ref{constrsync:prop:sigma-uvpref:1}$: Since $uv \in \pref{L}$ 
+we have $\sigma_L(uv) = uv$.
+\end{proof}
+
+\begin{remark} The following are equivalent: $L = \{\varepsilon\}$, $\sigma_L(y) = \varepsilon$
+	for all $y \in \Sigma^*$, and $\sigma_L(xy) = \sigma_L(y)$
+	for all $x,y \in \Sigma^*$.
+\end{remark}
+
+\begin{remark} For $v \in \Sigma^+$, the following are equivalent:
+	$\sigma_L(uv) = \varepsilon$ for all $u \in \Sigma^*$,
+	$\sigma_L(uv) = \varepsilon$ for all $u \in \pref{L}$,
+	$\sigma_L(v) = \varepsilon$
+	and $wv \notin \pref{L}$ for all $w \in \Sigma^+$,
+	$\sigma_L(v) = \varepsilon$
+	and $wv \notin \pref{L}$ for all $w \in \pref{L}$.	
+\end{remark}

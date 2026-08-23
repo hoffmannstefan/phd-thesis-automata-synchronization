@@ -1,0 +1,402 @@
+%!TEX root = ./../../springer-mono-format/book.tex
+%!TEX root = ./../../thesis-trier.tex
+
+Some material on automata is presented differently here or is not covered in standard texts, such as~\cite{HopUll79,Ito04,DBLP:books/daglib/0088160}. Specifically, the various facts on semiautomata morphisms from \cref{prelim:subsubsec:endo_aut} appear to be scattered in the literature or, as far as we know, not stated explicitly in the form presented here.
+Moreover, the isomorphisms in \cref{prelim:autmoata:Rees:prop:iso-eqns} concerning Rees quotient automata 
+and \cref{prelim:prop:Rees-homsfactorthrough} are, to the best of our knowledge, new.
+Automata can also be viewed as unary algebras with finitely many operations on a finite domain. Results from automata theory and formal language theory have been extended to unary algebras in~\cite{DBLP:journals/tcs/PetkovicCB04}; see also~\cite[p.~835]{Volkov22} and~\cite{Bogdanovic99} for connections between unary algebras, their identities, and synchronizing automata.
+
+
+\paragraph{Overview on Automata Theory.} The theory of finite automata as an independent field of study is generally considered to have started with the seminal book 
+\emph{Automata Studies}~\cite{ShannonM56}. Medvedev translated this book into Russian and added his own article~\cite{Medvedev56}, in which he introduced semiautomata (therefore sometimes referred to as \emph{Medvedev automata}, see~\cite{DBLP:conf/birthday/Salomaa12,Volkov22}). Early work in automata theory was primarily concerned with the processing of events, signals, and languages by automata rather than with automata viewed merely as finite transition systems.
+While models of computation were initially developed in the 1930s to investigate the limits of computability, the focus later shifted to modeling the operation of nervous systems using electronic components. See, for example,~\cite{vonNeumann1951GeneralLogicalTheoryAutomata,Shannon1953ComputersAutomata} for surveys of the work and motivations of the 1940s and 1950s (where automata is also used in a broader sense than here).
+Synchronization is a concept tied to the transition structure of an automaton,
+or more generally a machine, and thus is a semiautomaton concept.\footnote{In~\cite{HolzerJ18} the notion of synchronization
+	was transferred to languages via the minimal automaton
+	by calling a language synchronizing if there exists a word
+	always ending in the same state in the (possibly infinite) 
+	minimal automaton of the language.}
+
+Fleck~\cite{Fleck61,DBLP:journals/jacm/Fleck62} introduced morphisms on automata
+and initiated a structure theory for automata centered on their automorphism groups.
+For example, among the results obtained in this line of research are the following.
+\begin{enumerate}
+	\item The automorphism group of a strongly connected automaton
+	is a semiregular permutation group~\cite{DBLP:journals/jacm/Fleck62,DBLP:journals/jacm/Weeg62}
+	(here stated in \cref{prelim:automata:morphism:prop:endo-SCC-is-iso-b}).\footnote{%
+		In~\cite{DBLP:journals/jacm/Fleck62,DBLP:journals/jacm/Weeg62}, semiregularity is referred to simply as ``regular''.
+		We follow the terminology that is now standard~\cite{cameron_1999,dixon1996permutation,wielandt1964finite}.}
+	\item Let $\semiautomat{A}{\{q_1, \ldots, q_n\}}{\Sigma}{\delta}$ be strongly connected.
+	In~\cite{DBLP:journals/jacm/Weeg62}, for $i \in \{1,\ldots,n\}$,
+	an equivalence relation $\sim_i$ on~$\Sigma^*$ was introduced
+	where, for $u,v \in \Sigma^*$,
+	\[
+	u \sim_i v \quad\text{if and only if}\quad \applytrans{\delta}{q_i}{u} = \applytrans{\delta}{q_i}{v}.
+	\]
+	Furthermore, in~\cite[Def.~5]{DBLP:journals/jacm/Weeg62},
+	the quotient $\Sigma^* / {\sim_i}$ was equipped with a semigroup structure $(\Sigma^* / {\sim_i}, \ast_i)$
+	by setting $[u]_{\sim_i} \ast_i [v]_{\sim_i} = [w]_{\sim_i}$
+	precisely if $\applytrans{\delta}{q_i}{u'v'} = \applytrans{\delta}{q_i}{w}$
+	for all $u', v' \in \Sigma^*$ with $u' \sim_i u$ and $v' \sim_i v$.
+	Barnes~\cite{DBLP:journals/jacm/Barnes65,DBLP:journals/mst/Barnes70}
+	used these semigroups to characterize the automorphism group of~$\mathcal A$.
+	For instance, this semigroup structure is isomorphic to the automorphism group
+	whenever the latter is regular, i.e.\ transitive~\cite[Cor.~1 and Thms.~3 \&~4]{DBLP:journals/jacm/Barnes65}.
+\end{enumerate}
+The investigation of automata via their automorphism groups was continued in the following works:
+\cite{
+	DBLP:journals/jacm/Barnes65,
+	DBLP:journals/mst/Barnes70,
+	DBLP:journals/jacm/Bavel68,
+	DBLP:journals/cacm/Bavel70,
+	DBLP:journals/jacm/Fleck62,
+	DBLP:journals/jacm/Fleck65,
+	DBLP:journals/mst/Grzymala-Busse70,
+	DBLP:journals/jcss/Grzymala-Busse71,
+	DBLP:conf/mfcs/Grzymala-Busse75,
+	DBLP:journals/jcss/MasunagaNO73,
+	DBLP:journals/jacm/Oehmke63,
+	DBLP:journals/jacm/Weeg65,
+	DBLP:journals/jacm/Weeg67,
+}.
+
+\IN{monoid action}
+\IN{$M$-act}
+A \emph{monoid action} or \emph{(right) $M$-act}~\cite{KilpKnauerMikhalev2000_MonoidsActs}
+is a tuple $(X, M, \mu)$ where~$X$ is some set, $M$ a monoid with identity $1\in M$,
+and $\mu \colon X \times M \to X$
+a function such that 
+\begin{enumerate}
+\item $\mu(x, 1) = x$ and
+
+\item $\mu(x, st) = \mu(\mu(x, s), t)$ for $x \in X$ and $s,t \in M$.
+\end{enumerate}
+A morphism of two $M$-acts $(X,M,\mu)$ and $(Y, M, \rho)$
+is a map $\varphi \colon X \to Y$ such that $\varphi(\mu(x, s)) = \rho(\varphi(x),s)$
+for all $x \in X$ and $s \in M$.
+The morphism is called an endomorphism of the $M$-act
+if $X = Y$. Via their extensions to~$\Sigma^*$, semiautomata are precisely the $\Sigma^*$-acts, and morphisms of semiautomata
+coincide with the morphisms of these $\Sigma^*$-acts (see also \cite[Prop.~4.5]{KilpKnauerMikhalev2000_MonoidsActs}).
+Hence, the study of semiautomata may be viewed as the study of finite $\Sigma^*$-acts.
+For a group~$G$, a $G$-act
+is also called a group action, $G$-action, or a $G$-set~\cite{cameron_1999,dixon1996permutation}.
+Isomorphisms of $G$-acts are called representation equivalences
+in~\cite[p.~21]{dixon1996permutation}.
+The notion of $G$-acts also arises in algebra, topology,
+and geometry~\cite{NeumannStoyThompson1994GroupsAndGeometry}.
+
+\begin{remark}
+	An $M$-act can also be identified with a monoid morphism from~$M$ to~$\mathcal T_X$
+	equipped with the left-most-first composition operation $;$ from \cref{prelim:sec:remarks_func_comp}
+	as its operation, in the following way.
+	Given an $M$-act $(X, M, \mu)$, the map $s \mapsto \mu_s$ for $s \in M$
+	with $\mu_s(x) = \mu(x, s)$ for $x \in X$ gives such a morphism.
+	Conversely, given a morphism $\varphi \colon M \to \mathcal T_X$ of $(M,\cdot)$ to $(T_X, ;)$,
+	defining $\mu \colon X \times M$ by $\mu(x, s) = \varphi(s)(x)$
+	yields an $M$-act $(X, M, \mu)$.
+	For example, every transformation monoid~$M \le_M \mathcal T_X$
+	can be considered as an $M$-act by applying
+	this construction to the identity transformation on~$M$.	
+	
+	In this setting, semiautomata can be seen as morphisms $\Sigma^* \to \mathcal T_Q$.
+	The image of such a morphism is the transformation monoid.
+	This viewpoint was used in~\cite{Rystsov97}.
+	Since morphisms from $\Sigma^*$ are uniquely determined
+	by their images on~$\Sigma$, it suffices to specify
+	a semiautomaton by a map $\Sigma \to \mathcal T_Q$ and
+	\cref{prelim:prop:UMP} then yields the extension to all of~$\Sigma^*$.
+\end{remark}
+
+\IN{simple automata}
+The notion of an $\TS{\mathcal A}$-congruence was first
+considered by Hartmanis~\cite{DBLP:journals/iandc/Hartmanis60} (therein called
+partitions with the substitution property) in connection
+with series-parallel decompositions of automata.
+Slightly earlier, Rabin and Scott~\cite{DBLP:journals/ibmrd/RabinS59} had considered the closely related concept
+of right-invariant congruences on~$\Sigma^*$.
+The notion of a quotient automaton
+is implicit in Hartmanis's work,
+but was formally introduced for the first time
+by Bayer~\cite{DBLP:conf/focs/Bayer66}.
+However, he defined it~\cite[Def.~9]{DBLP:conf/focs/Bayer66}
+only when $\TS{\mathcal A}$ is a group.
+One year later, Bayer~\cite{DBLP:conf/focs/Bayer67} gave the general definition and related
+the lattice of $\TS{\mathcal A}$-congruences
+to endomorphisms of general automata.
+Thierrin~\cite{DBLP:journals/kybernetika/Thierrin70} and Babcs\'anyi~\cite{DBLP:journals/actaC/Babcsanyi07}
+investigated primitive automata $\mathcal A$ (therein called \emph{simple automata}).
+For example, \cref{prelim:cor:simpleaut}
+is due to Thierrin~\cite[Prop.~8]{DBLP:journals/kybernetika/Thierrin70}.
+Primitivity has been linked to minimality conditions
+for automata in~\cite{DBLP:journals/mst/Davies18,
+	DBLP:phd/basesearch/Davies19,
+	DBLP:journals/tcs/RestivoV12,
+	DBLP:journals/tcs/RestivoV12a}.
+
+
+In the context of coding theory and code parsing,
+Schützenberger~\cite[Sect.~5 \& 6]{DBLP:journals/tit/Schutzenberger56}
+introduced the syntactic semigroup of a code (which he called the
+\emph{fundamental semigroup}) and represented its elements using matrices.
+His construction in fact yields the transition matrices of the minimal
+automaton of the code. Although automata are not mentioned explicitly,
+this relation to the minimal automaton shows that his work can be viewed
+as the first investigation of the transformation semigroup of an automaton.
+An early work that explicitly introduced transition matrices of automata 
+is the work by Burks and Wang~\cite{DBLP:journals/jacm/BurksW57a}.
+Closely related stochastic transition matrices had, however, already been
+used decades earlier in the theory of Markov chains.
+
+The congruences $\sim_i$ from
+Weeg~\cite[Def.~5]{DBLP:journals/jacm/Weeg62}, discussed above,
+are related to the transformation semigroup as follows.
+Let $\sim$ be the equivalence relation on $\Sigma^*$ defined by
+\[
+u \sim v
+\quad\Longleftrightarrow\quad
+u \sim_i v \text{ for all } i \in \{1,\ldots,n\}.
+\]
+Then $u \sim v$ if and only if
+$\delta(q_i,u)=\delta(q_i,v)$ for all $i\in\{1,\ldots,n\}$.
+Moreover, if $u\sim v$, then
+$wu\sim wv$ and $uw\sim vw$ for every $w\in\Sigma^*$.
+Thus, for the product on subsets we have
+\[
+[u]_{\sim}\,[v]_{\sim} = [uv]_{\sim},
+\]
+and so we obtain a well-defined operation on $\Sigma^* / {\sim}$,
+making it into a semigroup.
+Now the map
+$
+[u]_{\sim} \mapsto \fword{\delta}{u}
+$
+is an isomorphism onto the transformation semigroup.
+
+\IN{homing sequence} \IN{automata with output}
+\IN{sequential transducer}
+In the early days, automata were considered as \emph{(sequential) transducers} (or \emph{automata with output}), see~\cite{HopUll79,Sandberg04} for details.
+A notion related to synchronization in this setting is that of a \emph{homing sequence} for a transducer automaton model. Such a sequence is an input word whose produced outputs uniquely determine the state reached by the automaton. For more information, we refer to the survey by Sandberg~\cite{Sandberg04}, which discusses homing sequences and their relation to synchronizing sequences.
+
+The seminal paper by Rabin and Scott~\cite{DBLP:journals/ibmrd/RabinS59} is widely regarded as the first to systematically consider finite automata as language acceptors.\footnote{Behind the Iron Curtain, however, automata had already been defined as language acceptors by Medvedev~\cite{Medvedev56}.} They also introduced nondeterministic automata and the power-set construction and established much of the standard terminology and notation.
+Nevertheless, it was not the first paper to relate finite automata to language acceptance. Shannon~\cite{Shannon:1948:MTCa} investigated them as language-generating devices in the context of coding theory and Chomsky~\cite{DBLP:journals/tit/Chomsky56,DBLP:journals/iandc/ChomskyM58} studied them in the context of the processing, understanding, and production of natural languages by humans.\footnote{Chomsky concluded that regular languages are not sufficiently expressive to model natural languages adequately and therefore introduced more powerful grammar formalisms in~\cite{DBLP:journals/tit/Chomsky56}.} Furthermore, building on the ideas of McCulloch and Pitts~\cite{McCullochPitts43}, several authors, for example Burks and Wang~\cite{DBLP:journals/jacm/BurksW57,DBLP:journals/jacm/BurksW57a} and Kleene~\cite{Kleene56},
+investigated finite automata as models of nerve nets. Kleene~\cite{Kleene56}
+introduced regular expressions in this context.
+
+The characterization of minimal automata and the Myhill--Nerode relation
+go back to Nerode~\cite{nerode1958linear} (input-output version)
+and Myhill~\cite{myhill1957finite} (automata/semigroup version).
+Regular languages have been classified by algebraic properties of 
+the transformation semigroups of minimal accepting automata
+via the theory of (pseudo-)varieties of languages
+and semigroups~\cite{Eilenberg1976,EILENBERG1976413,Pin86}. Seminal
+results in this direction include the characterization of star-free
+languages by counter-free automata~\cite{McNaughton71}
+and aperiodic monoids~\cite{DBLP:journals/iandc/Schutzenberger65a},
+see~\cite{Eilenberg1974,Eilenberg1976,Pin86,DBLP:reference/hfl/Pin97,Pin2022} 
+for more information.
+
+
+\IN{Krohn-Rhodes decomposition theory}
+Krohn and Rhodes~\cite{KrohnRhodes65} developed the \emph{Krohn--Rhodes decomposition theory}, a decomposition theory for automata.
+In this theory, automata are represented as homomorphic images of certain
+basic permutation automata and aperiodic automata related to the given automaton.
+The theory identifies basic building blocks from which every automaton can be
+simulated by an appropriate product of these basic automata.
+There are several formulations of this theory:
+
+\begin{enumerate}
+	\item The original semigroup-theoretic formulation from~\cite{KrohnRhodes65}
+	and~\cite[Chap.~5]{Arbib68} uses the wreath product.
+	Other formulations based on the same notions were given
+	in~\cite{DBLP:journals/mst/Lallement71}
+	and~\cite{DBLP:journals/tcs/Esik00}.
+	Textbook expositions close to the original formulation can be found
+	in~\cite{rhodes2009applications,RhodesSteinberg2009qTheory}.
+	The monograph~\cite{rhodes2009applications} also discusses broader
+	applications to biology, physics, and psychology, together with some
+	philosophical reflections.
+	
+	\item A formulation in terms of the cascade product was developed
+	in~\cite{Ginzburg68,DBLP:journals/iandc/Zeiger67a,DBLP:journals/mst/Zeiger67}
+	and~\cite[Chap.~4]{Arbib68}.
+	In this formulation, every automaton is
+	covered\footnote{Cover maps are related to morphisms.} by a cascade
+	product of certain permutation-reset automata.
+	Ginzburg~\cite{Ginzburg68} gives a correction to the proof
+	in~\cite{DBLP:journals/iandc/Zeiger67a,DBLP:journals/mst/Zeiger67}.
+	We also refer to the expository article~\cite{Zimmermann2020KrohnRhodesSemiautomata}.
+	
+	\item Meyer and Thompson's~\cite{DBLP:journals/mst/MeyerT69}
+	formulation in terms of cascade products connects the theory to an
+	earlier decomposition result of Hartmanis and
+	Stearns~\cite{HartmanisStearns1966}.
+
+	\IN{holonomy decomposition}	
+	\item Based on Zeiger's
+	approach~\cite{DBLP:journals/iandc/Zeiger67a,DBLP:journals/mst/Zeiger67},
+	Eilenberg~\cite{Eilenberg1976} gave an elegant formulation in the
+	language of transformation semigroups, termed the
+	\emph{holonomy decomposition}, see also~\cite{Holcombe82}.
+	Egri-Nagy and
+	Nehaniv~\cite{doemosinehaniv05,DBLP:phd/ethos/EgriNagy05,DBLP:conf/afl/Egri-NagyMN11,DBLP:conf/wia/Egri-NagyN04,DBLP:journals/actaC/Egri-NagyN06}
+	gave an automata-theoretic reformulation of the holonomy
+	decomposition and studied its complexity.
+	
+	\item Diekert, Kufleitner, and
+	Steinberg~\cite{DBLP:journals/fuin/DiekertKS12} gave an algebraic
+	formulation utilizing the notion of local divisors.
+\end{enumerate}
+
+\IN{Krasner–Kaloujnine universal embedding theorem}
+In the special case of groups, the Krohn–Rhodes theorem reduces to the \emph{(Krasner–Kaloujnine) universal embedding theorem}~\cite{KK513}, see~\cite[Sect.~2.6]{dixon1996permutation} for a textbook exposition of this special case.
+
+Maler and Pnueli~\cite{DBLP:conf/focs/MalerP90} carried out an in-depth study of the size of the Krohn--Rhodes decomposition and used their results to obtain an improved algorithm for translating counter-free automata into past temporal logic formulae. A corresponding bound for future linear temporal logic (LTL) was later established in~\cite{DBLP:conf/fossacs/BokerLS22}. We refer to~\cite{DBLP:conf/birthday/Maler10,MalerPnueli94} for further discussion and pointers to the literature. Results on the relationship between temporal logics and automata can be found in~\cite{DBLP:journals/jcss/CohenPP93}.
+
+The survey by Glushkov~\cite{Glu61} also gives a good overview of the early developments in automata theory, and includes also work carried out behind the Iron Curtain.
+
+\paragraph{More on Automata Morphisms.} 
+In the transformation semigroup viewpoint, the endomorphism semigroup corresponds to the centralizer of a transformation semigroup, that is, the set of transformations commuting with every transformation in the semigroup. The centralizer of a single transformation has been characterized in~\cite{AraujoKonieczny2013_CentralizersFullTransformation}; we also refer to this work for further pointers to the literature. For permutation groups, the centralizer of a single permutation in the full symmetric group is described in~\cite[pp.~295]{suzuki1982group}, \cite[Thm.~15.2]{Wells1976_ApplicationsWreath}, and~\cite{KezlanRhee99}, see also the generalization in~\cite{Lipscomb1988_CentralizerPermutation}. 
+It is a folklore result in permutation group theory that the centralizer in the symmetric group of a transitive (resp.~semiregular) permutation group is semiregular (resp.~transitive). Consequently, a regular permutation group on a finite set has the same order as its centralizer and coincides with its centralizer when it is abelian. That the centralizer of a transitive permutation group is semiregular also follows from \cref{prelim:automata:morphism:prop:endo-SCC-is-iso-b}.
+
+\Cref{prelim:automata:morphism:prop:image-SCC,prelim:automata:morphism:cor:image-SCC}
+state that morphisms between strongly trap-connected automata are either full isomorphisms or map all states to a single trap state.
+This is somehow reminiscent of the well-known Schur's lemma from ring theory~\cite{lang02},
+see also a related remark from~\cite[p.~275]{Rystsov97}.
+
+In our definition of morphisms, the alphabet was fixed. We can generalize this
+by including a mapping $\alpha \colon \Sigma \to \Gamma$ of alphabets
+in the definition and let $\varphi \colon Q \to S$ be a morphism between $\mathcal A = (Q, \Sigma, \delta)$
+and $\mathcal B = (S, \Gamma, \mu)$
+if 
+\[
+\varphi(\delta(q, x)) = \mu(\varphi(q), \alpha(x))
+\]
+for all $q \in Q$ and $x \in \Sigma$ (a definition
+in this direction was given in~\cite{Wells1976_ApplicationsWreath}).
+
+Given such a morphism that is surjective, let $F \colon \TM{\mathcal A} \to \TM{\mathcal B}$
+be given by $F(\delta_{u}) = \mu_{\alpha(u)}$
+for $u \in \Sigma^*$ with $\alpha$ extended to a mapping (also denoted by~$\alpha$) 
+from $\Sigma^*$ into $\Gamma^*$ via \cref{prelim:prop:UMP}.
+This is well-defined since for $u,v \in \Sigma^*$
+with $\delta_u = \delta_v$,
+by choosing for $s \in S$ some $q \in Q$ with $s = \varphi(q)$
+we have 
+\[
+\mu_{\alpha(u)}(s) = \mu(\varphi(q), \alpha(u)) = \varphi(\delta(q, u)) = \varphi(\delta(q, v)) = \mu(\varphi(q), \alpha(v)) = \mu_{\alpha(v)}(s)
+\]
+Then we have the following:
+\begin{enumerate}
+\item $F$ is a monoid morphism since
+\[
+F(\concat{\delta_u}{\delta_v}) = F(\delta_{uv}) = \mu_{\alpha{uv}} = \concat{\mu_{\alpha(u)}}{\mu_{\alpha(v)}} = \concat{F(\delta_u)}{F(\delta_v)}
+\]
+
+\item For $t \in \TM{\mathcal A}$
+with $t = \delta_u$ for $u \in \Sigma^*$ we have
+\[
+F(t)(\varphi(q))
+= F(\delta_u)(\varphi(q))
+= \mu(\varphi(q), u) = \varphi(\delta(q, u)) = \varphi(\delta_u(q))
+= \varphi(t(q))
+\]
+for $q \in Q$.
+\end{enumerate}
+This is related to the notion of permutation isomorphism
+from~\cite[p.~17]{dixon1996permutation}
+which is defined between two permutation groups $G \le_G \mathcal S_X$
+and $H \le_G \mathcal S_Y$ as a bijection $\lambda \colon X \to Y$
+with a group isomorphism $\psi \colon G \to H$
+such that $\lambda(g(p)) = \psi(g)(\lambda(p))$
+for all $p \in X$ and $g \in G$.
+
+
+
+\label{def:R-quasiorder}
+\paragraph{Reachability Quasiorder.}
+The reachability relation appears to have been introduced independently
+by Meyer and Thompson~\cite{DBLP:journals/mst/MeyerT69},
+Brzozowski and Fich~\cite{DBLP:journals/jcss/BrzozowskiF80},
+and Letichevsky~\cite{Letichevsky65}; it was later used
+in~\cite{DBLP:journals/tcs/Ito12}.
+Brzozowski and Fich~\cite{DBLP:journals/jcss/BrzozowskiF80}
+proved that a language is accepted by a partially ordered automaton
+if and only if Green's $\mathcal R$-relation~\cite{Green51}
+on its transition semigroup is the equality relation
+(this was also proved independently in~\cite[Thm.~5.1]{DBLP:journals/jcss/CohenPP93}).
+We obtain the $\mathcal R$-relation as the equivalence relation induced by
+the quasiorder~$\le_{\mathcal R}$ on $\TS{\mathcal A}$ given by
+\[
+\fword{\delta}{u} \le_{\mathcal R} \fword{\delta}{v}
+\Leftrightarrow
+\exists w \in \Sigma^* \ \forall q \in Q :
+\applytrans{\delta}{q}{u} = \applytrans{\delta}{q}{vw}
+\]
+for $\semiautomat{A}{Q}{\Sigma}{\delta}$ and $u,v \in \Sigma^*$.
+Clearly, if $v$ is a prefix of $u$, then
+$\fword{\delta}{u} \le_{\mathcal R} \fword{\delta}{v}$.
+Furthermore,
+$\fword{\delta}{u} \le_{\mathcal R} \fword{\delta}{v}$
+implies
+$\applytrans{\delta}{q}{v} \lereach \applytrans{\delta}{q}{u}$
+for every $q \in Q$. Consequently,
+\begin{equation}\label{Rrelation}
+	\fword{\delta}{u} \mathcal R \fword{\delta}{v}
+	\Rightarrow
+	\forall q \in Q \colon
+	\applytrans{\delta}{q}{u}
+	\eqreach
+	\applytrans{\delta}{q}{v}.
+\end{equation}
+It follows from~\cref{Rrelation} that, for a partially ordered automaton,
+the $\mathcal R$-relation is the equality relation.
+Conversely, let
+$\mathcal A = (Q, \Sigma, \delta, q_0, F)$
+be such that the $\mathcal R$-relation on $\TS{\mathcal A}$
+is the equality relation.
+Then the automaton
+$\mathcal B = (\TS{\mathcal A}, \Sigma, \mu,
+\fword{\delta}{\varepsilon}, E)$,
+where
+$\mu(\fword{\delta}{u}, a) = \fword{\delta}{ua}$
+and
+$E = \{\fword{\delta}{u} \mid \fword{\delta}{u}(q_0) \in F\}$,
+is partially ordered and satisfies
+$L(\mathcal A) = L(\mathcal B)$.\footnote{Alternatively, let
+	$p,q \in Q$ satisfy
+	$\delta(p,u)=q$ and $\delta(q,v)=p$
+	for some $u,v\in\Sigma^*$.
+	Set $w=uv$.
+	Since $\mathcal A$ is finite,
+	$\fword{\delta}{w^i}=\fword{\delta}{w^{i+p}}$
+	for some $i\ge0$ and $p>0$.
+	This implies
+	$\fword{\delta}{w^iu}\mathcal R\fword{\delta}{w^i}$.
+	By assumption,
+	$\fword{\delta}{w^iu}=\fword{\delta}{w^i}$.
+	Therefore,
+	$q=\delta(p,(uv)^iu)=\delta(p,(uv)^i)=p$,
+	showing that $\mathcal A$ is partially ordered.
+	In fact, this proves that
+	$\le_{\mathcal R}$ is a partial order
+	if and only if $\lereach$ is a partial order.}
+This gives a short proof of the characterization due to
+Brzozowski and Fich~\cite{DBLP:journals/jcss/BrzozowskiF80}.
+
+The notion of an upper set (for the reachability quasiorder)
+appears under the name \emph{subautomaton} in~\cite{Rystsov97}.
+It also appears in other contexts, for example in the notion of
+coverage of two automata introduced in~\cite{DBLP:journals/dm/BrzozowskiS73}.
+As mentioned in the main text, the Rees congruence goes back to
+a related congruence introduced by Rees~\cite{Rees40} for semigroups.
+
+The notion of a sink component (and a corresponding dual notion) can actually be defined
+for any quasiordered set, and the results from \cref{prelim:sec:reach}
+transfer to this more general setting. Furthermore, reachability is a property of the underlying automaton digraph, so the reachability order can also be defined in the context of digraphs.
+Similarly,
+the notions of strong and unilateral connectivity in digraphs
+correspond to these notions in automata,
+and a strongly connected component in an automaton is precisely
+a strongly connected component of its underlying automaton digraph.
+However, as we need these concepts only in the context of automata,
+we introduce them here for automata and rather than for general quasiorders and digraphs.

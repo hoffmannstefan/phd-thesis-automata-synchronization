@@ -1,0 +1,1102 @@
+%!TEX root = ./../../springer-mono-format/book.tex
+%!TEX root = ./../../thesis-trier.tex
+
+Here, we introduce morphisms, endomorphisms, isomorphisms, and automorphisms
+of automata and collect basic facts about them.
+
+\subsection{Definitions and Basic Facts}
+
+Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ and $\semiautomat{B}{S}{\Sigma}{\mu}$
+be two semiautomata. 
+
+\IN{morphism!of (semi-)automata}
+\IN{endomorphism!semiautomaton}
+\IN{isomorphism!semiautomaton}
+\IN{automorphism!semiautomaton}
+\IN{isomorphic automata}
+\begin{enumerate}
+	\item A \emph{(semiautomaton) (homo-)morphism} from $\mathcal A$ to $\mathcal B$
+	(or between $\mathcal A$ and $\mathcal B$) is a function
+	$\varphi \colon Q \to S$
+	such that for each $q \in Q$ and $x \in \Sigma$ we have
+	\[
+	\applyfunc{\applytrans{\delta}{q}{x}}{\varphi}
+	=
+	\applytrans{\mu}{\applyfunc{q}{\varphi}}{x}.
+	\]
+	Equivalently, $\varphi$ is a morphism if and only if
+	$\concat{\delta_x}{\varphi} = \concat{\varphi}{\mu_x}$
+	for all $x \in \Sigma$.
+	Thus, regardless of which of the two paths we follow in the diagram below,
+	we end up at the same state.
+	\[
+	\begin{tikzcd}[row sep=1cm,column sep=1.25cm]
+		Q \ar{r}{\delta(\cdot, x)} \ar[swap]{d}{\varphi}
+		& Q \ar{d}{\varphi} \\
+		S \ar[swap]{r}{\mu(\cdot, x)}
+		& S
+	\end{tikzcd}
+	\]
+	If $\varphi$ is surjective, we say that it maps $\mathcal A$ \emph{onto}
+	$\mathcal B$.
+	
+	\item  A \emph{(semiautomaton) endomorphism}
+	is a morphism with $\mathcal A = \mathcal B$.
+	
+	\item A \emph{(semiautomaton) isomorphism} is a morphism $\varphi \colon Q \to S$ such that
+	there exists a morphism $\psi \colon S \to Q$ with $\concat{\varphi}{\psi} = \operatorname{id}_Q$
+	and $\concat{\psi}{\varphi} = \operatorname{id}_S$.
+	The automata~$\mathcal A$ 
+	and~$\mathcal B$ are called \emph{isomorphic}, written \[ \mathcal A \cong \mathcal B, \] \label{def:isomorphic}
+	if there exists an isomorphism between them.
+	
+	\item A \emph{(semiautomaton) automorphism} is an endomorphism that is an isomorphism.
+\end{enumerate}
+
+The set of endomorphisms of a given automaton forms a transformation semigroup
+and the set of automorphisms forms a permutation group.
+
+\begin{example} \label{prelim:aut:ex:mappings}
+	\label{prelim:ex:SCC} \label{prelim:ex:SCC2}
+	Consider the automata from \cref{prelim:aut:fig:mappings}, where the dashed lines indicate a 
+	mapping of their state sets.
+		
+	In the automaton from \cref{prelim:aut:fig:mappingmorph}
+	the mapping is an endomorphism that does not map the strongly connected
+	component $\{q_0\}$ to a strongly connected component, but to $\{q_1\}$.	
+	Another endomorphism of the same automaton is given in \cref{prelim:aut:fig:mappingmorph0}.
+	Together with the identity transformation, this automaton has exactly three endomorphisms.
+	
+	In \cref{prelim:aut:fig:mappingnotmorph0,prelim:aut:fig:mappingotmorph},
+	the mapping $\varphi$ is not a morphism since in both cases we have
+	$\varphi(\delta(q_0, a)) = q_1 \ne q_2 = \delta(\varphi(q_0), a)$.
+	
+	\begin{figure}[ht]
+	\centering
+	\begin{subfigure}{0.25\textwidth} \centering
+		\begin{tikzpicture}[node distance = 2cm, on grid, auto, ->]
+			\node (q0) [state] {$q_0$};
+			\node (q1) [state, below of = q0] {$q_1$};
+			\node (q2) [state, below of = q1] {$q_2$};
+			
+			\path (q0) edge node {$a$} (q1) 
+			(q1) edge [bend left] node {$a$} (q2)
+			(q2) edge [bend left] node {$a$} (q1);
+			
+			\path (q0) edge [dashed,bend left=2cm] (q1);
+			\path (q1) edge [dashed, bend left=3cm] (q2)
+			(q2) edge [dashed, bend left=3cm] (q1);
+		\end{tikzpicture}
+		\caption{An endomorphism.}
+		\label{prelim:aut:fig:mappingmorph}
+	\end{subfigure}%
+	\hfill
+	\begin{subfigure}{0.25\textwidth} \centering
+		\begin{tikzpicture}[node distance = 2cm, on grid, auto, ->]
+			\node (q0) [state] {$q_0$};
+			\node (q1) [state, below of = q0] {$q_1$};
+			\node (q2) [state, below of = q1] {$q_2$};
+			
+			\path (q0) edge node {$a$} (q1) 
+			(q1) edge [bend left] node {$a$} (q2)
+			(q2) edge [bend left] node {$a$} (q1);
+			
+			\path (q0) edge [dashed,bend left=2cm] (q2);
+			\path (q1) edge [dashed, loop left] (q1)
+			(q2) edge [dashed, loop left] (q2);
+		\end{tikzpicture}
+		\caption{An endomorphism.}
+		\label{prelim:aut:fig:mappingmorph0}
+	\end{subfigure}%
+	\hfill
+	\begin{subfigure}{0.25\textwidth} \centering
+		\begin{tikzpicture}[node distance = 2cm, on grid, auto, ->]
+			\node (q0) [state] {$q_0$};
+			\node (q1) [state, below of = q0] {$q_1$};
+			\node (q2) [state, below of = q1] {$q_2$};
+			
+			\path (q0) edge node {$a$} (q1) 
+			(q1) edge [bend left] node {$a$} (q2)
+			(q2) edge [bend left] node {$a$} (q1);
+			
+			\path (q0) edge [dashed,bend left=2cm] (q1);
+			\path (q1) edge [dashed, loop left] (q1)
+			(q2) edge [dashed, loop left] (q2);
+		\end{tikzpicture}
+		\caption{Not a morphism.}
+		\label{prelim:aut:fig:mappingnotmorph0}
+	\end{subfigure}%
+	\hfill
+	\begin{subfigure}{0.25\textwidth} \centering
+		\begin{tikzpicture}[node distance = 2cm, on grid, auto, ->]
+			\node (q0) [state] {$q_0$};
+			\node (q1) [state, below of = q0] {$q_1$};
+			\node (q2) [state, below of = q1] {$q_2$};
+			
+			\path (q0) edge [loop right ]node {$a$} (q0) 
+			(q1) edge [bend left] node {$a$} (q2)
+			(q2) edge [bend left] node {$a$} (q1);
+			
+			\path (q0) edge [dashed,bend left=2cm] (q1);
+			\path (q1) edge [dashed, bend left=3cm] (q2)
+			(q2) edge [dashed, bend left=3cm] (q1);
+		\end{tikzpicture}
+		\caption{Not a morphism.}
+		\label{prelim:aut:fig:mappingotmorph}
+	\end{subfigure}
+	\caption[Example morphisms and non-morphisms on automata]{Automata and mappings of their states indicated by dashed lines, see \cref{prelim:aut:ex:mappings}.}
+	\label{prelim:aut:fig:mappings}
+\end{figure}
+\end{example}
+
+\begin{example} \label{prelim:aut:ex:autnomorph0}
+	Let $\semiautomat{A}{\{q_1, q_2\}}{\{a_1,a_2\}}{\delta}$
+	with $\delta(q_1, a_i) = \delta(q_2, a_i) = q_i$
+	for $i \in \{1,2\}$, see \cref{prelim:aut:fig:autnomorph}.
+	If~$\varphi \colon Q \to Q$ is an endomorphism,
+	then $\varphi(q_i) = \varphi(\delta(q_i, a_i)) = \delta(\varphi(q_i), a_i) = q_i$
+	for $i \in \{1,2\}$.
+	Thus the identity transformation is the only endomorphism of~$\mathcal A$.	
+	
+	Later, in \cref{prelim:automata:morphism:cor:endo-sync-SCC}, we will show that, in general, a 
+	strongly connected and synchronizing automaton only admits the identity transformation as an endomorphism.
+	
+	\begin{figure}[ht]
+		\centering	
+		\begin{tikzpicture}[node distance = 2cm, on grid, auto, ->]
+			\node (q0) [state] {$q_1$};
+			\node (q1) [state, right of = q0] {$q_2$};
+			
+			\path (q0) edge [bend left=10] node {$a_2$} (q1) 
+			(q1) edge [loop right] node {$a_2$} (q1);
+			
+			\path (q1) edge [bend left=10] node {$a_1$} (q0)
+			(q0) edge [loop left] node {$a_1$} (q0);
+		\end{tikzpicture}
+		\caption[Automaton not admitting any non-identity endomorphism.]{Automaton not admitting any non-identity endomorphism, see \cref{prelim:aut:ex:autnomorph0}.}
+		\label{prelim:aut:fig:autnomorph}
+	\end{figure}
+\end{example}
+
+Next, we give some alternative characterizations for morphisms.
+
+\begin{proposition} \label{prelim:automata:morphism:prop:principal-upper-set}
+	Let $\varphi \colon Q \to S$ be a function. Then the following are equivalent.
+	
+	\begin{enumerate}
+		\item \label{prelim:automata:morphism:prop:principal-upper-set:1} $\varphi$ is a morphism.
+		
+		\item \label{prelim:automata:morphism:prop:principal-upper-set:2} For all $p \in Q$ and all $u \in \Sigma^*$
+		we have
+		\[
+		\varphi(\delta(p, u)) = \mu(\varphi(p), u)
+		\]
+		
+		\item \label{prelim:automata:morphism:prop:principal-upper-set:3} There exists $T \subseteq Q$ with $Q = \bigcup_{p \in T} \upperset{\{p\}}$
+		such that for all $p \in T$ and all $u \in \Sigma^*$ we have
+		\[
+		\varphi(\delta(p, u)) = \mu(\varphi(p), u)
+		\]
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+	$\ref{prelim:automata:morphism:prop:principal-upper-set:1}\Rightarrow\ref{prelim:automata:morphism:prop:principal-upper-set:2}$: This clearly holds for $u = \varepsilon$.
+	Next, let $u = va$ for some $v \in \Sigma^*$ and $a \in \Sigma$.
+	Inductively, we have $\varphi(\delta(p, v)) = \mu(\varphi(p), v)$.
+	Using that~$\varphi$ is a morphism, this gives $\varphi(\delta(p, u)) 
+	= \varphi(\delta(\delta(p, v), a))
+	= \mu(\varphi(\delta(p, v)), a)
+	= \mu(\mu(\varphi(p), v), a)
+	= \mu(\varphi(p), u)$.
+	Then the claim follows by induction.
+	
+	$\ref{prelim:automata:morphism:prop:principal-upper-set:2}\Rightarrow\ref{prelim:automata:morphism:prop:principal-upper-set:3}$: By assumption, this holds for $T = Q$.
+	
+	$\ref{prelim:automata:morphism:prop:principal-upper-set:3}\Rightarrow\ref{prelim:automata:morphism:prop:principal-upper-set:1}$: Let $a \in \Sigma$ and $q \in Q$.
+	By assumption, there exists $u \in \Sigma^*$ such that $q = \delta(p, u)$
+	for some $p \in T$. Set $s = \varphi(p)$.
+	Then we have
+	\begin{align*}
+		\varphi(\delta(q, a))
+		& = \varphi(\delta(p, ua)) \tag{$q = \delta(p,u)$} \\
+		& = \mu(s, ua)\tag{$\varphi$ morphism}  \\
+		& = \mu(\mu(s, u), a) \tag{Def.~transition function} \\
+		& = \mu(\varphi(\delta(p, u)), a) \tag{$\varphi(\delta(p, u)) = \mu(s, u)$} \\
+		& = \mu(\varphi(q), a). \tag{$q = \delta(p,u)$}
+	\end{align*}
+	Thus, $\varphi$ is a morphism.
+\end{proof}
+
+By \cref{prelim:automata:morphism:prop:principal-upper-set:3} of \cref{prelim:automata:morphism:prop:principal-upper-set}, a morphism
+is completely specified by the images of $\varphi(p_1), \ldots, \varphi(p_m)$
+for some $p_1, \ldots, p_m \in Q$ such that 
+$Q = \upperset{\{p_1\}} \cup \cdots \cup \upperset{\{p_m\}}$.
+
+\begin{corollary}
+	If~$\mathcal A$ is cyclic, there are at most~$|S|$ morphisms
+	from~$\mathcal A$ into~$\mathcal B$.
+	In particular, there are at most~$|Q|$ endomorphisms of~$\mathcal A$.
+\end{corollary}
+\begin{proof}
+	By \cref{prelim:automata:morphism:cor:two-morp-upper-set} 
+	two morphisms having the same image for a state~$p$ with $Q = \upperset{\{p\}}$
+	are equal. Since we have at most $|S|$ distinct images for this state,
+	the claim follows.
+\end{proof}
+
+\begin{example}
+	The might be strictly less than $|Q|$ endomorphisms in a cyclic automaton.
+	For example, the automaton from \cref{prelim:aut:ex:autnomorph0}
+	is cyclic and admits no non-identity morphism.
+\end{example}
+
+\IN{morphic image}
+In the rest of this section, let  $\varphi \colon Q \to S$ 
+be a morphism. For $T \subseteq Q$, we call $\applyfunc{T}{\varphi}$ the \emph{morphic image (of $T$)}.
+
+By our next statement, isomorphisms are precisely the bijective morphisms. 
+Note that a similar statement does not hold for order morphisms, see \cref{prelim:ex:order:bijmorph}.
+
+\begin{proposition}\label{prelim:prop:iso-bijmorph}
+	The morphism $\varphi \colon Q \to S$ is an isomorphism if and only if it is bijective.
+\end{proposition}
+\begin{proof}
+	By \cref{prelim:prop:surj-inj-inverses}, existence of a map $\psi \colon S \to Q$ 
+	such that $\concat{\varphi}{\psi} = \operatorname{id}_Q$
+	and $\concat{\psi}{\varphi} = \operatorname{id}_S$
+	is equivalent to bijectivity of $\varphi$. So, an isomorphism is bijective.
+	
+	Next, assume~$\varphi$ is bijective. 
+	Since~$\varphi$ is surjective,
+	we have $\concat{\psi}{\varphi} = \operatorname{id}_S$
+	for some $\psi \colon S \to Q$ 
+	by \cref{prelim:prop:surj-inj-inverses}.
+	Let $s \in S$ and $x \in \Sigma$.
+	Then we find
+	\begin{align*}
+		\varphi(\delta(\psi(s), x))
+		& = \mu(\varphi(\psi(s)), x) \tag{$\varphi$ morphism} \\
+		& = \mu(s, x) \tag{$\concat{\psi}{\varphi} = \operatorname{id}_S$} \\
+		& = \varphi(\psi(\mu(s, x))). \tag{$\concat{\psi}{\varphi} = \operatorname{id}_S$}
+	\end{align*}
+	Since~$\varphi$ is injective, $\varphi(\delta(\psi(s), x)) = 
+	\varphi(\psi(\mu(s, x)))$
+	implies $\delta(\psi(s), x) = \psi(\mu(s, x))$.
+	Thus $\psi$ is a morphism.
+\end{proof}
+
+\begin{remark}
+	By \cref{prelim:prop:surj-inj-inverses} 
+	a morphism $\varphi \colon Q \to S$
+	is injective (resp.~surjective) if
+	there exists a morphim $\psi \colon S \to Q$
+	such that $\concat{\varphi}{\psi}$ (resp.~$\concat{\psi}{\varphi}$).
+	However, unlike for functions,
+	the converse implication does not hold in general.	
+
+	To show this, for $i \in \{1,2,3\}$, let $\mathcal A_i = (Q_i, \{a\}, \delta_i)$
+	where $Q_1 = \{ q_1, q_2 \}$, $Q_2 = \{ q_1, q_2, t \}$, $Q_3 = \{t\}$,
+	and where the letter~$a$ swaps the states $q_1$ and~$q_2$ in $\mathcal A_1$ and~$\mathcal A_2$
+	and fixes the state~$t$ in $\mathcal A_2$ and~$\mathcal A_3$.	
+	Define $\varphi \colon Q_1 \to Q_2$ by $\varphi(q_1)=q_1$, $\varphi(q_2)=q_2$,
+	and $\psi \colon Q_1 \to Q_3$ by $\psi(q_1)=\psi(q_2)=t$.
+	Then $\varphi$ is injective and $\psi$ is surjective
+	and both maps are morphisms.	
+	However, there exists no morphism from $\mathcal A_2$ to $\mathcal A_1$,
+	and no morphism from $\mathcal A_3$ to $\mathcal A_1$.
+\end{remark}
+
+\begin{proposition} \label{prelim:aut:prop:morph:trap-to-trap}
+	If~$t \in Q$ is a trap state, then $\varphi(t)$ is a trap state.
+\end{proposition}
+\begin{proof}
+	Let $x \in \Sigma$.
+	Then $\mu(\varphi(t), x) = \varphi(\delta(t,x)) = \varphi(t)$
+	and so~$\varphi(t)$ is a trap state.
+\end{proof}
+
+\begin{proposition} \label{prelim:automata:morphism:prop:surj-morphism-preserves-sync}
+	If~$\varphi$ is surjective, the image of a synchronizing state is a synchronizing state.
+\end{proposition} 
+\begin{proof}
+	Let $\delta(Q, u) = \{q\}$ for $u \in \Sigma^*$ and $q \in Q$.
+	Then $\mu(S, u) = \mu(\varphi(Q), u) = \varphi(\delta(Q,u)) = \{\varphi(q)\}$
+\end{proof}
+
+Next, a morphism of automata induces a morphism of the underlying digraphs.
+
+\begin{proposition} \label{prelim:aut:prop:morph-digraph}
+	$\varphi \colon Q \to S$ is also a graph morphism
+	of the automaton digraphs of~$\mathcal A$ and~$\mathcal B$.
+\end{proposition}
+\begin{proof}
+	For $p \in Q$ and $x \in \Sigma$, the edge $(p, \delta(p,x))$
+	is mapped to the edge $(\varphi(p), \mu(\varphi(p), x))$
+	by~$\varphi$ in the respective automaton digraphs,
+	which gives the claim.
+\end{proof}
+
+The following two examples gives mappings that are graph morphisms of the automaton digraphs,
+but not automaton morphisms.
+
+\begin{example}
+Let $\semiautomat{A}{\{p,q\}}{\{a,b\}}{\delta}$
+with $\delta(p, x) = q$ for $x \in \{a,b\}$, $\delta(q, a) = p$, and $\delta(q, b) = q$.
+Then the transformation~$\varphi$ that maps all states to~$q$
+is a graph morphism of the automaton digraph of~$\mathcal A$,
+but it is not an endomorphism
+since $\delta(\varphi(q), a) = p$ and $\varphi(\delta(q, a)) = q$.
+\end{example}
+
+\begin{example}
+Let $\semiautomat{A}{\{q_1,\ldots, q_n\}}{\Sigma}{\delta}$ with $n \ge 2$
+be such that for each pair of distinct states $q_i, q_j$ there exists 
+a letter $a_{ij}$ inducing a simple idempotent mapping $q_i$ to~$q_j$.
+Every permutation of $\{q_1, \ldots, q_n\}$
+is a graph automorphism of the automaton digraph of~$\mathcal A$.
+However, $\mathcal A$ has no non-identity
+automaton morphism
+since if $\varphi(q_i) = q_j$ with $i \ne j$,
+then $\varphi(\delta(q_i, a_{ji})) = q_j$,
+but $\delta(\varphi(q_i), a_{ji}) = q_i$.
+\end{example}
+
+
+
+\subsection{Morphisms and the Reachability Order}
+
+In this section, let $\mathcal A = (Q, \Sigma, \delta)$ and $\mathcal B = (S, \Sigma, \mu)$
+be two automata.
+
+First, we show that two morphisms agree on an upper set of the form $\upperset{\{p\}}$
+if and only if they agree at~$p$.
+
+\begin{proposition} \label{prelim:automata:morphism:cor:two-morp-upper-set}
+For morphisms $\varphi, \psi \colon Q \to S$ and $p \in Q$, we have
+  \begin{equation}
+	\varphi(p) = \psi(p) \Rightarrow \forall q \in \upperset{\{p\}} \colon \varphi(q) = \psi(q) \label{prelim:eqn:two-morph-equal} 
+  \end{equation}
+ In particular, two morphism $\varphi, \psi$ agree on a strongly connected component
+ or have different images for each state of the strongly connected component.
+\end{proposition}
+\begin{proof}
+	Let $q \in \upperset{\{p\}}$.
+	Then we have $q = \delta(p, u)$ for some $u \in \Sigma^*$.
+	By \cref{prelim:automata:morphism:prop:principal-upper-set}
+	we find $\varphi(\delta(p, u)) = \mu(\varphi(p), u) =  \mu(\psi(p), u) = \psi(\delta(p, u))$.
+\end{proof}
+
+For the remainder of this section, suppose $\varphi \colon Q \to S$ is a morphism.
+Let $p,q \in Q$. 
+Then $\varphi$ is an order morphism with respect to~$\lereach$.
+Indeed, if $p \lereach q$, then $q = \delta(p,u)$ for some $u \in \Sigma^*$.
+Consequently, 
+$
+\varphi(q) = \varphi(\delta(p,u)) = \mu(\varphi(p),u),
+$
+so $\varphi(p) \lereach \varphi(q)$.
+Thus, we have shown that\footnote{This also 
+	follows from \cref{prelim:aut:prop:morph-digraph}
+	since a morphism maps paths to paths in the automaton digraphs.}
+\begin{equation}
+	p \lereach q \Rightarrow \varphi(p) \lereach \varphi(q). \label{prelim:eqn:morph-reachability-order}	
+\end{equation}
+
+\begin{proposition} \label{prelim:automata:morpisms:reachability:prop:images}
+Let $\varphi \colon Q \to S$ be a morphism. %Then we have the following:
+
+\begin{enumerate}
+\item \label{prelim:automata:morpisms:reachability:prop:images:principal-upper-set} Let $T \subseteq Q$.
+Then we have
+\begin{equation}  \label{prelim:eqn:morph-principal-upper-set}
+\varphi(\upperset{T}) = \upperset{\varphi(T)}
+\end{equation}
+
+\item  \label{prelim:fact:morphism-sink} \label{prelim:automata:morpisms:reachability:prop:images:preservation}
+$\varphi(T)$ is an upper set (resp.~unilaterally connected, strongly connected, a sink component) for an upper set (resp.~unilaterally connected, strongly connected, sink component) $T \subseteq Q$.
+
+\item \label{prelim:automata:morpisms:reachability:prop:images:twoSCC} For two strongly connected components $T \subseteq Q$ and $R \subseteq S$,
+ we have $\varphi(T) \cap R = \emptyset$ or $\varphi(T) \subseteq R$.
+ 
+\item \label{prelim:automata:morpisms:reachability:prop:images:inverse} Let $T \subseteq Q$
+ be an upper set. Then $\varphi^{-1}(T)$ is also an upper set.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+\ref{prelim:automata:morpisms:reachability:prop:images:principal-upper-set}: 
+We have
+\begin{align*}
+	\varphi(\upperset{T}) 
+	& = \varphi(\{ \delta(p, u) \mid p \in T \land u \in \Sigma^* \}) \\
+	& = \{ \varphi(\delta(p, u)) \mid p \in T \land u \in \Sigma^* \} \\
+	& = \{ \mu(\varphi(p), u) \mid p \in T \land u \in \Sigma^* \} \\
+	& = \upperset{\varphi(T)}.
+\end{align*}
+
+\ref{prelim:automata:morpisms:reachability:prop:images:preservation}: Let $T \subseteq Q$ be an upper set. 
+Then $T = \upperset{T}$
+and, with \cref{prelim:automata:morpisms:reachability:prop:images:principal-upper-set}, we find 
+$\varphi(T) = \varphi(\upperset{T}) = \upperset{\varphi(T)}$.
+Since $\upperset{\varphi(T)} \subseteq \varphi(T)$, $\varphi(T)$ is an upper set.
+
+For unilaterally connected~$T$, consider $\varphi(p), \varphi(q)$ for $p,q \in T$.
+Since $p \lereach q$ or $q \lereach p$, we have $\varphi(p) \lereach \varphi(q)$
+or $\varphi(q) \lereach \varphi(p)$ and so~$\varphi(T)$
+is unilaterally connected.
+
+By \cref{prelim:prop:morphism_equiv_class}, $\varphi(T)$ is strongly connected
+if~$T$ is strongly connected.
+
+Lastly, suppose~$T$ is a sink component.
+Then $\varphi(T)$ is strongly connected and an upper set
+since both properties are preserved as shown above.
+
+\ref{prelim:automata:morpisms:reachability:prop:images:twoSCC}: 
+This follows from \cref{prelim:general:order:prop:equiv-class-image-disjoint-or-subset}.
+\end{proof}
+
+For general order morphisms, \Cref{prelim:eqn:morph-principal-upper-set} may fail and 
+the images of upper sets need not be upper sets, see \cref{prelim:general:order:rem:morphism-upperset}.
+
+\begin{corollary} \label{prelim:automata:morpisms:reachability:cor:images}
+	Let $T \subseteq Q$.
+	If $\varphi(T) \subseteq R$ for a sink component~$R$,
+	then $\varphi(\upperset{T}) = R$.
+\end{corollary}
+\begin{proof}
+	Since $\varphi(T) \subseteq R$
+	we have $\upperset{\varphi(T)} \subseteq \upperset{R} = R$.
+	Since~$R$ is strongly connected and $\upperset{\varphi(T)} \cap R \ne \emptyset$,
+	we have $R \subseteq \upperset{\varphi(T)}$.
+	Thus, with \cref{prelim:automata:morpisms:reachability:prop:images},
+	we find $\varphi(\upperset{T}) = \upperset{\varphi(T)} = R$.
+\end{proof}
+
+\begin{remark}
+	Consider the automata in \cref{prelim:aut:fig:mappingmorph,prelim:aut:fig:mappingmorph0} 
+	from \cref{prelim:ex:SCC2}. 
+	The image of $\{q_0\}$ is $\{q_1\}$, which is strictly
+	contained in the sink component $\{q_1, q_2\}$,
+	and the image of $\upperset{\{q_0\}}$ equals $\{q_1, q_2\}$.
+	Note that $\{q_0\}$ is a strongly connected component,
+	but its image is not a strongly connected component in both automata.
+	
+	In \cref{prelim:aut:fig:mappingotmorph}, $\{q_0\}$
+	is a sink component and its image is not a sink component.
+	Thus, in this case, we also obtain that the mapping
+	is not a morphism from \cref{prelim:automata:morpisms:reachability:cor:images}.
+\end{remark}
+
+In general, bijective order morphisms
+do not have to be order isomorphisms, see \cref{prelim:ex:order:bijmorph}.
+By the next statement, with \cref{prelim:prop:iso-bijmorph}, bijective order 
+morphisms arising from automata morphisms are in fact order isomorphisms.
+
+\begin{proposition} \label{prelim:automata:morphism:prop:injective}
+	If $\varphi \colon Q \to S$ is an isomorphism,
+	then it is also an order isomorphism.
+\end{proposition}
+\begin{proof}
+	By assumption, there exists a morphism $\psi \colon S \to Q$
+	such that $\concat{\varphi}{\psi} = \operatorname{id}_Q$
+	and $\concat{\psi}{\varphi} = \operatorname{id}_S$.
+	By \cref{prelim:eqn:morph-reachability-order}, $\psi$
+	is also an order morphism.
+	Thus, $\varphi$ is an order isomorphism.	
+\end{proof}
+
+\begin{corollary} \label{prelim:automata:morphism:prop:injective:SCC-to-SCC}
+	Suppose $\varphi \colon Q \to S$ is an isomorphism.
+	If $T \subseteq Q$ is a strongly connected component,
+	then $\varphi(T)$ is a strongly connected component. 
+\end{corollary}
+\begin{proof}
+	This follows from \cref{prelim:prop:morphism_equiv_class,prelim:automata:morphism:prop:injective}.
+\end{proof}
+
+
+\begin{proposition} \label{prelim:automata:morphism:prop:image-SCC}
+\begin{enumerate}
+\item \label{prelim:automata:morphism:prop:image-SCC:1} If $Q \ne \emptyset$ and $\mathcal B$ is strongly connected, or strongly trap-connected where $\varphi(Q)$ has size at least two,
+then $\varphi$ is surjective, i.e., $\varphi(Q) = S$.
+
+\item \label{prelim:automata:morphism:prop:image-SCC:2} If $\mathcal A$ is strongly connected (resp.~strongly trap-connected)
+and $\varphi$ is surjective, 
+then~$\mathcal B$ is strongly connected (resp.~strongly trap-connected). 
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+\ref{prelim:automata:morphism:prop:image-SCC:1}: By \cref{prelim:automata:morpisms:reachability:prop:images:preservation} of \cref{prelim:automata:morpisms:reachability:prop:images}, $\varphi(Q)$ is an upper set.
+ First, suppose $\mathcal B$ is strongly connected.
+ By \cref{prelim:automata:prop:char-strongly-conn}, a strongly connected automaton has no proper non-empty upper
+ set. Thus $\varphi(Q) = S$.
+ Next, suppose~$\mathcal B$ is strongly trap-connected and $|\varphi(Q)| \ge 2$.
+ By \cref{prelim:automata:prop:char-strongly-trap}, $\mathcal B$
+ has no proper upper set of size at least two.
+ Thus $\varphi(Q) = S$.
+
+\ref{prelim:automata:morphism:prop:image-SCC:2}: We can assume $|Q|, |\varphi(Q)| \ge 2$.
+
+If~$\mathcal A$ is strongly connected, then~$Q$ is a sink component.
+Thus, by \cref{prelim:automata:morpisms:reachability:prop:images:preservation} from \cref{prelim:automata:morpisms:reachability:prop:images},
+$\varphi(Q)$ is also a sink component. By surjectivity, $\mathcal B$ is strongly connected.
+
+Next, suppose~$\mathcal A$ is strongly trap-connected.
+Let $T \subseteq S$ be an upper set in $\mathcal B$
+of size at least two.
+By \cref{prelim:general:order:eqn:morphism-upperset-inverse}, $\varphi^{-1}(T)$
+is an upper set. Since~$\varphi$ is surjective, $|\varphi^{-1}(T)| \ge 2$.
+By \cref{prelim:automata:prop:char-strongly-trap} we find $Q = \varphi^{-1}(T)$.
+Thus $S = \varphi(Q) \subseteq T$.
+Since the trap state in $\mathcal A$ is mapped to a trap state in~$\mathcal B$,
+$\mathcal B$ is not strongly connected.
+Then, \cref{prelim:automata:prop:char-strongly-trap} gives
+that $\mathcal B$ is strongly trap-connected.
+\end{proof}
+
+\begin{corollary} \label{prelim:automata:morphism:cor:image-SCC}
+	If $|Q| = |S|$ and~$\mathcal B$ is strongly connected,
+	or strongly trap-connected with $|\varphi(Q)| \ge 2$,
+	then~$\varphi$ is an isomorphism (and so~$\mathcal A$ is also strongly connected or strongly trap-connected).
+\end{corollary}
+\begin{proof}
+	By \cref{prelim:automata:morphism:prop:image-SCC:1} from \cref{prelim:automata:morphism:prop:image-SCC}, 
+	we have $\varphi(Q) = S$.
+	Since $\rank{\varphi} = |Q|$,
+	by \cref{prelim:prop:item:rank-defect-eqn}
+	from \cref{prelim:prop:rank-defect} we find $\defect{\varphi} = \emptyset$.
+	Thus, $\varphi$ is bijective.
+	By \cref{prelim:prop:iso-bijmorph}, $\varphi$ is an isomorphism.
+	
+	The inverse map of~$\varphi$ is an isomorphism.
+	Since~$\mathcal B$ is strongly connected or strongly trap-connected,
+	by \cref{prelim:automata:morphism:prop:image-SCC:2} from \cref{prelim:automata:morphism:prop:image-SCC},
+	we find that $\mathcal A$ is strongly connected
+	or strongly trap-connected.		
+\end{proof}
+
+\subsection{Endomorphisms}
+\label{prelim:sec:endo}
+
+By the first result of this section, \cref{prelim:automata:prop:endo-reach-order},
+an endomorphism cannot map a state to one that strictly precedes it in the
+reachability order.
+This property
+does not hold for general quasiorders, see \cref{prelim:general:order:rem:morphism-upperset}.
+We derive several consequences of this fact. For example,
+\cref{prelim:automata:prop:endo:SCC}, showing that an endomorphism permutes a
+strongly connected component~$T$ if and only if it permutes the upper set
+generated by~$T$, or
+\cref{prelim:automata:cor:SCC-disjoint-or-permutates} showing that an
+endomorphism either permutes a strongly connected component or maps all of
+its states to states outside the component.
+Lastly, we give several results on endomorphisms of strongly connected
+and synchronizing automata.
+
+In this section, let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be an automaton and $\varphi \colon Q \to Q$ be an endomorphism. 
+
+\begin{proposition} \label{prelim:automata:prop:endo-reach-order}
+ Let $p \in Q$.
+ Then $\varphi(p) \lereach p$ implies $p \lereach \varphi(p)$.	
+\end{proposition}
+\begin{proof}
+	Suppose $\varphi(p) \lereach p$.
+	By \cref{prelim:eqn:reach-upperset} 
+	we have $\upperset{\{p\}}\subseteq \upperset{\{\varphi(p)\}}$.
+	By \cref{prelim:eqn:morph-principal-upper-set} 
+	we have $\upperset{\{\varphi(p)\}} = \varphi(\upperset{\{p\}})$.
+	Thus $\upperset{\{p\}}\subseteq \varphi(\upperset{\{p\}})$.
+	By finiteness, this gives 
+	$\upperset{\{p\}} = \varphi(\upperset{\{p\}}) = \upperset{\{\varphi(p)\}}$.
+	\Cref{prelim:general:order:eqn:equiv-uppersets}
+	we find $p \eqreach \varphi(p)$.
+\end{proof}
+
+\begin{corollary}
+	Either $p$ and $\varphi(p)$ are incomparable or we have $p \lereach \varphi(p)$
+\end{corollary}
+
+\begin{corollary} \label{prelim:automata:prop:endo:SCC}
+	For a strongly connected component $T \subseteq Q$,
+	the following are equivalent:
+	\begin{enumerate}
+		\item \label{prelim:facts:permutes_SCC:1a} $T \subseteq \varphi(\upperset{T})$,
+		
+		\item \label{prelim:facts:permutes_SCC:3} $\varphi(T) = T$,
+
+		\item \label{prelim:facts:permutes_SCC:2} $\varphi(T) \cap T \ne \emptyset$,
+		
+		\item \label{prelim:facts:permutes_SCC:1} $\varphi(\upperset{T}) = \upperset{T}$.
+	\end{enumerate}	
+\end{corollary}
+\begin{proof}
+
+$\ref{prelim:facts:permutes_SCC:1a} \Rightarrow \ref{prelim:facts:permutes_SCC:3}$:
+Let $p \in T$. By assumption, we have $p = \varphi(q)$ for some $q \in \upperset{T}$.
+Since~$T$ is a strongly connected component,
+we have $\upperset{T} = \upperset{\{p\}}$.
+Thus, there exists $u \in \Sigma^*$ such that $q = \delta(p, u)$.
+This gives $p = \varphi(\delta(p, u))$.
+By \cref{prelim:prop:reachability-finest} we have 
+$p \lereach \delta(p, u)$.
+Hence, $\varphi(\delta(p, u)) \lereach \delta(p, u)$.
+By \cref{prelim:automata:prop:endo-reach-order}
+this gives $\varphi(\delta(p, u)) \eqreach \delta(p, u)$.
+Thus $p \eqreach \delta(p, u)$
+and so $q \in T$. Hence $p \in \varphi(T)$.
+This gives $T \subseteq \varphi(T)$.
+Since $|\varphi(T)| \le |T|$ by \cref{eqn:subset-mapped-to-smaller-set},
+we find $T = \varphi(T)$.	
+
+$\ref{prelim:facts:permutes_SCC:3} \Rightarrow \ref{prelim:facts:permutes_SCC:2}$: This is clear.
+
+$\ref{prelim:facts:permutes_SCC:2} \Rightarrow \ref{prelim:facts:permutes_SCC:1}$: Let $p \in \varphi(T) \cap T$.
+By \cref{prelim:general:order:prop:equiv-class-image-disjoint-or-subset} 
+we have $\varphi(T) \subseteq T$.
+Thus $\varphi(p) \in T$.
+Since~$T$ is a strongly connected
+component, we have $\upperset{T} = \upperset{\{p\}} = \upperset{\{\varphi(p)\}}$. So
+\[
+\varphi(\upperset{T})
+= \varphi(\upperset{\{p\}})
+= \upperset{\{\varphi(p)\}}
+= \upperset{T}.
+\]
+This gives the claim.\footnote{Alternatively,
+	since $\varphi(\upperset{T})$ is an upper set having non-empty intersection with~$T$,
+	we have $T \subseteq \varphi(\upperset{T})$.
+	As $\upperset{T}$ is the smallest upper set containing~$T$,
+	this gives $\upperset{T}\subseteq \varphi(\upperset{T})$.
+	By finiteness, we then obtain 
+	$\upperset{T} = \varphi(\upperset{T})$.}
+	
+$\ref{prelim:facts:permutes_SCC:1} \Rightarrow \ref{prelim:facts:permutes_SCC:1a}$:	This is clear.
+\end{proof}
+
+\begin{corollary} \label{prelim:automata:cor:SCC-disjoint-or-permutates}
+	For a strongly connected component $T \subseteq Q$,
+	we have $\varphi(T) \cap T = \emptyset$
+	or $\varphi(T) = T$.
+\end{corollary}
+\begin{proof}
+	This directly follows from Items~\ref{prelim:facts:permutes_SCC:3} and~\ref{prelim:facts:permutes_SCC:2}
+	of the previous corollary.	
+\end{proof}
+
+\begin{remark}	
+	In general, for a sink component $T \subseteq Q$, a morphism $\varphi$ need not induce an isomorphism between
+	$\mathcal A_{|T}$ and $\mathcal A_{|\varphi(T)}$.
+	For example, this fails when $|\varphi(T)| = 1$ and $|T| > 1$.
+	However, by \cref{prelim:automata:cor:SCC-disjoint-or-permutates}, if
+	$\varphi(T) \cap T \neq \emptyset$, then $\varphi(T)=T$.
+	Consequently, the restriction $\varphi_{|T}$ is an automorphism of
+	$\mathcal A_{|T}$.
+\end{remark}
+
+\begin{corollary} \label{prelim:automata:morphism:prop:endo-SCC-is-iso}
+	An endomorphism of a strongly connected finite automaton is an automorphism.
+\end{corollary}
+\begin{proof}
+	By \cref{prelim:automata:cor:SCC-disjoint-or-permutates},
+	it follows that every endomorphism is bijective, and so an automorphism by \cref{prelim:prop:iso-bijmorph}.  
+	
+	Alternatively, this also follows from \cref{prelim:automata:morphism:prop:image-SCC:1} 
+	of \cref{prelim:automata:morphism:prop:image-SCC}.
+\end{proof}
+
+There exist automata that are not strongly connected and whose non-identity endomorphisms are all automorphisms. For example, a unary automaton in which the single letter induces two cycles of coprime lengths.
+
+\begin{corollary} \label{prelim:automata:morphim:cor:strongly-conn}
+	Let $S \subseteq Q$ be strongly connected.
+	Then $\varphi(S) \subseteq S$
+	implies $\varphi(S) = S$.
+\end{corollary}
+\begin{proof}
+	We have $S \subseteq T$ for some strongly connected component $T \subseteq Q$.
+	Let $p \in S$. By assumption, we have $\varphi(p) \in T$.
+	Thus $\varphi(p) \in T \cap \varphi(T)$.
+	By \cref{prelim:automata:cor:SCC-disjoint-or-permutates}
+	we find $\varphi(T) = T$.
+	Hence~$\varphi$ permutes the states in~$T$
+	and so $\varphi_{|T}$ is injective.
+	Then $\varphi(S) \subseteq S$ gives $\varphi(S) = S$.
+\end{proof}
+
+\begin{corollary}
+	Let $\psi \colon Q \to Q$ be another endomorphism
+	and $S \subseteq Q$ be strongly connected.
+	If $\psi(\varphi(S)) \subseteq \varphi(S)$,
+	then $\psi(\varphi(S)) = \varphi(S)$.	
+\end{corollary}
+\begin{proof}
+	By \cref{prelim:automata:morpisms:reachability:prop:images:twoSCC} of \cref{prelim:automata:morpisms:reachability:prop:images}
+	the set $\varphi(S)$ is strongly connected.
+	Then the claim follows from \cref{prelim:automata:morphim:cor:strongly-conn}.	
+\end{proof}
+
+\begin{corollary}
+	For $\varphi(S) \subseteq S$ and $\delta(S, u) \subseteq T$ with strongly connected components~$S, T \subseteq Q$ 
+	and $u \in \Sigma^*$ we have $\varphi(T) = T$.	
+\end{corollary}
+\begin{proof}
+	Let $q \in S$. Then $\varphi(q) \in S$.
+	Since $\delta(S, u) \subseteq T$,
+	we find $\delta(q, u) \in T$ and $\varphi(\delta(q, u)) = \delta(\varphi(q), u) \in T$.	
+	Thus $\varphi(\delta(q, u)) \in \varphi(T) \cap T$.
+	By \cref{prelim:automata:prop:endo:SCC},
+	this gives $\varphi(T) = T$.
+\end{proof}
+
+By \cref{prelim:automata:prop:endo:SCC},
+for $\varphi(\upperset{\{p\}}) = \upperset{\{p\}}$, $\varphi$ permutes the strongly connected component
+$[p]_{\eqreach}$.
+However, this does not imply
+that $\varphi$ permutes each strongly connected component in $\upperset{\{p\}}$,
+as \cref{prelim:ex:endo} shows next.
+
+\begin{example} \label{prelim:ex:endo}
+	Let $\semiautomat{A}{Q}{\{a,b\}}{\delta}$
+	with $Q = \{q_1, q_2, q_3, q_4\}$ and
+	\[
+	\delta(q_i, a) = 
+	\begin{cases}
+		q_4 & \text{if } i = 1, \\
+		q_3 & \text{if } i = 2, \\
+		q_i & \text{otherwise,} 
+	\end{cases}
+	\qquad 
+	\delta(q_i, b) =
+	\begin{cases}
+		q_1  & \text{if } i = 2, \\
+		q_2  & \text{if } i = 1, \\
+		q_i  & \text{otherwise.} 
+	\end{cases}
+	\]
+	The strongly connected components are $\{q_1, q_2\}$, $\{q_3\}$ and $\{q_4\}$.
+	We have $\upperset{\{q_1\}} = Q$.
+	The map $\varphi$ given by $\varphi(q_1) = q_2$, $\varphi(q_2) = q_1$, $\varphi(q_3) = q_4$
+	and $\varphi(q_4) = q_3$ is a morphism
+	that maps $\{q_1, q_2\}$ to itself and interchanges $\{q_3\}$ and $\{q_4\}$.
+	
+	\begin{figure}[ht]
+		\centering	
+		\begin{tikzpicture}[node distance = 2cm, on grid, auto, ->]
+			\node (q1) [state] {$q_1$};
+			\node (q2) [state, right of = q1] {$q_2$};
+			\node (q3) [state, right of = q2] {$q_3$};
+			\node (q4) [state, left of  = q1] {$q_4$};
+			
+			\path (q1) edge [above] node {$a$} (q4)
+			      (q2) edge node {$a$} (q3)
+			      (q3) edge [loop right] node {$a,b$} (q3)
+			      (q4) edge [loop left]  node {$a,b$} (q4);
+			\path (q1) edge [bend left] node {$b$} (q2)
+			      (q2) edge [bend left] node {$b$} (q1); 
+		\end{tikzpicture}
+		\caption[Some strongly connected component fixed and others swapped]{Automaton admitting a morphism that leaves $\{q_1, q_2\}$ invariant and swaps $\{q_4\}$ and $\{q_3\}$, see \cref{prelim:ex:endo}.}
+		\label{prelim:aut:fig:autnomorph2}
+	\end{figure}
+\end{example} 
+
+\begin{proposition} \label{prelim:automata:prop:endo-SCC-fixed-all-or-none}
+	For a strongly connected component $T \subseteq Q$, 
+	either we have $\varphi(p) = p$ for all $p \in T$
+	or $\varphi(p) \ne p$ for all $p \in T$.
+\end{proposition}
+\begin{proof}
+	Suppose we have $\varphi(p) = p$ for some $p \in T$.
+	Since $T \subseteq \upperset{\{p\}}$,
+	from \cref{prelim:automata:morphism:cor:two-morp-upper-set} 
+	applied to~$\varphi$ 
+	and the identity transformation~$\operatorname{id}_Q$
+	we get $\varphi(q) = q$ for all $q\in \upperset\{p\}$,
+	in particular~$\varphi$ fixes all states of~$T$.	
+\end{proof}
+
+\begin{corollary} \label{prelim:automata:morphism:prop:endo-SCC-is-iso-b}
+    The automorphism group of a strongly connected automaton is semi-regular (and so has size at most~$|Q|$).
+\end{corollary}
+\begin{proof}
+	By  \cref{prelim:automata:prop:endo-SCC-fixed-all-or-none}, every non-identity isomorphism
+	fixes no state.
+	Thus, the automorphism group is semiregular.
+	By \cref{prelim:groups:prop:semiregular-size}, 
+	its size is at most~$|Q|$.	
+\end{proof}
+
+\begin{proposition} \label{prelim:automata:prop:endo-SCC-fixed-sync-state}
+	$\varphi \colon Q \to Q$ maps a synchronizing state to itself.
+\end{proposition}
+\begin{proof}
+	Let $u \in \Sigma^*$ be such that $\delta(Q, u) = \{q\}$.
+	Then we have $\varphi(q) = \varphi(\delta(q, u)) = \delta(\varphi(q), u) = q$.
+\end{proof}
+
+\begin{corollary} \label{prelim:automata:morphism:cor:endo-sync-SCC}
+	The only endomorphism of a strongly connected synchronizing automaton
+	is the identity transformation.
+\end{corollary}
+\begin{proof}
+	By \cref{prelim:automata:prop:endo-SCC-fixed-sync-state}
+	an endomorphism fixes the synchronizing state.
+	Thus, by \cref{prelim:automata:prop:endo-SCC-fixed-all-or-none},
+	it equals the identity transformation.\footnote{Alternatively,
+	since in this case every state is a synchronizing state
+	as we show later in \cref{prelim:cor:SCC_sync},
+	from \cref{prelim:automata:prop:endo-SCC-fixed-sync-state}
+	we also get that the endomorphism fixes every state.}		
+\end{proof}
+
+\begin{corollary}
+	For a strongly connected synchronizing automaton
+	having the same number of states as~$\mathcal A$,
+	there exists at most one morphism from~$\mathcal A$ to that automaton.
+\end{corollary}
+\begin{proof}
+	Let $\semiautomat{B}{S}{\Sigma}{\mu}$ be strongly connected
+	and synchronizing with $|Q| = |S|$.
+	Suppose $\psi, \xi \colon Q \to S$ are two morphisms.
+	Since~$\mathcal B$ is strongly connected,
+	by \cref{prelim:automata:morphism:cor:image-SCC}, 
+	they are both isomorphisms.
+	Let $\psi^{-1} \colon S \to Q$ be the inverse morphism of~$\psi$.
+	Then $\concat{\psi^{-1}}{\xi}$ is an endomorphism of~$\mathcal B$.
+	By \cref{prelim:automata:morphism:cor:endo-sync-SCC} 
+	it equals the identity transformation, which implies $\psi = \xi$.
+\end{proof}
+
+\subsection{Cyclic Unary Automata}
+
+As a simple example, here we classify all morphisms
+between cyclic unary automata. First, \cref{prelim:automata:lem:morphism-unary-automata,prelim:automata:prop:morphism-unary-automata}
+are preliminary statements, and \cref{prelim:automata:cor:morphism-unary-automata} 
+gives the classification.
+
+\begin{lemma} \label{prelim:automata:lem:morphism-unary-automata}
+	Let $\semiautomat{A}{Q}{\{a\}}{\delta}$
+	and $\semiautomat{B}{S}{\{a\}}{\mu}$
+	where $Q = \upperset{\{p\}}$ for some $p \in Q$.
+	Suppose $\varphi \colon Q \to S$ is a morphism.
+	Let $i_2 \ge 0$ be the least number such that,
+	with a corresponding least number $p_2 > 0$,
+	we have $\mu(\delta(p), a^{i_2 + p_2}) = \mu(\delta(p), a^{i_2})$.
+	Then for all  $i_1 \ge 0$ and $p_1 > 0$
+	with $\delta(p, a^{i_1 + p_1}) = \delta(p, a^{i_1})$ 
+	we have  $i_2 \le i_1$ and that $p_1$ is a multiple of~$p_2$. 
+\end{lemma}
+\begin{proof}
+	First, $\delta(p, a^{i_1 + p_1}) = \delta(p, a^{i_1})$
+	implies $\mu(\varphi(p), a^{i_1 + p_1}) = 
+	\varphi(\delta(p, a^{i_1 + p_1})) = \varphi(\delta(p, a^{i_1})) = \mu(\varphi(p), a^{i_1})$.
+	Hence, by the minimal choice of~$i_2$ and~$p_2$,
+	we have $i_2 \le i_1$ and $p_2 \le p_1$.
+	Next, write $p_1 = l p_2 + r$
+	for some $l \ge 0$ and $0 \le r < p_2$.
+	Then 
+	we have $\mu(\delta(p), a^{i_2 + p_1}) = \mu(\delta(p), a^{i_2 + r})$
+	and, by minimality, we must have $r = 0$, i.e., $p_1$
+	is a multiple of~$p_2$.	
+\end{proof}
+
+\begin{example}
+	Let $\mathcal A = (Q, \{a\}, \delta)$ consist of two disjoint
+	cycles for~$a$ of lengths $p$ and~$q$
+	for two distinct prime numbers.
+	Then endomorphisms mapping some state from one cycle
+	to the other cycle are not possible by \cref{prelim:automata:lem:morphism-unary-automata}.
+	With \cref{prelim:automata:cor:endo-unary-automata}, each endomorphism
+	shifts each state on the cycle of length~$p$
+	and on the cycle of length~$q$ by some
+	amount~$0 \le i < p$ and $0 \le j < q$, respectively.
+	So, $\mathcal A$
+	has~$pq$ endomorphisms.
+\end{example}
+
+\begin{corollary} \label{prelim:automata:cor:morphism-unary-automata}
+	Let $\semiautomat{A}{Q}{\{a\}}{\delta}$ 
+	where $Q = \upperset{\{p\}}$ for some $p \in Q$
+	and $i_1 \ge 0$ be the least number
+	with a corresponding least number $p_1 > 0$
+	such that $\delta(p, a^{i_1+p_1}) = \delta(p, a^{i_1})$.
+	Then $\delta(p, a^{i_2 + p_2}) = \delta(p, a^{i_2})$
+	implies $i_1 \le i_2$ and that $p_2$ is a multiple of~$p_1$.
+\end{corollary}
+\begin{proof}
+	Apply \cref{prelim:automata:lem:morphism-unary-automata} with the identity transformation, which is a morphism.
+\end{proof}
+
+\begin{proposition} \label{prelim:automata:prop:morphism-unary-automata}
+	Let $\semiautomat{A}{Q}{\{a\}}{\delta}$
+	with $Q = \upperset{\{q\}}$ for some $q \in Q$
+	and $\semiautomat{B}{S}{\{a\}}{\mu}$.
+	Then $\varphi \colon Q \to S$ is a morphism if and only if $\mu(\varphi(q), a^{i_2 + p_2}) = \mu(\varphi(q), a^{i_2})$
+	for some $0 \le i_2 \le i_1$ with $p_1$ being a multiple of~$p_2$
+	and $\varphi(\delta(q, a^i)) = \mu(\varphi(q), a^i)$ for $i \in\{0,1,\ldots,n-1\}$
+	with $n = |Q|$.
+\end{proposition}
+\begin{proof}
+	First, let $\varphi$ be a morphism.
+	By finiteness, we have  $\mu(\varphi(q), a^{i_2 + p_2}) = \mu(\varphi(q), a^{i_2})$
+	for some minimal $i_2 \ge 0$ and some $p_2 > 0$.
+	By \cref{prelim:automata:lem:morphism-unary-automata},
+	we find $i_2 \le i_1$ and that $p_1$ is a multiple of~$p_2$.
+	Since $\varphi$ is a morphism,
+	we have $\varphi(\delta(q, a^i)) = \mu(\varphi(q), a^i)$ for all $i \ge 0$.
+	
+	Next, suppose we have $\mu(\varphi(q), a^{i_2 + p_2}) = \mu(\varphi(q), a^{i_2})$
+	for some $0 \le i_2 \le i_1$ with $p_1$ being a multiple of~$p_2$
+	and  $\varphi(\delta(q, a^i)) = \mu(\varphi(q), a^i)$ for $i \in\{0,1,\ldots,n-1\}$.
+	We have $n = i_1 + p_1$.
+	By assumption, there exists $k \ge 1$ such that $p_1 = k\cdot p_2$.
+	Since $i_2 \le i_1$ 
+	we have $\mu(\varphi(q), a^{i_1}) = \mu(\varphi(q), a^{i_1 + k\cdot p_2}) = \mu(\varphi(q), a^n)$.
+	Then we find	
+	\[
+	\varphi(\delta(q, a^{n - 1}), a) = \varphi(\delta(q, a^{i_1}))
+	= \mu(\varphi(q), a^{i_1})
+	= \mu(\varphi(q), a^n)
+	= \mu(\delta(q, a^{n - 1}), a).
+	\]
+	Since $Q = \{q, \delta(q, a), \ldots, \delta(q, a^{n-1})\}$, 
+	we have $\varphi(\delta(p, a)) = \delta(\varphi(p), a)$
+	for all $p \in Q$.
+\end{proof}
+
+\begin{corollary} \label{prelim:automata:cor:morphism-unary-automata}
+	Let $\semiautomat{A}{Q}{\{a\}}{\delta}$
+	and $\semiautomat{B}{S}{\{a\}}{\mu}$
+	where $Q = \upperset{\{p\}}$ 
+	and $S = \upperset{\{s\}}$
+	for some $q \in Q$ and $s \in S$.
+	Let  $i_1, i_2 \ge 0$ be the least numbers with corresponding least numbers $p_1,p_2 > 0$ 
+	such that $\delta(q, a^{i_1 + p_1}) = \delta(q, a^{i_1})$
+	and $\mu(s, a^{i_2 + p_2}) = \mu(s, a^{i_2})$.
+	Then there exist $\min\{i_1, i_2\} + p_2$
+	morphisms from~$\mathcal A$ to~$\mathcal B$ 
+	if and only if $p_1$ is a multiple of~$p_2$,
+	and there exists no morphism otherwise.
+\end{corollary}
+\begin{proof}
+	If $p_1$ is not a multiple of~$p_2$,
+	there exists no morphism by \cref{prelim:automata:cor:morphism-unary-automata}.
+	Next, suppose $p_1$ is a multiple of~$p_2$.
+	Then, for $i_2 - \min\{i_1, i_2\} \le i < |S|$,
+	setting $\varphi(\delta(q, a^j)) = \mu(s, a^{i + j})$,
+	which gives  $\varphi(\delta(q, a^j)) = \mu(\varphi(q), a^j)$,
+	for $j \in \{0,1,\ldots,|Q|-1\}$
+	yields a morphism by \cref{prelim:automata:cor:morphism-unary-automata}
+	where $\mu(\varphi(q), a^{\min\{i_2 - i, 0\} + p_2}) = \mu(\varphi(q), a^{\min\{i_2 - i,0\}})$
+	and $\min\{i_2 - i, 0\} \le \min\{i_1, i_2\} \le i_1$.
+	
+	Next, let $\varphi \colon Q \to S$ be a morphism
+	and $0 \le i <|S|$ such that $\varphi(q) = \mu(s, a^i)$.
+	We have $\mu(s, a^{i + j}) = \mu(s, a^{i + j + p_2})$
+	for $j = \min\{i_2 - i, 0\}$.
+	By \cref{prelim:automata:cor:morphism-unary-automata} we find $j \le i_1$.
+	Thus, for $i_2 > i_1$ we must have $i_2 - i_1 \le i$
+	since otherwise $i + j < i_2$.
+	This gives $i_2 - \min\{i_1, i_2\} \le i < |S|$.
+	
+	So, each morphism is uniquely
+	given by its image 
+	$\varphi(q) = \mu(s, a^i)$
+	for $i_2 - \min\{i_1, i_2\} \le i < |S|$.
+	Thus for $i_2 < i_1$
+	we have $|S| = i_2 + p_2 = \min\{i_1, i_2\} + p_2$ 
+	possible morphisms.
+	For $i_2 \ge i_1$
+	we have $|\{ i \mid i_2 - i_1 \le i < i_2 + p_2 \}| =i_1 + p_2 = \min\{i_1, i_2\} + p_2$
+	possible morphisms.	
+\end{proof}
+
+\begin{corollary} \label{prelim:automata:cor:endo-unary-automata}
+	Let $\semiautomat{A}{Q}{\{a\}}{\delta}$
+	with $Q = \upperset{\{q\}}$ for some $q \in Q$.
+	Then $\varphi \colon Q \to Q$ is an endomorphism
+	if and only if there exists $0 \le m < |Q|$ such that
+	$\varphi(p) = \delta(p, a^m)$
+	for all $p \in Q$.
+\end{corollary}
+\begin{proof}
+	Let $m \ge 0$ such that $\varphi(q) = \delta(q, a^m)$.
+	By \cref{prelim:automata:cor:morphism-unary-automata}, $\varphi$
+	is a morphism if and only if $\varphi(\delta(q, a^i)) = \delta(\varphi(q), a^i)$
+	for $0 \le i < |Q|$.
+	This is equivalent to $\varphi(p) = \delta(p, a^m)$
+	for all $p \in Q$ since $\delta(\varphi(q), a^i) = \delta(\delta(q, a^i), a^m)$.
+\end{proof}
+
+Since in unary automata, strongly connected components are cycles, by \cref{prelim:automata:lem:morphism-unary-automata}, 
+the size of a strongly connected component in the image of a morphism divides the size of a strongly connected
+component that maps to it. This might fail for non-unary automata, as shown next.
+
+\begin{example} \label{prelim:aut:ex:morphism-not-divide}
+	Let $\semiautomat{A}{\{q_0, q_1, q_2\}}{\{a,b\}}{\delta}$
+	and
+	$\semiautomat{B}{\{p_0, p_1\}}{\{a,b\}}{\mu}$
+	with
+	$\delta(q_0, a) = q_1$, $\delta(q_1, a) = q_2$,
+	$\delta(q_1, b) = q_0$, $\delta(q_2, b) = q_0$,
+	$\mu(p_0, a) = p_1$, $\delta(p_1, b) = p_0$
+	and self-loops for all the remaining transitions, see \cref{prelim:aut:fig:morphism-not-divide}.
+	The map~$\varphi$ with $\varphi(q_0) = p_0$, $\varphi(q_1) = p_1$,
+	$\varphi(q_2) = p_1$
+	is a morphism since $\mu(\varphi(q), b) = p_0 = \varphi(q_0) = \varphi(\delta(q, a))$
+	for each $q \in \{q_0,q_1,q_2\}$ and
+	\begin{align*}
+		\mu(\varphi(q_0), a) & = \mu(p_0, a) = p_1 = \varphi(q_1) = \varphi(\delta(q_0, a)), \\
+		\mu(\varphi(q_1), a) & = \mu(p_1, a) = p_1 = \varphi(q_2) = \varphi(\delta(q_1, a)), \\
+		\mu(\varphi(q_2), a) & = \mu(p_1, a) = p_1 = \varphi(q_2) = \varphi(\delta(q_2, a)).
+	\end{align*}	
+	
+	\begin{figure}[ht]
+		\centering	
+		\begin{tikzpicture}[->, >=Stealth, node distance=8em, on grid, auto]
+			
+			% --- Automaton A ---
+			\node[state] (q0) {$q_0$};
+			\node[state, right=of q0] (q1) {$q_1$};
+			\node[state, right=of q1] (q2) {$q_2$};
+			
+			% Transitions in A
+			\path
+			(q0) edge[bend left=10] node {$a$} (q1)
+			(q1) edge[bend left=10] node {$b$} (q0)
+			(q1) edge[bend left=10] node {$a$} (q2)
+			(q2) edge[bend right=32, above] node {$b$} (q0);
+			
+			%	% Self-loops in A
+			%	(q0) edge[loop above] node {$b$} ()
+			%	(q2) edge[loop above] node {$a$} ();
+			
+			% Label A
+			\node[right=14em of q1] {Automaton $\mathcal A$};
+			
+			% --- Automaton B ---
+			\node[state, below=7em of q0] (p0) {$p_0$};
+			\node[state, right=of p0] (p1) {$p_1$};
+			
+			% Transitions in B
+			\path
+			(p0) edge[bend left=10] node {$a$} (p1)
+			(p1) edge[bend left=10] node {$b$} (p0);
+			
+			%	% Self-loops in B
+			%	\path
+			%	(p0) edge[loop below] node {$b$} ()
+			%	(p1) edge[loop below] node {$a$} ();
+			
+			% Label B
+			\node[right=6em of p1] {Automaton $\mathcal B$};
+			
+			% --- Morphism phi ---
+			\draw[dashed]
+			(q0) -- node[left=0.6cm] {$\varphi$} (p0);
+			\draw[dashed] (q1) -- (p1);
+			\draw[dashed] (q2) -- (p1);
+			
+		\end{tikzpicture}
+		\caption[Morphism between automata]{Morphism $\varphi$ between two automata $\mathcal A$ and~$\mathcal B$, see \cref{prelim:aut:ex:morphism-not-divide}.}
+		\label{prelim:aut:fig:morphism-not-divide}
+	\end{figure}		
+\end{example}

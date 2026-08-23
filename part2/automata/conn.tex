@@ -1,0 +1,234 @@
+%!TEX root = ./../../thesis-trier.tex
+
+\IN{unilaterally connected!automaton} 
+\IN{strongly connected!in automaton}
+\IN{strongly connected component!automaton}
+\IN{upper set!in automaton}
+Let Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ and $S \subseteq Q$. If nothing else is said, 
+order-theoretical notions in the context of automata
+are meant w.r.t.~the reachability order. For example,
+by calling~$S$ an \emph{upper set}, we mean 
+it to be an upper set w.r.t.~the reachability quasiorder. This is equivalent
+to $\applytrans{\delta}{S}{x} \subseteq S$ for all $x \in \Sigma$. Note that the empty set $\emptyset$
+is an upper set in each automaton.
+Since then $\applytrans{\delta}{S}{u} \subseteq \applytrans{\delta}{Q}{u} \cap S$ for all
+$u \in \Sigma^*$, we obtain
+the following equation:
+\begin{equation} 
+	\text{$S$ is an upper set} \Rightarrow \forall u \in \Sigma^* \colon \applytrans{\delta}{Q}{u} \cap S \ne \emptyset. \label{sync_max:eqn:upper_set} 
+\end{equation}
+The automaton $\semiautomat{A}{\{q_1,q_2\}}{\{a\}}{\delta}$
+with $\applytrans{\delta}{q_1}{a} = q_2$
+and $\applytrans{\delta}{q_2}{a} = q_1$ 
+shows, by considering $S = \{q_1\}$,
+that the condition on the right hand side can hold 
+for sets that are not upper sets. A state $t \in Q$
+is a trap state if and only if $\{t\}$ is an upper set.
+We also have
+%For $\semiautomat{A}{Q}{\Sigma}{\delta}$ and for $S \subseteq Q$ we have
+\begin{equation}\label{eqn:closed-block}
+	\text{$S$ is upper set and block} \Leftrightarrow  \forall x \in \Sigma \colon \delta(S, x) = S \Leftrightarrow \forall u \in \Sigma^* \colon \delta(S, u) = S.
+\end{equation}
+
+\IN{sink component}
+A subset $S \subseteq Q$ is called \emph{strongly connected} (resp.~\emph{unilaterally connected}) 
+if, for all $s, t \in S$, we have $s \lereach t$
+%and $t \lereach s$ 
+(resp.~$s \lereach t$
+or $t \lereach s$). 
+A maximal strongly connected subset is called a \emph{strongly connected component}
+and equals an equivalence class w.r.t.~$\eqreach$.
+A strongly connected component that is an upper set is called a \emph{sink (strongly connected) component}. Equivalently,
+it is an upper set that is strongly connected.
+By \cref{prelim:general:order:prop:min-equiv-class}, 
+a sink component is precisely a minimal non-empty upper set w.r.t.~set inclusion.
+In the automaton graph, the sink components are the strongly connected components
+without transitions leading out of it.
+
+\begin{proposition} \label{prelim:autsyncw:lem:minrank}
+	In an automaton, the minimal possible rank of a word
+	is bounded from below by the number of distinct sink components.
+\end{proposition}
+\begin{proof}
+	This follows from \cref{sync_max:eqn:upper_set} 	
+	and the fact that distinct sink components are disjoint.
+\end{proof}
+
+\begin{proposition} \label{prelim:autsyncw:lem:char-union-of-sink}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ and
+	$S \subseteq Q$ be an upper set.
+	Then~$S$ is a union of sink components
+	if and only if $\delta(q, u) \eqreach q$ for all $q \in Q$
+	and $u \in \Sigma^*$.
+\end{proposition}
+\begin{proof}
+	First, suppose $\delta(q, u) \eqreach q$ for all $q \in Q$
+	and $u \in \Sigma^*$. Consider some $q \in S$.
+	By assumption $\upperset{\{q\}} \subseteq [q]_{\eqreach}$,
+	and so $[q]_{\eqreach}$ is a sink component
+	by \cref{prelim:general:order:cor:min-equiv-class}. 
+	Since~$S$ is an upper set, we get $[q]_{\eqreach} \subseteq S$
+	and so~$S$ equals the union of all $[q]_{\eqreach}$
+	with $q \in S$.
+	
+	Conversely, suppose~$S$ is a union of sink components.
+	Let $q\in S$. Then~$q$ is contained
+	in some sink component, which yields that $[q]_{\eqreach}$
+	is a sink component and so $\delta(q, u) \eqreach q$.	
+\end{proof}
+
+\begin{corollary} \label{prelim:autsyncw:lem:perm-each-letter-sink}
+	A set permuted by each letter equals a union
+	of sink components.	
+\end{corollary}
+\begin{proof}
+	Let $S \subseteq Q$ be a set in $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	such that $\delta(S, a) = S$ for each $a \in \Sigma$.
+	Then $S$ is an upper set.	
+	Consider $q \in S$ and $u \in \Sigma^*$.	
+	Since the word~$u$ permutes~$S$,
+	there exists $i > 0$
+	such that $\delta(p, u^i) = p$
+	for all $p \in Q$.
+	Then $\delta(q, u u^{i- 1}) = q$
+	gives $\delta(q, u) \lereach q$
+	and since $q \lereach \delta(q, u)$
+	the claim follows from~\cref{prelim:autsyncw:lem:char-union-of-sink}.
+\end{proof}
+
+\IN{strongly connected automaton}
+\IN{unilaterally connected automaton}
+\IN{cyclic automaton}
+We call~$\semiautomat{A}{Q}{\Sigma}{\delta}$ \emph{strongly connected} (resp.~\emph{unilaterally connected})
+if~$Q$ is strongly connected (resp.~unilaterally connected).
+For $Q \ne \emptyset$,~$\mathcal A$ is strongly connected if and only if $Q$
+is a strongly connected component. 
+We call~$\mathcal A$ \emph{cyclic}~\cite{Ito04} if $Q = \upperset{\{q\}}$
+for some $q \in Q$.
+
+\begin{proposition}\label{prelim:automata:prop:char-strongly-conn}
+	An automaton~$\semiautomat{A}{Q}{\Sigma}{\delta}$ 
+	is strongly connected 
+	if and only if there exists no proper non-empty upper set, i.e., $\emptyset$
+	and~$Q$ are the only upper sets.
+\end{proposition}
+\begin{proof}
+	This follows from \cref{prelim:automata:prop:TsetminusS-strong-conn}.	
+\end{proof}
+
+\begin{proposition}\label{cor:maximal_upper_set_trap}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ with a trap state $t \in Q$ and $|Q| \ge 2$. Then $Q \setminus \{t\}$
+	is a strongly connected component
+	if and only if $Q$ and $\{t\}$
+	are the only non-empty upper sets in $\mathcal A$.		
+\end{proposition} 
+\begin{proof}
+	This follows from \cref{prelim:automata:prop:TsetminusS-strong-conn} with $S = \{t\}$.
+\end{proof}
+
+\begin{proposition}\label{prelim:automata:unilateral-implies-cyclic}
+	An unilaterally connected
+	automaton $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	is cyclic.
+\end{proposition}
+\begin{proof}
+	Let $q \in Q$ be such that $\upperset{\{q\}}$ has maximal size.
+	Assume $p \notin \upperset{\{q\}}$ for some $p \in Q$.
+	Since~$\mathcal A$ is unilaterally connected, 
+	we have $q \in \upperset{\{p\}}$
+	and so $\upperset{\{q\}} \subsetneq \upperset{\{p\}}$,
+	contradicting the maximal choice of~$q$.	
+\end{proof}
+
+The converse of \cref{prelim:automata:unilateral-implies-cyclic} does not hold. For example,
+for $\semiautomat{A}{\{q_1, q_2, q_3\}}{\{a,b\}}{\delta}$
+with $\applytrans{\delta}{q_1}{a} = q_2$, $\applytrans{\delta}{q_1}{b} = q_3$,
+and $\applytrans{\delta}{q_i}{x} = q_i$ for $i \in \{2,3\}$
+and $x \in \{a,b\}$
+we have $\upperset{\{q_1\}} = \{q_1,q_2,q_3\}$, but
+it is not unilaterally connected.
+
+By the results from \cref{prelim:sec:order},
+a subset of states is a strongly connected component
+if and only if for each upper set it is contained in this set
+or its complement (\cref{prelim:general:order:subset-in-equiv}), 
+every upper set is a union of strongly connected components (\cref{prelim:general:order:upper-union-equiv-class}),
+and for the set difference $T \setminus S$ of two upper sets~$S,T$
+the following are equivalent: strong connectivity,
+being a strongly connected component, and maximality relative to~$T$ 
+and set inclusion (\cref{prelim:automata:cor:SsetminusT,prelim:automata:prop:TsetminusS-strong-conn}).
+
+\IN{strongly trap-connected automaton}
+An automaton $\semiautomat{A}{Q}{\Sigma}{\delta}$
+is said to be \emph{strongly trap-connected} if there exists a trap state~$t \in Q$
+such that for all $p \in Q \setminus \{t\}$ and $q \in Q$
+we have $p \lereach q$. Clearly, a strongly trap-connected
+automaton has a unique trap-state, is synchronizing,
+and unilaterally connected.
+
+\begin{proposition}\label{prelim:automata:prop:char-strongly-trap}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ with $|Q| \ge 2$.
+	Then the following are equivalent.
+	
+	\begin{enumerate}
+		\item \label{prelim:automata:prop:char-strongly-trap:1} $\mathcal A$ is strongly trap-connected.
+		
+		\item \label{prelim:automata:prop:char-strongly-trap:1b} $Q = S \cup \{t\}$ for a trap state $t \in Q$ and a non-sink strongly connected component~$S$.
+		
+		\item \label{prelim:automata:prop:char-strongly-trap:2} There exists $t \in Q$ such that $\{t\}$ is the unique proper and non-empty upper set.
+		
+		\item \label{prelim:automata:prop:char-strongly-trap:3} $\mathcal A$ is not strongly connected and has no proper upper set of size at least two.
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+	$\ref{prelim:automata:prop:char-strongly-trap:1} \Rightarrow~\ref{prelim:automata:prop:char-strongly-trap:1b}$:
+	Let~$t$ be the unique trap state.
+	Suppose~$R$ is a non-empty upper set distinct from $\{t\}$.
+	Then there exists $q \in R \setminus\{t\}$.
+	Since~$\mathcal A$ is strongly trap-connected,
+	we have $\upperset{\{q\}} = Q$. As an upper set, 
+	it is $\upperset{\{q\}}\subseteq R$
+	and so $R = Q$. Thus $Q$ and $\{t\}$ are the only non-empty upper sets.
+	Since~$\{t\}$ is a sink component, \cref{prelim:general:order:XS-only-uppersets} 
+	gives the claim.	
+	
+	$\ref{prelim:automata:prop:char-strongly-trap:1b} \Rightarrow~\ref{prelim:automata:prop:char-strongly-trap:2}$:
+	This follows from \cref{prelim:general:order:XS-only-uppersets}.
+	
+	$\ref{prelim:automata:prop:char-strongly-trap:2} \Rightarrow~\ref{prelim:automata:prop:char-strongly-trap:3}$: Since~$\mathcal A$ has at least two states
+	and an upper set~$\{t\}$ of size one, by \cref{prelim:automata:prop:char-strongly-conn}
+	it is not strongly connected. By assumption~$\{t\}$
+	is a unique proper and non-empty upper set, so that~$\mathcal A$
+	has no proper upper set of size at least two.
+	
+	$\ref{prelim:automata:prop:char-strongly-trap:3} \Rightarrow~\ref{prelim:automata:prop:char-strongly-trap:1}$: Since~$\mathcal A$
+	is not strongly connected, by \cref{prelim:automata:prop:char-strongly-conn}
+	there exist some proper and non-empty upper set~$S \subseteq Q$.
+	By assumption, $S = \{t\}$ for some $t \in Q$.
+	Let $q \in Q \setminus\{t\}$.
+	Then $\upperset{\{q\}} \cup \{t\}$ is an upper set
+	of size at least two. Hence, we have $\upperset{\{q\}} \cup \{t\} = Q$.
+	This gives $|\upperset{\{q\}}| \ge 2$. Now, we have $t \in \upperset{\{q\}}$
+	as otherwise, $\upperset{\{q\}}$
+	is a proper upper set of size at least two,
+	and so $\upperset{\{q\}} = Q$.
+\end{proof}
+
+\begin{corollary}
+	\label{prelim:fact:no-proper-upper-sets-size-two}
+	In automata with at least three states, there exists no proper upper set of size at least two in $\mathcal A$
+	if and only if~$\mathcal A$ is strongly connected
+	or strongly trap-connected.	  
+\end{corollary}
+\begin{proof}
+	By \cref{prelim:automata:prop:char-strongly-conn,prelim:automata:prop:char-strongly-trap},
+	a strongly connected or strongly trap-connected
+	automaton has no proper upper set of size at least two.
+	Conversely, the automaton is either strongly connected
+	or, by \crefitem{prelim:automata:prop:char-strongly-trap}{prelim:automata:prop:char-strongly-trap:3}
+	it has no proper upper set of size at least two.
+\end{proof}
+
+A two-state automaton where every letter induces a self-loop
+also has no proper upper set of size at least two, but is neither strongly connected
+nor strongly trap-connected.

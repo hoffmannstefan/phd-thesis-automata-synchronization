@@ -1,0 +1,165 @@
+%!TEX root = ../../thesis-trier.tex
+
+
+Here, we investigate the constrained synchronization problem when the input is restricted to the following classes of  automata:
+\begin{enumerate} 
+\item monotonic automata (Section~\ref{constr_sync:subsec:monotonic_aut}),
+\item partially ordered automata (Section~\ref{constr_input:subsec:pto}),
+\item $\rho$-automata with a trap state (Section~\ref{constr_input:subsec:rho}),
+\item commutative and unary automata (Section~\ref{constr_input:subsec:comm}), 
+\item solvable $\rho$-automata (Section~\ref{constr_input:subsec:solvable}),
+\item binary SI-automata (Section~\ref{constr_input:subsec:SI-automata}).
+\end{enumerate}
+
+% https://tex.stackexchange.com/questions/195523/adding-vertical-hierarchy-lines-to-a-category-column-of-a-table
+% https://tex.stackexchange.com/questions/8719/tree-list-in-a-table
+\begin{table}[ht]
+	\centering
+
+\caption[Complexities for different classes of input automata]{Overview of complexities for different classes of input automata.
+	For general automata and automata with a trap state \PSPACE-completeness
+	follows from the results and reductions 
+	%\todo[inline]{welche genau für trap state? bzw wie sich das mit allgemeinen sätzen ergibt; bzw das an entsprechenden stellen hervorheben in vorherigen kapitel (durch corollare)}
+	in Chapter~\ref{constr_sync:chap:gen_results}. The remaining classes are the content of the present
+	section. For a more refined statement w.r.t.~different constraint
+	languages see the respective statements and sections.
+	\PSPACE-hardness in the first two cases holds even for $|\Sigma| = 2$
+	according to \THM~\ref{constr_sync:thm:three-states}.
+} 
+ 
+\newcommand{\lvl}{~~~}
+\begin{tabular}{lll}
+	\toprule
+	\textbf{Automaton Class}   & \textbf{Complexity} & \textbf{Statement}\\
+	\midrule
+	General                    & \PSPACE-complete  & Th.~\ref{constr_sync:thm:PSPACE} \& \ref{constr_sync:thm:introductory_examples} \& \ref{constr_sync:thm:three-states} \\
+	\lvl With Trap State       & \PSPACE-complete  & Th.~\ref{constr_sync:thm:PSPACE} \& \ref{constr_sync:thm:introductory_examples} \\	
+	\lvl Monotonic             & \NL               & Th.~\ref{constr_sync:thm:monotonic_in_NL} \\
+	\lvl $\rho$-Automata       & \PSPACE-complete  & \parbox[t]{4.5cm}{strongly conn. is $\rho$-aut.} \\
+	\lvl\lvl Strongly Connected    & \PSPACE-complete  & Th.~\ref{constr_sync:thm:PSPACE} \& \ref{constr_sync:thm:introductory_examples}  \\
+	\lvl\lvl $\rho$-Aut. with Trap State & \NP-complete & Th.~\ref{contr_input:thm:rho_in_NP} \\
+	\lvl\lvl Solvable $\rho$-Aut.  & \NP-complete      & Th.~\ref{constr_sync:thm:input_pto} \& \ref{constr_input:thm:solvable_in_NP}  \\
+	\lvl\lvl\lvl Partially Ordered & \NP-complete      & Th.~\ref{constr_sync:thm:input_pto} \\
+	\lvl\lvl\lvl Commutative       & \NL               & Th.~\ref{thm:main_theorem_comm_input_NL} \\
+	\lvl\lvl\lvl\lvl Unary         & \LOGSPACE-complete & Th.~\ref{constr_sync:thm:infinite}   \\
+	\lvl Binary SI-Automata           & \parbox[t]{4.15cm}{\NL\ for $m$-state constr.~PDFAs with $m \le 3$}  & Th.~\ref{constrsync:input:SI:thm:atmostthreestates}  \\
+	\bottomrule
+\end{tabular}
+%	\begin{tabular}{|l|l|l|}
+%		\hline
+%		\multicolumn{1}{|c} {Automaton Class} & \multicolumn{1}{|c|} {Complexity} & \multicolumn{1}{c|}{Statement}\\
+%		\hline
+%		\begin{minipage}{5cm}\dirtree{%
+%				.1 \textrm{General}. % \ldots{}.
+%				.2 \textrm{With Trap State}.
+%				.2 \textrm{Monotonic}.
+%				.2 \textrm{Solvable $\rho$-Aut.}.
+%				.3 \textrm{Partially Ordered}. 
+%				.3 \textrm{Commutative}.
+%				.4 \textrm{Unary}.
+%				.2 \textrm{SI-Automata}.
+%		}\end{minipage}
+%		&
+%		%\DTsetlength{0pt}{0pt}{0pt}{0pt}{0pt}
+%		\DTsetlength{0.2em}{0.7em}{0.2em}{0.4pt}{0pt}
+%		\begin{minipage}{3.75cm}\dirtree{%
+%				.1 \textrm{\PSPACE-complete}.
+%				.2 \textrm{\PSPACE-complete}.
+%				.2 \textrm{\NL}.
+%				.2 \textrm{\NP-complete}.
+%				.3 \textrm{\NP-complete}.
+%				.3 \textrm{\PTIME}.
+%				.4 \textrm{\LOGSPACE-complete}.
+%				.2 \textrm{\LOGSPACE-complete, binary $3$-state $\mathcal B$}. %$|\Sigma|=2$, $|P| \le 3$.
+%		}\end{minipage} \todo[inline]{am anfang sagen $B$ immer constraint automaton}
+%		&
+%		\DTsetlength{0pt}{0pt}{0pt}{0pt}{0pt}
+%		\begin{minipage}{4.3cm}\dirtree{%
+%				.1 Th.~\ref{constr_sync:thm:three-states} \& \ref{constr_sync:thm:PSPACE}. 
+%				.2 Th.~\ref{constr_sync:thm:three-states} \& \ref{constr_sync:thm:PSPACE}.
+%				.2 Th.~\ref{constr_sync:thm:monotonic_in_NL}.
+%				.2 Cor.~\ref{contr_input:cor:solvable_in_NP} \& Th.~\ref{constr_sync:thm:input_pto}.
+%				.3 Th.~\ref{constr_sync:thm:input_pto}.
+%				.3 Th.~\ref{thm:main_theorem_comm_input}.
+%				.4 Th.~\ref{constr_sync:thm:unary}.
+%				.2 Th.~\ref{thm:simple_idempotents_binary_in_L}.
+%		}\end{minipage} \\
+%		\hline
+%	\end{tabular}
+	
+	\label{fig:tab_overview_input_aut}
+\end{table}
+
+%The definitions are supplied, if not done before, in the respective sections.
+
+For an overview of the results see Table~\ref{fig:tab_overview_input_aut} (the table also includes some conclusions that follow readily from previous results and reductions).
+
+\begin{remark}
+ \Cref{constrsync:rem:alphabet} 	
+ noted that $\constrsync{L}$ w.r.t.~any $\Sigma$ with $L \subseteq \Sigma^*$
+ gives the same complexity for~$\leACZEROm$-reductions.
+ When restricting the input to subclasses of automata,
+ this only holds for subclasses closed for 
+ the operations used in the reductions
+ from Remark~\ref{constrsync:rem:alphabet},
+ namely adding self-loops or restricting
+ input automata to some subalphabet.
+ The subclasses considered in the present work, except strongly connected
+ automata, are closed for these operations.
+ In case of strongly connected automata,
+ we additionally assume the input automata
+ are strongly connected
+ w.r.t.~to the smallest alphabet $\Sigma$
+ such that~$L \subseteq \Sigma^*$
+ i.e., the alphabet $\Sigma = \{ a \in \Sigma \mid \Sigma^* a \Sigma^* \cap L \ne \emptyset \}$.
+% 
+% 
+% With respect to the reductions
+% outlined in Remark~\ref{constrsync:rem:alphabet},
+%%Surely, the latter two might be incompatible, but the context should
+%%eliminate any ambiguity.
+%some technicalities arise
+%in case we consider the problem restricted
+%to subclasses of automata as input, % (as in \CHAP~\ref{constr_sync:chap:constr_input}),
+%where the subclass might not be closed
+%under the operations used in the outlined reductions from Remark~\ref{constrsync:rem:alphabet}.
+%For example, if~$\mathcal A$ over $\Sigma$
+%is strongly connected, then~$\mathcal A_{|\Gamma}$
+%might not be strongly connected anymore for alphabets $\Gamma, \Sigma$ with $\Gamma \subseteq \Sigma$. 
+%%(or conversely every automaton can be made strongly connected by adding letters). 
+%But, apart from the case of strongly connected input automata
+%where we additionally assume strong connectness w.r.t.~all letters $\{ a \in \Sigma \mid \Sigma^* a \Sigma^* \cap L \ne \emptyset \}$ used in the constraint language $L \subseteq \Sigma^*$,
+%such issues do not arise here as the classes listed above are all closed
+%for the operations of omitting letters or  
+%adding letters by adding self-loops. 
+%%So, we ignore them in the following.
+%%Here, all classes
+%%of automata explicitly considered as input
+%% das erst in späterem kapitel
+\end{remark}
+
+\begin{remark}
+	An automaton $\mathcal a$ is a \rYES-instance for $\constrsync{L}$
+	if and only if $\Syn(\mathcal A) \cap L \ne \emptyset$.
+	Since we have $\Syn(\mathcal A) = \Syn\left(\mathcal A^{\le 2} / {\sim_F}\right)$ where $F = \{\{q\} \mid q \in Q\}$
+	by \cref{prelim:subclasses:sync:Aiffpairaut},
+	and the pair automaton $\mathcal A^{\le 2} / {\sim_F}$ has a trap state and can be computed 
+	in polynomial time. Thus, up to polynomial time,
+	$\constrsync{L}$ is equivalent to constrained synchronization problem with constraint language~$L$
+	restricted to automata 
+	with a trap state as input. Thus all our \NP- and \PSPACE-hardness
+	results also hold for trap-state input automata up to polynomial-time many-one
+	reductions.
+\end{remark}
+
+\begin{remark}
+	When restricting the type of input automata care has to be taken
+	when using some of the general results from \cref{constr_sync:chap:gen_results} 
+	since some reductions alter the input automaton,
+	which might result in automata that are not contained in 
+	some class of automata under consideration.
+	We note that general results solely based
+	on \cref{constr_sync:cor:factors_sets_included,gen_results:cor:factors_etc_complexity}, i.e.,
+	the equality of factor sets of constraint automata, work for every class
+	of automata since they do not alter the input automaton at all.	
+\end{remark}

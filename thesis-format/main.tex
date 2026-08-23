@@ -1,0 +1,297 @@
+% !TeX spellcheck = en_GB
+%\documentclass[a4paper,12pt,titlepage,draft]{book} %{report}
+\documentclass[a4paper,12pt,titlepage]{book} %{report}
+
+\input{../packages}
+\input{../macros}
+
+% Gives naming conflict with Springer Mono Style. Thus imported here.
+\usepackage{complexity}
+
+\usepackage[
+twoside=true,
+left=3cm, % inner
+right=2cm, % outer
+top=2.5cm,
+bottom=2.5cm,
+]{geometry}
+\linespread{1.5}
+
+
+
+%\linespread{1.5}
+\onehalfspacing
+
+\titleformat{\chapter}{\LARGE\bf}{\thechapter}{25pt}{\LARGE\bf}
+\titlespacing*{\chapter}{0pt}{-35pt}{10pt} %{-50pt}{10pt}
+
+\titleformat*{\section}{\Large\bf}
+\titleformat*{\subsection}{\large\bf}
+
+\renewcommand*\rmdefault{ptm}
+\renewcommand*\sfdefault{phv}
+\renewcommand*\ttdefault{pcr}
+
+\definecolor{mygray}{rgb}{0.97,0.97,0.97}
+\lstset{basicstyle=\small\ttfamily, frame=single, backgroundcolor=\color{mygray}}
+\urlstyle{same}
+
+\widowpenalty 1800
+\clubpenalty 1800
+
+\setcounter{tocdepth}{2}
+%\setcounter{secnumdepth}{2}
+
+\graphicspath{ {} }
+
+\setlength{\headheight}{14.49998pt}
+\addtolength{\topmargin}{-2.49998pt}
+
+
+
+% style for headers and footers
+\newcommand{\setfancyhf} {
+	\fancyhf{}
+	%\fancyhead[r]{{\footnotesize\leftmark}}
+	%\fancyhead[l]{{\footnotesize\rightmark}}
+	\fancyhead[RO]{{\footnotesize\nouppercase{\leftmark}}}
+	\fancyhead[LE]{{\footnotesize\nouppercase{\rightmark}}}
+	\fancyfoot[RE, LO]{}
+	\fancyfoot[C]{\thepage}
+}
+
+%%https://tex.stackexchange.com/questions/267362/texstudio-how-to-change-color-of-internal-pdf-viewer
+%\pagecolor[HTML]{FDF6E3}
+%\pagecolor[HTML]{FD0000}
+%\pagecolor{black}
+%\color{white}% set the default colour to white
+
+% TeX-Probleme die auftraten:
+%https://tex.stackexchange.com/questions/7953/how-to-expand-texs-main-memory-size-pgfplots-memory-overload
+% >pdflatex.exe --extra-mem-bot=10000000 -synctex=1 -interaction=nonstopmode thesis-trier.tex
+
+
+%\includeonly{part3/part3}
+
+
+
+%\tikzset{>={Stealth[length=2mm,width=2mm,scale=1.2,inset=0.2mm]}}
+\tikzset{>={Stealth[scale=1.3,inset=0.2mm]}}
+
+
+
+
+
+
+\newcommand{\pathmain}{./..}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+
+\makeatletter
+\newcommand{\problemtitle}[1]{\gdef\@problemtitle{#1}}% Store problem title
+\newcommand{\probleminput}[1]{\gdef\@probleminput{#1}}% Store problem input
+\newcommand{\problemquestion}[1]{\gdef\@problemquestion{#1}}% Store problem question
+\NewEnviron{problem}{
+	\problemtitle{}\probleminput{}\problemquestion{}% Default input is empty
+	\BODY% Parse input
+	\par\addvspace{.5\baselineskip}
+	\noindent
+	\begin{tabularx}{\textwidth}{@{\hspace{\parindent}} l X c}
+		\multicolumn{2}{@{\hspace{\parindent}}l}{\@problemtitle} \\% Title
+		\textsf{Input:} & \@probleminput \\% Input
+		\textsf{Question:} & \@problemquestion% Question
+	\end{tabularx}
+	\par\addvspace{.5\baselineskip}
+}
+\makeatother
+
+% redefine part command to allow quotations
+\makeatletter
+\newcommand{\quoteline}[1]{\def\@quote{#1}}
+\newcommand{\quotef}[2]{
+	\begin{flushright}
+		\rightskip=1.8cm\textit{#1} \\
+		\vspace{.2em}
+		\rightskip=.8cm#2
+	\end{flushright}
+}
+\def\@part[#1]#2{%
+	\ifnum \c@secnumdepth >-2\relax
+	\refstepcounter{part}%
+	\addcontentsline{toc}{part}{\thepart\hspace{1em}#1}%
+	\else
+	\addcontentsline{toc}{part}{#1}%
+	\fi
+	\markboth{}{}%
+	{\centering
+		\interlinepenalty \@M
+		\normalfont
+		\ifnum \c@secnumdepth >-2\relax
+		\huge\bfseries \partname\nobreakspace\thepart
+		\par
+		\vskip 20\p@
+		\fi
+		\Huge \bfseries #2\par
+	}	
+	\vspace{1.8cm}
+	\ifdefined\@quote
+	\@quote
+	\def\@quote{}
+	\else
+	\fi   
+	\@endpart}
+\newcommand{\partwithquote}[3]{
+	\quoteline{
+		\quotef{#2}{#3}
+	}
+	\part{#1}
+}
+\makeatother
+
+
+
+
+\begin{document}
+	
+\tableofcontents
+
+%\clearpage
+\input{../todos} 
+
+%\begin{comment}
+	% Arial Font?
+	% https://www.reddit.com/r/GradSchool/comments/tu0are/arial_or_times_new_roman_for_thesis_freaking_out/
+	\begin{titlepage}
+		\includegraphics[height=1.65cm, right]{Logo_Universitaet.png}
+		\hfill
+		
+		\centering
+		\vspace{120pt}
+		
+		{
+		\LARGE \bfseries \setstretch{1.2}
+		\thesistitle
+		\par
+	    }
+		
+		\vspace{12pt}
+		{   \setstretch{1.1}
+			\large
+		Vom Fachbereich IV der Universität Trier zur Verleihung des akademischen Grades Doktor der Naturwissenschaften (Dr.~rer.~nat.)
+		genehmigte Dissertation 
+		\par
+	    }
+        
+        \vspace{15pt}
+        {\large 
+        von
+        }
+    
+        \vspace{15pt}
+        {
+        	\Large
+        Stefan Hoffmann
+        }
+        \vspace{50pt}
+        
+        { \large 
+        Trier, 2025
+        }   
+			
+		\vfill		
+		
+		% Noch affiliation in Klammern dahinter?
+		\raggedright
+		{   \setstretch{1.1}
+			\large 
+			Betreuer: Prof. Dr. Henning Fernau \\ 
+			1. Berichterstatter: Prof. (Associate) Igor K.~Rystsov  \\
+			Datum der Disputation: 31.01.2025
+			\par
+		}
+		\vspace{70pt}		
+	\end{titlepage}
+%\end{comment}	
+
+
+\pagestyle{empty}
+\cleardoublepage
+
+% set empty style (no headers and footers)
+\pagestyle{empty}
+\pagenumbering{roman}
+
+\begin{center}
+	\bfseries
+	Abstract
+\end{center}
+\input{../frontmatter/abstract}
+\thispagestyle{empty}
+\cleardoublepage
+\thispagestyle{empty}
+\begin{center}
+	\bfseries
+	Zusammenfassung
+\end{center}
+\input{../frontmatter/zusammenfassung}
+\cleardoublepage
+\phantomsection
+\begin{center}
+	\bfseries
+	Acknowledgements
+\end{center}
+\thispagestyle{empty}
+\input{../frontmatter/thanks}
+\cleardoublepage
+%\end{comment}
+
+\pagestyle{fancy}
+\setfancyhf
+\tableofcontents
+\cleardoublepage
+
+% insert list of figures
+\phantomsection
+\addcontentsline{toc}{chapter}{\listfigurename}
+\listoffigures
+\cleardoublepage
+
+% insert list of tables
+\phantomsection
+\addcontentsline{toc}{chapter}{\listtablename}
+\listoftables
+\cleardoublepage
+
+\phantomsection
+\addcontentsline{toc}{chapter}{Notation Index}
+\chapter*{Notation Index} \label{chap:notationindex}
+\input{../nomenclature}
+\cleardoublepage
+
+\pagenumbering{arabic}
+
+\input{../body}
+
+% https://www.overleaf.com/learn/latex/Questions/BibTeX_isn%27t_working%3B_my_%5Ccite_are_showing_up_as_question_marks_(%3F)
+%\nocite{*}
+%%\citeall
+\printbibliography[heading=bibintoc, title={References}]
+\selectlanguage{english}
+\printindex
+
+%\input{declaration}
+%\clearpage
+%\input{scientificvita}
+%\input{note2}
+\end{document}

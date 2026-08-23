@@ -1,0 +1,73 @@
+%!TEX root = ./../../thesis-trier.tex
+
+The notions of distinguishability of pairs of subsets and of complete distinguishability, and some accompanying results,
+were introduced in~\cite{DBLP:conf/dlt/Hoffmann23}. 
+Bondar \& Volkov~\cite{BondarV16,BondarCV23} introduced 
+completely reachable automata.
+\cref{prelim:lem:compl_reach_implies_SCC_sync,sync_max:cor:single-non-permutation}
+were stated by them, 
+see also~\cite[Sect.~6]{BondarCV23},~\cite{DBLP:conf/latin/CasasV22}
+or~\cite[Prop.~3]{HoffmannCircularExtended}
+for other statements.
+A preliminary version of \cref{sync_max:cor:orbits-excluded-states-defect-one}
+has been given in~\cite[Prop.~3]{DBLP:conf/lata/Hoffmann21a}.
+\Cref{sync_max:sec:BVC-graphs} will present additional
+results on completely reachable automata by Bondar \& Volkov~\cite{BondarV16,BondarV18}
+and Bondar et al.~\cite{BondarCV23}.
+The remaining results on reachable subsets from \cref{sync_max:sec:reachable} 
+have not been mentioned in the literature before. 
+In~\cref{sync_max:ex:k-reachable-not-sync}, we gave non-synchronizing $n$-state automata where every
+$k$-set is reachable with $n = 2k - 2$. We do not know whether there exist such automata
+where we have $n = k^2 - k - 1$ and $k \ge 2$, i.e., whether 
+the bound from~\cref{sync_max:prop:reachability-k-sets-sync}
+is optimal.
+Complete reachability has been used in~\cite{HoffmannLATAextended2} to characterize primitive permutation groups (these results are also presented in \cref{sync_max:perm:sec:aut_sync_words} here).
+
+%Maslennikova~\cite{DBLP:journals/corr/Maslennikova14,
+%DBLP:journals/ijfcs/Maslennikova19} introduced the reset complexity
+%of a given regular ideal language 
+%as the size of a minimal automaton having it as its set of synchronizing words.
+%Thus, \cref{sync_max:thm:lower_bound_SynA} 
+%gives a lower bound for the reset complexity 
+
+The distinguishability relation was introduced in~\cite{DBLP:conf/dlt/Hoffmann23,Hoffmann2024}.
+In~\cite[Def.~5]{DBLP:journals/jalc/FrigeriR25} the first definition equals the indistinguishably relation
+derived from our notion of distinguishability, but this has not been noted in~\cite{DBLP:journals/jalc/FrigeriR25}.
+
+	\paragraph{An Erroneous Result.} In~\cite[Thm.~7]{DBLP:conf/dcfs/Hoffmann21} 
+	% später sagen (and used in~\cite{dcfs12} ) 
+	it was wrongly claimed that a transformation monoid is completely distinguishable
+	if and only if this is true for all pairs
+	of distinct $2$-sets (a related false statement
+	appears in \cite[Lem.~3.1]{DBLP:conf/lata/Hoffmann21}). 
+	\Cref{sync_max:sec:furtherexamples} lists various counterexamples.
+	Now, the main result
+	of~\cite[Thm.~12]{DBLP:conf/dcfs/Hoffmann21} (which is still true) characterizing primitive
+	permutation groups in terms of the state complexity of associated
+	automata used this false statement in its proof,
+	as well as a special case of it stated before in~\cite[Prop.~4.8]{DBLP:conf/lata/Hoffmann21}.
+	In \cref{sync_max:perm:sec:aut_sync_words}, \cref{sync_max:thm:prim},
+    we present a correct proof, another correct proof has also been given in the extended version~\cite[Thm.~6.3]{HoffmannLATAextended2} 
+	of the conference contributions~\cite{DBLP:conf/lata/Hoffmann21,DBLP:conf/dcfs/Hoffmann21}.	
+	The false claim has also been used in~\cite{DBLP:conf/dcfs/Hoffmann22},
+	and one main result from this paper,
+	stating that a completely reachable SI-automaton
+	is completely distinguishable,
+	is in fact false, 
+	see \cref{sync_max:fig:SCC_not_sufficient} for a counterexample.
+	In the paper~\cite{DBLP:conf/dcfs/Hoffmann22}, it was shown 
+	that in a completely reachable SI-automaton
+	all pairs of distinct $2$-sets are distinguishable,
+	and then the wrong claim has been used to conclude
+	complete distinguishability.	
+	The inductive ``proof'' in~\cite[Thm.~7]{DBLP:conf/lata/Hoffmann21a} (not contained in the proceedings version)
+	missed a case (we note that this is related
+	to the condition $\applytrans{\delta}{A}{u} \ne \applytrans{\delta}{B}{u}$
+	in \crefitem{sync_max:thm:char_distinguishable}{dist:item:dcps}), which
+	was reported to us by an anonymous reviewer of a paper that was (of course)
+	rejected. The counterexample in \cref{sync_max:fig:2-sets-but-not-all:left} is due to the reviewer.
+	We genuinely thank the reviewer for spotting the mistake!
+	% We are really thankful, 
+	%as we would probably still believe in this wrong argument.
+	Our attempts at fixing it led to more insight,
+	the notion of strong $\frac{3}{2}$-connectivity, and involvement of the theory of vertex-transitive graphs.

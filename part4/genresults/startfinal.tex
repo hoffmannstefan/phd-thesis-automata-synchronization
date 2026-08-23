@@ -1,0 +1,344 @@
+%!TEX root = ../../thesis-trier.tex
+
+
+In~\cref{constrsync:sec:constraut:startfinal} we show that, in a constraint automaton, 
+we have some degree of freedom on how to distribute the start state and the final states. 
+Later, in some proofs, this allows us to choose those states 
+in a way that fits best in a given situation.
+%This comes in handy, as
+%it allows us to choose a set of final states that fits best in a given situation.
+In~\cref{constrsync:sec:constraut:concatlowerbounds} 
+we remark how to reformulate some results from~\cref{constr_sync:subsec:concat} 
+in terms of PDFAs.
+Various conditions on constraint PDFAs implying
+that the problem is equivalent to $\constrsync{\Sigma^*}$
+are collected in~\cref{constrsync:sec:constraut:unconstrained}. 
+
+
+\subsection{Distributing the Start State and the Final States}
+\label{constrsync:sec:constraut:startfinal}
+
+
+By~\cref{constr_sync:cor:factors_sets_included,gen_results:cor:factors_etc_complexity} the complexity
+of the constrained synchronization problem depends on the set of factors of the constraint 
+language. \Cref{constr_sync:prop:final_states}
+concerns how we can distribute a start state and a set
+of final states in a trim PDFA without changing the factor set of the accepted language.
+Various conclusions from \cref{constr_sync:prop:final_states} 
+on altering the start state and set of final states
+while preserving the computational complexity are collected in \cref{constr_sync:move_states}.
+Lastly, in \cref{constr_sync:prop:start_states}, 
+we prove that for trim PDFAs, considering multiple starting
+states does not change the complexity.
+
+%Recall the definition of the reachability quasiorder $\lereach$ and the induced partial order on the strongly connected components
+%from~\cref{prelim:sec:reach} which extends without difficulty to PDFAs.
+
+\begin{proposition}
+	\label{constr_sync:prop:final_states}
+	Suppose $\automat{B}{P}{\Sigma}{\mu}{p_0}{F}$ is a trim PDFA. Let $p \in P$
+	and $E \subseteq P$ be such that
+	$p_0$ is accessible\footnote{As $\mathcal B$
+		is assumed to be trim,  $p \lereach p_0$, i.e., $p_0$ being accessible in $\mathcal B_{p, E}$, is equivalent ot $p_0 \eqreach p$.}
+	in $\mathcal B_{p, E}$
+	and every state in $F$ is coaccessible in $\mathcal B_{p, E}$.
+	Then $\fact{L(\mathcal B)} = \fact{L(\mathcal B_{p, E})}$.
+\end{proposition}
+\begin{proof} % maximal bedingung weg, nur corollar; und trim annahme weg?
+	Let $u \in L(\mathcal B)$. 
+	As $p_0$ is accessible in $\mathcal B_{p, E}$,
+	there exists $v \in \Sigma^*$ such that 	
+	$\applytrans{\mu}{p}{v} = p_0$.
+	Furthermore, as $\applytrans{\mu}{p_0}{u} \in F$,
+	and each state in $F$ is coaccessible in $\mathcal B_{p,E}$ 
+	there exists $w \in \Sigma^*$
+	such that $\applytrans{\mu}{\applytrans{\mu}{p_0}{u}}{w} \in E$.
+	Hence $vuw \in L(\mathcal B_{p, E})$.
+	
+	Now, suppose $u \in L(\mathcal B_{p, E})$.
+	As $\mathcal B$ is trim,
+	there exist $v, w \in \Sigma^*$
+	such that $\applytrans{\mu}{p_0}{v} = p$
+	and $\applytrans{\mu}{\applytrans{\mu}{p}{u}}{w} \in F$.
+	So $vuw \in L(\mathcal B)$.
+\end{proof}
+
+Next, using \cref{constr_sync:cor:factors_sets_included,gen_results:cor:factors_etc_complexity}, we state some consequences of~\cref{constr_sync:prop:final_states} regarding changes to the start state or modifications to the final state set, while preserving the computational complexity of the associated constrained problem.
+
+\begin{corollary}
+	\label{constr_sync:move_states}
+	Suppose $\automat{B}{P}{\Sigma}{\mu}{p_0}{F}$
+	is a trim PDFA.
+	\begin{enumerate} 		
+		\item \label{constr_sync:move_states:1} $\constrsync{L(\mathcal B)} \eqACZEROm 
+		\constrsync{L(\mathcal B_{s, F \cup \{q\}})}$
+		for every $s \in [p_0]_{\eqreach}$
+		and $q \in P$.\footnote{Note that, as $\mathcal B$ is trim, we have $F \ne \emptyset$ and~$p$ is coaccessible.}
+		
+		
+		\item \label{constr_sync:move_states:2} For $q \in P$ coaccessible in $\mathcal B_{p_0, F\setminus\{q\}}$ 
+		we have $\constrsync{L(\mathcal B)} \eqACZEROm 
+		\constrsync{L(\mathcal B_{p_0, F \setminus \{q\}})}$.	
+		
+		\item \label{constr_sync:move_states:3} $\constrsync{L(\mathcal B)} \eqACZEROm  \constrsync{L(\mathcal B_{p_0, P})}$.
+		
+		\item \label{constr_sync:move_states:4} Let $E \subseteq P$ be a set such that $E \cap [q]_{\eqreach} \ne \emptyset$ for each
+		maximal strongly connected component $[q]_{\eqreach}$.
+		Then $\constrsync{L(\mathcal B)} \eqACZEROm 
+		\constrsync{L(\mathcal B_{p_0, E})}$.
+		
+	\end{enumerate} 
+\end{corollary}
+\begin{proof} In the following we only show equality of the factor sets,
+	the equivalence for $\leACZEROm$-reductions follows from~\cref{gen_results:cor:factors_etc_complexity}.	
+		
+\ref{constr_sync:move_states:1}: By~\cref{constr_sync:prop:final_states} applied to $p = p_0$
+	and $E = F \cup \{q\}$.	
+	
+\ref{constr_sync:move_states:2}:   By~\cref{constr_sync:prop:final_states} applied to $p = p_0$	and $E = F \setminus \{q\}$.
+	
+	
+\ref{constr_sync:move_states:3}:  By~\cref{constr_sync:prop:final_states} applied to $p = p_0$
+	and $P$ where, as $F \subseteq P$, every state in $F$ is coaccessible in $L(\mathcal B_{p_0, P})$.
+	
+\ref{constr_sync:move_states:4}: By the assumption
+ every state is coaccessible in $B_{p_0, E}$
+ so the claim follows from~\cref{constr_sync:prop:final_states}.
+\end{proof}
+
+	\begin{figure}[htbp]
+	\centering	
+	\begin{minipage}{0.2\textwidth}
+		\begin{tikzpicture}[>=stealth,shorten >=1pt,auto, node distance = 1.8cm]
+			\tikzset{every state/.style={minimum size=1pt,fill=white}}
+			
+			\node[state, initial above] (q0) {};
+			\node[state, right = of q0] (q1) {};
+			\node[state, below = of q1] (q2) {};
+			\node[state, accepting, left  = of q2] (q3) {};
+			
+			\path[->] (q0) edge[bend left] node {$a$} (q1)
+			(q1) edge[bend left] node {$b$} (q0)
+			(q1) edge node {$a$} (q2);
+			
+			\path[->] (q2) edge [bend left] node {$a$} (q3)
+			(q3) edge [bend left] node {$b$} (q2);
+		\end{tikzpicture}
+	\end{minipage}\hfill
+	\begin{minipage}{0.2\textwidth}
+		\begin{tikzpicture}[>=stealth,shorten >=1pt,auto, node distance = 1.8cm]
+			\tikzset{every state/.style={minimum size=1pt,fill=white}}
+			
+			\node[state] (q0) {};
+			\node[state, initial above, accepting, right = of q0] (q1) {};
+			\node[state, below = of q1] (q2) {};
+			\node[state, accepting, left  = of q2] (q3) {};
+			
+			\path[->] (q0) edge[bend left] node {$a$} (q1)
+			(q1) edge[bend left] node {$b$} (q0)
+			(q1) edge node {$a$} (q2);
+			
+			\path[->] (q2) edge [bend left] node {$a$} (q3)
+			(q3) edge [bend left] node {$b$} (q2);
+		\end{tikzpicture}
+	\end{minipage}\hfill
+	\begin{minipage}{0.2\textwidth}
+		\begin{tikzpicture}[>=stealth,shorten >=1pt,auto, node distance = 1.8cm]
+			\tikzset{every state/.style={minimum size=1pt,fill=white}}
+			
+			\node[state, initial above] (q0) {};
+			\node[state, right = of q0] (q1) {};
+			\node[state, accepting, below = of q1] (q2) {};
+			\node[state, left  = of q2] (q3) {};
+			
+			\path[->] (q0) edge[bend left] node {$a$} (q1)
+			(q1) edge[bend left] node {$b$} (q0)
+			(q1) edge node {$a$} (q2);
+			
+			\path[->] (q2) edge [bend left] node {$a$} (q3)
+			(q3) edge [bend left] node {$b$} (q2);
+		\end{tikzpicture}
+	\end{minipage}\hfill
+	\begin{minipage}{0.2\textwidth}
+		\begin{tikzpicture}[>=stealth,shorten >=1pt,auto, node distance = 1.8cm]
+			\tikzset{every state/.style={minimum size=1pt,fill=white}}
+			
+			\node[state, accepting, initial above] (q0) {};
+			\node[state, accepting, right = of q0] (q1) {};
+			\node[state, accepting, below = of q1] (q2) {};
+			\node[state, accepting, left  = of q2] (q3) {};
+			
+			\path[->] (q0) edge[bend left] node {$a$} (q1)
+			(q1) edge[bend left] node {$b$} (q0)
+			(q1) edge node {$a$} (q2);
+			
+			\path[->] (q2) edge [bend left] node {$a$} (q3)
+			(q3) edge [bend left] node {$b$} (q2);
+		\end{tikzpicture}
+	\end{minipage}\hfill
+	\caption[Distributions of final states that give equivalent constrained problems]{The following distributions
+		of final states (marked with a double circle) and start state
+		all yield the same complexity in the constrained synchronization problem
+		when the accepted languages are used as constraint languages.}
+	\label{constrsync:fig:distributions-final-states}
+\end{figure}	
+
+To illustrate \cref{constr_sync:move_states}, 
+\cref{constrsync:fig:distributions-final-states} gives different distributions of final states and a start state
+for a PDFA that all yield the same computational complexity in the constrained synchronization problem
+when the constraint language is the language accepted by the PDFA.
+
+When we omit the assumption of $\mathcal B$ being trim
+in \cref{constr_sync:move_states}, \ref{constr_sync:move_states:1} still holds
+for every coaccessible $q \in P$, \ref{constr_sync:move_states:2} holds as well without modification, 
+\ref{constr_sync:move_states:3} holds by taking
+the set of all coaccessible states instead of $P$, and in \ref{constr_sync:move_states:4} we have to consider
+only those maximal $[q]_{\eqreach}$ containing at least one final state.
+
+Lastly, we state that for trim PDFAs, considering multiple starting
+states does not change the complexity.
+
+\begin{proposition} \label{constr_sync:prop:start_states}
+	Let $\automat{B}{P}{\Sigma}{\mu}{p_0}{F}$ be a trim PDFA.	
+	Then 
+	\[ 
+	\constrsync{L(\mathcal B)} \eqACZEROm \constrsync{L(\mathcal B) \cup \bigcup_{p \in I} L(\mathcal B_{p, F})}
+	\]
+	for all $I \subseteq P$.
+\end{proposition}
+\begin{proof}
+	Let $u \in L(\mathcal B_{p, F})$ for some $p \in I$.
+	As $\mathcal B$ is trim, there exists $v \in \Sigma^*$
+	such that $\mu(p_0, v) = p$ and we get $vu \in L(\mathcal B)$.
+	So $\bigcup_{p \in I} L(\mathcal B_{p, F}) \subseteq \suff{L(\mathcal B)}$
+	and by \cref{constrsync:genresults:cor:subset} 
+	the claim follows.
+\end{proof}
+
+\subsection{Concatenation and Complexity Lower Bounds}
+\label{constrsync:sec:constraut:concatlowerbounds}
+
+The following statement is a reformulation 
+of \crefitem{constrsync:cor:UanL}{constrsync:cor:UanL:1} and 
+\cref{constr_sync:prop:Gamma_suffix}
+in terms of constraint PDFAs to obtain
+complexity lower bounds.
+
+\begin{proposition}
+	Let $\mathcal B = (\Sigma, P, \mu, p_0, F)$
+	be a PDFA and set
+	\begin{enumerate}
+		\item $\Gamma_1 = \{ x \in \Sigma \mid \applytrans{\mu}{p_0}{x}\text{ is undefined } \}$ and
+		
+		\item $\Gamma_2 = \{ x \in \Sigma \mid \forall p \in P \colon \applytrans{\mu}{p}{x} \notin F \}$.\footnote{We consider $\applytrans{\mu}{p}{x} \notin F$
+			to be true also when $\applytrans{\mu}{p}{x}$ is undefined;
+see also the convention from \cref{constr_sync:subsec:pfun} 
+where for partial functions $f$, $f(x) \ne y$ included the case that $f(x)$ is undefined.}
+	\end{enumerate}	
+	If $U_1 \subseteq \Gamma_1^*$,
+	$U_2 \subseteq \Gamma_2^*$ are regular,
+	then $\constrsync{L(\mathcal B)} \leACZEROm \constrsync{U_1 L(\mathcal B) U_2}$.		
+\end{proposition}
+\begin{proof}
+	As $\Gamma_1 \Sigma^* \cap L(\mathcal B) = \emptyset$
+	and $\Sigma^* \Gamma_2 \cap L(\mathcal B) = \emptyset$
+	the claim follows from  \crefitem{constrsync:cor:UanL}{constrsync:cor:UanL:1}
+	and  \cref{constr_sync:prop:Gamma_suffix}.	
+\end{proof}
+
+
+\subsection{Equivalence to Unconstrained Synchronization} 
+\label{constrsync:sec:constraut:unconstrained}
+
+First, \cref{constrsync:prop:upperset} states
+a rather general condition implying that the factor set
+of the language accepted by a PDFA equals $\Sigma^*$.
+Then, \cref{constrsync:cor:upperset}
+derives several conditions implying equivalence
+to $\constrsync{\Sigma^*}$.
+
+\begin{proposition}\label{constrsync:prop:upperset}
+	Let $\automat{B}{P}{\Sigma}{\mu}{p_0}{F}$ be a PDFA.
+	Suppose there exists a set $S \subseteq P$ of coaccessible states
+	containing an accessible state $s \in S$
+	and	such that $\mu(p, x) \in S$ for each $p \in S$ and $x \in \Sigma$.
+    Then $\fact{L(\mathcal B)} = \Sigma^*$.
+\end{proposition} 
+\begin{proof}
+	Let $v \in \Sigma^*$. 
+    As $s$ is accessible there exists $u \in \Sigma^*$
+	such that $\mu(p_0, u) = s$.
+	By assumption $\mu(p_0, uv) \in S$
+	and there exists $w \in \Sigma^*$ such that $\mu(p_0, uvw) \in F$.
+	So, $v \in \fact{L(\mathcal B)}$
+	and we get $\fact{L(\mathcal B)} = \Sigma^*$.	
+\end{proof} 
+
+\begin{corollary}\label{constrsync:cor:upperset}
+	Let $\automat{B}{P}{\Sigma}{\mu}{p_0}{F}$ be a PDFA.
+	Then 
+	$\constrsync{L(\mathcal B)} \eqACZEROm \constrsync{\Sigma^*}$
+	and so $\constrsync{L(\mathcal B)}$ is \NL-complete
+	for $|\Sigma| \ge 2$
+	and \LOGSPACE-complete for $|\Sigma| = 1$
+	in the following cases:
+	\begin{enumerate}
+		\item \label{constrsync:cor:upperset:item:S} $\mathcal B$ is trim and there exists a non-empty $S \subseteq P$ such that $\mu(p,x) \in S$ for all $p \in S$ and $x \in \Sigma$. 
+		
+		\item \label{constrsync:cor:upperset:item:complete} $\mathcal B$ is complete
+		and every state is coaccessible.
+		
+		\item \label{constrsync:cor:upperset:item:trap} $\mathcal B$ contains an accessible trap state
+		that is a final state, i.e., 
+		a state $p \in F$ with $L(\mathcal B_{p,\{p\}}) = \Sigma^*$
+		and $\mu(p_0, u) = p$ for some $u \in \Sigma^*$.
+		
+		\item \label{constrsync:cor:upperset:item:trimtrap} $\mathcal B$ is trim and has a trap state.     
+	\end{enumerate}
+\end{corollary} 
+\begin{proof}
+	In the following, we only point out how to obtain
+	a set $S$ such that we can deduce $\fact{L(\mathcal B)} = \Sigma^*$
+	from \cref{constrsync:prop:upperset}.
+	Then, the claim follows
+	from \cref{gen_results:cor:factors_etc_complexity}, 
+    \cref{prelim:complexity:general_aut_sync,thm:SYNC-solv}.
+
+\ref{constrsync:cor:upperset:item:S}: As $\mathcal B$ is trim, $S$ from the statement fulfills the conditions in \cref{constrsync:prop:upperset}.
+
+\ref{constrsync:cor:upperset:item:complete}: Consider $S = P$ for \cref{constrsync:prop:upperset}.
+
+\ref{constrsync:cor:upperset:item:trap}: Consider the set $S$ containing the accessible final trap state.
+	
+\ref{constrsync:cor:upperset:item:trimtrap}: A coaccessible trap state must be a final state.
+ Thus, since~$\mathcal B$ is trim, each of its trap states is final
+ and the claim follows from \cref{constrsync:cor:upperset:item:trap}.
+\end{proof} 
+
+\begin{corollary}
+	Let $\automat{B}{P}{\Sigma}{\mu}{p_0}{F}$ be a trim PDFA.
+    If for each $u\in \Sigma^*$ we have $\mu(p, u) = q$ for some $p,q \in P$,
+    then  $\constrsync{L(\mathcal B)} \eqACZEROm \constrsync{\Sigma^*}$.
+\end{corollary}
+\begin{proof}
+	Let $u \in \Sigma^*$. Then  $\mu(p, u) = q$ for some $p,q \in P$.
+	Since~$\mathcal B$ is trim,
+	we have $\mu(p_0, v) = p$
+	and $\mu(q, w) \in F$ for some $v,w \in \Sigma^*$.
+	Thus $u \in \factor{L(\mathcal B)}$,
+	which gives $\factor{L(\mathcal B)} = \Sigma^*$.
+	So, the claim follows
+	with \cref{gen_results:cor:factors_etc_complexity}, 
+	\cref{prelim:complexity:general_aut_sync,thm:SYNC-solv}.	
+\end{proof}
+
+\begin{remark}\label{rem:PDFA-for-constraint}
+	For a trim automaton $\mathcal B$ with a totally defined transition function,
+	by~\crefitem{constrsync:cor:upperset}{constrsync:cor:upperset:item:complete}
+	we have $\constrsync{L(\mathcal B)} \eqACZEROm \constrsync{\Sigma^*}$.
+	Hence, to describe constraint languages giving other complexities than the unconstrained problem,
+	automata with totally defined transitions functions have useless states.
+	So, out of this reason, we opted to use PDFAs to specify constraint languages
+	as a more compact description than automata 
+	with a totally defined transition function.
+\end{remark}

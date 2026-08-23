@@ -1,0 +1,115 @@
+%!TEX root = ./../../thesis-trier.tex
+
+Here, we investigate how the reachability of subsets
+relates to the number of sink components. Recall that, as stated in \cref{prelim:order:prop:num-disj-upper},
+the number of different sink components
+equals the maximal number of pairwise incomparable
+states and the maximal number of pairwise disjoint upper sets.
+
+\Cref{syncmax:prop:uppersets-num-sinks},
+is a consequence of \cref{sync_max:eqn:upper_set}.
+\Cref{syncmax:prop:uppersets-num-sinks-size-Q} 
+gives various bounds in terms of the number
+of sink components for automata where every $k$-set of states is reachable.
+
+\begin{proposition} \label{syncmax:prop:uppersets-num-sinks}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$.
+	Suppose $S \subseteq Q$ is an upper set containing~$m$ different sink components.
+    Then $|\delta(Q, u) \cap S| \ge m$ for all $u \in \Sigma^*$.
+\end{proposition}
+\begin{proof}
+	Let $u \in \Sigma^*$. By \cref{sync_max:eqn:upper_set}, for a sink component $R \subseteq Q$
+	we have $\delta(Q, u) \cap R \ne \emptyset$.
+	Let $T$ be the union of the sink components in $S$.
+    As distinct sink components are disjoint, we have $|\delta(Q, u) \cap T| \ge m$.
+    Hence $|\delta(Q, u) \cap S| \ge |\delta(Q, u) \cap T| \ge m$.
+\end{proof} 
+
+\begin{proposition} \label{syncmax:prop:uppersets-num-sinks-size-Q} 
+	\label{sync_max:prop:upper_sets_allk-sets}
+	\label{constrsync:prop:upper_sets:item:Si}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be an automaton with~$m$ sink components.
+	Suppose every $k$-set of states is reachable for some $k \ge 1$. Then we have the following:
+	
+	\begin{enumerate}
+		\item \label{syncmax:prop:k-reach-sinks:1} $k \ge m$.
+		
+		\item \label{syncmax:prop:k-reach-sinks:2} Every upper set of size at least $k$ contains all sink components.
+		
+		\item \label{syncmax:prop:k-reach-sinks:3} $|Q \setminus S| \le k - r$ for an upper 
+		set $S \subseteq Q$ that contains~$r$ sink components.
+		
+		\item \label{syncmax:prop:k-reach-sinks:4} For $m \ge 2$ we have 
+		$|R| \le k - m + 1$ for each upper set~$R$ containing precisely one sink component
+		and for the whole state set we have $|Q| \le 2k - m$.\footnote{Observe
+		that $1 \le |R| \le k - m + 1$ also yields $m \le k$.}
+	\end{enumerate}
+\end{proposition} 
+\begin{proof}
+\ref{syncmax:prop:k-reach-sinks:1}: Let $\delta(Q, u)$ be a $k$-set for some $u \in \Sigma^*$.
+ By \cref{sync_max:eqn:upper_set}, $\delta(Q, u)$ contains a state from each sink component.
+ Thus $k = |\delta(Q, u)| \ge m$.
+
+\ref{syncmax:prop:k-reach-sinks:2}: By assumption, we can pick a $k$-set $A \subseteq S$.
+ We have $A = \delta(Q, u)$ for some $u \in \Sigma^*$.
+ By \cref{sync_max:eqn:upper_set}, each sink component has non-empty intersection with~$A$,
+ and thus with~$S$. Since~$S$ is an upper set, this yields that each
+ sink component is contained in~$S$.
+
+\ref{syncmax:prop:k-reach-sinks:3}: Assume $|Q \setminus S| > k - r$.
+  Then we find a $k$-set $A \subseteq Q$
+  such that $A$ contains at least $k - r + 1$ states not in~$S$.
+  This gives $|A \cap S| < r$.
+  By assumption, $A = \delta(Q, u)$ for some $u \in \Sigma^*$.
+  By \cref{syncmax:prop:uppersets-num-sinks}, we get $|A \cap S| \ge r$,
+  contradicting $|A \cap S| < r$.
+  
+\ref{syncmax:prop:k-reach-sinks:4}: First, suppose~$R$ contains precisely one sink component. 
+Let $K$ be the union of the $m-1$ sink components
+outside of~$R$.
+By \cref{syncmax:prop:k-reach-sinks:3} we have $|Q \setminus K| \le k - (m - 1)$.
+Then the first claim follows since $R \subseteq Q \setminus K$.
+ Next, let $S$ be a sink component. By \cref{syncmax:prop:k-reach-sinks:3} 
+ we have $|Q \setminus S| \le k-1$.
+ Applying the already proven part with~$S$ in the role of~$R$,
+ we find $|S| \le k - m + 1$.
+ Thus $|Q| \le 2k - m$.
+\end{proof}
+	
+By \cref{sync_max:prop:reachability-k-sets-sync}
+an automaton in which every $k$-sets is reachable with more than $k(k-1)$
+states is synchronizing, and so, by \cref{prelim:cor:sync-unique-sink}, has a unique sink component.
+This gives the bound $k(k-1)$ for the number of states
+of an automaton in which every $k$-set is reachable
+and with two distinct sink components. The bound $2(k-1)$ given above is better for $k > 2$.
+
+\begin{corollary} \label{sync_max:cor:upper_sets_allk-sets}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	be an automaton in which every $k$-set is reachable for some $k \ge 1$.
+	
+	\begin{enumerate}
+		\item \label{sync_max:cor:upper_sets_allk-sets:1} If $|Q| > 2k - 2$, then $\mathcal A$ has a unique sink component.
+		
+		\item \label{sync_max:cor:upper_sets_allk-sets:2} If $|S| \ge k$ for some sink component $S \subseteq Q$, then $\mathcal A$ has a unique sink component.
+	\end{enumerate}
+\end{corollary}
+\begin{proof} 
+	\ref{sync_max:cor:upper_sets_allk-sets:1}: This follows readily from \crefitem{syncmax:prop:uppersets-num-sinks-size-Q}{syncmax:prop:k-reach-sinks:4}.
+	
+	\ref{sync_max:cor:upper_sets_allk-sets:2}: If $\mathcal A$ has more than one sink component,
+	then $|S| \le k - 1$ by \crefitem{syncmax:prop:uppersets-num-sinks-size-Q}{syncmax:prop:k-reach-sinks:4}.
+	This gives the claim.	
+\end{proof}
+
+The next example shows that the bounds from \crefitem{sync_max:prop:upper_sets_allk-sets}{syncmax:prop:k-reach-sinks:4}
+are optimal (note that such an example cannot be a synchronizing automaton, since synchronizing automata have a unique sink component).
+
+\begin{example}
+	Consider the automaton from Example~\ref{sync_max:ex:k-reachable-not-sync}.
+	It has $2k - 2$ states and every $k$-set is reachable.
+	Furthermore, the sink components are the state sets $[m]$ and $\{0',1',\ldots,(m-1)'\}$
+	of size $k - 1$. By changing the sizes of the two copies of the \Cerny automata, i.e., having them different sizes,
+	we can construct automata with any number
+	of states less than $2k - 2$ where every $k$-set of states
+	is reachable but which have two sink components.
+\end{example}

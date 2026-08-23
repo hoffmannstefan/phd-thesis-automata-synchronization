@@ -1,0 +1,68 @@
+
+In Sections~\ref{sync_max:sec:decision_cd} and \ref{sync_max:sec:decision_cr}
+we investigate the complexity of deciding complete distinguishability, complete reachability,
+and sync-maximality. 
+Also, we prove that the problem to decide whether two subsets are distinguishable is \PSPACE-complete.
+In \cref{sync_max:decision:sec:binary-SI}, 
+we investigate these problems, and the problem to decide synchronizablity,
+for binary SI-automata as input,
+which appears in a separate section as  
+complete reachability, complete distinguishability, and sync-maximality
+are equivalent properties for binary SI-automata by \cref{sync_max:prop:binary-SI}.
+An overview of our results and those from the literature on complete reachability, complete distinguishability, and sync-maximality,
+is given in \cref{tab:complexity}.
+
+% https://tex.stackexchange.com/questions/478671/how-i-can-write-this-multi-column-and-multi-row-table-in-latex
+\begin{table}[htb]
+	\centering    
+	\caption[Overview decision problems]{Overview of results on deciding
+		complete reachability, complete distinguishability, and sync-maximality.
+		\NL-hardness holds even for SI-automata without permutational letters.}
+	\begin{tabular}{*{5}{l}}
+		\toprule
+		\multirow{2}{*}{Problem} & \multicolumn{4}{c}{Subclass of Automata} \\
+		\cmidrule(lr){2-5}
+		& SI-Automata & \parbox{1.9cm}{Binary Automata} & \parbox{1.9cm}{Binary SI-Automata} & \parbox{1.9cm}{All \\ Automata} \\  
+		\midrule 
+		\\ [-1.5ex] 
+		Complete Reach. & \parbox{1.8cm}{\NL-c \\ (Th.~\ref{sync_max:thm:SI-aut_compl_reach_NL-c})} & \parbox{1.5cm}{ \PTIME \\ \cite{DBLP:conf/latin/CasasV22}} & \parbox{1.8cm}{\LOGSPACE-c \\ (Th.~\ref{syncmax:SI-aut:prop:sync-L-complete})}  & \parbox{1.5cm}{\PTIME \\ \cite{DBLP:conf/icalp/FerensS23}}  \\ [2.5ex] 
+		Complete Dist. & \parbox{1.8cm}{\NL-hard \\ (Th.~\ref{thm:cd_NL-hard})} & Open & \parbox{1.8cm}{\LOGSPACE-c \\ (Th.~\ref{syncmax:SI-aut:prop:sync-L-complete})} & \parbox{1.9cm}{\PSPACE-c \\ \cite{SzykulaZyzik24}}  \\ [2.5ex] 
+		Sync-Maximality & \parbox{1.8cm}{\NL-hard \\ (Th.~\ref{thm:sync_max_NL-hard})} & \parbox{2.7cm}{\PTIME \\ (by Cor.~\ref{cor:char-bin-compl-reach})}   & \parbox{1.8cm}{\LOGSPACE-c \\ (Th.~\ref{syncmax:SI-aut:prop:sync-L-complete})} & \parbox{1.9cm}{\PSPACE-c \\ \cite{SzykulaZyzik24}}   \\  [2.5ex] 
+		\bottomrule
+	\end{tabular} % open rein
+	\label{tab:complexity}
+\end{table}
+
+\todo[inline]{personal communication im fliestext}
+
+With the correspondence between automata and transformation semigroups (\cref{prelim:remarks_trans_semigrp_semiautomata}), 
+the same complexities for the respective problems for transformation semigroups given as a list of generators follow.
+
+\section{Distinguishability}
+\label{sync_max:sec:decision_cd} 
+
+\input{../part3/decision/decision_cd}
+
+\section{Complete Reachability and Sync-Maximality}
+\label{sync_max:sec:decision_cr}
+
+\input{../part3/decision/decision_cr}
+
+%\section{Sync-Maximality}
+%\label{sync_max:subsec:complexity}
+%\input{part3/decision/decision_sm}
+
+\section{Binary SI-Automata}
+\label{sync_max:decision:sec:binary-SI}
+
+\input{../part3/decision/binarysi}
+
+\section{Discussion} 
+\label{sync_max:decision:discussion}
+
+\input{../part3/decision/discussion}
+
+
+
+
+

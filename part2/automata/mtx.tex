@@ -1,0 +1,70 @@
+%!TEX root = ../../../thesis.tex
+
+
+\IN{Boolean transition matrix}
+\label{def:transitionmtx} 
+
+Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be an $n$-state automaton.
+As shown in \cref{prelim:subsec:transsemigrp}, letters and words induce transformations
+on the states of $\mathcal A$, which can be represented
+by transition matrices similar as in \cref{prelim:eqn:trans_mtx}.
+More precisely, we have to fix some ordering on the states $Q = \{q_1, \ldots, q_n\}$.
+Then, to every letter $a \in \Sigma$ we associate a 
+\emph{(Boolean) transition matrix}
+$[a]_{\mathcal A} = (m^{(a)}_{ij})_{i,j \in \{1,\ldots,n\}}$ by setting
+\[
+m^{(a)}_{ij} = \begin{cases}
+	1 & \text{if } \applytrans{\delta}{q_i}{a} = q_j; \\
+	0 & \text{if } \applytrans{\delta}{q_i}{a} \ne q_j.
+\end{cases} 
+\]
+%So, via the ordering $\{q_1, \ldots, q_n\}$
+%we identify each state uniquely with a number in $\{1,\ldots,n\}$,
+%which correspond to the rows and columns of the transition matrices.
+Intuitively, state $q_i$ is mapped to state $q_j$ by $a \in \Sigma$ \todo{das vorne bei transitions so schon sagen?}
+if and only if in the $i$-th row of~$[a]_{\mathcal A}$
+the unique one appears at position $j$, i.e., in the $j$-th column of $[a]_{\mathcal A}$.
+Inductively\footnote{Alternatively, we can apply the Universal Mapping Property (Theorem~\ref{prelim:prop:UMP})
+	to the monoid of all $n \times n$ matrices and the mapping $[\cdot]_{\mathcal A}$ from letters into this monoid
+	to obtain the unique morphism from $\Sigma^*$ into the set of $n \times n$ Boolean matrices.}, 
+we associate with every word a transition matrix
+in the following way: we let $[\varepsilon]_{\mathcal A}$ be the identity matrix $I_n$
+and, for $u \in \Sigma^*$ and $a \in \Sigma$, set $[ua]_{\mathcal A} = [u]_{\mathcal A}[a]_{\mathcal A}$, i.e., the matrix product 
+of~$[u]_{\mathcal A}$ and~$[a]_{\mathcal A}$.
+\Cref{prelim:fig:transitionmtxCerny} gives transition matrices for the \v{C}ern\'y automata $\mathcal C_n$
+from \cref{intro:sync_aut:cerny}.
+
+\begin{figure}[ht]
+	\centering
+	\[
+	[b]_{\mathcal C_n} =
+	\left( {\begin{array}{ccccc}
+			0 & 1 &  0 & \cdots & 0\\
+			0 & 0 &  1 & \cdots & 0\\
+			\vdots & \vdots & \vdots & \ddots & \vdots\\
+			0 & 0 & 0 & \cdots & 1 \\
+			1 & 0 & 0 & \cdots & 0
+	\end{array} } \right)
+	\qquad 
+	[a]_{\mathcal C_n} =
+	\left( {\begin{array}{cccccc}
+			0 & 1 &  0 & \cdots & 0 & 0 \\
+			0 & 1 &  0 & \cdots & 0 & 0 \\
+			\vdots & \vdots & \vdots & \ddots & \vdots\\
+			0 & 0 & 0 & \cdots & 1 & 0 \\
+			0 & 0 & 0 & \cdots & 0 & 1
+	\end{array} } \right)
+	\]
+	\caption[The transition matrices for the \v{C}ern\'y automata $\mathcal C_n$]{
+		The transition matrices for the \v{C}ern\'y automata $\mathcal C_n$
+		from \SEC~\ref{intro:sync_aut:cerny} (\FIG~\ref{intro:fig:cerny})
+		with the state identification $q_1 = 0, q_2 = 1, \ldots, q_n = n - 1$.
+	}
+	\label{prelim:fig:transitionmtxCerny}
+\end{figure} 
+
+When there is no ambiguity to which automaton we refer,
+we write $[u]$ instead of $[u]_{\mathcal A}$ for $u \in \Sigma^*$.
+Also, when the specific ordering of the states is not important, we
+assume some order to be taken without explicitly mentioning it.
+% do not mention it and assume some order to be taken.

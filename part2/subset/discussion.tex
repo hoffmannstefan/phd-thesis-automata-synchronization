@@ -1,0 +1,657 @@
+%!TEX root = ./../../springer-mono-format/book.tex
+%!TEX root = ./../../thesis-trier.tex
+  
+  \todo[inline]{viel auskommentiert}
+  
+ Here, we discuss some other complexity results on problems related to synchronization from the literature.
+ In view of the correspondence between automata
+ and transformation semigroups from \cref{prelim:remarks_trans_semigrp_semiautomata}, 
+ we also discuss related problems on transformation semigroups. 
+ For notions from (parameterized) complexity
+ theory or automata theory
+ not defined before, we refer to the cited papers
+ or other literature as, for example,~\cite{DBLP:books/daglib/0023084}
+ for classical computational complexity theory,
+ \cite{FluGro2006} for parameterized complexity theory, or~\cite{DBLP:reference/hfl/Pin97} for automata theory.
+  
+ In this section, we do not discuss complexity issues
+ related to the constrained synchronization problem
+ introduced in \cref{overview:sec:csp} as this is done in \cref{part:constrsync} of the present work.
+  
+\paragraph{Further Complexity Theoretical Results.} \NP-completeness of \DFASWS\ 
+was established for the following classes of input automata in the literature:
+\begin{enumerate}
+\item \label{prelim:compl:discussion:pto} Binary partially ordered automata with a unique trap state~\cite{Eppstein90,Rys80};
+
+\item SI-automata over an unbounded alphabet~\cite{DBLP:conf/fun/FernauH022,Mar2009b};
+
+\item Partially ordered commutative automata~\cite{DBLP:conf/fun/FernauH022,DBLP:journals/jcss/FernauHV15,Mar2009b};
+
+\item Eulerian\footnote{An automaton $\semiautomat{A}{Q}{\Sigma}{\delta}$ is \emph{Eulerian}
+	if $\sum_{x\in \Sigma} | \{ p \in Q \mid \applytrans{\delta}{p}{x} = q \} |
+	= |\Sigma|$ for each $q \in Q$.}
+automata over a binary alphabet~\cite{DBLP:journals/iandc/Vorel17};
+
+\item  Circular automata over a binary alphabet~\cite{DBLP:journals/tcs/Martyugin12};
+
+\item Automata whose automaton multigraph is a two-terminal series-parallel multigraph with loops (TTSPL automata) over an alphabet with at least four letters~\cite{DBLP:journals/ita/BruchertseiferF21}.
+\end{enumerate}
+
+Rystsov~\cite{Rys80} and Eppstein~\cite{Eppstein90}, independently,
+gave the same reduction to show \NP-hardness by constructing
+a binary partially ordered automaton.
+Essentially the same reduction was also given by Salomaa~\cite{DBLP:journals/tcs/Salomaa03}
+to show \NP-hardness of the problem whether a specific constant function can be composed out of a given
+set of functions.
+The reduction also appears as a special case in a paper 
+by Goral\v{c}\'yk and Koubek~\cite{GorKou95} where 
+the question of realizing idempotent transformations
+of a certain rank was investigated.
+Martyugin~\cite[Prop.~4.2]{Mar2009b} noted that the
+automaton resulting from this reduction has a trap state,
+is aperiodic, has a $\mathcal J$-trivial transition monoid,
+and belongs to the class of automata preserving a linear order on the states
+except at a single trap state, thus giving \NP-hardness for these classes as well.\footnote{He called the latter automata partially monotonic automata, but since these automata
+	have a totally defined transition function
+	we avoid this term here
+	to not cause confusion with partial automata where the transition function
+	can be a partial function introduced later in \cref{part:constrsync}.}
+An automaton $\semiautomat{A}{Q}{\Sigma}{\delta}$ is called \emph{locally confluent}
+if, for any $q \in Q$ and $a,b \in \Sigma$,
+there exists $u \in \{a,b\}^*$ such that $\delta(q, au) = \delta(q, bu)$.
+Clearly, every synchronizing automaton
+over a binary alphabet is locally confluent.
+So, by the Rystsov-Eppstein-Salomaa reduction,
+\DFASWS\ is \NP-complete for locally confluent partially ordered automata.
+The \NP-hardness result
+on TTSPL automata
+was shown in~\cite{DBLP:journals/ita/BruchertseiferF21}
+by adding two additional letters and additional states to obtain a TTSPL automaton
+from the Rystsov-Eppstein-Salomaa construction.
+
+Eppstein~\cite{Eppstein90} showed that for oriented $n$-state automata\footnote{This is the terminology due to Ananichev and 
+	Volkov~\cite{DBLP:journals/tcs/AnanichevV04} which we use here as well, Eppstein himself called these automata monotonic; see 
+	also the discussion on page~\pageref{discussion:monotonic}.}  
+over the alphabet~$\Sigma$ the problem \DFASWS\ is solvable
+in time $O(|\Sigma| n^2 )$. Every monotonic automaton is oriented~\cite{DBLP:journals/tcs/AnanichevV04},
+yielding polynomial time solvability for monotonic automata as well.
+Martyugin~\cite{Mar2009b} showed that \DFASWS\ is solvable in $O(n^{|\Sigma|} \log(n))$
+for commutative automata and in $O(n)$ for binary SI-automata with~$n$ states (by checking
+whether it equals one of the two SI-automata from \cref{prop:structure_simp_idem_binary}).
+
+Note that, while \DFASWS
+remains \NP-complete even for partially ordered commutative input automata (\cref{compl:thm:comm-syncshort}),
+as we have shown in \cref{compl:sec:subclasses}, the complexity of \DFAS 
+drops from \NL-completeness in the general case
+to~$\AC^0$ on partially ordered input automata (\cref{compl:thm:pto_sync_in_AC0})
+and to~$\LOGSPACE$-completeness for solvable input automata (\cref{thm:SYNC-solv}).
+
+Olschweski and Ummels~\cite{DBLP:conf/mfcs/OlschewskiU10}
+proved that deciding whether a given automaton
+has a shortest synchronizing word of length \emph{exactly} $k$
+is \DP-complete. Furthermore, they proved
+that computing the length of a shortest synchronizing word,
+a synchronizing word of length $k$,
+and a shortest synchronizing word
+is~$\FP^{\NP[\log]}$-complete, \FNP-complete, and $\FP^{\NP[\log]}$-hard and in $\FP^{\NP}$, respectively.
+With respect to approximability, for $n$-state automata,
+Gawrychowski and Straszak~\cite{DBLP:conf/mfcs/GawrychowskiS15}
+proved that for every $\epsilon > 0$
+it is \NP-hard to approximate the length of a shortest
+synchronizing word within a factor of~$n^{1 - \epsilon}$ even for a fixed binary alphabet.
+This result is optimal, as the Eppstein-Natarajan algorithm~\cite{Eppstein90,DBLP:conf/focs/Natarajan86}
+mentioned in \cref{prelim:sync:algorithmic} 
+gives an $(n-1)$-approximation algorithm~\cite{DBLP:conf/wia/GerbushH10}.
+More generally, Gerbush and Heeringa~\cite{DBLP:conf/wia/GerbushH10} 
+gave a $O(k|\Sigma|n^k + n^4/k)$-time $\lceil \frac{n-1}{k-1} \rceil$-approximation algorithm, where $k \ge 2$ 
+denotes the size of the intermediate sets used for compression.
+Historically, before the optimal result by Gawrychowski and Straszak~\cite{DBLP:conf/mfcs/GawrychowskiS15},
+under the assumption $\PTIME \ne \NP$, 
+Berlinkov firstly proved 
+that there exists no polynomial time~$O(1)$-approximation~\cite{DBLP:conf/csr/Berlinkov10,DBLP:journals/mst/Berlinkov14}
+over a fixed binary alphabet.
+Gerbush and Heeringa~\cite{DBLP:conf/wia/GerbushH10} 
+then proved that there is no polynomial time $O(\log n)$-approximation
+over an unbounded alphabet, which
+was improved by Berlinkov~\cite{DBLP:conf/dlt/Berlinkov14} 
+to a fixed binary alphabet.
+
+Fernau and Hoffmann~\cite{FernauHoffmann19} introduced, for a given partial order $\prec$ on $\Sigma^*$,
+the following \emph{extension variant}
+of the synchronization problem.
+
+\decisionproblem{{\sc ExtDFA-SW-$\prec$} (Fernau and Hoffmann~\cite{FernauHoffmann19})}
+{Automaton $\semiautomat{A}{Q}{\Sigma}{\delta}$, $u \in \Sigma^*$.}
+{Is there $w \in \Syn(\mathcal A)$ minimal w.r.t.~$\prec$ in $\Syn(\mathcal A)$ such that $u \prec w$?} 
+
+For the prefix/suffix/lexicographic orders the problem is in \PTIME, 
+for the scattered subsequence order even on commutative automata (and even for TTSPL automata)
+it is \NP-hard.
+For the parameter $|u|$ and the scattered subsequence order
+it is $\W[3]$-hard even on commutative automata (and even for TTSPL automata).
+The complementary problem that switches {\rYES} and \rNO answers
+for the length-lexicographic order is \NP-complete even for TTSPL automata
+and in $\WNL\cap \W[P]\cap \textsf{A}[2]$ w.r.t.~$|u|$.
+For more information, we refer to~\cite{DBLP:journals/ita/BruchertseiferF21,DBLP:journals/mscs/FernauB22,FernauHoffmann19}.
+
+Maslennikova~\cite{DBLP:journals/ijfcs/Maslennikova19}
+showed that it is \PSPACE-complete
+to decide whether a given regular ideal language
+is the set of synchronizing words of an automaton
+with at most four states over a binary alphabet.
+
+Türker and Yenigün~\cite{DBLP:journals/ijfcs/TurkerY15}
+introduced and investigated
+variants of the synchronization problem, 
+the following problems being their main problems.
+
+\decisionproblem{{\sc MinimumSynchronizableSubautomaton} (Türker and Yenigün~\cite{DBLP:journals/ijfcs/TurkerY15})}
+{Automaton $\semiautomat{A}{Q}{\Sigma}{\delta}$ and $k \ge 0$.}
+{Does there exist $\Gamma \subseteq \Sigma$, $|\Gamma| \le k$, such that $\mathcal A_{|\Gamma}$ is synchronizing?}
+
+\decisionproblem{{\sc ExclusiveSyncWord} (Türker and Yenigün~\cite{DBLP:journals/ijfcs/TurkerY15})}
+{Automaton $\semiautomat{A}{Q}{\Sigma}{\delta}$, $S, T \subseteq Q$.}
+{Does there exist $u \in \Sigma^*$ such that $\applytrans{\delta^{-1}}{T}{u} = S$?}
+
+\decisionproblem{{\sc MaxF-ReducingWord} (Türker and Yenigün~\cite{DBLP:journals/ijfcs/TurkerY15})}
+{Automaton $\semiautomat{A}{Q}{\Sigma}{\delta}$, $F \subseteq Q$, $k \ge 0$.}
+{Does there exist $S \subseteq Q$, $|S| \ge k$, $u \in \Sigma^*$ such that $\applytrans{\delta}{S}{u} \subseteq F$?}
+
+
+They proved that {\sc MinimumSynchronizableSubautomaton}
+is \NP-complete\footnote{We omitted a cost function on the letters 
+	mentioned in~\cite{DBLP:journals/ijfcs/TurkerY15}, which does not change \NP-completeness.
+Also, in~\cite{DBLP:journals/ijfcs/TurkerY15} only \NP-hardness is stated,
+but, as  noted in~\cite{DBLP:journals/ita/BruchertseiferF21},
+containment in \NP\  follows as we can guess $\Gamma$ and check synchronizability of $\mathcal A_{|\Gamma}$ in polynomial time.}
+%by guessing $\Gamma$ and checking synchronizability of $\mathcal A_{|\Gamma}$ in polynomial time.} 
+(which holds even for TTSPL automata as shown in~\cite[Cor.~5.9]{DBLP:journals/ita/BruchertseiferF21}), 
+{\sc MaxF-ReducingWord} is \NP-hard
+for monotonic automata and
+{\sc ExclusiveSyncWord}
+is \PSPACE-complete. The reduction for {\sc MaxF-ReducingWord}
+was challenged by Ryzhikov~\cite[p.~80]{Ryzhikov19a} 
+as ``they reduce the {\sc $N$-Queens Puzzle}~\cite{DBLP:journals/dm/BellS09} 
+to this problem to prove its \NP-hardness. However, their poof
+is unclear, since the input has size $O(\log N)$,
+and the output size is polynomial in $N$.``
+Ryzhikov~\cite[Prop.~3]{Ryzhikov19a} showed
+that {\sc MaxF-ReducingWord} is \PSPACE-complete for binary automata.
+In the context of parameterized complexity, 
+{\sc MinimumSynchronizableSubautomaton}
+was shown to be $\W[2]$-hard even for TTSPL automata~\cite[Cor.~5.7 \& 5.9]{DBLP:journals/ita/BruchertseiferF21} 
+and in $\WNL \cap \W[P]$~\cite[Thm.~12]{DBLP:journals/mscs/FernauB22}.
+
+\Cref{compl:sec:subclasses:known-results}
+collected known results on the subset mapping problems.
+Next, we give some further background.	
+\SIS, \SFS, and
+\ST were introduced, and shown to be \PSPACE-complete,
+by Rystsov~\cite{Rys83} under the names 
+\emph{(global) inclusion problem 
+	for non-initial  au\-tom\-a\-ta} (\emph{NIA})~\cite[Thm.~2.1]{Rys83},
+\emph{(global) inclusion problem for weakly-initial automata with a single final state} (\emph{$\textsc{WIA}_1$})~\cite[Cor.~3.3]{Rys83},
+and \emph{(global) inclusion problem for weakly-initial automata} (\emph{WIA})~\cite[Thm.~2.1]{Rys83}, 
+%\begin{enumerate}
+%\item \emph{(global) inclusion problem 
+%	for non-initial  au\-tom\-a\-ta} (\emph{NIA})~\cite[Thm.~2.1]{Rys83},
+%
+%\item \emph{(global) inclusion problem for weakly-initial automata with a single final state} (\emph{$\textsc{WIA}_1$})~\cite[Cor.~3.3]{Rys83},
+%
+%\item \emph{(global) inclusion problem for weakly-initial automata} (\emph{WIA})~\cite[Thm.~2.1]{Rys83}, 
+%\end{enumerate}
+respectively.
+Independently, Luks and McKenzie~\cite{LuksM88}
+later introduced \ST for permutation groups that asks, %\todo{zusammenhang mit automaten hier schon erwähnen, oder das oben in T_A kapitel alles erwähnen?}
+for a permutation group $G$ on~$[n]$ given by generators and subsets~$A,B \subseteq [n]$,
+whether  $\applyfunc{A}{g} = B$ for some $g \in G$. 
+They proved that the problem is in \NC\ for  solvable permutation groups. % (see~\cite{LuksM88} for the definition of solvable groups).
+For groups, the sets $A$ and $B$ must have the same size
+and $\applyfunc{A}{g} = B$ is equivalent to $g(A) \subseteq B$.
+We note that the automata-theoretical analogous problem 
+with equality instead of set inclusion
+%where set inclusion is replaced by equality
+was investigated by Rystsov under the name \emph{reachability problem for weakly-initial automata}
+and proved to be \PSPACE-complete~\cite[Thm.~3.2]{Rys83},
+even when the starting set is the whole state set and the target has size two.\footnote{The case
+that the starting set is the whole state set was also
+shown to be \PSPACE-complete independently by Bondar and Volkov~\cite[Thm.~3]{BondarV16}.}
+In~\cite{GOLASZEWSKI1989431}, reachability problems in certain discrete event systems
+were investigated that translate, in our language, to the problem \DFAINT 
+for unary permutation automata and with different types of final state sets,
+giving polynomial-time solvable and \NP-complete problems.
+
+
+Blondin et al.~\cite{BlondinKM16} investigated different variants and generalizations
+of \DFAINT.
+They named \ST the problem whether there exists, in a transformation monoid given by a list of generators,
+a transformation mapping a given set into a set included in another given set. 
+\ST as defined
+here is the automata-theoretical version of this problem, i.e., we opted to use
+the naming suggested by the work of Blondin et al.~\cite{BlondinKM16}.
+%Vorel~\cite{DBLP:journals/ijfcs/Vorel16} has shown that \SFS 
+%is \PSPACE-complete even on strongly connected binary automata. \todo{noch genauer bezüglich alphabetgrößen besprechen?}
+For a fixed number $k \ge 1$ of automata, \DFAINT 
+is \NL-complete~\cite[p.~464]{HolzerK11}.
+
+
+\IN{extending problem}
+\IN{totally extending problem}
+\IN{resizing problem}
+\IN{avoiding word}
+Berlinkov, Ferens and Szyku\l a~\cite{BerlinkovFS21}
+classified and investigated various further subset mapping problems.
+For $\semiautomat{A}{Q}{\Sigma}{\delta}$ and $S \subseteq Q$,
+their problems fall into the following broad main categories:
+\emph{extending problems}, \emph{totally extending problems}, and \emph{resizing problems}
+that ask for $w \in \Sigma^*$
+such that $|\applytrans{\delta^{-1}}{S}{w}| > |S|$,
+$\applytrans{\delta^{-1}}{S}{w} = Q$, and
+$|\applytrans{\delta^{-1}}{S}{w}| \ne |S|$, respectively.
+They investigated those problems with and without a binary encoded bound on~$|w|$
+and, for the former two categories,
+with and without a fixed parameter $k$ such that  $|S| \le k$ or $|S| \ge n - k$, which is used,
+for example, in runtime bounds of algorithms.
+%algorithms were given whose runtime 
+%is parameterized by a fixed $k$ for the case $|S| \le k$
+%and for the case $|S| \ge n - k$.
+A word $w \in \Sigma^*$ \emph{avoids} $S \subseteq Q$ 
+if $\applytrans{\delta}{Q}{w} \cap S = \emptyset$.
+As this is equivalent to $\applytrans{\delta^{-1}}{Q \setminus S}{w} = Q$,
+totally extending problems can be rephrased
+as problems that ask for avoiding words of the complement.
+Furthermore, 
+the authors considered \emph{compression}, i.e., $|\applytrans{\delta}{S}{w}| < |S|$,
+which they showed to be polynomial-time solvable, and \emph{shrinking}, i.e., $|\applytrans{\delta^{-1}}{S}{w}| < |S|$,
+which is equivalent to extending~$Q \setminus S$.
+As $\applytrans{\delta^{-1}}{S}{w} = Q$
+is equivalent to $\applytrans{\delta}{Q}{w} \subseteq S$,
+the problem of total extension without parameters is
+equivalent to \SIS, which was investigated earlier by Rystsov~\cite{Rys83}. %(the authors of~\cite{BerlinkovFS21} do not seem to mention this connection).
+%While citing~\cite{Rys83} the authors of~\cite{BerlinkovFS21} do not seem to mention this connection.
+For a full overview of the results we refer to their work~\cite{BerlinkovFS21}.
+
+\IN{synchronization diversity $k$}
+A recent trend in fixed parameter tractability~\cite{DBLP:journals/ai/BasteFJMOPR22}
+and the field of artificial intelligence~\cite{DBLP:conf/aaai/HebrardHOW05,DBLP:conf/aaai/IngmarBST20}
+asks for \emph{diverse solution sets}, giving a user more freedom of selection of a particular
+solution to fit his/her needs.  Let $\mathcal A$ be an automaton.
+Arrighi et al.~\cite{DBLP:conf/aaai/ArrighiFO023}
+extended automata synchronization to the diversity setting \todo[inline]{prüfen.}
+by saying a finite set $W \subseteq \Syn(\mathcal A)$
+has \emph{synchronization diversity} $k$
+if two distinct words from $W$ have edit distance at least $k$ and each word in $W$
+is minimal with respect to the scattered subsequence order in $\Syn(\mathcal A)$.
+Then, they proved that deciding whether an automaton
+admits a sets of synchronization diversity at least $k$
+is co-\NP-hard and that computing
+the diversity of the set of words minimal w.r.t.~scattered subsequence order
+in $\Syn(\mathcal A)$
+is hard for the counting complexity class $\# \PTIME$.
+
+\paragraph{Parameterized Complexity.} 
+ The following results on the parameterized complexity of \DFASWS are known (the paramterized complexity class
+ \WNL is a lesser known
+ class defined via the number of tape cells used
+ by a nondeterministic Turing machine~\cite{DBLP:journals/disopt/Guillemot11}):
+ 
+ \begin{enumerate}
+ \item \DFASWS is in \FPT\ w.r.t.~$(|\Sigma|, l)$~\cite[Thm.~7]{DBLP:journals/jcss/FernauHV15},
+ as we can try all $|\Sigma|^l$ words of length~$l$, 
+ and the number of states~$n$~\cite[Thm.~10]{DBLP:journals/jcss/FernauHV15},
+ as we can search in the power automaton with~$2^{n}$ states and~$|\Sigma|2^{n}$ transitions.
+ Furthermore, unless the polynomial-time hierarchy collapses on the third level,
+ \DFASWS admits no polynomial-size kernel
+ when parameterized by $(|\Sigma|, l)$~\cite[Cor.~4.6]{DBLP:journals/ita/BruchertseiferF21}
+ or by~$n$~\cite{DBLP:journals/dmtcs/VorelR15}.
+ 	
+ \item Bruchertseifer and Fernau~\cite{DBLP:journals/mscs/FernauB22}
+ introduced the parameterized complexity class \WSYNC 
+ as the class of problems fpt-reducible
+ to \DFASWS with parameter being the length-bound~$l$. 
+ They showed that \WSYNC 
+ sits between~$\W[2]$ and $\WNL \cap \W[\textsf{P}] \cap \textsf{A}[2]$,
+ see~\cite[Thm.~3]{DBLP:journals/jcss/FernauHV15},
+ \cite[Thm.~4.2 \& Prop.~4.4]{DBLP:journals/ita/BruchertseiferF21},
+ and~\cite[Thm.~3,4 \&~5]{DBLP:journals/mscs/FernauB22}. 
+ \end{enumerate}
+ Montoya and Nolasco~\cite{MontoyaN17,DBLP:conf/lata/MontoyaN18} 
+ proved that \SFS with a length bound on the solution word is \WNL-complete
+ when parameterized by the size of the input set.
+
+Wareham~\cite{DBLP:conf/wia/Wareham00} investigated \emph{bounded automata intersection}
+with a parameter~$l$ asking for a solution word
+of length exactly $l$
+accepted by $m$ automata
+each with at most~$n$ states.
+He obtained containment in \FPT\  for the following parameter combinations:
+\begin{enumerate}
+	\item \label{prelim:classes:Wareham:1} $(|\Sigma|, l)$ by trying all words in $\Sigma^{l}$,
+	
+	% \item $(m,n,l)$ via the product automaton of size $n^m(l+1)$
+	% of all input automata and an automaton accepting $\Sigma^{\le l}$,
+	
+	\item \label{prelim:classes:Wareham:2} $(m,n)$ via the product automaton of size $n^m$
+	of all input automata, 
+	
+	\item  \label{prelim:classes:Wareham:3} $(n, |\Sigma|)$ by noting that there are at most $n^{|\Sigma|n}$
+	different automata, so that we can assume $m \le n^{|\Sigma|n}$, and use
+	the reasoning as for $(m,n)$.
+\end{enumerate}
+In fact, Wareham stated the above
+results under the assumption $l \le n$. 
+Clearly, this restriction is not necessary for~\ref{prelim:classes:Wareham:1} to hold.
+But it is also not necessary for~\ref{prelim:classes:Wareham:2},
+and so~\ref{prelim:classes:Wareham:3}, 
+since the $l$-th power of the transition matrix of the automaton graph of the product
+automaton mentioned in~\ref{prelim:classes:Wareham:2} 
+can be computed with $\log(l)$ multiplications
+by a square-and-multiply algorithm,
+and this number is polynomial even for a binary encoding of~$l$.
+For hardness, he obtained the following results:
+$W[1]$-hard for $(m,l)$, $W[2]$-hard for $(n, l)$,
+$W[t]$-hard for all $t \ge 1$ for the sole parameter $m$,
+and not in~$\XP$ for the sole parameter~$|\Sigma|$ (under the assumption $\PTIME \ne \NP$);
+the construction also implies this for the sole parameter $n$, as noted in~\cite{DBLP:journals/corr/abs-2108-05244}.
+Further, Bruchertseifer and Fernau~\cite[Thm.~9]{DBLP:journals/mscs/FernauB22}, Fernau et al.~\cite[Cor.~2.2]{DBLP:journals/corr/abs-2108-05244}, and Guillemot~\cite[Prop.~10]{DBLP:journals/disopt/Guillemot11} 
+proved \WSYNC-completeness w.r.t.~$l$, $W[1]$-completeness w.r.t.~$(m, k)$, and \WNL-completeness w.r.t.~$m$, respectively.
+Moreover, Fernau et al.~\cite[Thm.~5.8]{DBLP:journals/corr/abs-2108-05244} 
+proved $W[1]$-completeness w.r.t.~$m$
+for automata accepting sparse languages even for
+unary automata (which accept sparse languages).\footnote{See \cref{constr_sync:sec:growth} for a definition of sparse languages.}
+We remark that the co-$W[2]$-hardness proof in~\cite[Prop.~6.3]{DBLP:journals/corr/abs-2108-05244}
+is wrong.
+For further information on synchronization
+problems, parameterized complexity,
+and also runtime lower bounds derived from ETH and SETH 
+we refer to~\cite{DBLP:journals/ita/BruchertseiferF21,DBLP:journals/jcss/FernauHV15}.
+
+Later, in \cref{cor:aut_for_sync_words,compl:cor:intersection_waa_com},
+we will show
+that \DFAINT and \DFASWS 
+are solvable in time $O(m|\Sigma|n^{|\Sigma|+1})$ on  $m$ commutative partially ordered input automata with at most $n$ states
+and in time $O(n^{|\Sigma|+2})$
+on commutative $n$-state automata, respectively.\footnote{Martyugin~\cite{Mar2009b} obtained an algorithm running in time 
+	$O(|\Sigma|n^{|\Sigma|}\log(n))$.}
+So, both problems are in the parameterized complexity class \XP\ w.r.t.~$|\Sigma|$
+for the mentioned types of input automata.
+The \XP-result for \DFAINT on commutative partially ordered automata
+has been extended in~\cite{Arrighi2021}
+to  \emph{totally star-free nondeterministic automata} 
+accepting commutative languages.
+
+
+Lastly, testing whether $m$ binary automata accept a common word
+is equivalent to the simulation of a nondeterministic Turing machine
+that uses $m \log(n)$ bits of space~\cite{DBLP:journals/mst/KasaiI85} (see also~\cite{Galil76,DBLP:journals/tcs/KarakostasLV03,DBLP:conf/mfcs/LangeR92,Wehar2014hardness,Wehar2016}).
+In~\cite{DBLP:journals/tcs/KarakostasLV03,Wehar2014hardness}, for each fixed~$m$
+the resulting families of automata intersection problems have been used to obtain conditional separation results between $\NL$ and~$\PTIME$.	
+
+
+\paragraph{Practical Implementations to Compute Shortest Synchronizing Words.}
+As \DFASWS is \NP-complete
+there exists no polynomial time algorithm computing a shortest synchronizing word
+under the assumption $\NP \ne \PTIME$.
+%we cannot expect to find an algorithm computing a shortest synchronizing word 
+%that always runs efficiently.
+However, people have tried to come up with various heuristics to obtain
+algorithms that run efficiently
+on most instances in practice.
+The earliest implementations of exact
+algorithms using several approaches were given
+by Rho et al.~\cite{DBLP:conf/dac/RhoSP93},
+Pixley et al.~\cite{DBLP:journals/tcad/PixleyJH94},
+and Deshmukh and Hawat~\cite{Deshmukh94}.
+Kisielewicz et al.~\cite{KisKowSzy2015}
+have given an algorithm that combines multiple techniques and performs
+well on most instances.
+This algorithm
+has been recently improved by Szyku\l a and Zyzik~\cite{DBLP:conf/esa/SzykulaZ22} (see also the related forward and backward scheme
+by Szyku\l a and Roman~\cite{DBLP:journals/eswa/RomanS15}).
+Algorithms
+based on machine learning were proposed
+by Podolak et al.~\cite{DBLP:conf/icaisc/PodolakRJ12,DBLP:journals/eswa/PodolakRSZ18},
+and an evolutionary algorithm by Kowalksi and Roman~\cite{DBLP:conf/evoW/KowalskiR17}.
+Tas et al.~\cite{DBLP:journals/isci/TasKY21} studied
+the performance of some algorithms exploiting GPUs and parallelism on automata with up to a billion states.
+Furthermore, in~\cite{DBLP:conf/modelsward/CirisciSSKKY18,DBLP:journals/eswa/KarahodaKY18,DBLP:journals/eswa/SaracAAKKY21}
+the authors optimize existing
+algorithms for real-life applications, for example in model-based testing.
+
+The Natarajan-Eppstein algorithm~\cite{Eppstein90,DBLP:conf/focs/Natarajan86} mentioned in \SEC~\ref{prelim:sync:algorithmic}
+runs in polynomial time and 
+outputs some synchronizing word
+that is guaranteed to have at most cubic length.
+Two other algorithms with these properties
+were suggested by Trahtman~\cite{Trahtman04}\footnote{In other works spelled as Trakhtman.}
+and Roman~\cite{DBLP:journals/amc/Roman09}.
+Kud\l acik et al~\cite{KUDLACIK201211746}
+compare different exact and non-exact algorithms.
+
+For more information, we refer to the introductory section of~\cite{KisKowSzy2015}
+that contains further information and additional references
+to implementations and algorithms.
+
+\IN{{\sc TransformationRank}}
+\IN{{\sc IdempotentRank}}
+\IN{{\sc Membership}}
+\paragraph{Related Problems on Transformation Semigroups.} 
+Goral\v{c}\'{i}k and Koubek~\cite{GorKou95}
+investigated the problem {\sc TransformationRank} (resp.~{\sc IdempotentRank}) 
+which asks, for a set $T \subseteq \mathcal T_n$ and $r > 0$,
+whether $\langle T \rangle_S$ contains a transformation (resp.~idempotent transformation)
+of rank~$r$. For the fixed parameter $r = 1$, both problems
+reduce to \DFAS.
+Further, for each fixed $r > 0$ they proved that {\sc TransformationRank} is \NP-hard
+and {\sc IdempotentRank} is solvable in time $O((r+1)n^{(2r+1)}|T|)$.
+In general, {\sc IdempotentRank} was proved to be \PSPACE-complete.
+The precise complexity of {\sc TransformationRank} is an \emph{open problem}.
+A variant of {\sc IdempotentRank} with a 
+length-bound for a product of transformations from~$T$
+was proved to be \NP-complete for each fixed $r$.\footnote{Their proof~\cite[Thm.~5]{GorKou95} reduces 
+	the problem to the special case $r = 1$
+	and so, basically, \DFASWS. 
+	They give a reduction from \THREESAT
+	which is a little different than
+	the Rystsov-Eppstein construction~\cite{Eppstein90,Rys80} 
+	but similar to constructions
+	from~\cite{DBLP:conf/fun/FernauH022,DBLP:journals/jcss/FernauHV15,FernauHoffmann19,Mar2009b}.}
+In the realm of parameterized complexity theory,
+Bruchertseifer and Fernau~\cite[Thm.~8]{DBLP:journals/mscs/FernauB22}
+proved {\sc TransformationRank} complete for~\WSYNC.
+
+Kozen~\cite{Kozen77} introduced 
+{\sc Membership} that asks, for $T \subseteq \mathcal T_n$ and $t \in \mathcal T_n$,
+whether~$t \in \langle T \rangle_S$.
+Now, we obtain various variants of {\sc Membership}
+by restricting~$T$ to generate monoids from some given class. 
+Similarly, for the problem \DFAINT
+by focusing the attention to automata whose transformation
+monoids come from some common class of monoids,
+we obtain variants of this problem
+With respect to these variants,
+Blondin et al.~\cite{BlondinKM16} observed the following relation.
+\begin{quote}
+	``[{\sc DFA-Intersection}] is equivalent to [{\sc Membership}] when both are intractable, but appears harder than [{\sc Membership}] when [{\sc Membership}] is efficiently solvable.''~\cite{BlondinKM16}	
+\end{quote}
+In fact, the complexity gap can be quite large.
+For example, by results of Arvind and Vijayaraghavan~\cite{DBLP:conf/coco/ArvindV04} 
+it follows that {\sc Membership} on abelian permutation groups 
+is in $\NC^2$, whereas \DFAINT even on unary permutation
+automata is \NP-complete~\cite{Beaudry88thesis,DBLP:journals/corr/abs-2108-05244,Galil76,MartensN07,Stockmeyer73} (see also \cref{compl:thm:comm_ST}).
+More specifically, we have $\text{\sc Membership} \leACZEROm \DFAINT$ as for 
+$t, t_1, \ldots, t_k \colon [n] \to [n]$
+with $\semiautomat{A}{[n]}{\Sigma}{\delta}$
+given by $\Sigma = \{t,t_1, \ldots, t_k\}$
+and $\applytrans{\delta}{i}{x} = \applyfunc{i}{x}$ for $x \in \Sigma$
+we have
+\[
+t \in \langle \{ t_1, \ldots, t_k \}\rangle_S
+\Leftrightarrow 
+\bigcap_{i=0}^{n-1} L(\mathcal A_{i, \{ \applyfunc{i}{t} \}}) \ne \emptyset.
+\]
+
+Now, suppose $\automat{A_i}{Q_i}{\Sigma}{\delta_i}{q_i}{F_i}$
+with $i \in \{1,\ldots,k\}$ form an input to \DFAINT.
+We can assume the state sets $Q_i$ are pairwise disjoint.
+Let $t_a \colon Q_1 \cup \cdots \cup Q_k \to Q_1 \cup \cdots \cup Q_k$ for $a \in \Sigma$
+be the transformations with $\applyfunc{q}{t_a} = \applytrans{\delta_i}{q}{a}$
+for the unique $i \in \{1,\ldots,k\}$ such that $q \in Q_i$.
+Then
+\[
+\bigcap_{i=1}^{k} L(\mathcal A_i) \ne \emptyset 
+\Leftrightarrow 
+\exists t \in \langle \{ t_a \mid a \in \Sigma \} \rangle_S \  \forall i \in \{1,\ldots,k\} \colon \applyfunc{q_i}{t} \in F_i. 
+\]
+So, we can solve $\bigcap_{i=0}^{n-1} L(\mathcal A_i) \ne \emptyset$ by guessing a transformation $t$
+and then checking
+checking whether $t \in \langle \{ t_a \mid a \in \Sigma \} \rangle_S$ and
+$\applyfunc{q_i}{t} \in F_i$ 
+for all $i \in \{1,\ldots,k\}$.
+This reduction up to some ``nondeterminism''
+makes the ``equivalent when intractable``-statement more precise.\footnote{The construction is due to Lukas Fleischer (personal communication).}
+Note that, for classes generated by the $t_a$ such that {\sc Membership} is solvable in polynomial time,
+this procedure gives an \FPT-algorithm for the parameter $\max\{ |F_i| \mid i \in \{1,\ldots,k\}\}$.
+
+Closer inspection of Kozen's proof~\cite[Thm.~3.2.6]{Kozen77} reveals that
+{\sc Membership} is \PSPACE-complete even 
+for aperiodic transformation monoids as input.
+For aperiodic transformation monoids, the {\sc Membership} problem
+was classified into five classes giving problems that are in $\AC^0$,
+$\PTIME$-~,~\NP-, or \PSPACE-complete, or \NP-hard, by Beaudry et al.~\cite{DBLP:journals/jacm/BeaudryMT92},
+where \NP-hardness holds for aperiodic transformation monoids
+of threshold at least two. Partial results
+for general threshold-one monoids were obtained by Beaudry~\cite{DBLP:journals/iandc/Beaudry94}.
+For commutative transformation monoids, 
+Beaudry~\cite{DBLP:journals/iandc/Beaudry88} proved \NP-completeness.
+
+For permutation groups, {\sc Membership}
+was shown to belong to \PTIME by Furst et al.~\cite{DBLP:conf/focs/FurstHL80} (analyzing an algorithm given by Sims~\cite{Sims70}),
+then to $\NC^3$ for abelian groups by McKenzie and Cook~\cite{DBLP:journals/siamcomp/McKenzieC87} 
+and Mulmuley~\cite{DBLP:journals/combinatorica/Mulmuley87} 
+(improved 
+by Arvind and Vijayaraghavan~\cite{DBLP:conf/coco/ArvindV04} 
+to containment in~$\textsf{ZPL}^{\textsf{ModL}}$,
+which is in $\NC^2$).
+Luks and McKenzie~\cite{DBLP:journals/jcss/LuksM88} proved membership in \NC for solvable groups, Luks~\cite{DBLP:conf/focs/Luks86} extended this to groups with bounded non-abelian composition factors, and Babai et al.~\cite{DBLP:conf/stoc/BabaiLS87} finally established membership in \NC for all groups.
+
+Now consider the variant of {\sc Membership} parameterized by an integer $l$, 
+where one asks whether a given transformation admits a factorization of length at most $l$.
+This problem is \PSPACE-complete for~$l$ in binary encoding
+and \NP-complete for~$l$ in unary encoding, even for permutation
+groups as shown by Jerrum~\cite[Thm.~2.2]{DBLP:journals/tcs/Jerrum85} 
+and Even and Goldreich~\cite[Thm.~1]{DBLP:journals/jal/EvenG81}, respectively.
+Furthermore, Fernau and Bruchertseifer~\cite{DBLP:journals/mscs/FernauB22}
+proved \WSYNC-completeness w.r.t.~$l$ and general monoids.
+When asking for a product of length exactly $l$,
+Cai et al.~\cite[Thm.~6 \& 7]{DBLP:journals/aml/CaiCDF97} proved~$\textsf{W}[2]$-hardness
+in general and $\textsf{W}[1]$-hardness for permutation groups w.r.t.~$l$.
+In case of permutation groups, asking
+for a product of length exactly $l$
+was proved  \DP-complete for a unary encoding of $l$
+and \PSPACE-complete
+for a binary encoding by Lohrey and Rosowski~\cite[Thm.~4.2 \& 4.3]{DBLP:conf/icalp/LohreyR23}.
+
+For further information on \DFAINT and {\sc Membership},
+the paper by Blondin et al.~\cite{BlondinKM16} and the master thesis by Blondin~\cite{Blondin2012msthesis}
+give a good overview. For more algorithmic investigations on \DFAINT,
+we refer to further work by Wehar and coauthors~\cite{DBLP:journals/corr/abs-2108-05244,OliveiraWehar2018,DBLP:conf/dlt/OliveiraW20,Wehar2014hardness,Wehar2016} and others~\cite{Arrighi2021,DBLP:journals/jcss/FernauHV15,FerKre2017,DBLP:journals/tcs/KarakostasLV03,DBLP:conf/mfcs/LangeR92,DBLP:conf/wia/Wareham00}.
+Intersection problems on transformation semigroups 
+were investigated by Fleischer and Kufleitner~\cite{DBLP:conf/stacs/FleischerK18} and Fleischer~\cite{DBLP:journals/ijfcs/Fleischer20},
+see also the thesis by Fleischer~\cite{Fleischer2019thesis}.
+The membership problem for finite monoids and groups 
+has been generalized to the \emph{rational (subset) membership problem}~\cite{KAMBITES2007622,Lohrey2015}.
+
+
+
+\paragraph{A Remark on Local Confluence and Synchronization} Simon~\cite{Simon1972DotDepthOne,DBLP:conf/automata/Simon75} introduced
+piecewise testable languages and characterized them as those languages
+acceptable by automata with $\mathcal J$-trivial transition monoids.
+Kl{\'{\i}}ma~\cite[Thm.~1]{DBLP:conf/dlt/KlimaP13}
+proved that a language is piecewise testable
+if and only if it is acceptable by a locally confluent partially ordered automaton.
+Since we mentioned locally confluent automata above, 
+we point out a connection of synchronizing automata to piecewise testable languages 
+that has not been noted before and is based on the following statement.
+
+\begin{proposition}\label{prelim:pto:locally-confluent}
+	Let $\automat{A}{Q}{\Sigma}{\delta}{q_0}{F}$ be partially ordered and accessible.
+	If $\mathcal A$ is locally confluent, then it is synchronizing.
+\end{proposition}
+\begin{proof}
+	We do induction on $|Q|$.
+	Clearly, the claim holds for $1 \le |Q| \le 2$.
+	Next, suppose $|Q| \ge 3$.	
+	
+	Since $\mathcal A$ is accessible,
+	there either exists $a \in \Sigma$
+	such that $\delta(q_0, a) \ne q_0$
+	and $\delta(q_0, a) = \delta(q_0, b)$
+	for each $b \in \Sigma$ with $\delta(q_0, b) \ne q_0$,
+	or there exist $a,b \in \Sigma$	such that for $p = \delta(q_0, a)$
+	and $q = \delta(q_0, b)$ we have $q_0 \ne p$ and $q_0 \ne q$
+	and $p \ne q$. In the first case,
+	the set $\upperset{\{\delta(q_0, a)\}}$
+	is a proper upper set of size at least two.
+	In the second case,	by assumption, 
+	there exists $u \in \{a,b\}^*$
+	with $\delta(p, u) = \delta(q, u)$.
+	Since $p \ne q$, we have $p \ne \delta(p, u)$ or $q \ne \delta(q, u)$. 
+	Thus either $\upperset{\{p\}}$ or $\upperset{\{q\}}$ has size at least two and neither contains $q_0$.
+	
+	Thus, in each case we find $q \in Q$ such that  for $S = \upperset{\{q\}}$
+	we have $2 \le |S| < |Q|$.\footnote{Alternatively,
+		either there exists $a \in \Sigma$
+		such that $q = \delta(q_0, a)$ is not a trap state
+		and $q \ne q_0$, in which case $\upperset{\{q\}}$
+		is proper and has size at least two,
+		or $\delta(q_0, a)$ is a trap state for each $a \in \Sigma$.
+		Since for each $a,b \in \Sigma$, $\delta(q_0, au) = \delta(q_0, bu)$
+		for some $u \in \{a,b\}^*$,
+		in the latter case we must have $|Q| \le 2$.}    	
+	Then~$\mathcal A_{|S}$ and~$\mathcal A / {\sim_S}$
+	are accessible, partially ordered, and locally confluent.
+	So, inductively, both automata are synchronizing.
+	By \crefitem{prelim:prop:sync_words_restriction}{prelim:Synuv}
+	it follows that $\mathcal A$ is synchronizing.
+\end{proof}
+
+\begin{corollary}\label{prelim:cor:pto:locally-confluent}
+	An accessible partially ordered automaton over an alphabet of size at most two
+	is synchronizing if and only if it is locally confluent.
+\end{corollary} 
+\begin{proof}
+	First, let $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	be synchronizing with $|\Sigma| \le 2$
+	and synchronizing word $u \in \Sigma^*$.
+	Let $q \in Q$ and $a,b \in \Sigma$.
+	We can assume $a \ne b$,
+	so that $\Sigma = \{a,b\}$.
+	Thus $u \in \{a,b\}^*$
+	and since~$u$ is synchronizing we have $\delta(q, au) = \delta(q, bu)$.
+	Hence, $\mathcal A$ is locally confluent.
+	
+	Since by \cref{prelim:pto:locally-confluent} 
+	local confluence implies synchronizability,
+	we obtain the claim.
+\end{proof}
+
+\begin{figure}[tb]
+	\centering 	
+	\begin{tikzpicture}[node distance = 1cm and 2.5cm, on grid, auto, ->]
+		\node (q0) [state, inner sep=3pt, minimum size=5pt, ] {};
+		\node (q1) [state, inner sep=3pt, minimum size=5pt, above right = of q0] {};
+		\node (q2) [state, inner sep=3pt, minimum size=5pt, below right = of q0] {};
+		
+		\path (q0) edge node {$a$} (q1) (q1) edge node {$c$} (q2) (q0) edge [below] node {$b,c$} (q2);
+	\end{tikzpicture}
+	\caption[Non-locally confluent synchronizing partially ordered automaton]{Synchronizing partially ordered automaton that is not locally confluent. Self-loops omitted.} 
+	\label{prelim:classes:fig:pto-not-locally-confluent}
+\end{figure}
+
+Thus, with the result by Kl{\'{\i}}ma~\cite[Thm.~1]{DBLP:conf/dlt/KlimaP13} mentioned above,
+we obtain that a binary language is piecewise testable
+if and only if its minimal automaton is a synchronizing partially ordered automaton.
+
+\Cref{prelim:cor:pto:locally-confluent} does not hold for alphabets with more than two letters,
+for example, see \cref{prelim:classes:fig:pto-not-locally-confluent}.

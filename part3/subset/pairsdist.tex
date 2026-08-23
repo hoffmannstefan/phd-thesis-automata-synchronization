@@ -1,0 +1,46 @@
+%!TEX root = ./../../thesis-trier.tex
+
+In \Cref{sync_max:sec:dist_small_sets}
+we give sufficient conditions for synchronizability in terms of different families of pairwise distinguishable
+subsets of states.
+
+\Cref{sync_max:sec:pairs_k_k-1} investigates families of subsets 
+and their relations w.r.t.~distinguishability.
+
+We show in \cref{sync_max:sec:shortestdist} that the set of distinguishing words of two subsets~$A,B$ 
+of states of a given $n$-state automaton
+is a regular language acceptable by an automaton of size $O(n^{|A|+|B|})$,
+which also yields a bound on the length of shortest distinguishing words.
+
+\Cref{sync_max:sec:completel-dist} introduces completely distinguishable automata.
+We show that completely distinguishable automata with at least three states are synchronizing.
+Then, we give several equivalent characterizations of this new class of automata.
+
+Lastly, \cref{sync_max:sec:furtherexamples} gives examples of automata
+where all pairs of distinct $2$-sets are distinguishable, but that are
+not completely distinguishable.
+
+\subsection{Distinguishability and Synchronizability}
+\label{sync_max:sec:dist_small_sets}
+
+\input{../part3/subset/smallsets}
+
+\subsection{Classes of Pairwise Distinguishable Subsets}
+\label{sync_max:sec:pairs_k_k-1} 
+
+\input{../part3/subset/ksets}
+
+\subsection{The Set of Words Distinguishing Two Sets and a Length Bound} %Shortest Distinguishing Words} 
+\label{sync_max:sec:shortestdist} 
+
+\input{../part3/subset/shortestword}
+
+\subsection{Completely (Subset-Pair) Distinguishable Automata}
+\label{sync_max:sec:completel-dist} 
+
+\input{../part3/subset/compldist}
+
+\subsection{Further Examples}
+\label{sync_max:sec:furtherexamples} 
+
+\input{../part3/subset/examples}

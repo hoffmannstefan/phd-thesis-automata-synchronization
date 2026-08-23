@@ -1,0 +1,239 @@
+
+Vladimir Gusev~\cite{Gusev2012} introduced the constrained synchronization problem
+in connection with a reduction procedure on automata
+that preserves the reset length up to plus/minus one w.r.t.~a given constraint language. 
+We discuss this in \cref{constrsync:sec:motivation:reduction}.
+The problem of constrained synchronization also appears implicitly 
+in a reduction used by Martyugin~\cite{Martyugin14}. %, for which we give details below
+Here, we give details on the procedure from~\cite{Gusev2012} and on
+the reduction used in~\cite{Martyugin14} in \cref{constrsync:sec:motivation:implicit}.
+Then we outline a relation to the \emph{Skolem problem}~\cite{BLONDEL2002,DBLP:conf/rp/OuaknineW12} and the \emph{matrix orbit problem}~\cite{KannanLipton1986} in \cref{constrsync:sec:motivation:skolem}.
+Finally, we sketch possible applications that naturally extend
+areas where synchronizing automata have been used previously
+in \cref{constrsync:sec:motivation:operating,constrsync:sec:motivation:part-orienters,constrsync:sec:motivation:supervisory}.
+
+\section{Use in a Reduction Procedure}
+\label{constrsync:sec:motivation:reduction}
+
+\IN{$r$-decomposition}
+\IN{rank factorization}
+Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be a semiautomaton with $n$ states
+over a binary alphabet $\Sigma = \{a,b\}$. A set of matrices $X_1, X_2, Y_1, Y_2$
+over $\{0,1\}$ %Boolean semiring
+is an \emph{$r$-decomposition}~\cite{Gusev2012} of $\mathcal A$
+if
+\begin{enumerate}
+\item $X_1$ and $Y_1$ are $n \times r$ matrices,
+\item $X_2$ and $Y_2$ are $r \times n$ matrices,
+\item $[a] = X_1 X_2$, $[b] = Y_1 Y_2$,
+\item ev ery row of $X_1, X_2, Y_1, Y_2$ has only one occurrence of~$1$.
+\end{enumerate}
+The automaton $\mathcal A$ admits an $r$-decomposition if and only if $r \ge \max\{\rank{a},\rank{b}\}$~\cite{Gusev2012}.
+By the first three conditions $X_1, Y_1$ and $X_2,Y_2$ constitute
+\emph{rank factorizations}
+of $[a]$ and $[b]$, respectively, as discussed in~\cite{piziak99}.
+Since the matrices $X_1, X_2, Y_1, Y_1$ have one~$1$ in each row,
+the same holds for their products.
+Hence, we obtain a complete and deterministic $r$-state automaton
+$\semiautomat{A_{X_1, X_2, Y_1, Y_2}}{Q_{X_1, X_2, Y_1, Y_2}}{\Gamma}{\delta_{X_1,X_2, Y_1, Y_2}}$
+by setting $Q_{X_1, X_2, Y_1, Y_2} = \{1,\ldots,r\}$ and $\Gamma = \{ a_{X_2Y_1}, a_{X_2X_1}, a_{Y_2X_1}, a_{Y_2Y_1} \}$
+where the action of the letters is given
+by $[a_{X_2Y_1}] = X_2 Y_1$, $[a_{X_2X_1}] = X_2X_1$, $[a_{Y_2X_1}] = Y_2 X_1$
+and $[a_{Y_2 Y_1}] = Y_2 Y_1$. % (w.r.t.~some fixed ordering of the states $Q_{X_1, X_2, Y_1, Y_2}$, see \cref{prelim:subsec:transmtx}).
+The following was shown by Gusev~\cite[Prop.~5]{Gusev2012}.
+
+\begin{proposition}
+		 Let $\semiautomat{A}{Q}{\{a,b\}}{\delta}$ be an automaton with $r$-decomposition $X_1, X_2, Y_1, Y_2$
+		 and $\semiautomat{A_{X_1, X_2, Y_1, Y_2}}{Q_{X_1, X_2, Y_1, Y_2}}{\Gamma}{\delta_{X_1,X_2, Y_1, Y_2}}$.
+		 Then $\mathcal A$ is synchronizing if and only if 
+		 \[ Syn(\mathcal A_{X_1, X_2, Y_1, Y_2}) \cap R \ne \emptyset
+		 \] 
+		 with
+		 \begin{align*}
+		 	R = \Gamma^* \setminus \big(
+		 	& \Gamma^* ( a_{X_2 X_1} ( a_{Y_2 X_1} + a_{Y_2 Y_1} ) ) \Gamma^* + 
+		 	\Gamma^* ( a_{X_2 Y_1} ( a_{X_2 Y_1} + a_{X_2 X_1} ) ) \Gamma^* + \\ 
+		 	& \Gamma^* ( a_{Y_2 Y_1} ( a_{X_2 Y_1} + a_{X_2 X_1} ) ) \Gamma^* + 
+		 	\Gamma^* ( a_{Y_2 X_1} ( a_{Y_2 X_1} + a_{Y_2 Y_1} ) ) \Gamma^* \big),
+		 \end{align*}
+	     where, if this is the case, $m - 1 \le \rt{\mathcal A} \le m + 1$
+	     for  $m = \min\{ |u| : u \in \Syn(\mathcal A_{X_1, X_2, Y_1, Y_2}) \cap R  \}$.
+\end{proposition}
+
+So, the reset length of an automaton $\mathcal A$ without permutational letters can be bounded by the length of a shortest synchronizing word 
+of a smaller automaton $\mathcal A_{X_1, X_2, Y_1, Y_2}$ contained in a constraint language independent of $\mathcal A$.
+
+Gusev~\cite{Gusev2012} used $r$-decompositions to construct $n$-state automata 
+with reset length at least $r^2 - r - 1$. This was the sole purpose of this work
+and while the above statement used constrained synchronization, it was not introduced
+as a decision problem and questions of computational complexity were not 
+investigated.
+
+\section{Implicit in a Reduction}
+\label{constrsync:sec:motivation:implicit}
+
+Martyugin~\cite{Martyugin14} 
+proved that it is \PSPACE-complete to decide whether a given partial automaton
+has a carefully synchronizing word (for the definition of these notions, see \cref{constr_sync:subsec:pdfa}).
+His reduction constructs a partial automaton over $\Sigma$
+where a shortest carefully synchronizing 
+word has the form $x\Gamma^*y$ for $x,y \in \Sigma$ and $\Gamma = \Sigma \setminus \{x,y\}$~\cite[Lem.~1]{Martyugin14}.
+By adding self-loops to obtain 
+a complete automaton in the construction,
+one can easily see that it has a synchronizing word in $x\Gamma^*y$
+if and only if the original partial automaton
+has a carefully synchronizing word.
+In this sense, \constrsync{x\Gamma^*y} is implicit
+in the construction. 
+
+\section{The Matrix Orbit Problem and the Skolem Problem}
+\label{constrsync:sec:motivation:skolem}
+
+\IN{Skolem problem} 
+\IN{Pisot's problem} 
+\IN{matrix orbit problem}
+The \emph{(matrix) orbit problem} is the problem
+which asks for an $n \times n$ matrix $A$ over $\mathbb Q$
+and
+$x,y \in \mathbb Q^n$ %a matrix $A \in \mathbb Q^{n \times n}$
+whether $xA^i = y$
+for some $i \ge 0$. This problem was shown to be solvable
+in polynomial time by Kannan \& Lipton~\cite{KannanLipton1986}.
+In~\cite[Cor.~1.3]{BLONDEL2002}
+the problem which asks for an $n \times n$ matrix $A$ over~$\mathbb Z$
+and $1 \times n$ and $n \times 1$ vectors $x$ and $y$ over $\mathbb Z$, respectively, 
+whether $xA^iy = 0$ for some $i \ge 0$ was shown to be \NP-hard.
+As noted in~\cite{BLONDEL2002},
+this implies \NP-hardness of the \emph{Skolem problem} (also called \emph{Pisot's problem})
+which ask whether an integer linear recurrent sequence has zero as a value,
+see \cite{BLONDEL2002}, and also~\cite{DBLP:conf/rp/OuaknineW12} for more information on the Skolem problem.
+Decidability of the Skolem problem is unknown~\cite{DBLP:conf/rp/OuaknineW12}.
+
+Next, we point out a connection
+to the two problems above.\footnote{These connections were originally pointed out by Vladimir V. Gusev (personal communication).}
+Let $\semiautomat{A}{Q}{\{a,b\}}{\delta}$ with $Q = \{q_1,\ldots,q_n\}$
+and $q \in Q$.
+Set
+\[
+V_q = \{ (y_1, \ldots, y_n) \mid y_j > 0 \text{ implies } q_j \in \delta^{-1}(q, a) \text{ for } j \in \{1,\ldots,n\} \},
+\]
+and define numbers $x_1, \ldots, x_n$ and $z_1, \ldots, z_n$
+by 
+\[
+x_i = \begin{cases}
+	1 & \text{if } q_i \in \delta(Q, a), \\
+	0 & \text{otherwise,}
+\end{cases}
+\quad\text{ and }\quad
+z_i = \begin{cases}
+	1 & \text{if } \delta(q_i, a) \ne q, \\
+	0 & \text{otherwise,}
+\end{cases}
+\]
+for $i \in \{1,\ldots,n\}$. Then for $i \ge 0$ we have
+\[
+	\delta(Q, ab^ia) = \{q\}
+	 \Leftrightarrow x \cdot [b]_{\mathcal A}^i \in V_q 
+	 \Leftrightarrow  x \cdot [b]_{\mathcal A}^i \cdot \begin{pmatrix} z_1 \\ \vdots \\ z_n \end{pmatrix} = 0
+\]
+We will show later in \crefitem{constr_sync:thm:introductory_examples}{constrsync:ex:item:abstara}
+that $\constrsync{ab^*a}$ is \NP-complete. The above construction
+then also yields \NP-hardness of the problem introduced above
+that asks whether $xA^iy = 0$ for a matrix~$A$ and vectors~$x,y$ over~$\mathbb Q$.
+The construction also yields another proof
+that $\constrsync{ab^*a}$ is in \NP\  since checking $x \cdot [b]_{\mathcal A}^i \in V_q$ for some $q \in Q$
+is in \NP\  by guessing $q \in Q$ and then checking $y \in V_q$ and $x[b]^i_{\mathcal A} = y$,
+which can be done in polynomial time since the matrix orbit problem 
+can be solved in polynomial time.
+ 
+\begin{remark}
+	In \cref{prelim:compl:thm:reach-comm-fixed} 
+	we proved that \REACHF
+	is solvable in polynomial time for commutative automata over a fixed alphabet.
+	The result of Kannan \& Lipton~\cite{KannanLipton1986}
+	stating polynomial-time solvability 
+	of existence of some $i \ge 0$
+	such that $xA^i = y$ for a matrix~$A$
+	and vectors $x,y$ over~$\mathbb Q$
+	also implies polynomial-time solvability
+	of \REACHF for unary automata
+	similarly as above by considering the transition matrix and encoding state
+	sets $S$ into vectors $(x_1, \ldots, x_n)$ 
+	by setting $x_i = 1$ if $q_i \in S$ and $x_i = 0$ otherwise.
+	Note that the related problem \ST 
+	is \NP-complete for unary automata by \cref{compl:thm:comm_ST}.	
+\end{remark}
+
+\section{Operating Restrictions}%ursprungsbeispiel, aber auch homogene experimente sternberg paper
+\label{constrsync:sec:motivation:operating}
+
+Fernau et al.~\cite{FernauGHHVW19} gave the following motivating example. Suppose that a system, modeled by an automaton, 
+has a ``normal'' and a ``directing`` operating mode, and only in the latter mode
+synchronizing instructions are allowed. The switching between both modes 
+can be modeled, in its simplest form, 
+by the constraint $ab^*a$, where $a$ switches into the ``directing'' mode.
+As written in the previous paragraph, \constrsync{ab^*a} is \NP-complete, see \crefitem{constr_sync:thm:introductory_examples}{constrsync:ex:item:abstara}.
+Even more generally, it might be possible that a system, for example, a remotely controlled
+rover on a distant planet or a satellite in orbit, is not allowed to execute all commands in every possible
+order. For example, some commands are only allowed in a certain order or after
+other commands have been executed. All of this imposes constraints
+on the possible reset sequences.
+
+% bestimmte operationen nur wenn bestimmte andere, oder erst vertikal
+\section{Part Orienters}
+\label{constrsync:sec:motivation:part-orienters}
+
+Generalizing the part orienters example
+from \cref{intro:sec:examples:partorienters}, suppose some parts arrive at a manufacturing site and they
+need to be sorted and oriented before assembly. Practical considerations
+favor methods which require little or no sensing, employ simple devices,
+and are as robust as possible. 
+As in \cref{intro:sec:examples:partorienters},
+the parts are put on a conveyor belt
+so that the stream of the parts encounter a series of passive obstacles
+placed along the belt before reaching the assembly point.
+Now, furthermore, assume, due to the availability of components, requirements how to lay things out
+or physical restrictions,
+the passive components can %could 
+not be placed at random along
+the belt, but have to obey some restrictions, or restrictions
+in what order they are allowed to happen. 
+These constraints on the
+permissible sequences of applicable operations 
+can be modeled by the constrained synchronization problem.
+
+
+\IN{discrete event system}
+\section{Supervisory Control} 
+\label{constrsync:sec:motivation:supervisory}
+
+Ramadge and Wonham~\cite{RamadgeWonham87} modelled
+ a \emph{discrete event system} (DES) by a partial automaton 
+ generating an event sequence (see also \cite{DBLP:books/daglib/0034521,wonham2019}). 
+ %The authors distinguished between controllable and uncontrollable
+ %events.
+ Then, a supervisor,  depending on the event sequence \todo[inline]{supervisor or controller}
+ that occurred so far,
+ is able to restrict the set of events
+ that are possible in the next step, where, however,
+ he can only limit the use of so-called controllable events.
+ So, if we want to (globally) reset a finite state DES~\cite{Alves2020} under supervisory control, 
+ this can be seen as an instance of a constrained synchronization problem
+ in case the permissible event sequences form
+ a regular language.
+ 
+ 
+
+% % noch etwas umschreiben, sonst identsich mit Mischa-Text
+% \item[Biocomputing.] In~\cite{Benenson2003,Benenson2001} DNA molecules have been used as both
+% hardware and software for finite automata of nanoscaling size, see also~\cite{Vol2008}. 
+% For instance, Benenson et al~\cite{Benenson2003} produced ``a `soup of automata', that is, a solution
+% containing $3 \times 10^{12}$ identical automata per $\mu1$. All these molecular
+% automata can work in parallel on different inputs, thus ending up in different
+% and unpredictable states. In contrast to an electronic computer, one cannot
+% reset such a system by just pressing a button; instead, in order to synchronously bring
+% each automaton to its start state, one should spice the soup with (sufficiently
+% many copies of) a DNA molecule whose nucleotide sequences encodes a reset word''~\cite{Vol2008}.
+% Now, it might be possible that certain sequences, or subsequences,
+% are not possible as they might have unwanted biological side-effects, 
+% or might destroy the molecules at all.

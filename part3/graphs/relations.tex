@@ -1,0 +1,125 @@
+%!TEX root = ./../../springer-mono-format/book.tex
+%!TEX root = ./../../thesis-trier.tex
+
+Here, we investigate relations between $I(\mathcal A), I(S), \Gamma_1(\mathcal A)$, and~$\Gamma_1(S)$.
+Recall the identification we made for
+$\Gamma_1(\mathcal A)$  (see also \cref{syncmax:eqn:E1})
+so that its vertex set equals the state set of $\mathcal A$.
+
+First, in~\cref{sync_max:prop:Rystsov_graph_vs_SI_graph}, we state general relations among these graphs.
+Then, in~\cref{sync_max:prop:Gamma1alledges}, we prove that strong connectivity of $I(S)$ for $S \le_S\mathcal T_n$
+implies that every ordered pair of distinct vertices forms an edge in $\Gamma_1(S)$.
+
+\begin{proposition}
+	\label{sync_max:prop:Rystsov_graph_vs_SI_graph}
+	\label{sync_max:prop:IS_in_Gamma1}
+	Let $S \le_S \mathcal T_n$ and $\semiautomat{A}{Q}{\Sigma}{\delta}$.
+	
+	\begin{enumerate}
+		\item \label{sync_max:prop:item:GammaS_equal_GammaA} $\Gamma_1(\TM{\mathcal A}) = \Gamma_1(\mathcal A)$
+		and $\Gamma_{1,i}(\mathcal A)$ is a subgraph of~$\Gamma_1(\mathcal A)$ for each $i \ge 1$.
+		
+		\item \label{sync_max:prop:item:IS_equal_IM} $I(S) = I(S \cup \{ \operatorname{id}_{[n]} \})$
+		and 
+		$\Gamma_1(S) = \Gamma_1(S \cup \{ \operatorname{id}_{[n]}\})$.
+		So $I(\TS{\mathcal A}) = I(\TM{\mathcal A})$ and $\Gamma_1(\TS{\mathcal A}) = \Gamma_1(\TM{\mathcal A})$.	
+		
+		\item \label{sync_max:prop:item:ISsubgraphGamma1} $I(S)$ is a subgraph of $\Gamma_1(S)$.
+		
+		\item \label{sync_max:prop:item:IAsubgraphIS} If $\mathcal A$ is an SI-automaton, then 
+		$I(\mathcal A)$ is a subgraph of~$I(\TS{\mathcal A})$.
+	\end{enumerate}	
+\end{proposition} 
+\begin{proof}
+\ref{sync_max:prop:item:GammaS_equal_GammaA}: This follows as every mapping in $\TM{\mathcal A}$
+is induced by a word and every word induces a mapping in $\TM{\mathcal A}$. That
+$\Gamma_{1,i}(\mathcal A)$ is a subgraph of $I(\mathcal A)$ follows directly from its definition.
+
+\ref{sync_max:prop:item:IS_equal_IM}:  As the identity transformation is not relevant
+for the set of defect one mappings in a transformation semigroup the claim follows.
+
+\ref{sync_max:prop:item:ISsubgraphGamma1}: Both graphs have the same vertex set. Now, suppose $(p,q)$ is an edge in~$I(S)$.
+Then there exists a simple idempotent $t \in S$ with $\applyfunc{p}{t} = \applyfunc{q}{t} = q$.
+As $\excl{t} = \{p\}$ and $\dupl{t} = \{q\}$,
+it follows that $(p,q)$ is an edge in $\Gamma_1(S)$.
+So, $I(S)$ is a subgraph of $\Gamma_1(S)$.
+
+\ref{sync_max:prop:item:IAsubgraphIS}: Suppose $\mathcal A$ is an SI-automaton.
+Both graphs $I(\mathcal A)$ and $\TS{\mathcal A}$ have the same vertex set~$Q$.
+Next, by \cref{sync_max:thm:rystsov-edges-simple-idemp-conj},
+for each edge $(p, q)$ in $I(\mathcal A)$
+there exists a simple idempotent in $\TS{\mathcal A}$ mapping~$p$ to~$q$.
+This yields that $(p,q)$ is also an edge in $\TS{\mathcal A}$.
+\end{proof}
+
+By~\cref{sync_max:prop:item:IS_equal_IM} of \cref{sync_max:prop:Rystsov_graph_vs_SI_graph},
+it makes no difference whether we use monoids or semigroups in most of our statements.
+
+\begin{remark}\label{sync_max:rem:Rystsov-edges-and-words}	
+	\Cref{sync_max:prop:item:IAsubgraphIS} of
+	\cref{sync_max:prop:Rystsov_graph_vs_SI_graph} implies that the edge
+	$(p,q)$ of $I(\mathcal A)$ is also an edge of $I(\TS{\mathcal A})$.
+	Hence, by the definition of $I(\TS{\mathcal A})$, there exists a simple
+	idempotent $\fword{\delta}{u} \in \TS{\mathcal A}$, where $u \in \Sigma^*$,
+	such that
+	$
+	\applyfunc{p}{\fword{\delta}{u}} = q,
+	$
+	or equivalently,
+	$
+	\applytrans{\delta}{p}{u} = q.
+	$
+	In fact, \cref{sync_max:prop:SI} gives the stronger statement that
+	$u$ can be chosen in the form $u = vaw$, where
+	$v,w \in \Sigma_G^*$, $a \in \Sigma_I$,
+	$p = \applytrans{\delta}{s}{w}$, and
+	$q = \applytrans{\delta}{t}{w}$
+	for distinct states $s,t \in Q$ such that
+	$\applytrans{\delta}{s}{a} = t$
+	and
+	$\applytrans{\delta}{r}{vw} = r$
+	for every $r \in Q$.
+\end{remark} 
+
+Next, we show that if
+$I(S)$ is strongly connected, then in $\Gamma_1(S)$ all distinct pairs of vertices 
+are connected by an edge.
+
+\begin{proposition}
+	\label{sync_max:prop:Gamma1alledges}
+	Let $S \le_S \mathcal T_n$.
+	If $I(S)$ is strongly connected,
+	then the edge set of~$\Gamma_1(S)$ 
+	equals $\{ (p,q) \mid p,q \in [n], p \ne q \}$.
+\end{proposition}
+\begin{proof}
+	Let $p,q \in [n]$.
+	Consider a path
+	$
+	q_0, q_1, \ldots, q_m
+	$
+	in $I(S)$ such that $q_0 = p$ and $q_m = q$.
+	For each edge $(q_{i-1}, q_i)$ of $I(S)$,
+	there exists a simple idempotent $t_i \in S$
+	mapping $q_{i-1}$ to $q_i$.
+	Set
+	$
+	t = t_1 t_2 \cdots t_m.
+	$
+	Then, for every $x \in [n]$, we have
+	\[
+	\applyfunc{x}{t}
+	=
+	\begin{cases}
+		x,
+		& \text{if } x \notin \{q_0, q_1, \ldots, q_m\}, \\[0.5ex]
+		q_{\min\{i+1,m\}},
+		& \text{if } x = q_i
+		\text{ for some } i \in \{0,1,\ldots,m\}.
+	\end{cases}
+	\]
+	Hence $t$ has defect one, with
+	$\excl{t} = \{p\}$ and
+	$\dupl{t} = \{q\}$.
+	Therefore, $t$ induces the edge $(p,q)$ in $\Gamma_1(S)$.
+\end{proof}

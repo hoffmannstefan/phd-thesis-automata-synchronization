@@ -1,0 +1,807 @@
+%!TEX root = ../../thesis-trier.tex
+
+Here, we investigate the complexity
+of the constrained synchronization problem for partially ordered input automata
+and when the constraint language is given by a
+PDFA with up to two states.
+First, in \cref{constrinput:sec:pto:NP}, 
+we state a quadratic upper bound for shortest synchronizing words of partially ordered
+automata in a given regular constraint language
+and conclude containment in \NP\  of the 
+corresponding decision problem.
+\Cref{constrinput:sec:pto:reduction} states
+a technical lemma to simplify monoid constraint languages w.r.t.~partially ordered input automata.
+In \cref{constrinput:sec:pto:threecases} we collect
+three particular cases of constraint languages giving problems in $\AC^0$, that are \LOGSPACE-complete,
+or \NP-hard. Using these lemmas, in \cref{constrinput:sec:two-state-pto},
+we give a complexity classification for two-state constraint PDFAs and partially ordered input automata.
+
+\subsection{A Bound and Containment in \texorpdfstring{\NP}{NP}} 
+\label{constrinput:sec:pto:NP}
+
+In \cref{constr_input:prop:length_constr_sync_word_in_waa},
+we state a quadratic bound on shortest synchronizing
+words in a given constraint language.  Then, in \cref{thm:constraint_sync_weakly_acyclic_in_NP}, we conclude 
+that the constrained synchronization problem is in \NP\ 
+for partially ordered input automata.
+
+\begin{proposition}
+	\label{constr_input:prop:length_constr_sync_word_in_waa}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ 
+	be a partially ordered automaton with $n$ states and $\mathcal B = (\Sigma, P, \mu, p_0, F)$ be a fixed PDFA.
+	Then, a shortest synchronizing word for $\mathcal A$ in $L(\mathcal B)$ 
+	has length at most $|P|\cdot \binom{n}{2}$.
+\end{proposition}
+\begin{proof}
+	Let $w = x_1 \cdots x_m \in L(\mathcal B)$
+	with $x_i \in \Sigma$ and $S_i = \delta(Q, x_1 \cdots x_i)$  
+	for $i \in \{1,\ldots,m\}$ and $S_0 = Q$.
+	Suppose $m \ge |P|$ and $S_{i+ |P|} = S_i$
+	for some $i \in \{0, 1,\ldots, n\}$.
+	Since $\mathcal A$ is partially ordered, 
+	no word can induce a non-trivial permutation of a subset of states.
+	So, for the word $u = x_{i+1} \cdots x_{i + |P|}$, for each $q \in S_j$,
+	we have $\delta(q, u) = q$,
+    and then $\applytrans{\delta}{q}{x_j} = q$ for $j\in \{i+1,\ldots,i+|P|\}$.
+	Since $u$ has length~$|P|$, it induces a loop in the constraint automaton $\mathcal B$.
+	So, we can replace some factor of~$w$
+	by a shorter word resulting in a new word $v \in \Sigma^*$ with $|v| < |w|$
+	such that
+	$ 
+	S_{i + |P|} = \delta(Q, x_1\cdots x_i v x_{i + |P| + 1} \cdots x_n)
+	$
+	and $x_1\cdots x_i v x_{i + |P| + 1} \cdots x_n \in L(\mathcal B)$.
+
+	Now, let $q_1 ,\ldots, q_n$ be a topological sorting of the states of $\mathcal A$ w.r.t.~$\lereach$.
+	Suppose $w \in L(\mathcal B)$
+	is a shortest synchronizing word for~$\mathcal A$ in $L(\mathcal B)$. 
+	Factorize $w$ into blocks of length $|P|$ and a remaining block of length at most $|P|$, i.e.,
+	write $w = w_1 \cdots w_m$
+	with $|w_i| = |P|$ for $i \in \{1,\ldots,m-1\}$
+	and $|w_m| \le |P|$.
+	By the arguments from the previous paragraph
+	we have $\delta(Q, w_1 \cdots w_{i-1}) \ne \delta(Q, w_1 \cdots w_i)$
+	for $i \in \{1,\ldots,m\}$ (set $w_1 \cdots w_0 = \varepsilon$).
+	Thus we can define a function $f \colon \{1,\ldots,m\} \to Q \times Q$
+	by
+	\[
+	f(i) = (q_j, \delta(q_j, w_1 \cdots w_i))
+	\]
+	where $j \in \{1,\ldots,m\}$ is some number
+    such that $\delta(q_j, w_1 \cdots w_{i-1}) \ne \delta(q_j, w_1 \cdots w_i)$.
+    Since~$\mathcal A$ is partially ordered
+	and 
+	$\delta(q_j, w_0 \cdots w_{i-1}) \lereach 
+	\delta(q_j, w_0 \cdots w_{i})$, we find that $f$ is injective.
+	We also have 
+	\[
+	\applytrans{\delta}{q_j}{w_1 \cdots w_i} \in \{q_{j+1}, q_{j+2}, \ldots, q_n\},
+	\]
+	which yields that the image of $f$ is contained in the set $\bigcup_{j=1}^n \{q_j\} \times \{q_{j+1},\ldots,q_n\}$
+	of size $(n-1) + (n-2) + \cdots + 1 = \binom{n}{2}$.
+	This implies $m \le \binom{n}{2}$ and so $|w| \le |P| \cdot \binom{n}{2}$.
+	
+	%
+	% Der Beweis ist auch okay. Vielleicht sogar etwas anschaulicher. Nutzt auch den ersten Paragraphen
+	%
+%Let $q_1 ,\ldots, q_n$ be a topological sorting of the states of $\mathcal A$.
+%We represent the situation after reading a word $u \in \Sigma^*$, i.e., the set $\delta(Q, u)$,
+%by a tuple $(i_1, \ldots, i_n) \in \mathbb \{1,\ldots,n\}^n$,
+%where $i_j$ is the index of $\delta(q_j, u)$ in the topological sorting, i.e.,
+%$\delta(q_j, u) = q_{i_j}$.
+%Then, $u \in \Sigma^*$ is synchronizing if and only if
+%the corresponding tuple is $(n, \ldots, n)$.
+%The starting tuple is $(1, \ldots, n)$.
+%For $(i_1, \ldots, i_n), (j_1, \ldots, j_n) \in \{1,\ldots,n\}^n$
+%we write $(i_1, \ldots, i_n) < (j_1, \ldots, j_n)$
+%if, for all $r \in \{1,\ldots,n\}$, we have $i_r \le j_r$
+%and there exists at least one $s \in \{1,\ldots, n \}$
+%such that $i_s < j_s$.
+%	
+%	Now, suppose $w = x_1 \cdots x_m \in L(\mathcal B)$ is a shortest synchronizing word for $\mathcal A$. 
+%	By the previous paragraph, we can suppose 
+%	$S_{i + |P|} \ne S_i$ for every $i \in \{1,\ldots, n\}$.
+%	As~$\mathcal A$ is partially ordered and we can only move forward in the topological sorting,
+%	if $\delta(Q, u) \ne \delta(Q, uv)$,
+%	then for the tuple $(i_1, \ldots, i_n)$ corresponding
+%	to $\delta(Q, u)$ and for the tuple $(j_1, \ldots, j_n)$ for $\delta(Q, uv)$
+%	we have $(i_1, \ldots, i_n) < (j_1, \ldots, j_n)$. Note that we have equality
+%	if and only if $\delta(Q, u) = \delta(Q, uv)$.
+%	As we start with $(1, \ldots, n)$
+%	and want to reach $(n, \ldots, n)$, %and every time we have $S_i \ne S_{i+1}$
+%	%we increase at least one component of the tuple corresponding to $S_i$,
+%	we have to increase at least $n - 1$ times the first entry, $n - 2$ times the second
+%	and so on.
+%	Now, by the previous reasoning, every~$|P|$ symbols we can suppose we increase
+%	some component. Combining these observations yields that a shortest
+%	synchronizing word has length at most
+%	\[
+%	|P| \cdot \left( (n - 1) + (n - 2) + \ldots + 1 \right) = |P| \cdot \binom{n}{2}.
+%	\]
+%	This finishes the proof.
+\end{proof}
+
+By Proposition~\ref{constr_input:prop:length_constr_sync_word_in_waa} we can conclude that
+for partially ordered input automata, the constrained synchronization problem is always in $\NP$.
+
+\begin{theorem}
+	\label{thm:constraint_sync_weakly_acyclic_in_NP}
+	For partially ordered input automata and an arbitrary constraint automaton,
+	the constrained synchronization problem	is in $\NP$.
+\end{theorem}
+\begin{proof}
+	By Proposition~\ref{constr_input:prop:length_constr_sync_word_in_waa} we can guess a shortest synchronizing word in $L(\mathcal B)$
+	of polynomial length.
+	Verifying that such a word is indeed synchronizing can be done in polynomial time as \DFASW\ 
+	is in \LOGSPACE by \cref{prelim:thm:finite_list_sync_word}.	
+\end{proof}
+
+Lastly, we also give a bound for shortest words in a constraint language mapping
+one subset into another subset that, as a special case, also yields a quadratic bound
+for shortest synchronizing words.
+
+\begin{proposition}
+	\label{compl:prop:ST-pto-bound}	
+	Suppose $\automat{B}{P}{\Sigma}{\mu}{p_0}{F}$ is a PDFA.
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be a partially ordered automaton 
+	and $S, T \subseteq Q$. 
+	Then for a shortest word $u \in L(\mathcal B)$
+	such that $\applytrans{\delta}{S}{u} \subseteq T$
+	we have $|u| < |P||S|(|Q|-1) + |P|$.	
+\end{proposition}
+\begin{proof}
+	We can suppose $S$ and $T$ are non-empty. 
+	Suppose $u \in L(\mathcal B)$
+	is a shortest word such that $\applytrans{\delta}{S}{u} \subseteq T$.
+	Write $u = u_1 \cdots u_m u_{m+1}$ with $|u_1| = \cdots = |u_{m}| = |P|$
+	and $|u_{m+1}| < |P|$.
+	Assume there exists $i \in \{1,\ldots,m\}$
+	such that
+	$\applytrans{\delta}{s}{u_1 \cdots u_{i-1}} \eqreach \applytrans{\delta}{s}{u_1 \cdots u_{i-1} u_{i}}$
+	for all $s \in S$.\footnote{We set $u_1 \cdots u_0 = \varepsilon$.}
+	Since $\mathcal A$ is partially ordered,
+	we find $\applytrans{\delta}{s}{u_1 \cdots u_{i-1}} = \applytrans{\delta}{s}{u_1 \cdots u_{i-1} v}$
+	for each prefix $v$ of $u_i$ and each $s \in S$.
+	Since $|u_i| = |P|$,
+	some state of~$\mathcal B$ is repeated when reading~$u_i$
+	and thus a non-empty factor of~$u_i$ can be removed
+	to obtain a shorter word $w \in \Sigma^*$
+	with $\mu(u_1 \cdots u_{i-1} u_i) = \mu(u_1 \cdots u_{i-1} w)$
+	and $\applytrans{\delta}{s}{u_1 \cdots u_{i-1}w} = \applytrans{\delta}{s}{u_1 \cdots u_{i-1} u_i}$
+	for each $s \in S$.
+	Then $u_1 u_{i-1} w u_{i+1} \cdots u_m u_{m+1} \in L(\mathcal B)$
+	and $\applytrans{\delta}{S}{u_1 \cdots u_{i-1} w u_{i+1} \cdots u_m} \subseteq T$,
+	contradicting the minimal choice of~$u$.
+	So, for each $i \in \{1,\ldots,m\}$ there exists $s \in S$
+	such that $\applytrans{\delta}{s}{u_1\cdots u_{i-1} u_{i}} \not\lereach \applytrans{\delta}{s}{u_1\cdots u_{i-1}}$.
+	Now, every $s \in S$
+	can be mapped to a different state at most~$|Q| - 1$ times until reaching a maximal state.
+	Hence, for $s \in S$ 
+	and the maximal set of indices $1 \le j_1 < \cdots < j_r \le m$
+	such that $\applytrans{\delta}{s}{u_1 \cdots u_{j_l-1}} \ne \applytrans{\delta}{s}{u_1 \cdots u_{j_l}}$
+	for $l\in \{1,\ldots,r\}$
+	we have $r \le |Q| - 1$.
+	Since each $i \in \{1,\ldots,m\}$
+	appears as such an index for some state from~$S$,
+	we find $m \le |S|(|Q|-1)$
+	and thus $|u| < |P| |S| (|Q| - 1) + |P|$.
+\end{proof}
+
+
+\subsection{A Reduction Lemma}
+\label{constrinput:sec:pto:reduction}
+
+Here, in \cref{constr_sync:lem:pto_monoid_lang}, we prove that for partially ordered input automata
+constraint languages that are monoids can be replaced
+by languages of the form $\Gamma^*$ for~$\Gamma \subseteq \Sigma$.
+
+\begin{lemma}
+	\label{constr_sync:lem:pto_monoid_lang}
+	Suppose $L \subseteq \Sigma^*$ is a language that is a monoid
+	and $\Gamma = \{ a \in \Sigma \mid L \cap \Sigma^* a \Sigma^* \ne \emptyset\}$.
+	If $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	is a partially ordered automaton,
+	then~$\mathcal A$ has a synchronizing word in $L$
+	if and only if $\mathcal A$ has a synchronizing word in $\Gamma^*$.
+\end{lemma}
+\begin{proof}	
+	First, suppose $w \in \Gamma^*$
+	synchronizes $\mathcal A$.
+	Let $q_1, \ldots, q_n$ be a topological sorting
+	of the states. Then $\applytrans{\delta}{Q}{w} = \{q_n\}$
+	and	for each state $q_i$ with $i \in \{1,\ldots,n-1\}$
+	there exists a letter $a_i \in \Gamma$
+	such that
+	\[
+	 w \in \Sigma^* a_i \Sigma^* \text{ and } \applytrans{\delta}{q_i}{a_i} \ne q_i.
+	\]
+	By choice of $\Gamma$, for each $a_i \in \Gamma$
+	there exists a word $u_i \in L \cap \Sigma^* a_i \Sigma^*$.
+	Then $\applytrans{\delta}{q_i}{u_{i}} \ne q_i$
+	and so 	$\applytrans{\delta}{q_i}{u_{i}} \in \{q_{i+1}, \ldots, q_n \}$.
+	Hence $\delta(Q, u_1 \cdots u_i) \subseteq \{q_{i+1},\ldots, q_n\}$ for $i \in \{1,\ldots,n-1\}$
+	and the word $u = u_1 \cdots u_{n-1}$
+	synchronizes $\mathcal A$. As $L$ is a monoid, we have $u \in L$.
+	
+	Conversely, we have $L \subseteq \Gamma^*$ 
+	so that every synchronizing word in $L$ is also a synchronizing word in $\Gamma^*$.
+\end{proof}
+
+\begin{remark} \label{constrinput:rem:ptomonoid}
+	In the proof of \cref{constr_sync:lem:pto_monoid_lang},
+	each letter is replaced by words containing this letter.
+	This is done for each state, and we cannot simply
+	replace letters by words containing those letters
+	and obtain a synchronizing words in a partially ordered automaton,
+	but must take the states moved by these letters into account.
+	For example, consider the partially ordered automaton 
+	in \cref{constrinput:fig:ptoreduction}.
+	It has $ab$ as a synchronizing word, but $cacb$
+	is not a synchronizing word.
+	Here, $a$ moves the states $q_1$ and $q_3$
+	and~$b$ moves the state~$q_2$.
+	Considering the states $q_1, q_2, q_3$
+	in that order, we obtain the synchronizing word $cacbca$
+	from the method of proof of \cref{constr_sync:lem:pto_monoid_lang}.	
+	
+	\begin{figure}[htbp]
+		\centering
+		\begin{tikzpicture}[node distance = 2cm, on grid, auto, ->]
+			\node (q1) [state] {$q_1$};
+			\node (q2) [state, right of = q1] {$q_2$};
+			\node (q3) [state, right of = q2] {$q_3$};
+			\node (q4) [state, right of = q3] {$q_4$};
+		
+			\path[->] (q1) edge node {$c$} (q2)
+			(q2) edge node {$c$} (q3);
+			
+			\path[->] (q1) edge [bend left] node {$a$} (q4)
+			(q3) edge node {$a$} (q4)
+			(q2) edge [bend right=50, below] node {$b$} (q4);
+		\end{tikzpicture}
+		\caption{Partially ordered automaton with synchronizing word $ab$, but $cacb$ is not a synchronizing
+		word, see \cref{constrinput:rem:ptomonoid}.}
+		\label{constrinput:fig:ptoreduction}
+	\end{figure}
+\end{remark}
+
+\begin{remark} 	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be an $n$-state partially ordered automaton
+	and $\Gamma \subseteq \Sigma$ with $w \in \bigcap_{a \in \Gamma} \Sigma^* a \Sigma^*$.
+	Then for $u \in \Gamma^*$ and $v \in \Sigma^*$
+	we have the following equivalences:	
+	\begin{align*}
+		\delta(Q, uv) = \{q\}
+		& \Leftrightarrow \delta(Q, u) \subseteq \delta^{-1}(q, v) \\
+		& \Leftrightarrow \text{$\delta^{-1}(q, v)$ contains all trap states of $\mathcal A_{|\Gamma}$} & \tag{Cor.~\ref{cor:pto-trap-states}} \\
+		& \Leftrightarrow \delta(Q, w^{n - 1}) \subseteq \delta^{-1}(q, v) & \tag{Prop.~\ref{prelim:pto:prop:power-of-word-to-trap-state}} \\
+		& \Leftrightarrow \delta(Q, w^{n-1}v) = \{q\}.		
+	\end{align*}
+	This implies that for $L \subseteq \Sigma^*$, 
+	$\mathcal A$ has a synchronizing word in $\Gamma^* L$
+	if and only if it has one in $w^{n - 1}L$.
+\end{remark}
+
+\subsection{Three Special Cases} 
+\label{constrinput:sec:pto:threecases}
+
+Here, we give three lemmas stating sufficient
+conditions for containment in~$\AC^0$ (\cref{constrinput:pto:lem:Sigma1starSigma2}),
+\LOGSPACE-completeness (\cref{constrinput:pto:lem:Sigma1starSigma2bstar}),
+and for \NP-hardness (\cref{constrinput:pto:lem:Sigma1starSigma2Sigma3star}).
+We use these lemmas in our classification
+for two-state constraint PDFAs in \cref{constrinput:sec:two-state-pto}. 
+
+\begin{lemma}\label{constrinput:pto:lem:Sigma1starSigma2}
+	Let $\Sigma_1, \Sigma_2 \subseteq \Sigma$. %with $\Sigma_1 \cap \Sigma_2 = \emptyset$.
+	Then, for a partially ordered automaton
+	the problem to decide whether it has a synchronizing
+	word in $\Sigma_1^* \Sigma_2$ is in $\AC^0$.	
+\end{lemma}
+\begin{proof}
+	By \cref{constr_sync:thm:union} and as $\Sigma_1^* \Sigma_2 = \bigcup_{a \in \Sigma_2} \Sigma_1^*a$
+	we can assume $\Sigma_2 = \{a\}$.
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be a partially ordered input automaton.	
+	By \cref{compl:cor:pto_sync_trap},
+	$\mathcal A$ has a synchronizing word in $\Sigma_1^*a$
+	if and only if there exists a word in $\Sigma_1^*a$
+	mapping all states to a unique trap state $t \in Q$. 
+	This is equivalent to the existence of
+	a word $u \in \Sigma_1^*$ such that $\delta(Q, u) \subseteq S$ where $S = \delta^{-1}(\{t\}, a)$.	
+	We assume some numbering $Q = \{1,\ldots,n\}$ of the states
+	and that $\mathcal A$
+	is given by a set of transition matrices $(m^{(a)}_{ij})_{i,j \in Q}$
+	for each letter $a \in \Sigma$.
+	Let $UniqueTrap_j = \left( \bigwedge_{a \in \Sigma} m^{(a)}_{jj} \right)
+	\land 
+	\left( \bigwedge_{r \in Q \setminus \{j\}} \bigvee_{a \in \Sigma} \neg m_{rr}^{(a)} \right)$
+	be an abbreviation for the formula that checks 
+	whether $j$ is a unique trap state.
+	Having a trap state $t \in Q$ in $\mathcal A$,
+	a state $i \in Q$ is in $S$ if and only if the following formula is true:	
+	\[
+	\bigvee_{j \in Q} \left[ UniqueTrap_j \land m^{(a)}_{ij} \right].
+	\]
+	So, we can check whether $\mathcal A$ has a unique trap state and
+	determine the states in~$S$ by an $\AC^0$ circuit. Then,
+	by feeding the input $(\mathcal A_{|\Sigma_1}, S)$
+	to \SIS, we obtain an $\leACZEROm$-reduction
+	to the problem \SIS on partially ordered automata,
+	which is in $\AC^0$ by \cref{compl:thm:sync_into_pto}.
+\end{proof}
+
+\begin{lemma} \label{constrinput:pto:lem:Sigma1starSigma2bstar}
+	Let $\Sigma_1, \Sigma_2 \subseteq \Sigma$ and $b \in \Sigma$ with $( \Sigma_1 \cup \Sigma_2 ) \setminus \{b\} \ne \emptyset$.
+	Then the problem to test whether a given partially ordered
+	automaton has a synchronizing word in $\Sigma_1^*\Sigma_2 b^*$
+	is \LOGSPACE-complete.
+\end{lemma} 
+\begin{proof}
+	\emph{Containment in \LOGSPACE:}
+	By \cref{constr_sync:thm:union} and as $\Sigma_1^* \Sigma_2 b^* = \bigcup_{a \in \Sigma_2} \Sigma_1^*a b^*$
+	we can assume $\Sigma_2 = \{a\}$.
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be a partially ordered automaton
+	with~$n$ states. By \cref{prelim:classes:eqn:pto} and \cref{prelim:thm:sync_words_is_ideal} 
+	a word $uab^i$ with $i \ge 0$ and $u \in \Sigma_1^*$ synchronizes~$\mathcal A$
+	if and only if $uab^n$ synchronizes~$\mathcal A$.
+	By \cref{compl:cor:pto_sync_trap}, the synchronizing state
+	is a unique trap state. 
+	So,~$\mathcal A$ has a synchronizing word in $\Sigma_1^* a b^*$
+	if and only if there exists a unique trap state $t \in Q$ 
+	and a word $u \in \Sigma_1^*$ such that $\delta(Q, u) \subseteq S$
+	where $S = \delta^{-1}(\{t\}, ab^n)$.
+	By iterating through the states
+	we can check whether $\mathcal A$ has a unique trap state $t \in Q$.
+	Then, by iterating through the states $q \in Q$ again
+	and computing, by using a counter and a memory cell,
+	$\delta(q, ab^n)$ 
+	we can compute the set $S$.
+	Then, solve \SIS with input $(\mathcal A_{|\Sigma_1}, S)$,
+	which is in $\AC^0$ by \cref{compl:thm:sync_into_pto}
+	as $\mathcal A_{|\Sigma_1}$ is partially ordered.
+		
+	\medskip 
+	\noindent\emph{\LOGSPACE-hardness:} We give an $\leACZEROm$-reduction
+	from $\ONEDAG$, which is \LOGSPACE-complete by \THM~\ref{prelim:compl:thm:ONEDAG}.
+	Suppose $(G, s, t)$ is a $\ONEDAGST$-instance
+	with $G = (V, E)$.
+	We can suppose~$s$ has no incoming transitions and~$t$ has no outgoing transitions.
+	Pick $u \in \Sigma_{1}^*\Sigma_{2}$ with $|u|_a > 0$ for some $a \in (\Sigma_1 \cup \Sigma_2) \setminus \{b\}$.
+		
+	\medskip
+	\noindent\underline{Construction:}
+	Let $\semiautomat{A}{V}{\Sigma}{\delta}$ with 
+	\[
+	\delta(p, a) = \begin{cases}
+		s  & \text{if } p \ne t, \\
+		t  & \text{if } p = t.
+	\end{cases}
+	\qquad 
+	\delta(p, b) = \begin{cases} 
+		q & \exists (p, q) \in E, \\
+		p & \text{otherwise,}  
+	\end{cases} 
+	\]
+	and set $\delta(q, x) = q$ for all $x \in \Sigma \setminus \{a,b\}$.	
+	
+	\medskip 
+	\noindent\underline{Properties:} 
+	\begin{enumerate}
+		
+		\item \label{constrinput:pto:lem:Sigma1starSigma2bstar:1} For each $q \in Q$ we have $\delta(q, u) = \delta(q, a)$.
+		
+		This follows since $|u|_b = 0$, only the letters $a$ and $b$
+		move any state, and $\delta(q, a) = \delta(q, aa)$ for each $q \in Q$.		
+		
+		\item \label{property:areset} For $v \in \Sigma^*$ and $|\delta(Q, v)| \ge 2$
+		we have $\delta(Q, va) = \{s,t\}$.
+		
+		As $t$ is a trap state, $t \in \delta(Q, v)$.
+		For $q \in \delta(Q, v)$ with $q \ne t$	we have $\delta(q, a) = \{s\}$.	This yields the claim.		
+		
+		\item \label{property:path}There exists a word $v \in \Sigma^*$
+		with $\delta(\{s,t\}, v) = \{t\}$ if and only if there exists a path of length $n$ from $s$ to $t$
+		in $G$ and in this case $\delta(\{s,t\}, b^n) = \{t\}$.
+		
+		If there exists a path of length $n$ from $s$ to $t$ in $G$,
+		then $\delta(\{s,t\}, b^n) = \{t\}$.
+		Conversely, suppose $v \in \Sigma^*$ is a shortest word with $\delta(\{s,t\}, v) = \{t\}$.
+		By Property~\ref{property:areset} 
+		we can assume $|v|_a = 0$. As the other letters only induce
+		self-loop, we have $v \in b^*$.
+		Now, by following the transitions along $b$ we obtain a path in $G$ from $s$ to $t$, i.e.,
+		the states $s, \delta(s, b), \delta(s, bb), \ldots, \delta(s, b^{|v|-1}), t$
+		give a path in $G$.		
+	\end{enumerate}
+	
+	\noindent\underline{Verification:} Suppose there exists
+	a path of length $n$ from $s$ to $t$ in $G$.
+	By Properties~\ref{constrinput:pto:lem:Sigma1starSigma2bstar:1}, \ref{property:areset},
+	and~\ref{property:path}, $\delta(Q, ub^n) = \{t\}$.	
+	Conversely, suppose $v \in \Sigma_{1}^* \Sigma_{2} b^*$ 
+	synchronizes $\mathcal A$. 
+	Then $\delta(Q, v) = \{t\}$.
+	In particular $\delta(\{s,t\}, v) = \{t\}$. Thus, by Property~\ref{property:path},
+	there exists a path from $s$ to $t$ in $G$. 
+\end{proof}
+
+\begin{lemma}\label{constrinput:pto:lem:Sigma1starSigma2Sigma3star}
+	Let $\Sigma_1, \Sigma_2, \Sigma_3 \subseteq \Sigma$
+	be such that $\Sigma_1 \cap \Sigma_2 = \emptyset$ and
+	there exist distinct letters $b,c \in \Sigma_{3}$
+	and $a \in (\Sigma_1 \cup \Sigma_2) \setminus \Sigma_3$.
+	Then the problem to decide whether a given 
+	partially ordered automaton has a synchronizing word in $\Sigma_1^*\Sigma_2\Sigma_3^*$
+	is \NP-hard.
+\end{lemma}
+\begin{proof}	
+	We give a reduction from the \NP-complete problem~{\sc SAT} (Theorem~\ref{prelim:thm:complexities})
+	that is a modification of a reduction from Eppstein~\cite{Eppstein90} 
+	and Rystsov~\cite{Rys80}
+	used to show \NP-hardness of \DFASWS. A similar modification was used in~\cite[Thm.~4]{Ryzhikov19a}
+	to show that \SFS is \NP-hard for partially ordered 
+	input automata.	
+		
+	Let $(X,C)$ be a {\sc SAT}-instance with variables $X = \{x_1, \ldots, x_n\}$
+	and clauses $C = \{c_1, \ldots, c_m\}$.
+	
+\medskip 
+\noindent\underline{Construction:} We construct a partially ordered automaton $\semiautomat{A}{Q}{\Sigma}{\delta}$
+with $Q = \{ q_{i,j} \mid 1 \le i \le m, 0 \le j \le n + 1 \}\cup \{q_f\}$
+where $q_f$ is a trap state and $\delta \colon Q \times \Sigma \to Q$  is given, 
+for $i \in \{1,\ldots,m\}$, $j \in \{0,1,\ldots,n+1\}$ and $x \in \Sigma$, by 
+\[
+\applytrans{\delta}{q_{i,j}}{x} = \begin{cases}
+q_{i, j + 1} & \mbox{if } j \in \{1,\ldots, n\} \land ( ( x = b \land \neg x_j \notin c_i ) \lor ( x= c \land  x_j \notin c_i ) ), \\
+q_f          & \mbox{if } j \in \{1,\ldots, n\} \land ( ( x = b \land \neg x_j \in c_i ) \lor ( x = c \land    x_j \in c_i ) ), \\ 
+%q_f          & \mbox{if } j \in \{1,\ldots, n\} \land x = c \land \overline x_j \in c_i \\
+q_{i,1}      & \mbox{if } j = 0 \land x \in \Sigma_2, \\ 
+q_f          & \mbox{if } j \in \{1,2,\ldots,n+1\} \land x = a, \\
+q_{i,j}      & \mbox{otherwise},
+\end{cases}
+\]
+and $\applytrans{\delta}{q_f}{x} = x$. See Figure~\ref{fig:extended_Eppstein} for an example.
+
+	\begin{figure}[ht]
+	\centering
+		\begin{tikzpicture}[transform shape,scale=0.8,shorten >=1pt,node distance=2.1cm and 3.5cm,on grid,auto, state/.style={circle, draw, blur shadow,fill=white,minimum size=1.3cm, fill=black!5, thick}] % alternative: adding "minimum size=1.5" as option to each node
+			
+			% formula above the automaton
+		\node (clause_1) {\large$(x_1 \vee x_2)$};
+		\node[right=of clause_1] (clause_2) {\large $(x_1 \vee \neg x_2)$};
+		\node[right=of clause_2] (clause_dots) {$\wedge$};%{\small \dots};
+		\node[right=of clause_dots] (clause_{m-1}) {\large $(\neg x_1)$}; % \vee x_3)$};
+		\node[right=of clause_{m-1}] (clause_m) {\large $(x_1 \vee x_2)$};
+		% "Logical Or"-labeling-nodes of the formula over the automaton
+		\node (label_wedge_1) at ($(clause_1)!0.48!(clause_2)$) {$\wedge$}; % measurement of the length seems so start at the outermost points of the nodes, not from the mids => check it manually, especially if the node diameter changes
+		\node (label_wedge_2) at ($(clause_2)!0.52!(clause_dots)$) {};%{$\wedge$};
+		\node (label_wedge_{m-2}) at ($(clause_dots)!0.46!(clause_{m-1})$) {};%{$\wedge$};
+		\node (label_wedge_{m-1}) at ($(clause_{m-1})!0.535!(clause_m)$) {$\wedge$};
+		
+	
+		
+		% column 3ff (node order has to be this way, because only known nodes can be referenced correctly - otherwise the positioning breaks)
+		%\node[below=of q_s] (q_{3ff,1}) {$\dots$};
+		\node[below=of clause_dots] (q_{3ff,0}) {};%{$\dots$};
+		\node[below=of q_{3ff,0}] (q_{3ff,1}) {};%{$\dots$};
+		\node[below=of q_{3ff,1}] (q_{3ff,2}) {};%{$\dots$};
+		\node[below=of q_{3ff,2}] (q_{3ff,3}) {};% {$\dots$};		
+		
+		% column 2
+		\node[state, left=of q_{3ff,0}, yshift=0.6cm] (q_{2,0}) {$q_{2,0}$};
+		\node[state, below=of q_{2,0}] (q_{2,1}) {$q_{2,1}$};
+		\node[state, below=of q_{2,1}] (q_{2,2}) {$q_{2,2}$};
+		\node[state, below=of q_{2,2}] (q_{2,3}) {$q_{2,3}$};		
+		
+		% column 1
+		\node[state, left=of q_{2,0}] (q_{1,0}) {$q_{1,0}$};
+		\node[state, left=of q_{2,1}] (q_{1,1}) {$q_{1,1}$};
+		\node[state, below=of q_{1,1}] (q_{1,2}) {$q_{1,2}$};
+		\node[state, below=of q_{1,2}] (q_{1,3}) {$q_{1,3}$};		
+		
+		% column n-1
+		\node[state, right=of q_{3ff,0}, yshift=0.6cm] (q_{m-1,0}) {$q_{3,1}$};
+		\node[state, below=of q_{m-1,0}] (q_{m-1,1}) {$q_{3,1}$};
+		\node[state, below=of q_{m-1,1}] (q_{m-1,2}) {$q_{3,2}$};
+		\node[state, below=of q_{m-1,2}] (q_{m-1,3}) {$q_{3,3}$};		
+		
+		% column n
+		\node[state, right=of q_{m-1,0}] (q_{m,0}) {$q_{4,0}$};
+		\node[state, below=of q_{m,0}] (q_{m,1}) {$q_{4,1}$};
+		\node[state, below=of q_{m,1}] (q_{m,2}) {$q_{4,2}$};
+		\node[state, below=of q_{m,2}] (q_{m,3}) {$q_{4,3}$};		
+		
+		% q_t 
+		%\node[state, below=of q_{3ff,n+1}](q_t) {$q_t$};
+		\node[state, below=of q_{3ff,3}, yshift=-0.3cm](q_t) {$q_f$};		
+		
+		\path[use as bounding box] (0, 0) rectangle (0, 0); % (remove the border that arises through the invisible nodes, which are needed for the curves)	
+		
+		
+		% edges of column 2 (come first, so that the edges are drawn below the loops of column 1)
+		\path[->, every loop/.style={looseness=3}]
+		(q_{2,0}) edge node {$x \in \Sigma_2$}  (q_{2,1})
+		(q_{1,0}) edge node {$x \in \Sigma_2$} (q_{1,1})
+		(q_{m-1,0}) edge node {$x \in \Sigma_2$}  (q_{m-1,1})
+		(q_{m,0}) edge node {$x \in \Sigma_2$}  (q_{m,1})
+		;
+		\path[->, every loop/.style={looseness=3}]
+		(q_{2,1})
+		edge[out=0, in=190, controls=+(180:1.2cm) and +(205:7.5cm)] (q_t)
+		edge[densely dashed] (q_{2,2})
+		%edge[-,draw=white,line width=7pt,loop right] node[line width = 3pt,draw=white,fill=white, text=white, ultra thin] {$\sigma_{k'}$} ()
+		%edge[out=25,in=335,looseness=5,very thick,dotted] (q_{2,1})
+		edge[out=0, in=140, very thick, dotted] (q_t)
+		(q_{2,2})
+		edge[densely dashed, out=0, in=180, controls=+(180:1.2cm) and +(205:6.85cm)] (q_t)
+		edge (q_{2,3})
+		%edge[-,draw=white,line width=7pt,loop right] node[line width = 3pt,draw=white,fill=white, text=white, ultra thin] {$\sigma_{k'}$} ()
+		%edge[loop right,gray,draw=black!25] node[] {$\sigma_{k'}$} ()
+		edge[very thick,dotted,out=0,in=140] (q_t)
+		(q_{2,3}) edge[very thick,dotted,out=330,in=200] (q_t)
+		;
+		
+		% edges of column 1 (loops go over the edges of column 2)
+		\path[->, every loop/.style={looseness=3}] % "text=gray"/usage of different grayscales to emphasize the text optically
+		(q_{1,1})
+		edge[out=0, in=240, controls=+(180:2cm) and +(200:12.5cm)] (q_t) % this notation works too
+		edge[densely dashed] (q_{1,2})
+		% 	edge[-,draw=white,line width=7pt,loop right] node[line width = 3pt,draw=white,fill=white, text=white, ultra thin] {$\sigma_{k'}$} () % the edge is drawn in white first to get a border around it, ...
+		%edge[out=25,in=335,looseness=5,very thick,dotted] (q_{1,1}) % ... then the edge is drawn
+		edge [very thick,dotted, out=295, in=200] (q_t)
+		(q_{1,2})
+		edge[out=0, in=230, controls=+(180:2cm) and +(200:11.25cm)] (q_t)
+		edge[densely dashed] (q_{1,3})
+		% 	edge[-,draw=white,line width=7pt,loop right] node[line width = 3pt,draw=white,fill=white, text=white, ultra thin] {$\sigma_{k'}$} ()
+		%	edge[loop right,gray,draw=black!25] node[] {$\sigma_{k'}$} ()
+		%edge [very thick,dotted, out=0, in=240, controls=+(180:2cm) and +(200:12.5cm)] (q_t)
+		edge [very thick,dotted, out=300, in=200] (q_t)
+		(q_{1,3}) edge[very thick,dotted,out=330,in=200] (q_t)
+		;
+		
+		
+		% edges of column n-1
+		\path[->, every loop/.style={looseness=3}]
+		(q_{m-1,1})
+		edge[densely dashed, out=180, in=350, controls=+(0:1.2cm) and +(335:7.5cm)] (q_t)
+		edge (q_{m-1,2})
+		edge[-,draw=white,line width=7pt,loop left] node[line width = 3pt,draw=white,fill=white, text=white, ultra thin] {$\sigma_{k'}$} ()
+		%edge[out=155,in=205,looseness=5,very thick,dotted] (q_{m-1,1})
+		edge[very thick,dotted,out=180,in=35] (q_t)
+		(q_{m-1,2})
+		edge[bend right=10] (q_{m-1,3})
+		edge[densely dashed, bend left=10] (q_{m-1,3})
+		% 	edge[-,draw=white,line width=7pt,loop left] node[line width = 3pt,draw=white,fill=white, text=white, ultra thin] {$\sigma_{k'}$} ()
+		% 	edge[loop left,gray,draw=black!25] node[] {$\sigma_{k'}$} ()
+		edge[very thick,dotted,out=180,in=35] (q_t)
+		(q_{m-1,3}) edge[very thick,dotted,out=180,in=35] (q_t)
+		;
+		
+		% edges of column n
+		\path[->, every loop/.style={looseness=3}]		
+		(q_{m,1})
+		edge[out=180,in=300, controls=+(0:2cm) and +(340:12.5cm)] (q_t)
+		edge[densely dashed] (q_{m,2})
+		edge[-,draw=white,line width=7pt,loop left] node[line width = 3pt,draw=white,fill=white, text=white, ultra thin] {$\sigma_{k'}$} ()
+		%edge[out=155,in=205,looseness=5,very thick,dotted]  (q_{m,1})
+		edge[very thick,dotted,out=245,in=340] (q_t)
+		(q_{m,2})
+		edge[out=180,in=310, controls=+(0:2cm) and +(340:11.25cm)] (q_t)
+		edge[densely dashed] (q_{m,3})
+		%edge[-,draw=white,line width=7pt,loop left] node[line width = 3pt,draw=white,fill=white, text=white, ultra thin] {$\sigma_{k'}$} ()
+		%edge[loop left,gray,draw=black!25] node[] {$\sigma_{k'}$} ()
+		edge[very thick,dotted,out=240,in=340] (q_t)
+		(q_{m,3}) edge[very thick,dotted,out=210,in=340] (q_t)
+		;		
+		
+	\end{tikzpicture}
+\vspace{11pt} 
+\caption[Example for the reduction from the proof of \cref{constr_sync:thm:input_pto}]{Reduction from the proof of \cref{constr_sync:thm:input_pto}
+	for the formula
+	$(x_1 \lor x_2) \land (x_1 \lor \neg x_2)
+	\land (\neg x_1) \land (x_1 \lor x_2)$.
+	Transitions %at states $q_{i,j}$ with $j \ge 1$ 
+	labeled by $a$, $b$, and~$c$
+	are drawn with dotted, dashed, and solid lines, respectively. Self-loops omitted.}
+\label{fig:extended_Eppstein}	
+\end{figure}
+
+
+
+\medskip 
+\noindent\underline{Properties:} Properties~\ref{constr_sync:item:pto_qi0}, 
+\ref{constrsync:item:pto:proj}, \ref{constrsync:subclasses:pto:item:monotone}
+and~\ref{constr_sync:item:pto_assignment} 
+follow readily. For the remaining two properties we give the proofs.
+
+
+\begin{enumerate}
+\item \label{constr_sync:item:pto_qi0}
+$\applytrans{\delta}{q_{i,0}}{x} \ne q_{i,0}$ if and only if $x \in \Sigma_2$.
+
+\item \label{constrsync:item:pto:proj} For $u \in (\Sigma \setminus \{a\})^*$ 
+and $i \in \{1,\ldots,m\}$ 
+we have $\applytrans{\delta}{q_{i,1}}{u} = \applytrans{\delta}{q_{i,1}}{\pi_{\{b,c\}}(u)}$.
+
+\item \label{constrsync:subclasses:pto:item:monotone} Let $i \in \{1,\ldots,m\}$ and $j,j' \in \{0,1,\ldots,n+1\}$.
+If $\applytrans{\delta}{q_{i,j}}{u} = q_{i,j'}$ for some $u \in \Sigma^*$,
+then $j \le j'$.
+
+\item \label{constr_sync:item:pto_assignment} 
+Let $i \in \{1,\ldots,m\}$, $v_j \in \{b,c\}$ for $j \in \{1,\ldots,n\}$ and $w \in \Sigma^*$.
+Then
+\begin{align*}
+	& \applytrans{\delta}{q_{i,1}}{v_1 \cdots v_n w} = q_f \\
+	& \Leftrightarrow 
+	\exists j \in \{1,\ldots,n\} \colon (v_j = b \land x_j \in c_i) \lor ( v_j = c \land \neg x_j \in c_i) \\
+	& \Leftrightarrow  \text{the assignment } x_1, \ldots, x_n \text{ satisfies the clause $c_i$, }
+\end{align*}
+where
+\begin{equation}\label{constrsync:input:pto:eqn:assignment}
+	x_j = \begin{cases}
+		0 & \text{if } v_j = b, \\
+		1 & \text{if } v_j = c
+	\end{cases}
+\end{equation}
+for $j \in \{1,\ldots,n\}$.
+
+\item \label{constr_sync:item:pto_assignment2} Let $i \in \{1,\ldots,m\}$ and $v \in \{b,c\}^*$.
+Then $\delta(q_{i,1}, v) = q_f$
+implies the existence of a satisfying assignment for the clause $c_i$.
+
+Let $w \in \pref{vb^*} \cap \Sigma^n$.
+Then $\delta(q_{i,1}, w) = q_f$,
+which, for $|v| > n$, follows
+as otherwise the word $v$ would end up in $q_{i,n+1}$,
+and, for $|v| \le n$, as $q_f$ is a trap state.
+Property~\ref{constr_sync:item:pto_assignment} 
+then yields the claim.
+
+\item \label{constrsync:subclasses:pto:syncword} $\delta(Q, u) = \{q_f\}$ for $u \in \Sigma^*$ if and only if $u \in \Sigma^* a \Sigma^* \cap (\Sigma \setminus \Sigma_2)^*\Sigma_2 w$
+ for some $w \in \Sigma^*$
+ with  $\delta(q_{i,1}, w) = q_f$ for all $i \in \{1,\ldots,m\}$.
+  
+ First, assume $u \in \Sigma^* a \Sigma^* \cap (\Sigma \setminus \Sigma_2)^*\Sigma_2 w$
+ with  $\delta(q_{i,1}, w) = q_f$ for all $i \in \{1,\ldots,m\}$.
+ Set $S = \{ q_{i,j} \mid i \in \{1,\ldots,m\}, j \in \{1,\ldots,n+1\}\}$.
+ By Property~\ref{constrsync:subclasses:pto:item:monotone}, $\delta(S, u) \subseteq S$.
+ As $\delta(S, a) = \{q_f\}$ and $u \in \Sigma^*a\Sigma^*$,
+ we find $\delta(S, u) = \{q_f\}$.
+ As precisely letters from $\Sigma_2$ map $q_{i,0}$ to $q_{i,1}$ and all other letters fix $q_{i,0}$ 
+ we get $\delta(q_{i,0}, u) = \delta(q_{i,1}, w) = q_f$
+ for all $i \in \{1,\ldots,m\}$.
+ Hence, $\delta(Q, u) = \{q_f\}$.
+ Conversely, suppose $\delta(Q, u) = \{q_f\}$.
+ As the states $q_{i,n+1}$ for $i \in \{1,\ldots,m\}$
+ must be mapped to $q_f$ as well, we have $u \in \Sigma^* a \Sigma^*$.  
+ By Property~\ref{constr_sync:item:pto_qi0} 
+ we get $u = vxw$ for some $v \in (\Sigma\setminus\Sigma_2)^*$, $x \in \Sigma_2$
+ and $w \in \Sigma^*$.
+ Then $\applytrans{\delta}{q_{i,0}}{vx} = q_{i,1}$
+ for all $i \in \{1,\ldots,m\}$.
+ So, $\delta(q_{i,1}, w) = q_f$ for $i \in \{1,\ldots,m\}$.
+\end{enumerate}
+
+\noindent\underline{Verification:} Let $v \in \Sigma_1^*$, $x \in \Sigma_2$ and $w \in \Sigma_3^*$
+and set $S_1 = \{ q_{i,1} \mid i \in \{1,\ldots,m\}\}$.
+Then we have the following equivalences:
+\begin{align*}
+& |\delta(Q, vxw)| = 1 \\
+& \Leftrightarrow  \delta(Q, vxw) = \{q_f\} & \tag{$q_f$ is a trap state} \\
+& \Leftrightarrow  \delta(S_1, w) = \{q_f\} \land vxw \in \Sigma^* a \Sigma^* & \tag{Property~\ref{constrsync:subclasses:pto:syncword} \& $v \in (\Sigma\setminus\Sigma_2)^*, x \in \Sigma_2$} \\
+& \Leftrightarrow  \delta(S_1, w) = \{q_f\} \land vx \in \Sigma^* a \Sigma^* & \tag{$a \notin \Sigma_3$} \\
+& \Leftrightarrow  \delta(S_1, \pi_{\{b,c\}}(w)) = \{q_f\} \land vx \in \Sigma^* a \Sigma^*. & \tag{Property~\ref{constrsync:item:pto:proj} \& $a \notin \Sigma_3$} 
+\end{align*}  
+
+By Property~\ref{constr_sync:item:pto_assignment2},
+$\delta(S_1, \pi_{\{b,c\}}(w)) = \{q_f\}$ for some  $w \in \Sigma_3^*$
+if and only if there exists a satisfying assignment for each clause $c_i$, $i \in \{1,\ldots,m\}$. 
+So, $|\delta(Q, vxw)| = 1$ with $v \in \Sigma_1^*$, $x \in \Sigma_2$,
+and $w \in \Sigma_3^*$ implies that the given {\sc SAT}-instance
+is solvable, i.e., a \rYES-instance.
+Conversely, suppose there exists a satisfying assignment for each clause.
+Then, by Property~\ref{constr_sync:item:pto_assignment},
+$\delta(S_1, w) = \{q_f\}$
+for some $w \in \{b,c\}^* \subseteq \Sigma_3^*$.
+As $a \in \Sigma_1\cup \Sigma_2$ we find $v \in \Sigma_1^*$
+and $x \in \Sigma_2$ such that $vx \in \Sigma^* a \Sigma^*$.
+Then $|\delta(Q, vxw)| = 1$ with $vxw \in \Sigma_1^*\Sigma_{2}\Sigma_3^*$.
+\end{proof}
+
+\subsection{Classification for Two-State Constraint PDFAs}
+\label{constrinput:sec:two-state-pto}
+
+Here, in \cref{constr_sync:thm:input_pto}, we classify the complexity for constraint automata
+with two states. We find that some constraint languages
+giving \PSPACE-hard problems in the general case, as for example
+$
+(a+b)^*c a^*$ or  
+$(a+b)^*cc^*$,
+yield \LOGSPACE-complete problems or, like $(a+b)^*c$,
+problems in $\AC^0$ when restricted to partially ordered input automata.
+But we also find problems that are \PSPACE-hard in the general
+case where the complexity only drops to \NP-hardness,
+as for example for the constraint language $a(b+c)^*$.
+With the assumption from~\cref{constrsync:rem:alphabet}, for one-state automata
+the constraint language is either empty or equals $\Sigma^*$.
+So, in this case, by \cref{compl:thm:pto_sync_in_AC0}, 
+for partially ordered input automata the constrained synchronization
+problem is in $\AC^0$.
+
+For a two-state constraint PDFA, we use the notational conventions
+as introduced in Section~\ref{sec:constr_sync:small_aut} and the assumption
+that the constraint PDFA is trim.
+
+\begin{theorem} 
+\label{constr_sync:thm:input_pto}    
+    Let $\automat{B}{P}{\Sigma}{\mu}{p_0}{F}$ be a two-state constraint automaton that is trim
+    with $P = \{1,2\}, p_0 = 1, F = \{2\}$, and $\Sigma_{i,j} = \{ x \in \Sigma \mid \mu(i, x) = j \}$
+    for $i,j \in P$.
+    Then the problem to decide whether a given partially ordered automaton $\mathcal A$
+    has a synchronizing word in $L(\mathcal B)$
+    is
+	\begin{enumerate} 
+    \item \NP-complete for $\Sigma_{2,1} = \emptyset$,
+    $ % beispiele wo einfacher als allgemeiner fall
+     ( \Sigma_{1,1} \cup \Sigma_{1,2} ) \setminus \Sigma_{2,2} \ne \emptyset$ and $
+       |\Sigma_{2,2}| \ge 2,   
+    $
+     
+     \item \LOGSPACE-complete for $\Sigma_{2,1} = \emptyset$, $(\Sigma_{1,1} \cup \Sigma_{1,2}) \setminus \Sigma_{2,2} \ne \emptyset$ and $|\Sigma_{2,2}| = 1$,  
+     
+    \item in $\AC^0$ in the remaining cases, which are covered by the following conditions:
+    \begin{enumerate}
+          
+    \item $\mathcal B$ is strongly connected (equivalently $\Sigma_{2,1} \ne \emptyset$), or
+    
+    \item $\Sigma_{2,2} = \emptyset$, or
+        
+    \item 	$\Sigma_{1,1} \cup \Sigma_{1,2} \subseteq \Sigma_{2,2}$.
+    \end{enumerate}     
+	\end{enumerate} 
+\end{theorem}
+\begin{proof} 
+	As $\mathcal B$ is trim we have $\Sigma_{1,2} \ne \emptyset$.
+	First, suppose $\Sigma_{2,1} \ne \emptyset$.
+	Then $\mathcal B$
+	is strongly connected.
+	So $\fact{L(\mathcal B)} = \fact{L( \mathcal B_{p_0,\{p_0\}} )}$.
+	By \cref{constr_sync:thm:regular_prefix_codes_and_automata}, 
+	$L( \mathcal B_{p_0,\{p_0\}} )$ is a monoid.
+	By \cref{constr_sync:cor:factors_sets_included,constr_sync:lem:pto_monoid_lang},
+	the problem is equivalent 
+    to finding a synchronizing word in $\Gamma^*$ for some $\Gamma \subseteq \Sigma$,
+    which is in $\AC^0$ by \cref{compl:thm:pto_sync_in_AC0}
+    as we can assume $\Gamma = \Sigma$ (see \cref{constr_sync:sec:assumptions}).
+	Next, suppose $\Sigma_{2,1} = \emptyset$.
+	Then $L(\mathcal B) = \Sigma_{1,1}^* \Sigma_{1,2} \Sigma_{2,2}^*$.
+	For $\Sigma_{2,2} = \emptyset$,
+	the problem is in $\AC^0$ by \cref{constrinput:pto:lem:Sigma1starSigma2}.
+	If $\Sigma_{1,1} \cup \Sigma_{1,2} \subseteq \Sigma_{2,2}$ (and $\Sigma_{2,1}= \emptyset$),
+	then $\fact{L(\mathcal B)} = \fact{\Sigma_{2,2}^*}$
+	and containment in $\AC^0$ follows from \cref{constr_sync:cor:factors_sets_included} 
+	and \cref{compl:thm:pto_sync_in_AC0}
+	by considering $\mathcal A_{|\Sigma_{2,2}}$.
+	Now, suppose $(\Sigma_{1,1} \cup \Sigma_{1,2}) \setminus \Sigma_{2,2} \ne \emptyset$
+	and $\Sigma_{2,2} \ne \emptyset$.
+	For $|\Sigma_{2,2}| = 1$,
+	\LOGSPACE-completeness follows from \cref{constrinput:pto:lem:Sigma1starSigma2bstar}.	
+	For $|\Sigma_{2,2}| \ge 2$,
+	\NP-hardness follows from \cref{constrinput:pto:lem:Sigma1starSigma2Sigma3star}.
+    By \cref{thm:constraint_sync_weakly_acyclic_in_NP} 
+    we can decide in \NP\  whether~$\mathcal A$ has a synchronizing word in 
+    $
+    L(\mathcal B) = \Sigma_{1,1}^* \Sigma_{1,2} \Sigma_{2,2}^*.
+    $	
+\end{proof}
+
+Comparing \cref{constr_sync:thm:input_pto} and \cref{thm:two-state-classification}, 
+$( \Sigma_{1,1} \cup \Sigma_{1,2} ) \setminus \Sigma_{2,2} \ne \emptyset$
+with $|\Sigma_{1,1}| \ge 2$ and $|\Sigma_{2,2}| \le 1$
+implies intractability in the general case, whereas
+for partially ordered input automata
+we obtain a tractable problem. However, for 
+$( \Sigma_{1,1} \cup \Sigma_{1,2} ) \setminus \Sigma_{2,2} \ne \emptyset$
+and $|\Sigma_{2,2}| \ge 2$,
+the constrained synchronization problem is intractable in the general case
+and for partially ordered input automata, where we have \PSPACE-completeness
+in the former case and \NP-completeness in the latter case.

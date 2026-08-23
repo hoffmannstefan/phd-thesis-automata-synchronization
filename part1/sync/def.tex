@@ -1,0 +1,34 @@
+%!TEX root = ./../../springer-mono-format/book.tex
+
+\label{def:set_of_sync_words} 
+\IN{synchronizing word} \index{reset word|see{synchronizing word}}
+\IN{synchronizing word} 
+\IN{set of synchronizing words}
+\IN{synchronizing automaton}
+\IN{synchronizing state}
+An automaton $\semiautomat{A}{Q}{\Sigma}{\delta}$ 
+is \emph{synchronizing} (or \emph{resettable})
+if there exists a word, called a \emph{reset} or \emph{synchronizing word},
+driving it into the same state regardless of its current state. 
+Formally, a word $u \in \Sigma^*$ is said to be a \emph{synchronizing} (or \emph{reset}) \emph{word} for~$\mathcal A$
+if $\applytrans{\delta}{Q}{u} = \{q\}$ for some $q \in Q$.
+In this case, 
+we say that $u$ \emph{synchronizes} $\mathcal A$, and that~$q$ is a \emph{synchronizing state} of $\mathcal A$.
+The \emph{set of synchronizing words} of~$\mathcal A$
+is denoted by $\Syn(\mathcal A) = \{ u \in \Sigma^* \mid \exists q \in Q \colon \delta(Q, u) = \{q\} \}$.
+Then $\mathcal A$ is synchronizing if and only if $\Syn(\mathcal A)$ is non-empty.
+
+Synchronizing words
+correspond to a sequence of actions (or inputs) that
+allow an operator (or observer) to regain
+control by resetting the automaton into a well-defined state.
+This notion arises in different contexts and applications
+in coding theory~\cite{DBLP:books/daglib/0025093,DBLP:journals/iandc/Jurgensen08,KariVolkov2021}, robotics~\cite{Eppstein90,DBLP:journals/algorithmica/Goldberg93,DBLP:conf/focs/Natarajan86,DBLP:conf/lata/Volkov08}, 
+symbolic dynamics~\cite{trahtman09}, model checking and verification~\cite{Sandberg04}, and group theory~\cite{ArCamSt2017}.
+
+The introduction of synchronizing automata is often attributed to \Cerny and
+his seminal paper~\cite{Cer64}. However, the actual history is more complicated
+and the concept can be traced back to earlier work of Laemmel~\cite{Laemmel63}
+and Liu~\cite{Liu63}.
+For a detailed account on the genesis of this concept,
+see the survey~\cite[Sect.~1.3]{Volkov22}.

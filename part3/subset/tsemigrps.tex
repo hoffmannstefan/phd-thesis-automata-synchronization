@@ -1,0 +1,401 @@
+%!TEX root = ./../../thesis-trier.tex
+
+Here, in \cref{sync_max:sec:transfer}, we transfer our notions to transformation semigroups. 
+Technicalities that arise due to the possible absence of an identity transformation
+in transformation semigroups are discussed in \cref{sync_max:sec:diff}
+where we investigate reachability and distinguishability 
+w.r.t.~to differences in semigroup and monoids.
+
+\subsection{Transferring Notions to Transformation Semigroups}
+\label{sync_max:sec:transfer} 
+
+\index{reachable subset!in transformation semigroup}
+\index{distinguishable subsets!in transformation semigroup}
+\index{distinguishing!transformation}
+
+Let $S \le_S \mathcal T_X$ be a transformation semigroup.
+Similarly as for automata,  
+a subset $A \subseteq X$ is said to be \emph{reachable (in $S$)} if there 
+exists $t \in S$ such that $\applyfunc{X}{t} = A$.
+We call two subsets $A, B \subseteq X$ \emph{distinguishable (in $S$)}
+if there exists $t \in S$ (called a \emph{distinguishing transformation}) such that precisely one of the two 
+subsets $\applyfunc{A}{t}$ and~$\applyfunc{B}{t}$
+is a singleton subset, 
+i.e.,
+\[
+( |\applyfunc{A}{t}| = 1 \land |\applyfunc{B}{t}| \ne 1 )
+\lor 
+( |\applyfunc{A}{t}| \ne 1 \land |\applyfunc{B}{t}| = 1 ).
+\]
+
+The following fact is readily seen.
+
+\begin{proposition} \label{sync_max:prop:emptyset_dist_iff_sync}
+	Every non-empty set is distinguishable from the empty set in an automaton (resp.~transformation semigroup)
+	if and only if 
+	the automaton is synchronizing (resp.~the transformation semigroup contains a constant map). 
+\end{proposition} 
+
+\index{completely reachable!transformation semigroup}
+\index{completely distinguishable!transformation semigroup}
+ 
+Furthermore, in analogy to automata, $S$ is called \emph{completely reachable} (resp.~\emph{completely distinguishable})
+if every non-empty subset of $X$ is reachable in $S$
+(resp.~if every pair of non-empty and non-singleton subsets is distinguishable).
+
+% \todo{oben auch immer pair, und nocht two gesagt? english?}
+% ~$S$ is called \emph{completely distinguishable}
+
+In \cref{prelim:remarks_trans_semigrp_semiautomata},  
+we associated automata with transformation semigroups.
+By the given construction, automata-theoretical results
+transfer to transformation semigroups.
+For example, our results
+about distinguishable pairs of subsets from \cref{sync_max:sec:distinguish} 
+can be reformulated for transformation semigroups.
+For reference,
+we state a reformulation of \cref{sync_max:prop:dist_sync} and \cref{sync_max:thm:char_distinguishable}
+for finite $X$ (where we only list, as an example,
+a selection of equivalences from \cref{sync_max:thm:char_distinguishable}).
+
+\begin{proposition}
+	\label{sync_max:prop:semigrp:dist_sync}
+	Let $S \le_S \mathcal T_n$
+	be a completely distinguishable semigroup
+	with $n \ge 3$. Then~$S$
+	contains a constant map.
+\end{proposition}
+\begin{proof}
+	Construct an automaton $\mathcal A$
+	as in \cref{prelim:remarks_trans_semigrp_semiautomata}
+	such that $\TS{\mathcal A} = S$.
+	Then two sets are distinguishable in~$\mathcal A$
+	if and only if they are distinguishable in~$S$.
+	So, $\mathcal A$ is completely distinguishable and has at least three states.
+	Thus, by \cref{sync_max:prop:dist_sync}, it contains a synchronizing word~$u$,
+	which induces a constant map in~$\TS{\mathcal A}$.
+\end{proof}
+
+\begin{theorem}
+	\label{sync_max:thm:semigrp:char_distinguishable}
+	Let $S \le_S \mathcal T_n$ with $n \ge 3$.
+	Then the following are equivalent:
+	\begin{enumerate}	
+		\item \label{dist:ts:item:all_pairs}
+		$S$ is completely distinguishable.		
+		
+		\item \label{dist:ts:item:subsets} For every $A, B \subseteq [n]$
+		with $A \subsetneq B$ and $A$ non-empty
+		there exists $t \in S$ such that $1 = |\applyfunc{A}{t}| < |\applyfunc{B}{t}|$.
+		
+	%	\item \label{dist:ts:item:subset_single_point} For every non-empty $A \subseteq [n]$ and $p \in Q \setminus A$ there exists $t \in S$ 
+	%	such that $\applyfunc{p}{t} \notin \applyfunc{A}{t}$
+	%	and $|\applyfunc{A}{t}| = 1$.		
+				
+		\item \label{dist:ts:item:single_point} For every $p \in [n]$ there exists $t \in S$ such that
+		$\applyfunc{p}{t} \notin \applyfunc{[n] \setminus \{p\}}{t}$ and
+		$|\applyfunc{[n] \setminus \{p\}}{t}| = 1$.
+				
+		\item \label{dist:ts:item:compress} For every $A \subseteq [n]$
+		with $|A| \ge 2$ and $p \in [n] \setminus A$
+		there exists $t \in S$
+		such that $\applyfunc{p}{t} \notin \applyfunc{A}{t}$
+		and $|\applyfunc{A}{t}| < |A|$. 
+		
+		\item \label{dist:ts:item:dcps} For every two distinct $A, B \subseteq [n]$ 
+		with $\min\{ |A|, |B|\} \ge 2$ 
+		there exists $t \in S$
+		such that $3 \le |\applyfunc{A}{t}| + |\applyfunc{B}{t}| < |A| + |B|$
+		and $\applyfunc{A}{t} \ne \applyfunc{B}{t}$.		
+	\end{enumerate}
+\end{theorem}
+\begin{proof}
+ This follows similarly as in the proof of \cref{sync_max:prop:semigrp:dist_sync}
+ by considering an automaton $\mathcal A$ with $\TS{\mathcal A} = S$.
+\end{proof}
+
+
+\subsection{Differences Between Monoids and Semigroups}
+\label{sync_max:sec:diff} 
+
+
+\paragraph{Reachability.} In a transformation semigroup $S \le_S \mathcal T_X$ every proper
+subset is reachable in~$S$ if and only if it is reachable in $S \cup \{ \operatorname{id}_X \}$. So, for proper subsets, absence of an identity
+element makes no difference. For finite $X$,
+$X$ is reachable if and only if $S$ contains the identity transformation.
+
+\begin{proposition}\label{sync_max:prop:reach_whole_set}
+	Let $S \le_S \mathcal T_n$.
+	Then $[n]$ is reachable in $S$
+	if and only if $\operatorname{id}_{[n]} \in S$.
+\end{proposition}
+\begin{proof}
+	If $\operatorname{id}_{[n]} \in S$,
+	then clearly $[n]$ is reachable. 
+	Conversely, suppose $\applyfunc{[n]}{t} = [n]$
+	for some $t \in S$.
+	Then $t$ is a permutation, and so $\operatorname{id}_{[n]} = t^i \in S$
+	for some $i > 0$.
+\end{proof}
+
+As a subset is reachable in an automaton $\mathcal A$ if and only if it is reachable in~$\TM{\mathcal A}$,
+we obtain the following
+equivalences.
+
+\begin{proposition}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$.
+	Then the following are equivalent.
+	
+	\begin{enumerate}
+		\item $\mathcal A$ is completely reachable.
+		
+		\item $\TM{\mathcal A}$ is completely reachable.
+		
+		\item $\TS{\mathcal A} \cup \{\operatorname{id}_Q\}$ is completely reachable.
+	\end{enumerate}	
+\end{proposition}
+
+%The identity element (resp.~the empty word) is only relevant for the reachability of the whole state set.
+Most of our results about reachable subsets in automata from \cref{sync_max:sec:reachable} do not 
+use the empty word. Hence they carry over to transformation
+semigroups via the correspondence discussed in \cref{prelim:remarks_trans_semigrp_semiautomata}. 
+
+
+%The notion of complete distinguishability neglects the empty set and pairs
+%of subsets where precisely one subset is a singleton subset.
+\paragraph{Distinguishability.} For automata (resp.~transformation monoids), 
+the empty word (resp.~identity transformation)
+distinguishes any singleton subset from any non-singleton subset.
+For transformation semigroups, as the following example shows,
+distinguishability of non-singleton subsets from singleton subsets is not automatically fulfilled.
+
+\begin{example}
+	\Cref{sync_max:fig:no-singleton} 
+	depicts two automata where all non-empty subsets
+	are indistinguishable from any singleton
+	set in $\TS{\mathcal A}$.
+%	Figure~\ref{prelim:fig:2-1-sets-dist} depicts an automaton~$\mathcal A$
+%	where all non-empty subsets
+%	are indistinguishable from any singleton
+%	set in $\TS{\mathcal A}$.
+%	\FIG~\ref{sync_max:fig:two-state}
+%	gives a two-state automaton where no singleton subset is distinguishable
+%	from the whole state set in $\TS{\mathcal A}$.
+	Note that transformation semigroups over sets of size at most two
+	are always completely distinguishable.
+
+\begin{comment}
+	\begin{figure}
+		\centering 
+		\begin{tikzpicture}
+			\node[state] (1) {1};
+			\node[state, right = of 1] (2) {2};
+			\node[state, right = of 2] (3) {3};
+			\node[state, right = of 3] (4) {4};
+			\node[state, right = of 4] (5) {5};
+			\node[state, right = of 5] (6) {6};
+			
+			%		\path[->] (1) edge [above] node {$a$} (2)
+			%		(2) edge [loop above] node {$a$} (2)
+			%		(3) edge [above] node {$a$} (4)
+			%		(4) edge [loop above] node {$a$} (4)
+			%		(5) edge [above] node {$a$} (6)
+			%		(6) edge [loop above] node {$a$} (6);
+			\path[->] (1) edge [above, pos=.11, out=45,in=135] node {$a$} (6)
+			(2) edge [above, pos=.11, out=45,in=135] node {$a$} (6)
+			(3) edge [above, pos=.11, out=45,in=135] node {$a$} (6)
+			(4) edge [above, pos=.11, out=45,in=135] node {$a$} (6)
+			(5) edge [above, pos=.11, out=45,in=135] node {$a$} (6)
+			(6) edge [loop above] node {$a$} (6);
+		\end{tikzpicture}
+		\caption[Non-empty sets indistinguishable from singleton set in $\TS{\mathcal A}$]{Automaton $\mathcal A$ where every non-empty set is indistinguishable from any singleton set in $\TS{\mathcal A}$. Note that in $\TM{\mathcal A}$, every non-singleton subset is distinguishable from a singleton subset
+			by the identity transformation.} 
+		\label{prelim:fig:2-1-sets-dist}
+	\end{figure}	
+	
+	% dieses beispiel doch irgendwie klar?????? tow-state immer compl dist
+	% was will es zeigen? vielleicht in extending to transformation semigroups teil besser aufgehoben um nochmal zu zeigen für two-state folgt es nicht
+	\begin{figure}
+		\centering 
+		\begin{tikzpicture}
+			\node[state] (1) {$1$};
+			\node[state, right = of 1] (2) {$2$};
+			
+			\path[->] (1) edge [bend left, above]  node {$a$} (2)
+			(2) edge [loop right] node {$a$} (2)
+			(2) edge [bend left, above]  node {$b$} (1)
+			(1) edge [loop left] node {$b$} (1);
+		\end{tikzpicture}
+		\caption[Two-state automaton where whole state set indistinguishable from $1$-set.]{Automaton $\mathcal A$ 
+			where$\{1,2\}$ is indistinguishable from any singleton set in $\TS{\mathcal A}$.  (but these pairs of sets are distinguishable in $\TM{\mathcal A}$).}
+		\label{sync_max:fig:two-state}
+	\end{figure}
+\end{comment}
+\begin{figure}
+	\centering 
+	\begin{subfigure}{0.6\textwidth}
+		\centering 
+		\begin{tikzpicture}[node distance = 15.5cm and 0.75cm]
+			\tikzstyle{state}=[circle,draw,minimum size=24pt,inner sep=1pt,blur shadow,fill={rgb:black,0.4;white,10}]
+			\node[state] (1) {1};
+			\node[state, right = of 1] (2) {2};
+			\node[state, right = of 2] (3) {3};
+			\node[state, right = of 3] (4) {4};
+			\node[state, right = of 4] (5) {5};
+			\node[state, right = of 5] (6) {6};
+			
+			%		\path[->] (1) edge [above] node {$a$} (2)
+			%		(2) edge [loop above] node {$a$} (2)
+			%		(3) edge [above] node {$a$} (4)
+			%		(4) edge [loop above] node {$a$} (4)
+			%		(5) edge [above] node {$a$} (6)
+			%		(6) edge [loop above] node {$a$} (6);
+			\path[->] (1) edge [above, pos=.11, out=50,in=135] node {$a$} (6)
+			(2) edge [above, pos=.11, out=50,in=135] node {$a$} (6)
+			(3) edge [above, pos=.11, out=50,in=135] node {$a$} (6)
+			(4) edge [above, pos=.11, out=50,in=135] node {$a$} (6)
+			(5) edge [above, pos=.11, out=50,in=135] node {$a$} (6)
+			(6) edge [loop above] node {$a$} (6);
+		\end{tikzpicture}
+		%	\caption{Automaton $\mathcal A$ where every non-empty set is indistinguishable from any singleton set in $\TS{\mathcal A}$.}
+		\caption{Every non-empty set is indistinguishable from any singleton set in $\TS{\mathcal A}$.}
+				\label{prelim:fig:2-1-sets-dist}
+	\end{subfigure}\hfill
+	\begin{subfigure}{0.36\textwidth}
+		\centering
+		\begin{tikzpicture}
+			\tikzstyle{state}=[circle,draw,minimum size=24pt,inner sep=1pt,blur shadow,fill={rgb:black,0.4;white,10}]
+			\node[state] (1) {$1$};
+			\node[state, right = of 1] (2) {$2$};
+			
+			\path[->] (1) edge [bend left, above]  node {$a$} (2)
+			(2) edge [loop right] node {$a$} (2)
+			(2) edge [bend left, below]  node {$b$} (1)
+			(1) edge [loop left] node {$b$} (1);
+		\end{tikzpicture}
+	\caption{$\{1,2\}$ is indistinguishable from any singleton set in~$\TS{\mathcal A}$.}
+		%	\caption[Two-state automaton where whole state set indistinguishable from $1$-set.]{Automaton $\mathcal A$ 
+			%		where$\{1,2\}$ is indistinguishable from any singleton set in $\TS{\mathcal A}$.  (but these pairs of sets are distinguishable in $\TM{\mathcal A}$).}
+		\label{sync_max:fig:two-state}
+	\end{subfigure}
+	\caption[Non-empty sets indistinguishable from singleton set in $\TS{\mathcal A}$]{Two automata $\mathcal A$ where every non-empty set is indistinguishable from any singleton set in $\TS{\mathcal A}$. Note that in $\TM{\mathcal A}$ every non-singleton subset is distinguishable from a singleton subset by the identity transformation.} 
+\label{sync_max:fig:no-singleton} 
+\end{figure}
+\end{example} 
+
+Distinguishability of sets of size at least two
+from any singleton subset is equivalent to the property
+that for any two distinct points there exists
+a transformation mapping those two points to distinct points, which is also equivalent
+to distinguishability of
+singletons from $2$-sets.
+This is fulfilled when the transformation semigroup 
+contains the identity transformation.
+Next, we list other sufficient conditions
+implying that for any two distinct points there exists a transformation
+mapping them to distinct points.
+
+\begin{lemma} \label{sync_max:lem:3sets-two-states-injective}
+Let $S \le_S \mathcal T_n$.
+Suppose for distinct $p,q \in [n]$
+there exists $r \in [n]$
+such that $\{p,r\}$ and $\{q,r\}$
+are distinguishable.
+Then for distinct $p,q \in [n]$
+there exists $t \in S$ such that $\applyfunc{p}{t} \ne \applyfunc{q}{t}$.
+\end{lemma} 
+\begin{proof}
+	Let $p,q \in [n]$.
+	Then there exists $t \in S$ distinguishing $\{p, r\}$
+	from $\{q,r\}$ for some $r \in Q$.
+	 Without loss of generality, suppose $\applyfunc{p}{t} = \applyfunc{r}{t}$, i.e.,
+	$\{p,r\}$ is mapped to a singleton set.
+	Then $\applyfunc{q}{t} \ne \applyfunc{p}{t}$
+	as $\{q, r\}$ is mapped to a $2$-set.		
+\end{proof} 
+
+For example, if there exists $r \in [n]$
+such that, for all distinct $p,q \in [n]$,
+some word $u \in \Sigma^*$
+distinguishes $\{r,p\}$ from $\{r,p,q\}$,
+then $u$ distinguishes $\{r,p\}$
+from $\{r,q\}$. So, \cref{sync_max:lem:3sets-two-states-injective}
+yields that every singleton subset is distinguishable
+from every subset of size at least two.
+
+\begin{proposition}\label{sync_max:prop:3sets-two-states-injective}
+	Let $S \le_S \mathcal T_n$ and $n \ge 3$.
+	Suppose pairs of distinct $2$-sets are distinguishable in~$S$.
+	Then every singleton subset is distinguishable from every
+	subset containing at least two elements in $S$.
+\end{proposition} 
+\begin{proof}
+	By assumption and as $n \ge 3$,
+	the condition from \cref{sync_max:lem:3sets-two-states-injective}
+	is fulfilled, which gives the claim.	
+\end{proof}
+
+\begin{proposition}
+	A transformation semigroup $S \le_S \mathcal T_X$
+	is completely distinguishable if and only if the semigroup $S \cup \{\operatorname{id}_X\}$
+	is completely distinguishable.
+\end{proposition}
+\begin{proof}
+	Complete distinguishability does not require the distinguishability of singleton subsets from non-singleton subsets.
+	Since the identity transformation distinguishes
+	two subsets if and only if precisely one equals a singleton subset,
+	we obtain the claim.
+\end{proof}
+
+\begin{corollary}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$.
+	Then the following are equivalent.
+	
+	\begin{enumerate}
+		\item $\mathcal A$ is completely distinguishable.
+		
+		\item $\TM{\mathcal A}$ is completely distinguishable.
+		
+		\item $\TS{\mathcal A}$ is completely distinguishable.
+	\end{enumerate} 
+\end{corollary}
+
+Besides pairs $A,B$ with $|A| = 1$ and $|B| \ge 2$,
+complete distinguishability does not require distinguishability of a non-empty set from the empty set.
+% nor empty set
+% 
+%Every non-empty set is distinguishable from the empty set if and only if 
+%an automaton is synchronizing (resp.~the transformation semigroup contains a constant map).
+%%The transformation semigroup $S = \{ \operatorname{id}_{[2]} \}$ is completely distinguishable
+%%but $\{0,1\}$ is not distinguishable from the empty set.
+%%However, for transformation semigroups on $[n]$ with $n \ne 2$ and $n \ge 1$
+%%complete distinguishability also implies that the empty set is distinguishable
+%%from every other set and any singleton set is distinguishable from every
+%%other non-singleton subset.
+Next, we show that for a transformation semigroup on $[n]$
+with $n \ne 2$, complete distinguishability
+implies that all pairs of sets where at least one
+is not a singleton set are distinguishable.
+
+\begin{proposition}
+	A transformation semigroup $S \le_S \mathcal T_n$ with $n \ne 2$
+	is completely distinguishable if and only if 
+    all pairs of distinct $A, B \subseteq [n]$
+	with $|A| \ne 1$ or $|B| \ne 1$
+	are distinguishable.	
+\end{proposition}
+\begin{proof}
+	For $n \le 1$ the claim is obvious, so assume $n \ge 3$ in the following.
+	First, suppose $S \le_S \mathcal T_n$ is completely distinguishable.
+	By \cref{sync_max:prop:3sets-two-states-injective},
+	every singleton subset is distinguishable from every
+	subset containing at least two points.
+	By \cref{sync_max:prop:semigrp:dist_sync},
+	the semigroup $S$ contains a constant map. So, by \cref{sync_max:prop:emptyset_dist_iff_sync},
+	the empty set is distinguishable from every
+	other set.	   
+	  
+    Conversely, if all pairs of distinct subsets
+    where at least one subset is not a singleton set are distinguishable in $S$,
+    then $S$ is clearly completely distinguishable.
+\end{proof}

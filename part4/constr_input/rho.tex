@@ -1,0 +1,56 @@
+%!TEX root = ../../thesis-trier.tex
+
+First, in \cref{constr_input:prop:bound_rho}, we give a quadratic bound
+for shortest synchronizing words of $\rho$-automata with a trap state
+in a given constraint language.
+Then, in \cref{contr_input:thm:rho_in_NP}, we prove
+that the constrained synchronization problem for $\rho$-automata
+with a trap state is in \NP, and there exist constraint languages
+giving \NP-hard problems.
+
+\begin{proposition}
+\label{constr_input:prop:bound_rho}
+	Let $\automat{B}{P}{\Sigma}{\mu}{p_0}{F}$ be a PDFA.
+	If $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	is a $\rho$-automaton with a trap state
+    having a synchronizing word in $L(\mathcal B)$,
+	then there exists a synchronizing word $u \in L(\mathcal B)$
+	with $|u| \le |P| \cdot \binom{|Q|}{2}$.			
+\end{proposition}
+\begin{proof}
+	By~\cref{constr_input:prop:factor_rho_aut_pto,constr_input:prop:rho_trap_sync_factor}
+	the automaton $\mathcal A / {\eqreach}$
+	has the same set of synchronizing words
+	and is partially ordered. So, the bound
+	follows from~\cref{constr_input:prop:length_constr_sync_word_in_waa}.
+\end{proof} 
+	
+The assumption of a trap state
+is essential in \cref{constr_input:prop:bound_rho}. For example,
+the \v{C}ern\'y family (\FIG~\ref{intro:fig:cerny}) consists 
+of $\rho$-automata with shortest synchronizing words of length $(n-1)^2$.
+
+\begin{theorem}
+\label{contr_input:thm:rho_in_NP}
+	The constrained synchronization problem
+	for $\rho$-automata with a trap state as input
+	is in \NP. Furthermore, there exist constraint languages
+	for which this problem is \NP-complete.
+\end{theorem}
+\begin{proof} 
+	By~\cref{constr_input:prop:bound_rho}
+	the length of a shortest synchronizing word is polynomially bounded
+	in the size of the input automaton.
+	So, it can be guessed in polynomial time
+	and checked in polynomial time as \DFASW\ 
+	is in \LOGSPACE (\cref{prelim:thm:finite_list_sync_word}).		
+	The construction
+	in the proof of \LEM~\ref{constrinput:pto:lem:Sigma1starSigma2Sigma3star}
+	gave a partially ordered automaton, which is also a $\rho$-automaton by \cref{constr_sync:prop:pto_comm_rho_automata}, 
+	with a trap state.
+	This shows $\NP$-hardness for the same constraint languages
+	as stated in \LEM~\ref{constrinput:pto:lem:Sigma1starSigma2Sigma3star}.
+\end{proof}	
+
+The constrained synchronization problem from \crefitem{constr_sync:thm:introductory_examples}{constrsync:ex:item:cab} 
+is \PSPACE-complete even for strongly connected automata, which are $\rho$-automata.

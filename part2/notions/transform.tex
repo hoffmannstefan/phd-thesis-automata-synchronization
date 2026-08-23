@@ -1,0 +1,63 @@
+%!TEX root = ./../../springer-mono-format/book.tex
+%!TEX root = ./../../thesis-trier.tex
+
+\label{def:identity_transformation}
+\IN{endofunction} 
+\IN{identity transformation}
+\IN{transformation of a set}
+\IN{$i$-fold composition}
+A \emph{transformation (on $X$)}, or \emph{endofunction}, 
+is a function $t \colon X \to X$ of a set~$X$
+into itself, i.e., a function whose domain and codomain are the same. 
+Let $i \ge 0$. The \emph{$i$-fold composition}, or \emph{$i$-th power},
+is defined by $t^i = \operatorname{id}_X$ for $i = 0$ 
+and $t^{i} = \concat{t}{t^{i-1}}$ for $i > 0$. 
+
+\label{def:fixmove}
+\IN{cycle point}
+\IN{tail point}
+\IN{root point}
+\IN{fixpoint!of transformation}
+\index{fixed point (by transformation)|see{fixpoint}}
+\IN{moved point (by transformation)}
+\IN{set of fixed points}
+\IN{set of moved points}
+\IN{point w.r.t.~a transformation}
+
+In the context of transformations, the elements of $X$ are also called \emph{points}.
+We call $x \in X$ a \emph{cycle point} if $t^p(x) = x$ for some $p > 0$.
+Clearly, cycle points are contained in the image $t(X)$.
+A point that is not a cycle point is called a \emph{tail point}.
+A \emph{root point} is a cycle point contained in $\dupl{t}$.
+We set $\fix{t} = \{ x \in X \mid t(x) = x\}$
+and $\move{t} = X \setminus \fix{t} = \{x \in X \mid t(x) \ne x \}$.
+A point $x \in X$ is said to be \emph{fixed} (resp.~\emph{moved})
+if $x \in \fix{t}$ (resp.~$x \in \move{t}$).
+A fixed point is also called a \emph{fixpoint}.
+
+Let $t,h \colon X \to X$ and $A \subseteq X$. The following formulas are easy to verify. 
+\begingroup
+\allowdisplaybreaks 
+\begin{align}
+	\fix{t} \cap t(\move{t})  & \subseteq \dupl{t} \subseteq t(\move{t})  \label{prelim:eqn:fixmovedupl} \\
+	\move{t} \cap t^{-1}(\fix{t}) & \subseteq \dupl{t} \label{prelim:eqn:fixmovedupl2} \\
+	%	\dupl{t} & \subseteq t(\move{t}) \label{prelim:eqn:fixmovedupl3} \\
+	\fix{t} & \subseteq t(X)  \label{prelim:eqn:fiximage}	\\	
+	\excl{t} & \subseteq \move{t} \label{prelim:eqn:exclmove} \\
+	\fix{t} \cap \fix{h} & = \fix{t} \cap \fix{\concat{t}{h}} \label{prelim:trans:eqn:fix-comp} \\
+	t^{-1}(A)  & =  ( \move{t} \cap t^{-1}(A) ) \cup ( \fix{t} \cap A )  \label{prelim:prop:compinvAt} 
+\end{align}
+\endgroup%
+%Furthermore, for $A \subseteq X$, we also have
+%\begingroup
+%\allowdisplaybreaks 
+%\begin{align}
+%	%	(\concat{t}{h})^{-1}(A) & \subseteq \move{t} \cup ( h^{-1}(A) \cap \fix{t} )  \label{prelim:prop:compinvAht} \\
+%	(\concat{t}{h})^{-1}(A) & \subseteq \move{t} \cup h^{-1}(A)  \label{prelim:prop:compinvAht} \\	
+%	t(A) & = t(A \cap \move{t}) \cup ( A \cap \fix{t} ) \label{prelim:eqn:tA} \\
+%	t^{-1}(A)  & =  ( \move{t} \cap t^{-1}(A) ) \cup ( \fix{t} \cap A )  \label{prelim:prop:compinvAt} \\
+%	A & \subseteq  ( \move{t} \cap A ) \cup ( t^{-1}(A) \cap \fix{t} ) \label{prelim:eqn:idempinv-proof}  
+%\end{align}
+%\endgroup%
+%
+%\todo[inline]{$t^{-1}(A) \cap \fix{t} = A \cap \fix{t}$. damit letzte klar und gleichheit}

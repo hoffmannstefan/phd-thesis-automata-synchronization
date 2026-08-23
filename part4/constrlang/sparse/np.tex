@@ -1,0 +1,76 @@
+%!TEX root = ../../../thesis-trier.tex
+
+\begin{theorem}
+	\label{sparse:thm:bounded_in_NP}
+	For sparse regular $L \subseteq \Sigma^*$,
+	the problem $\constrsync{L}$ is in \NP.
+\end{theorem}
+\begin{proof}
+	The sparse regular languages equal the bounded regular languages
+	by \cref{constr_sync:thm:cf_bounded_equals_sparse}.
+	Thus, we have $L \subseteq w_1^* w_2^* \cdots w_k^*$
+	for some $w_1, \ldots, w_k \in \Sigma^*$.	
+	By \cref{constr_sync:cor:bounded_normal_form_single_state_aut}, \
+	the constraint language $L$
+	is a finite union of languages of the form 
+	 $w_1^{i_1} (w_1^{p_1})^* \cdots w_k^{i_k} (w_k^{p_k})^*$
+	for numbers $i_1, \ldots, i_k, p_1, \ldots, p_k \ge 0$.	
+	By \cref{constr_sync:thm:union},
+	we can assume $L = w_1^{i_1} (w_1^{p_1})^* \cdots w_k^{i_k} (w_k^{p_k})^*$.
+	Set $u_r = w_i^{p_r}$ for $r \in \{1,\ldots,k\}$.	
+	Now, let $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	be an input automaton.
+	If there exists a synchronizing word for $\mathcal A$ 
+	in $L$,
+    then for a shortest synchronizing
+    word $w_1^{i_1} u_1^{j_1} \cdots w_k^{i_k} u_k^{j_k}$ in~$L$
+    we have $0 \le j_r < 2^{|Q|} - 1$ for all $r \in \{1,\ldots,k\}$.
+	For assume $j_r \ge 2^{|Q|} -1$
+	for some $r \in \{1,\ldots,k\}$.
+	By \cref{prelim:word_in_PA}
+	applied to $S = \applytrans{\delta}{Q}{w_1^{i_1} u_1^{j_1} \cdots w_{r-1}^{i_{r-1}} u_{r-1}^{j_{r-1}} w_r^{i_r}}$
+	there exists $0 \le j_r' < 2^{|Q|} - 1$
+	such that $\applytrans{\delta}{S}{u_r^{j_r}} = \applytrans{\delta}{S}{u_r^{j_r'}}$.\footnote{We set
+		$u_1^{i_1} \cdots u_{0}^{j_{0}} = \varepsilon$.}
+	Then 
+	\[
+	 w_1^{i_1} u_1^{j_1} \cdots w_{r-1}^{i_{r-1}} u_{r-1}^{j_{r-1}} w_r^{i_r} u_r^{j_r'} w_{r+1}^{i_{r+1}} u_{r+1}^{j_{r+1}} \cdots w_k^{i_k} u_k^{j_k}
+	\]
+	is shorter, in $L$, and synchronizes $\mathcal A$.	
+	
+	By using a binary encoding, the indices $0 \le j_r < 2^{|Q|}$, $r \in \{1,\ldots,k\}$
+	can be guesses in nondeterministic
+	polynomial time.
+	%  Then we have to check that
+	%  \[
+	%   [Q][w_1]^{i_1} [w_2]^{i_2} \cdots [w_k]^{i_k} 
+	%  \] 
+	%  gives a vector that has precisely one non-zero entry (or equivalently
+	%  that the matrix product results in a matrix with precisely one
+	%  column consisting only of ones and zero everywhere else).
+	Having guessed $j_1,\ldots, j_k$ we have to verify that the corresponding word %word $w = w_1^{i_1} w_2^{i_2} \cdots w_k^{i_k}$
+	is a synchronizing word for~$\mathcal A$ in 
+	polynomial time.
+	For $r \in \{1,\ldots,k\}$, 
+	set $A_r = [u_r]_{\mathcal A}$ and $B_r = [w_r^{i_r}]_{\mathcal A}$.
+	%let~$A_i$ and~$B_i$ be the transition matrices of $w_i$ 
+	%in $\mathcal A$ and $\mathcal B$, respectively.
+	The product $A_i^{j_r}$  
+	can be computed by a square-and-multiply
+	algorithm in polynomial time.
+	Then, compute $B_1 A_1^{j_1} B_2 A_2^{j_2} \cdots B_k A_k^{j_k}$ in polynomial time and check that the result 
+	contains precisely one column
+	consisting entirely of ones and zeros everywhere else, which
+	is equivalent to the fact that the corresponding word 
+	synchronizes~$\mathcal A$.
+	%and that $B_1^{i_1} B_2^{i_2} \cdots B_k^{i_k}$ corresponds to a transformation that maps 
+	%the start state of $\mathcal B$ to a final state. These operations can be carried out in polynomial time as well.
+\end{proof}
+
+In~\cite[Thm.~2]{DBLP:conf/ictcs/Hoffman20}, generalizing
+an idea from~\cite[Thm.~19]{FernauGHHVW19},
+a proof was given for languages accepted
+by automata where each cycle only yields powers of a single word.
+These automata precisely accept the sparse regular languages,
+see~\cite[Thm.~XII.4.29]{Pin2022}, and thus giving
+another proof for \cref{sparse:thm:bounded_in_NP}.

@@ -1,0 +1,55 @@
+%!TEX root = ./../../thesis-trier.tex
+
+In this chapter, we investigate the subset mapping properties in automata and transformation semigroups, motivated by minimality conditions for automata accepting sets of synchronizing words. The results presented here can be combined to derive lower bounds for the size of these automata.
+
+In \cref{sync_max:sec:power_automat_for_SynA},
+we introduce and motivate the notions of reachability
+and distinguishability. 
+We do this by first observing
+that the power automaton accepts the set of synchronizing,
+and then naturally obtain both notions
+via minimality conditions for accepting automata from \cref{prelim:subsubsec:min_aut} applied to the power automaton. 
+Thus, these notions derive from necessary conditions
+characterizing the size of minimal automata for sets of synchronizing words.
+
+\Cref{sync_max:sec:reachable} investigates the reachability of subsets of states in automata.
+We derive synchronizability conditions and 
+structural limitations in terms of the reachability
+of families of subsets of states.
+
+\Cref{sync_max:sec:distinguish}
+is concerned with distinguishability,
+where we investigate
+its relation to synchronizability and 
+consider different families of pairwise distinguishable subsets
+and their relations. We also introduce the novel notion of completely distinguishable automaton.
+
+Reachability and distinguishability transfer readily from automata
+to transformation semigroups. \Cref{sync_max:sec:from_aut_to_semigroups}
+shortly discusses this and some differences that arise as a transformation
+semigroup might not contain the identity transformation.
+
+\section{Power Automata and Sets of Synchronizing Words}
+\label{sync_max:sec:power_automat_for_SynA}
+
+\input{../part3/subset/poweraut}
+
+\section{Reachable Subsets}
+\label{sync_max:sec:reachable}
+
+\input{../part3/subset/reach}
+
+\section{Pairs of Distinguishable Subsets} % in Automata and Transformation Semigroups}
+\label{sync_max:sec:distinguish}
+
+\input{../part3/subset/pairsdist}
+
+\section{From Automata to Transformation Semigroups}
+\label{sync_max:sec:from_aut_to_semigroups} 
+
+\input{../part3/subset/tsemigrps}
+
+\section{Discussion}
+\label{sync_max:chap_subset_mapping:discussion}
+
+\input{../part3/subset/discussion}

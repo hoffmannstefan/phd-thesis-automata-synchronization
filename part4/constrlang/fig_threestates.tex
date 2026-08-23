@@ -1,0 +1,106 @@
+%\newcommand{\clg}{\cellcolor{green!15}}
+%\newcommand{\cdg}{\cellcolor{green!35}}
+%\newcommand{\clr}{\cellcolor{red!15}}
+%\newcommand{\cdr}{\cellcolor{red!35}}
+\newcommand{\cdr}[1]{#1}
+\newcommand{\clr}[1]{#1}
+\newcommand{\cdg}[1]{#1}
+\newcommand{\clg}[1]{#1}
+
+
+%
+%\NewDocumentCommand{\fillpattern}{O{north west lines} O{blue!50} m m}{%
+%	\draw[pattern=#1, pattern color=#2] (#3.north west)rectangle (#4.south east);
+%}
+
+
+% 
+% Teilalphabete \Sigma_ii als Argumente; 0 bedeutet Teilalphabet ist leer
+\newcommand{\drawaut}[8]{
+\scalebox{.76}{
+	\begin{tikzpicture}[>=latex',shorten >=1pt,node distance=1.5cm,on grid,auto,baseline=0,initial text={}]
+	\tikzset{every state/.style={minimum size=1pt,fill=white}}
+	
+	%\tikzset{background grid/.style={thick,draw=red,step=.5cm}	show background grid}
+
+	\ifthenelse { \equal {#8} {dr} } { \draw[pattern=north east lines, pattern color=red!45]   (-1.8,-0.9) rectangle (1.8,1);  } { 	}
+    \ifthenelse { \equal {#8} {lr} } { \draw[pattern=horizontal lines, pattern color=red!35]   (-1.8,-0.9) rectangle (1.8,1); } {  }
+    \ifthenelse { \equal {#8} {dg} } { \draw[pattern=north west lines, pattern color=green!45] (-1.8,-0.9) rectangle (1.8,1);} { 	 }
+    \ifthenelse { \equal {#8} {lg} } { \draw[pattern=vertical lines,   pattern color=green!35] (-1.8,-0.9) rectangle (1.8,1); } {  }		
+	
+	\node[state] (1) {};
+	\node[state] (2) [right of=1] {};
+	%\node[state,initial,initial where=below] (0) [left of=1] {};
+	\node[state] (0) [left of=1] {};
+			
+  	\ifthenelse { \equal {#1} {0} } {} { \path[->] (0) edge [loop above, above] node {$#1$} (0); }
+  	\ifthenelse { \equal {#2} {0} } {} { \path[->] (1) edge [loop above] node {$#2$} (1); }
+ 	\ifthenelse { \equal {#3} {0} } {} { \path[->] (2) edge [loop above, above] node {$#3$} (2); }
+  	\ifthenelse { \equal {#4} {0} } {} { \path[->] (0) edge [bend right,below] node {$#4$} (2); }
+	    
+  	\path[->] (0) edge node {$#5$} (1);
+  	\path[->] (1) edge [bend left]  node {$#6$} (2);
+  	\path[->] (2) edge [bend left]  node {$#7$} (1);
+  
+\end{tikzpicture}}
+}
+
+
+
+% https://latexdraw.com/how-to-create-a-lined-paper-background-in-latex-using-tikz/
+% https://tex.my/2020/05/24/creating-tiled-background-patterns/
+% https://tex-stackexchange-com.translate.goog/questions/67092/set-table-background-hatched-and-shaded-using-tikz?_x_tr_sl=en&_x_tr_tl=de&_x_tr_hl=de&_x_tr_pto=sc
+% https://tex.stackexchange.com/questions/352229/pattern-background-in-table-cell-or-minipage
+% https://tex.stackexchange.com/questions/67092/set-table-background-hatched-and-shaded-using-tikz
+% https://tex.stackexchange.com/questions/193018/scan-a-cell-of-a-table-with-lines
+% https://tex.stackexchange.com/questions/502474/create-a-table-with-once-and-twice-hatched-regions-and-curly-braces
+% https://tex.stackexchange.com/questions/545899/how-to-hatch-pattern-this-table-excluding-the-circled-region
+
+\begin{table}[ht]
+    \centering
+     \caption[3-state binary constraint PDFA pictures, case \{2,3\}]{\footnotesize 
+    	$3$-state PDFAs with at least one undefined transition among the states, numbered $1,2,3$ from left to right, in the strongly connected component $\{2,3\}$.
+    	%where the states are numbered $1,2,3$ from left to right
+    	The cases are the same as in Table~\ref{constr_sync:table:three_states_23}.
+    	% By \cref{constr_sync:move_states}
+    	% any non-empty subset of $\{2,3\}$ as final states gives the same complexity;
+    	% so final states are not marked.
+    	The start state is~$1$.
+    	Final states are not marked, as by \cref{constr_sync:move_states}
+    	any non-empty subset of $\{2,3\}$
+    	gives the same complexity. 
+    	%is indicated by an incoming arrow.
+    }
+   % vielleicht besser so
+%    \begin{tikzpicture}
+%    	\matrix (m)[matrix of nodes, style={nodes={rectangle,draw,minimum width=3em}}, minimum height=3em, row sep=-\pgflinewidth, column sep=-\pgflinewidth,ampersand replacement =\&]
+%    	{
+%    		1 \& 2 \& 3 \\
+%    		4 \& 5 \& 6 \\
+%    		7 \& 8 \& 9 \\
+%    	};
+%    	
+%    	\begin{pgfonlayer}{myback}
+%    		\fillpattern{m-3-2}{m-3-2}
+%    		\fillpattern[dots][green!50!black]{m-3-1}{m-3-1}
+%    		\fillpattern[sixpointed stars][violet!50]{m-3-3}{m-3-3}
+%    	\end{pgfonlayer}
+%    \end{tikzpicture}
+
+\begin{tabular}{cccc} %\hline
+\drawaut{0}{a}{0}{0}{a}{b}{b}{lg}    & \drawaut{b}{a}{0}{0}{a}{b}{b}{lg}   & \drawaut{0}{a}{0}{0}{a,b}{b}{b}{lg} & \drawaut{0}{a}{0}{b}{a}{b}{b}{dg} \\ 
+\drawaut{0}{a}{0}{0}{a}{b}{a}{lg}    & \drawaut{b}{a}{0}{0}{a}{b}{a}{dr}   & \drawaut{0}{a}{0}{0}{a,b}{b}{a}{lr}  & \drawaut{0}{a}{0}{b}{a}{b}{a}{dg} \\ 
+\drawaut{0}{b}{0}{0}{a}{a}{b}{lr}    & \cdr{\drawaut{b}{b}{0}{0}{a}{a}{b}{dr}}   & \clr{\drawaut{0}{b}{0}{0}{a,b}{a}{b}{lr}}  & \clr{\drawaut{0}{b}{0}{b}{a}{a}{b}{lr}} \\ 
+\clg{\drawaut{0}{b}{0}{0}{a}{a}{a}{lg}}    & \cdr{\drawaut{b}{b}{0}{0}{a}{a}{a}{dr}}   & \clg{\drawaut{0}{b}{0}{0}{a,b}{a}{a}{lg}}  & \clr{\drawaut{0}{b}{0}{b}{a}{a}{a}{lr}} \\ \hline
+\drawaut{0}{0}{0}{0}{a}{a,b}{a}{lg} & \drawaut{b}{0}{0}{0}{a}{a,b}{a}{dr}  & \drawaut{0}{0}{0}{0}{a,b}{a,b}{a}{lr} & \drawaut{0}{0}{0}{b}{a}{a,b}{a}{dg} \\ 
+\drawaut{0}{0}{0}{0}{a}{a,b}{b}{lr} & \drawaut{b}{0}{0}{0}{a}{a,b}{b}{dr}  & \drawaut{0}{0}{0}{0}{a,b}{a,b}{b}{lr} & \drawaut{0}{0}{0}{b}{a}{a,b}{b}{lr} \\ 
+\clg\drawaut{0}{0}{a}{0}{a}{a}{b}{lg}     & \cdr\drawaut{b}{0}{a}{0}{a}{a}{b}{dr}    & \clg\drawaut{0}{0}{a}{0}{a,b}{a}{b}{lg}   & \cdr\drawaut{0}{0}{a}{b}{a}{a}{b}{dr}   \\ 
+\clg\drawaut{0}{0}{b}{0}{a}{a}{a}{lg}     & \clg\drawaut{b}{0}{b}{0}{a}{a}{a}{lg}  & \clr\drawaut{0}{0}{b}{0}{a,b}{a}{a}{lr}   & \clg\drawaut{0}{0}{b}{b}{a}{a}{a}{lg}   \\ \hline
+\clr  \drawaut{0}{0}{a}{0}{a}{b}{b}{lr}   & \cdr\drawaut{b}{0}{a}{0}{a}{b}{b}{dr}    & \clr\drawaut{0}{0}{a}{0}{a,b}{b}{b}{lr}  & \clr\drawaut{0}{0}{a}{b}{a}{b}{b}{lr}   \\ 
+\clg\drawaut{0}{0}{b}{0}{a}{b}{a}{lg}     & \clg\drawaut{b}{0}{b}{0}{a}{b}{a}{lg}  & \clg\drawaut{0}{0}{b}{0}{a,b}{b}{a}{lg}   & \clg\drawaut{0}{0}{b}{b}{a}{b}{a}{lg}   \\ 
+    \clg\drawaut{0}{0}{0}{0}{a}{a}{a,b}{lg}   & \cdr\drawaut{b}{0}{0}{0}{a}{a}{a,b}{dr}& \clg\drawaut{0}{0}{0}{0}{a,b}{a}{a,b}{lg} & \clr\drawaut{0}{0}{0}{b}{a}{a}{a,b}{lr} \\ 
+    \clg\drawaut{0}{0}{0}{0}{a}{b}{a,b}{lg}   & \drawaut{b}{0}{0}{0}{a}{b}{a,b}{lg}  & \clg\drawaut{0}{0}{0}{0}{a,b}{b}{a,b}{lg} & \clg\drawaut{0}{0}{0}{b}{a}{b}{a,b}{lg} \\ \hline
+    \end{tabular}
+   
+ \label{tab:binary_automata_three_states}
+\end{table}

@@ -1,0 +1,319 @@
+%!TEX root = ./../../springer-mono-format/book.tex
+%!TEX root = ./../../thesis-trier.tex
+
+Here, we present new characterizations
+of primitive permutation groups by properties
+related to synchronization and subset mapping properties of associated
+automata having a defect-one letter and containing the group in their
+transformation semigroups.
+Specifically, \cref{sync_max:thm:prim}
+characterizes primitivity
+by complete reachability, complete distinguishability,
+sync-maximality, and distinguishability of pairs of disjoint $k$-sets for some $4 \le k^2 < n$ in associated automata with $n$ states.
+\Cref{sync_max:cor:prim_grp}
+formulates the results from the present section
+in a purely algebraic language, without
+reference to automata. The results of the present section
+are taken from~\cite{HoffmannLATAextended2}. 
+The following lemma is used in the proof of \cref{sync_max:thm:prim}.
+ 
+\begin{lemma} \label{lem:fivetrans} \label{lem:threetrans}
+	Let $G \le_G \mathcal S_n$.	Then~$G$ is transitive if one of the following holds:
+	
+	\begin{enumerate}
+	\item \label{lem:fivetrans:1}  We have $n \ge 5$ and for each 
+	simple idempotent $t \colon [n] \to [n]$ every $k$-set of states
+	is distinguishable from every disjoint $l$-set of states
+	$\langle G \cup \{t\}\rangle_S$
+	for some $k,l \ge 2$ with $k + l \le n$.\footnote{In~\cite{HoffmannLATAextended2} this was only proved for $k = l = 2$.}
+	
+	\item \label{lem:fivetrans:2}  We have $n \ge 3$
+	and for each 
+	simple idempotent $t \colon [n] \to [n]$  
+	every $k$-set of states is distinguishable from every distinct $l$-set of states
+	in $\langle G \cup \{t\}\rangle_S$
+	for some $2 \le k, l \le n$ where $n > k$ or $n > l$.
+	\end{enumerate}
+\end{lemma}
+\begin{proof}
+\ref{lem:fivetrans:1}: Suppose~$G$ is not transitive. By \cref{syncmax:prop:intransitive-subset} there exists a subset $A \subseteq [n]$
+ permuted by each element from~$G$ containing three distinct $a_1, a_2, a_3 \in A$
+ and such that there exists $b \in [n] \setminus A$. 
+ First, suppose the complement of~$A$ contains two distinct points.
+ Consider the simple idempotent $t \colon [n] \to [n]$
+ mapping one point from $[n] \setminus A$
+ to another point in $[n] \setminus A$.
+ Then we have $h(a_1) \ne h(a_2)$
+ and $h(a_3) \ne h(b)$ for all $h\in \langle G \cup \{t\} \rangle_S$.
+ Since $k + l \le n$, we can pick $A, B \subseteq [n]$ where $|A| = l$ and $|B| = k$ such that $A \cap B = \emptyset$
+ with $a_1, a_2 \in A$ and $a_3, b \in A$.
+ Then~$A$ and~$B$ are not distinguishable.\footnote{If the complement of~$A$ contains two distinct points $b_1, b_2$, the same conclusion can be drawn by considering $\{a_1, b_1\}$ and $\{a_2, b_2\}$ instead of $\{a_1, a_2\}$ and $\{a_3, b\}$.}
+ Next, suppose $[n] \setminus A = \{b\}$.
+ Since~$n \ge 5$, there exists a fourth point $a_4 \in A \setminus\{a_1, a_2, a_3\}$.
+ Consider the simple idempotent $t \colon [n] \to [n]$
+ mapping $b$ to~$a_1$.
+ We have $h(a_1) \ne h(a_2)$
+ and $h(a_3) \ne h(a_4)$ for all $h\in \langle G \cup \{t\} \rangle_S$
+ since $t(A) = A$ and $g(A) = A$ for $g \in G$.
+ Pick $A, B \subseteq [n]$ where $|A| = l$ and $|B| = k$ such that $A \cap B = \emptyset$
+ with $a_1, a_2 \in A$ and $a_3, a_4 \in A$.
+ Then~$A$ and~$B$ are not distinguishable.
+ 
+\ref{lem:fivetrans:1}: Suppose~$G$ is not transitive. By \cref{syncmax:prop:intransitive-subset} 
+  there exists a subset $A \subseteq [n]$
+  permuted by each element from~$G$
+  and three distinct $a,b,c \in [n]$ with $a,b \in A$ and $c \in [n] \setminus A$.
+  Let $t \colon [n] \to [n]$ be the simple idempotent mapping~$a$ to~$b$.
+  We have $h(a) \ne h(c)$
+  and $h(b) \ne h(c)$ for all $h \in \langle G \cup \{t\} \rangle_S$
+  since $t(A) \subseteq A$, $t([n] \setminus A) = [n] \setminus A$, $g(A) = A$
+  and $g([n] \setminus A) = [n] \setminus A$ for $g \in G$.
+  Since $2 \le k,l \le n$ with $n > l$ or $n > k$ there 
+  exist two distinct $A,B \subseteq [n]$ such that $|A| = k$ and $|B| = l$
+  with $a,c \in A$ and $b,c \in B$,
+  and these two subsets are indistinguishable
+  since neither can be mapped to a singleton.\footnote{If $k > 2$
+  	or $l > 2$, then we can also consider distinct $A, B \subseteq [n]$
+  	with $a,c \in A \cap B$; however, the point~$b$
+  	is needed for the case $k = l = 2$.}
+\end{proof}
+
+\begin{theorem}[Hoffmann~\cite{HoffmannLATAextended2}]
+	\label{sync_max:thm:prim} 
+	Let $G$ be a permutation group on the finite set~$Q$ of size at least five.
+	Then the following are equivalent.
+	\begin{enumerate}
+		\item \label{sync_max:thm:prim:item:prim} $G$ is primitive. 
+		
+		\item  \label{sync_max:thm:prim:item:SI} Every SI-automaton $\semiautomat{A}{Q}{\Sigma}{\delta}$
+		with a single simple idempotent letter, i.e.,~$|\Sigma_I| = 1$, and 
+		$G = \{ \fword{\delta}{u} \mid u \in \Sigma_G^* \}$ is synchronizing. 
+		
+		\item  \label{sync_max:thm:prim:item:sync}  Every $\semiautomat{A}{Q}{\Sigma}{\delta}$ 
+		having a letter of defect one with $G \subseteq \TS{\mathcal A}$ is synchronizing.
+		
+		\item  \label{sync_max:thm:prim:item:cr}  Every $\semiautomat{A}{Q}{\Sigma}{\delta}$ having
+		a letter of defect one with $G \subseteq \TS{\mathcal A}$ is completely reachable.
+		
+		\item  \label{sync_max:thm:prim:item:cd}  Every $\semiautomat{A}{Q}{\Sigma}{\delta}$ having
+		a letter of defect one
+		with $G \subseteq \TS{\mathcal A}$ is completely distinguishable.
+		
+		\item  \label{sync_max:thm:prim:item:sm}  Every $\semiautomat{A}{Q}{\Sigma}{\delta}$ having
+		a letter of defect one
+		with $G \subseteq \TS{\mathcal A}$ is sync-maximal.	
+		
+		\item  \label{sync_max:thm:prim:item:ksets} For $\semiautomat{A}{Q}{\Sigma}{\delta}$ having
+		a letter of defect one
+		with $G \subseteq \TS{\mathcal A}$ every $k$-sets of states is distinguishable from every distinct $l$-set of states for some $2 \le k, l \le|Q|$ with $|Q| > k$ or $|Q| > l$.
+			
+		\item  \label{sync_max:thm:prim:item:klsets} For $\semiautomat{A}{Q}{\Sigma}{\delta}$ having
+		a letter of defect one
+		with $G \subseteq \TS{\mathcal A}$ every $k$-sets of states is distinguishable from every disjoint $l$-set of states for some $k, l \ge 2$
+		with $kl < |Q|$.
+	\end{enumerate} 
+\end{theorem} 
+\begin{proof}  	
+The equivalences of Items~\ref{sync_max:thm:prim:item:prim}, \ref{sync_max:thm:prim:item:SI}, and~\ref{sync_max:thm:prim:item:sync}
+are basically a reformulation of Rystsov's theorem (\cref{sync_max:thm:prim_rystsov})
+in automata-theoretical language (see \cref{prelim:remarks_trans_semigrp_semiautomata}
+for a discussion of the relation between transformation semigroups and semiautomata).
+
+Next, if Items~\ref{sync_max:thm:prim:item:cr}, \ref{sync_max:thm:prim:item:cd}, or~\ref{sync_max:thm:prim:item:sm} hold,
+then the automaton~$\mathcal A$ is synchronizing
+by \cref{prelim:lem:compl_reach_implies_SCC_sync},\cref{sync_max:prop:dist_sync}, \crefitem{sync_max:thm:char_sync_max_aut}{sync_max:thm:char_sync_max_aut:1},
+If \cref{sync_max:thm:prim:item:klsets,sync_max:thm:prim:item:ksets} holds,
+then, by \cref{lem:fivetrans}, $G$ is transitive.
+By restricting the alphabet, we can assume~$\mathcal A$ has a single non-permutational letter
+of defect one. Then, with \cref{cor:defectatmostone-weaker} 
+we get that~$\mathcal A$ is synchronizing. Thus, each of these assumptions
+implies \cref{sync_max:thm:prim:item:sync}.\footnote{We can also give 
+	an alternative argument that shows \cref{sync_max:thm:prim:item:prim}.
+From assuming \cref{sync_max:thm:prim:item:ksets}: 
+Suppose there exists a non-trivial $G$-congruence $\sim$.
+Then there exist distinct $a,b,c \in X$
+such that $a \sim b$
+and $a \not\sim c$.
+Consider the simple idempotent $t \colon X \to X$
+mapping $a$ to $b$.
+Then $\sim$ is a $\langle G \cup \{t\} \rangle_S$-congruence
+and so $h(a) \not\sim h(c)$
+and $h(b) \not\sim h(c)$ for all $h \in \langle G \cup \{t\} \rangle_S$.
+Thus, no two subsets $A,B \subseteq X$
+with $\{a,c\} \subseteq A$ and $\{b,c\} \subseteq B$
+are distinguishable. 
+
+A similar argument works when assuming \cref{sync_max:thm:prim:item:klsets}.
+If we can pick distinct $a,b,c,d$
+with $a \sim b$, $c \not\sim a$, and $d \not\sim a$.
+then we can conclude as before that disjoint sets $A,B$
+with $\{a,b\}\subseteq A$ and $\{c,d\} \subseteq B$ are not distinguishable.
+Otherwise, if four distinct $a,b,c,d$ as stated cannot be picked, then $G$ has a fixpoint.
+In this case, consider the simple idempotent that maps this fixpoint
+to some other point. Then pairs of subsets where neither contains
+the fixpoint are not distinguishable since it is not possible
+to map them to smaller sets.}
+
+Lastly, suppose~$G$ is primitive.
+Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ 
+with $G \subseteq \TS{\mathcal A}$ having a letter of defect one.
+By \cref{sync_max:prop:prim_implies_transitive}, $G$ is transitive.
+By \cref{sync_words:lem:idempotent} we find that there exists a word~$u$
+inducing a simple idempotent. Now consider a new automaton on the same state set
+but where $u$ and all permutational letters are regarded as letters.
+This gives an SI-automaton that also has~$G$ in the group of units of its transformation monoid.
+Since we have already established the equivalence of Items~\ref{sync_max:thm:prim:item:prim} 
+and~\ref{sync_max:thm:prim:item:sync}, we find that this SI-automaton is synchronizing.
+By \cref{syncmax:cor:SI-transitive-grp-of-units} it is also completely reachable
+and completely distinguishable. The transformation monoid of this SI-automaton is a submonoid of $\TM{\mathcal A}$. 
+This yields that~$\mathcal A$
+is completely reachable and completely distinguishable.
+Thus we obtain
+Items~\ref{sync_max:thm:prim:item:cr},\ref{sync_max:thm:prim:item:cd},\ref{sync_max:thm:prim:item:sm},
+\ref{sync_max:thm:prim:item:ksets}, and~\ref{sync_max:thm:prim:item:klsets}.
+This concludes the proof and establishes all the equivalences.
+\end{proof}
+
+\begin{corollary} \label{syncmax:cor:prim}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	with at least five states 
+	such that the group of units of $\TS{\mathcal A}$ is primitive.
+	Then $\mathcal A$ is completely reachable if and only if it is sync-maximal.	
+\end{corollary}
+\begin{proof}
+	If $\mathcal A$ is completely reachable, it must contain a letter $a$ of defect one.
+	By \cref{sync_max:thm:prim},
+	the automaton restricted to the alphabet
+	$\{a\} \cup \{ x \in \Sigma \mid \text{$x$ is a permutational letter} \}$
+	is completely distinguishable.
+	Thus, $\mathcal A$
+	is completely distinguishable
+	and so sync-maximal.	
+	Conversely, since a primitive group is transitive by \cref{sync_max:prop:prim_implies_transitive}, 
+	$\mathcal A$ is strongly connected and so sync-maximality
+	implies complete reachability.		
+\end{proof}
+
+By \cref{syncmax:cor:prim}, if the transformation monoid contains a primitive permutation group,
+complete reachability implies complete distinguishability.
+But the converse implication does not hold in general,
+see, for example, \cref{sync_max:ex:compl-dist-non-cr}.
+
+The equivalences from \cref{sync_max:thm:prim}
+also hold true when restricted to the following
+subclasses of automata: SI-automata with $\Sigma_I \ne \emptyset$, 
+SI-automata with $|\Sigma_I| = 1$, automata with a group of units equal to $G$
+having a letter of defect one, and automata having only a single 
+non-permutational letter of defect one.
+
+
+\label{def:Afa}
+For $\semiautomat{A}{Q}{\Sigma}{\delta}$,  $t \colon Q \to Q$,
+and a new symbol $a \notin \Sigma$
+we define a semiautomaton $\semiautomat{A_{t,a}}{Q}{\Sigma \cup \{a\}}{\mu}$
+with, for $q \in Q$ and $x \in \Sigma \cup \{a\}$, \[
+\applytrans{\mu}{q}{x} = \begin{cases} 
+	\applytrans{\delta}{q}{x} & \text{if } x \in \Sigma, \\ 
+	t(q) & \text{if } x = a.
+\end{cases}
+\]
+\cref{sync_max:fig:equivalences_perm_aut}
+shows the main equivalences from \cref{sync_max:thm:prim_min,sync_max:thm:prim}
+when adjoining a single letter of defect one.
+
+
+
+\begin{figure}[ht]
+	\centering
+	
+	\begin{tikzpicture}[
+		node distance=3.5em and 4em,
+		outer sep=4pt,
+		every node/.style={
+			draw,
+			rectangle,
+			align=center,
+			minimum width=16em,
+			minimum height=3em
+		}
+		]
+		\node (A) [draw, rectangle, align=center]
+		{$\TS{\mathcal A}$ contains primitive\\ permutation group};
+		
+		\node (A2) [right=of A]
+		{$\forall t \colon Q \to Q \text{ of defect one,}\;
+			\forall a\notin\Sigma:$\\
+			$\mathcal A_{t,a}\text{ completely reachable.}$};
+		
+		\node (B) [draw, rectangle, align=center, below=of A]
+		{$\forall q\in Q\;
+			\forall F\in\mathcal P(Q)\setminus\{\emptyset,Q\}:$\\
+			$\mathcal A_{q,F}\text{ is minimal.}$};
+		
+		\node (C) [draw, rectangle, align=center, below=of A2]
+		{$\forall t\colon Q\to Q\text{ of defect one,}\;
+			\forall a\notin\Sigma:$\\
+			$\mathcal A_{t,a}\text{ sync-maximal.}$};
+		
+		\draw[<->, thick] (A) -- (B);
+		\draw[<->, thick] (A) -- (C);
+		\draw[<->, thick] (B) -- (C);
+		\draw[<->, thick] (A) -- (A2);
+		\draw[<->, thick] (A2) -- (C);
+		\draw[<->, thick] (A2) -- (B);
+	\end{tikzpicture}
+	\caption[Equivalences for automata with primitive group in transformation semigroup]{Equivalences  from \cref{sync_max:thm:prim_min,sync_max:thm:prim} for $\semiautomat{A}{Q}{\Sigma}{\delta}$.}
+	\label{sync_max:fig:equivalences_perm_aut}
+\end{figure}
+Next, as an example,
+we give a formulation of some properties from \cref{sync_max:thm:prim}
+without any reference to automata. In the sections
+to follow all results will be given without reference
+to automata, but they all can be formulated
+as statements about automata similarly as in \cref{sync_max:thm:prim}. 
+We combine two statements (related via \cref{sync_words:lem:idempotent})
+into one by putting the word ``idempotent``
+in square brackets, see \cref{syncmax:rem:square-brackets}.
+
+\begin{corollary}[Hoffmann~\cite{HoffmannLATAextended2}]
+\label{sync_max:cor:prim_grp}
+	Let $G \le_G \mathcal S_n$ be a permutation group with $n \ge 5$. Then the following are equivalent.	
+\begin{enumerate}
+\item \label{sync_max:cor:prim:item:prim} $G$ is primitive.
+
+\item \label{sync_max:cor:prim:item:compl_reach} 
+ For every [idempotent] transformation $t \colon [n] \to [n]$ of defect one, $\langle G \cup \{t\} \rangle_S$ is completely reachable.
+
+\item For every [idempotent] transformation $t \colon [n] \to [n]$ of defect one, $\langle G \cup \{t\} \rangle_S$ is completely distinguishable.
+
+\item \label{sync_max:cor:prim_grp:4} For every [idempotent] transformation $t \colon [n] \to [n]$ of defect one, in $\langle G \cup \{t\} \rangle_S$ every $k$-set is distinguishable from every distinct $l$-set
+for some $2 \le k,l < n$.
+
+\item \label{sync_max:cor:prim_grp:5} For every [idempotent] transformation $t \colon [n] \to [n]$ of defect one, 
+in $\langle G \cup \{t\} \rangle_S$ every $k$-set is distinguishable from every disjoint $l$-set
+for some $k,l \ge 2$ with $kl < n$.
+\end{enumerate}
+\end{corollary}
+
+We cannot omit the assumption $kl< n$ in Item~\ref{sync_max:cor:prim_grp:5} 
+from \cref{sync_max:cor:prim_grp} as demonstrated by the following example with $k = l = 2$.
+
+\todo[inline]{hier 4 in IC paper?}
+\begin{example}
+	Let $g = (0 ~ 1 ~ 2)(3)$. 
+	Then~$G = \langle \{g\} \rangle_G$ is imprimitive as it is not transitive.	
+    Set
+	\begin{align*}
+		S = \{ \{0,3\}^h \mid h \in G \} & = \{ \{0,3\}, \{1,3\}, \{2,3\} \}, \\
+		T = \{ \{0,1\}^h \mid h \in G \} & = \{ \{0,1\}, \{1,2\}, \{2,0\} \}.
+	\end{align*}
+    Let $\{a,b\}$, $\{c,d\}$ be two disjoint $2$-sets.
+    Then $\{a,b\} \in S$ and $\{c,d\} \in T$, or
+    $\{a,b\} \in T$ and $\{c,d\} \in S$.
+    Now, for $t \colon [4] \to [4]$ of defect one,
+    there exists $h \in G$
+    mapping precisely one of $\{a,b\}$ or $\{c,d\}$
+    to the unique $2$-set
+    mapped by $t$ to a singleton.
+    Then $th$ distinguishes $\{a,b\}$ and $\{c,d\}$.
+\end{example}

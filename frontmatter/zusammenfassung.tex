@@ -1,0 +1,84 @@
+%!TEX root = ../thesis-trier.tex
+
+\selectlanguage{ngerman}
+
+
+
+Wollten Sie schon einmal wieder von vorne anfangen? Hat sich Ihr Smartphone % mobiltelefon? Handy?
+oder Computer schon einmal aufgehängt %aufgehangen  
+und nur ein Neustart schuf Abhilfe? Falls ja, so wissen Sie, was es heißt etwas zurückzusetzen, ein zentrales Konzept
+der vorliegenden Arbeit.
+Im Speziellen handelt sie von der Zurücksetzbarkeit (oder synonym Synchronisierbarkeit) endlicher Zustandsübergangssysteme, auch endliche Automaten genannt.
+Automaten interagieren über Eingabefolgen (auch Wörter genannt), welche Zustandsübergänge bewirken, mit ihrer Umwelt
+und dienen der Modellierung einer Vielzahl von Systemen wie Schalt\-kreisen, 
+Betriebszuständen von Maschinen oder einfachen Agenten in der künstlichen Intelligenz.
+%Oft möchte man wissen, ob ein System in einen wohl\-de\-fi\-nierten Zustand versetzbar ist. 
+%Beispielsweise könnte ein Schaltkreis nicht mehr synchron mit all seinen Teilen laufen; im Netzwerk könnte der aktuelle Auf\-ent\-halts\-ort unbekannt sein, man möchte aber dennoch die Möglichkeit haben stets einen Weg hinaus zu finden; ein Roboter könnte bei einer Aufgabe festhängen, oder wir kennen einfach nicht seinen aktuellen Zustand, sodass wir ihn in einen wohl\-de\-fi\-nierten Betriebszustand setzen wollen. 
+%
+%Oft möchte man wissen, ob ein System, beispielsweise einen Schaltkreis dessen Teile
+%nicht mehr synchron laufen, in einen wohl\-de\-fi\-nierten Zustand versetzbar ist. 
+%Beispielsweise könnte Teile eines Schaltkreises nicht mehr synchron laufen
+%oder der aktuelle Zustand einer Maschine ist unbekannt
+%und soll zurückgesetzt werden.
+%Wir nennen nun einen Automaten synchronisierbar, sofern
+Ein Automat heißt synchronisierbar, sofern
+es eine Eingabefolge gibt, welche
+ihn in einen wohldefinierten Zielzustand versetzt, unabhängig von seinem aktuellen Zustand.
+Die Schwierigkeit auf Synchronisierbarkeit zu testen %, sowie die Berechnung einer (möglichst kurzen) synchronisierenden Eingabefolge,
+hängt von verschiedenen Parametern ab, zum Beispiel
+ob wir das System vollständig kennen, welches Verhalten beobachtbar ist,
+ob Nichtdeterminismus erlaubt ist oder ob bestimmte synchronisierende Folgen ausgeschlossen sind.
+
+In dieser Arbeit beschäftigen wir uns mit der Einschränkung 
+möglicher synchronisierender Eingabefolgen, das sog.~\emph{constrained synchronization problem} (dt.~\emph{Problem der eingeschränkten Synchronisierbarkeit}).
+Es stellt sich nun in natürlicher Weise die Frage, wie die Art der Einschränkung 
+die algorithmische Komplexität be\-einflusst. Kann man anhand einer gegebenen Einschränkung
+die resultierende Problemstellung in schwierig oder praktikabel lösbar einteilen?
+Wir untersuchen komplexitätserhaltende Operationen auf Mengen von erlaubten synchronisierenden Eingabefolgen. Weiterhin
+arbeiten wir verschiedene hinreichende Bedingungen  für 
+praktikabel lösbare oder schwierige Probleme heraus.
+Im Rahmen unserer Untersuchungen tauchen folgende Komplexitätsklassen auf: 
+$\AC^0$, \LOGSPACE, \NL, \PTIME, \NP, \PSPACE,
+wobei wir Bedingungen für Mitgliedschaft in einer dieser Klassen
+oder Schwierigkeit bezüglich \NP\ oder \PSPACE\ 
+angeben sowie, außer für~$\AC^0$ und~\PTIME, 
+eine Vielzahl von 
+vollständigen Problemen für die jeweiligen Komplexitätsklassen.
+Die folgenden Arten von Einschränkungen für Mengen synchronisierender Eingabefolgen untersuchen wir: 
+endlich, unendlich, spärlich, buchstaben-beschränkt, kommutativ oder durch kleine Automaten beschrieben.
+Für kommutative, buchstaben-beschränkte und durch bestimmte kleine Automaton
+beschriebene Einschränkungen  
+geben wir eine komplette Klassifikation der algorithmischen Komplexität des zugehörigen eingeschränkten Synchronisierbarkeitsproblems. 
+Darüber hinaus untersuchen wir die folgenden Klassen von Eingabeautomaten: monotone, partiell geordnete,
+kommutative, auflösbare SI- und $\rho$-Automaten.
+Unsere Ergebnisse zeigen, dass die resultierenden algorithmischen Komplexitäten
+stark vom betrachteten Eingabetyp abhängen. Bei\-spiels\-wei\-se ist das Problem
+für kommutative Eingabeautomaten stets in Polynomialzeit  lösbar.
+
+Die Menge an Eingabefolgen, die einen Automaten synchronisieren, das heißt unser Suchraum, 
+ist durch einen weiteren Automaton akzeptierbar, was die Untersuchung von akzeptierenden Automaton für jene Mengen nahelegt.
+Von besonderem Interesse in Zusammenhang mit unseren Fragestellungen
+ist der Fall, wenn ein akzeptierender Automat zur Beschreibung synchronisierender Eingabefolgen
+maximal groß ist.
+Wie wir hier herausarbeiten, wird die Größe solcher Automaten
+durch zwei Faktoren beeinflusst: Erreichbarkeit und Unterscheidbarkeit.
+Wir untersuchen beide Begriffe, stellen Zusammenhänge her
+und setzen diese in Beziehung zu etablierten Kon\-zepten aus der Literatur, 
+wie zum Beispiel zu
+vollständig erreichbare Automaten (engl.~completely reachable automata).
+Verschiedene Bedingungen für die Maximalität von Automaten für synchronisierende Eingabefolden
+werden herausgearbeitet.
+Weiterhin formulieren und untersuchen wir Entscheidungsprobleme und algorithmische Fragestellungen, 
+welche sich aus diesen Begriffen ergeben.
+Über ihren Transformationsmonoid haben Automaten einen natürlichen Bezug
+zur Algebra.
+Auf dieser Grundlage werden wir Verbindungen zur Theorie der Permutationsgruppen
+herstellen. Im Speziellen
+arbeiten wir, unter Zuhilfenahme graphentheoretischer Konstruktionen,
+ verschiedene neuartige Charakterisierungen für primitive Permutationsgruppen heraus.
+Unsere Ergebnisse verbinden Permutationsgruppen und ecken-transitive Graphen (engl.~vertex-transitive graphs) 
+mit der Theorie synchronisierbarer Automaten.
+Abschließend untersuchen wir, inwiefern die Größe eines akzeptierenden Automaten für die synchronisierenden Eingabefolgen
+eines gegebenen Automaten mit der Länge einer kürzesten synchronisierenden Eingabefolge in Beziehung steht.
+
+\selectlanguage{english}

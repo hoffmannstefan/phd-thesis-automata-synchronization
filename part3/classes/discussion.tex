@@ -1,0 +1,38 @@
+%!TEX root = ./../../springer-mono-format/book.tex
+%!TEX root = ./../../thesis-trier.tex
+
+\paragraph{Shortest Words Reaching Certain Subsets.} Considering \cref{syncmax:classes:thm:circular}, 
+Don~\cite[Conj.~18]{Don16} conjectured
+that if a subset of size~$r$ is reachable, then it is reachable by a word of length
+at most $n(n - r)$.
+Gonze and Jungers~\cite[Prop.~7]{DBLP:journals/jalc/GonzeJ19} refuted this conjecture
+by giving a series of $n$-state automata for $n > 6$ having a subset of size
+$\lfloor \frac{n}{2} \rfloor$ where the shortest word reaching this subset
+has length greater than $\frac{2^n}{n}$. They also noted~\cite[Sect.~2.3]{DBLP:journals/jalc/GonzeJ19}
+that truth of this conjecture would have implied the collapse of the polynomial time hierarchy,
+which, while still an open problem, is considered to be highly unlikely.
+The authors asked whether the conjecture on the length of shortest words
+reaching certain subsets might still hold for completely reachable automata.
+This was refuted by Zhu~\cite{DBLP:conf/dlt/Zhu24} even for binary automata.
+He also proved the bound $n(n-r) + (n-1)$ for binary automata where one letter permutes
+its image, and for a subclass of these automata the conjecture was confirmed,
+which expanded a result of Casas \& Volkov~\cite{CasasVolkov2024Don} who investigated
+this conjecture for binary automata. For circular binary automata having
+a letter of defect one that permutes its image the conjecture still remains open~\cite{CasasVolkov2024Don}.
+In general, Ferens \& Szyku{\l}a~\cite{FerensSzykula2026} 
+proved the bound $2n(n - r) - n \sum_{i=1}^{n - r} \frac{1}{i}$
+for completely reachable automata. 
+
+\paragraph{An Erroneous Statement on SI-Automata.} 
+In~\cite[Thm.~12]{DBLP:conf/dcfs/Hoffmann22} it was wrongly claimed that a completely reachable SI-automaton is sync-maximal. Figure~\ref{sync_max:fig:SCC_not_sufficient} gives a counterexample.
+This wrong conclusion was based on the false statement that
+distinguishability of all pairs of distinct $2$-sets
+implies complete distinguishability (see the related discussion in~\cref{sync_max:chap_subset_mapping:discussion}).
+Here, for automata whose permutational letters generate a transitive group, we proved in \cref{cor:defectatmostone-weaker}
+that distinguishability of pairs of distinct $2$-sets, complete distinguishability,
+complete reachability, and sync-maximality are equivalent properties.
+% implies complete distinguishability,
+%and each of both properties is equivalent to complete reachability,
+%and complete rea
+\Cref{syncmax:cor:SI-2-sets} was also given in~\cite[Lem.~11]{DBLP:conf/dcfs/Hoffmann22}, 
+but with  a different (less general) proof.

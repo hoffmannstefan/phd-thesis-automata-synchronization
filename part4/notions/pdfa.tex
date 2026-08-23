@@ -1,0 +1,112 @@
+%!TEX root = ./../../thesis-trier.tex
+
+\IN{partial deterministic automaton}
+\index{partial automaton|see{partial deterministic automaton}}
+\index{PDFA|see{partial deterministic automaton}}
+%\IN{state set in PDFAs}
+%\IN{final state set in PDFAs}
+\IN{state set!of a PDFA}
+\IN{final state set!of a PDFA}
+\IN{start state!of a PDFA}
+\IN{transition function!of a PDFA}
+\IN{input alphabet!of a PDFA}
+Here, we generalize the notion of a complete and deterministic automaton.
+A \emph{partial deterministic and finite
+	automaton (PDFA)}
+is a $5$-tuple $\automat{A}{Q}{\Sigma}{\delta}{q_0}{F}$
+where, as for complete and deterministic automata, $Q$ is the \emph{finite state set},~$\Sigma$
+the \emph{finite input alphabet}, $q_0$ a \emph{start state}, $F \subseteq Q$ a set of \emph{final states}, but where
+ the \emph{transition function} is allowed to be a partial function $\delta \colon Q \times \Sigma \nrightarrow Q$.\footnote{We only consider PDFAs as language acceptors and hence always endow them with a start state and a set of final states.}
+So, every complete and deterministic automaton is a partial automaton as well.\footnote{This is actually a rather unfortunate naming. Usually,
+	one would expect that when adding modifiers to a concept
+	this would narrow down the possibilities, which also allows the description of subtypes by combining modifiers,
+	but here adding	the modifier ``partial'' gives a more general concept.
+	For this reason, some authors, for example~\cite{DBLP:journals/tcs/CaiF22},
+	deviate from the standard terminology by calling the most general model simply finite automaton.}
+The modifier \emph{complete}
+refers to the fact that the transition function is a total function, i.e., defined for each argument. 
+
+\smallskip
+\begin{center}
+	\fbox{ 
+		\begin{minipage}{28.5em}								
+			When we just say ``automaton'' we always mean a complete and deterministic semiautomaton, i.e., 
+			the automaton model
+			previously considered with totally defined transition functions, and we explicitly
+			say PDFA to denote a partial automaton with a start state and set of final states. In the context
+			of this work, we only use PDFAs to describe constraint languages. Input automata
+			to our problems are always assumed to be complete and deterministic.
+		\end{minipage}
+	}
+\end{center}
+\smallskip
+
+\IN{accessible!PDFA}
+\IN{accessible!state!in PDFA}
+\IN{coaccessible state!in PDFA}
+\IN{reachability order!PDFA}
+\IN{accepted!language!by PDFA}
+\IN{accepted!word!by PDFA}
+\IN{PDFA!as language acceptor}
+The PDFA $\mathcal A$ can be made complete by adding a non-final trap state
+and by adding transitions to this new state for each~$q \in Q$ and $x \in \Sigma$
+where $\delta(q, x)$ is undefined.
+The notions accessible states, coaccessible states, accessible PDFAs, the reachability order on the states $\lereach$, accepted words,
+the accepted language~$L(\mathcal A)$, the notation $\mathcal A_{q,S}$ for $q \in Q$ and $S \subseteq Q$, 
+the extension of the partial transition function to words, i.e., 
+$\delta \colon Q \times \Sigma^* \nrightarrow Q$, and the extension of~$\delta$ to subsets of states 
+$\applytrans{\delta}{S}{u} = \{ \applytrans{\delta}{q}{u} \mid \applytrans{\delta}{q}{u} \text{ is defined and } q \in S \}$
+all carry over to PDFAs without difficulty.\footnote{Martyugin~\cite{Martyugin14} defines the extension of the transition function to subsets differently, requiring that $\delta(q,u)$ be defined for every $q \in S$, and leaving $\delta(S,u)$ undefined otherwise. A similar approach for nondeterministic automata was used in~\cite[Sec.~8]{DBLP:conf/aaai/ArrighiFO023} in the context of \emph{conformant planning}. However, apart from these cases, this convention appears to be uncommon in the literature.}
+We call~$S \subseteq Q$ an upper set if $\delta(S, x) \subseteq S$ for each $x \in \Sigma$.
+We define $\mathcal A_{|S}$, $\mathcal A_{|\Gamma}$,
+and $\mathcal A_{|\Gamma,S}$ by restricting the partial transition
+function to inputs from $S$,$\Gamma$, and $S \times \Gamma$, respectively,
+analogously to the corresponding constructions for the previous automaton model.
+The product, power, and pair automata constructions also carry over and will be used in the following
+for PDFAs.
+A PDFA is called \emph{trim} if every state is accessible and coaccessible. Every non-empty regular language is accepted by some trim PDFA; the empty language $\emptyset$ is the only language that is not accepted by a trim PDFA.
+\IN{trim}
+
+\begin{proposition}
+	\label{constrsync:prop:trim}
+	Let $\automat{A}{Q}{\Sigma}{\delta}{q_0}{F}$
+	be a PDFA. Then $\mathcal A$
+	is trim if and only if~$[q_0]_{\eqreach}$
+	is a minimum in the order induced by $\lereach$
+	on the strongly connected components
+	and $[q]_{\eqreach} \cap F \ne \emptyset$
+	for every maximal strongly connected component $[q]_{\eqreach}$.	
+\end{proposition}
+\begin{proof}
+	Every state is accessible if and only if $q_0 \lereach q$ for all $q \in Q$, i.e., $[q_0]_{\lereach}$
+	is a minimum.
+	Further, every state is coaccessible
+	if and only if for each $q \in Q$ 
+	we have $q \lereach p$ for some $p \in F$,
+	which is fulfilled if every maximal strongly connected component contains a state from~$F$.
+\end{proof}
+
+Minimal PDFAs are characterized by adding the additional requirement that every state is coaccessible
+to \cref{prelim:thm:char_minaut}.
+The minimal PDFA differs from a minimal complete
+automaton if and only if the minimal complete automaton has a non-final trap state,
+which can be discarded in this case to obtain the minimal PDFA. 
+Note that in a minimal complete automaton for the set of synchronizing words of a given complete and deterministic automaton
+every state is coaccessible, so that  it makes no difference 
+whether we consider complete or partial automata when investigating minimal deterministic automata for the 
+for the set of synchronizing words.
+
+\IN{exactly synchronizing word}
+\IN{carefully synchronizing words}
+\IN{careful synchronization of automaton}
+\IN{exact synchronization of automaton}
+Next, we introduce two generalizations of synchronization to PDFAs.
+Let $u \in \Sigma^*$.
+We call $u$ a \emph{carefully synchronizing word}~\cite{Martyugin14,Rystsov1980} for $\mathcal A$
+if there exists $p \in Q$ such that $\delta(q, u) = p$
+for all $q \in Q$, i.e., $|\delta(Q, u)| = 1$ and $\delta(q, u)$ is defined
+for each $q \in Q$.
+We call $u$ an \emph{exactly synchronizing word}~\cite{Shabana_2019,TraverCrutchfield2011}
+if $|\delta(Q, u)| = 1$.
+Further, $\mathcal A$ is said to be \emph{carefully synchronizing} (resp.~\emph{exactly synchronizing})
+if there exists a carefully (resp.~exactly) synchronizing word for~$\mathcal A$.

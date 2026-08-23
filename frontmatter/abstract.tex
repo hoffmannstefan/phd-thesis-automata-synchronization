@@ -1,0 +1,70 @@
+%!TEX root = ../thesis-trier.tex
+
+
+
+Have you ever wanted to start all over again? Has your smartphone or computer ever frozen and you had to restart it? 
+If so, then you are familiar with the idea of resetting things,
+the central concept of the present work.  
+More specifically, it is about resetting (also called synchronizing) 
+finite state transition systems, also called finite automata. 
+ Finite automata process input sequences (also called words) and can be used to model a wide variety of systems, for example,
+switching circuits, networks, or simple
+behavior patterns in artificial intelligence. 
+In all these situations, knowing whether we can reset the system is of interest. A circuit component might be out of sync with its environment, can we reset it? 
+A robot might be stuck, or we are simply unsure about its current state,
+so can we reset its state of operation? 
+However, while this problem is tractable
+for completely specified and deterministic automata,
+only a small deviation from this ``optimal'' situation, i.e., having only partial information, allowing nondeterminism, or constraining the admissible input
+sequences, results in intractable
+algorithmic problems.
+
+Here, we are concerned with one particular problem variant: 
+constraining the admissible input
+sequences (the \emph{constrained synchronization problem}).
+In this setting, what computational complexity can we deduce 
+from the kind of constraint put on the input sequences and/or
+types of input automata?
+We state various results on how to manipulate sets of admissible synchronizing input sequences
+so as to retain a certain complexity of the problem.
+We also identify various conditions 
+that either yield tractable or intractable problems.
+More specifically, the following complexity classes will arise: 
+$\AC^0$, \LOGSPACE, \NL, \PTIME, \NP, \PSPACE.
+Except for~$\AC^0$ and~\PTIME, we 
+give sets of admissible synchronizing sequences
+yielding constrained problems that are complete for these classes.
+Moreover, we investigate the following classes
+of admissible sets of synchronizing sequences: finite, infinite, sparse, letter-bounded, commutative, or
+constraints specified by certain small-state automata; where we give
+a complete complexity classifications for the latter three classes.
+Lastly, we  consider the following types of input automata to the problem:
+monotonic, partially ordered, commutative, solvable, SI- and $\rho$--automata.
+We obtain, for example, that for commutative input automata, the problem is always in \PTIME.
+
+Now, the set of synchronizing 
+sequences, i.e., our search space, of a given input automaton
+is acceptable by a finite automaton as well.
+This leads naturally to the investigation of accepting automata for sets
+of synchronizing sequences, specifically for the question of when they
+become largest possible.
+Here,  we identify and investigate two conditions
+that control the size of a minimal automaton
+for the set of synchronizing sequences:
+reachability and distinguishability.
+For both notions, we establish various structural results and connections with concepts
+from the literature such as, for example, completely reachable automata.
+Decision problems and algorithmic questions 
+that naturally arise
+from these notions are also investigated.
+We state conditions yielding extremal minimal automata accepting sets of synchronizing sequences.
+Moreover, we identify a connection to permutation group theory, which 
+is linked to automata theory by the group of units
+of transformation monoids of automata.
+Specifically, via graph-theoretical constructions,
+we obtain new characterizations of primitive permutation groups
+based on associated synchronizing automata.
+Our results link permutation groups and vertex-transitive graphs
+to the theory of synchronizing automata.
+Furthermore, we explore relations of the size of automata accepting sets of synchronizing
+sequences to the length of shortest synchronizing sequences.

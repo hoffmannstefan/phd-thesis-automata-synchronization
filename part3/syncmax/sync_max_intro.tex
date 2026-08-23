@@ -1,0 +1,113 @@
+%!TEX root = ./../../springer-mono-format/book.tex
+%!TEX root = ./../../thesis-trier.tex
+
+\IN{sync-maximal automaton}
+Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be an $n$-state automaton.
+Recall that by \THM~\ref{sync_max:thm:upper_bound_SynA} 
+a minimal automaton for $\Syn(\mathcal A)$ has at most $2^n - n$ states. %(see \SEC~\ref{sync_max:sec:power_automat_for_SynA}). 
+We call~$\mathcal A$ %is said to be 
+\emph{sync-maximal} if the minimal automaton of $\Syn(\mathcal A)$ 
+has $2^n - n$ states.
+
+A sync-maximal automaton $\mathcal A$ with non-empty state set must be synchronizing.
+For assume $\Syn(\mathcal A)$ is empty.
+Then it is acceptable by a one-state automaton with empty final state set.
+Now $2^n - n$ equals one only for $n \in \{0,1\}$.
+So, $\mathcal A$ has a single state,
+but this implies $\Syn(\mathcal A) = \Sigma^*$, contradicting the assumption.
+Next, in \cref{sync_max:thm:char_sync_max_aut} 
+we prove that in a sync-maximal automaton also all subsets of size at least two must be reachable.
+
+\begin{theorem}
+	\label{sync_max:thm:char_sync_max_aut}
+	An automaton $\semiautomat{A}{Q}{\Sigma}{\delta}$ with non-empty~$Q$
+	is sync-maximal if and only if the following two conditions
+	hold:
+	\begin{enumerate} 
+		\item \label{sync_max:thm:char_sync_max_aut:1} $\mathcal A$ is synchronizing (i.e., at least one singleton subset
+		is reachable) %in $\mathcal P(\mathcal A)$,
+		and every non-empty subset with at least two states is reachable.
+		% in $\mathcal P(\mathcal A)$.
+		
+		\item $\mathcal A$ is completely distinguishable.
+	\end{enumerate}
+\end{theorem}
+\begin{proof}
+	We can assume $|Q| \ge 2$. Let $\mathcal F$ be a maximal family of pairwise distinguishable and reachable subsets. 
+	The family contains at most one singleton subset, as two singleton subsets are indistinguishable,
+	and only non-empty subsets, as the empty set is not reachable. So, we have $\mathcal F \subseteq \{ A \subseteq Q : |A| \ge 2 \} \cup \{\{q\}\}$
+	for some $q \in Q$.	As $| \{ A \subseteq Q : |A| \ge 2 \} \cup \{\{q\}\} | = 2^n  - n$,
+	by Theorem~\ref{sync_max:thm:lower_bound_SynA} $\mathcal A$ is sync-maximal
+	if and only if $\{ A \subseteq Q : |A| \ge 2 \} \cup \{\{q\}\} = \mathcal F$,
+	which is equivalent to complete distinguishability, synchronizability,
+	and reachability of all subsets of size at least two.
+\end{proof}
+
+Next, we give two corollaries to \cref{sync_max:thm:char_sync_max_aut}.
+
+\begin{corollary}	\label{sync_max:cor:char_sync_max_aut}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$.
+	Then $\mathcal A$ is sync-maximal
+	if and only if one of the following is true:
+	\begin{enumerate}
+		\item \label{cha_sync_max:item:Q1} $|Q| = 1$;
+		\item \label{cha_sync_max:item:Q2} $|Q| = 2$ and~$\mathcal A$ is synchronizing;
+		\item \label{cha_sync_max:item:Q3} $|Q| \ge 3$,  all subsets $A \subseteq Q$
+		with $|A| \ge 2$ are reachable, and $\mathcal A$ is completely distinguishable.
+	\end{enumerate}
+\end{corollary}
+\begin{proof}
+	\ref{cha_sync_max:item:Q1}: The set of synchronizing words of a one-state automaton is $\Sigma^*$
+	and a minimal automaton accepting all words has a single state.
+	
+	\ref{cha_sync_max:item:Q2}: By \cref{syncmax:rem:two-state-compl-dist}, every two-state automaton is completely distinguishable
+	and the whole state set is reachable by the empty word.
+	So, by \cref{sync_max:thm:char_sync_max_aut},
+	sync-maximality reduces to the reachability of a single state, i.e., synchronizability.
+	Thus, $\mathcal A$ is sync-maximal if and only if it is synchronizable.\footnote{For an alternative
+		argument, observe that for a two-state automaton $\mathcal A$
+		we have $\Syn(\mathcal A) = \Sigma^* \Gamma \Sigma^*$
+		for $\Gamma = \{a\in \Sigma \mid \delta(Q, a) \ne Q \}$.
+		So, the minimal automaton of $\Syn(\mathcal A)$ 
+		has two states if and only if $\Gamma \ne \emptyset$,
+		which is equivalent to $\Syn(\mathcal A) \ne \emptyset$ in this case.}
+	
+	\ref{cha_sync_max:item:Q3}:
+	If $\mathcal A$
+	is completely distinguishable, then $\mathcal A$
+	is synchronizing  by \cref{sync_max:prop:dist_sync} as $|Q| \ge 3$.
+	So, when also all subsets of size at least two
+	are reachable, then \cref{sync_max:thm:char_sync_max_aut} 
+	yields sync-maximality.\footnote{By \crefitem{sync_max:cor:k-sets-implies-sync}{sync_max:cor:2-sets-implies-sync}, reachability of all $2$-sets also implies
+		synchronizability for $|Q| \ge 3$.}
+	Conversely, if $\mathcal A$
+	is sync-maximal, then, by \cref{sync_max:thm:char_sync_max_aut},
+	all subsets of size at least two are reachable
+	and $\mathcal A$ is completely distinguishable.
+\end{proof}
+
+\begin{corollary}
+	\label{sync_max:cor:SCC}
+	An automaton is strongly connected and sync-maximal if and only if
+	it is completely reachable and 
+	completely distinguishable.
+\end{corollary}
+\begin{proof}
+	By \cref{sync_max:thm:char_sync_max_aut}
+	a sync-maximal automaton is completely distinguishable.
+	Furthermore, every subset of size at least two is reachable
+	and some singleton subset is reachable.	
+	Since in a strongly connected automaton, some singleton subset is reachable if and only if all singleton subsets are reachable,	we obtain complete reachability.
+	Conversely, by \cref{prelim:lem:compl_reach_implies_SCC_sync} and 
+	\cref{sync_max:thm:char_sync_max_aut}, a completely reachable
+	and completely distinguishable automaton is strongly connected and sync-maximal.
+\end{proof}
+
+\Cref{sync_max:cor:SCC} together with \cref{sync_max:thm:cerny_compl_reach,sync_max:thm:cerny_compl_dist}
+yield that the \Cerny automata are sync-maximal (this also follows from \cref{sync_max:thm:circular_sync_max} or from \cref{cor:defectatmostone-weaker} given later).
+
+\begin{theorem}
+	\label{sync_max:thm:cerny_sync_maximal}
+	The \Cerny automata $\mathcal C_n$ from \cref{intro:fig:cerny}
+	are sync-maximal.
+\end{theorem}

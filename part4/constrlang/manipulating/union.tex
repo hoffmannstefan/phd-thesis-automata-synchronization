@@ -1,0 +1,81 @@
+%!TEX root = ../../../thesis-trier.tex
+
+Here, in~\cref{constr_sync:thm:union}, we state that certain complexity classes
+are preserved when considering the union
+of two constraint languages. \cref{constrsync:genresults:cor:subset}
+gives further conditions
+for complexity preservation w.r.t.~union
+and concatenation.
+% when the complexity is preserved 
+%for unions and concatenation of languages.
+
+\begin{theorem}
+	\label{constr_sync:thm:union}
+	Let $\mathcal C$ be one of the complexity classes $\AC^0$, $\NC^1$, \LOGSPACE, \NL, \PTIME or \NP.
+	Suppose $\constrsync{L}$ and $\constrsync{L'}$ are both in $\mathcal C$ for regular languages $L,L' \subseteq \Sigma^*$.
+	Then  the problem $\constrsync{L \cup L'}$ is in $C$.
+\end{theorem}
+\begin{proof}
+%Given two computing mechanism (circuits or Turing machines)
+%$M_1$ and $M_2$ for \constrsync
+For \LOGSPACE, \NL, \PTIME, and \NP\ suppose
+$M_1$ and $M_2$ are Turing machines deciding $\constrsync{L}$
+and $\constrsync{L'}$, respectively, for an input automaton
+by halting and writing~$1$ for a \rYES-instance
+or~$0$ for a \rNO-instance.
+Let $M$ be a Turing machine that, for an input automaton $\mathcal A$,
+first simulates $M_1$ with input~$\mathcal A$ yielding output~$r_1$,
+then $M_2$ with input $\mathcal A$ yielding output $r_2$, and finally outputs $\max\{r_1, r_2\}$,
+which equals one if and only if $\mathcal A$ has a synchronizing word in $L \cup L'$.  
+We can combine the results $r_1$ and $r_2$  (repositioning reading head, erasing the working tape while storing the output of $M_1$, compute
+$\max\{r_1, r_2\}$) 
+by operating deterministically and using only constant space;
+and if~$M_1$ and~$M_2$ obey the convention to
+position the working tape head next to the output, erase
+everything else and  move the reading head back to the start,
+the overhead
+needed to simulate both machines and combine  their results is actually constant in time and space.
+Hence, if $M_1$ and $M_2$ both work in deterministic logspace, nondeterministic logspace,
+deterministic polynomial time, or nondeterministic polynomial time,
+also $M$ works in deterministic logspace, nondeterministic logspace,
+deterministic polynomial time, or nondeterministic polynomial time, respectively.
+
+For $\AC^0$ or $\NC^1$, we can combine the outputs
+of two circuits from respective circuit families in $\AC^0$ or $\NC^1$ for $\constrsync{L}$
+and $\constrsync{L'}$ by an OR-gate
+to obtain an \LOGSPACE-uniform circuit family in $\AC^0$ or $\NC^1$, respectively, 
+for $\constrsync{L \cup L'}$.
+\end{proof}
+
+Next, we state a condition such that the complexity is preserved when taking the union.
+
+\begin{corollary} \label{constrsync:genresults:cor:subset}
+	Let $L, L' \subseteq \Sigma^*$ be regular languages
+	such that $L' \subseteq \fact{L}$.
+	Then we have $\constrsync{L} \eqACZEROm \constrsync{L\cup L'}$.
+\end{corollary}
+\begin{proof}
+	By \cref{constrsync:genresults:cor:union-fact}
+	we have $\constrsync{L\cup L'} \eqACZEROm \constrsync{\fact{L} \cup L'}$
+	and the assumption gives $\fact{L} \cup L' = \fact{L}$.
+	By  \cref{gen_results:cor:factors_etc_complexity}
+	we have $\constrsync{\fact{L} \cup L'} \eqACZEROm \constrsync{L}$ (the claim
+	also follows directly from \cref{gen_results:cor:factors_etc_complexity}
+	by noting that $\fact{L \cup L'} = \fact{L} \cup \fact{L'} = \fact{L}$).
+\end{proof}
+
+By \cref{constrsync:genresults:cor:subset}, for a right or left ideal~$I$ that is regular
+and any regular $L \subseteq \Sigma^*$
+we have $\constrsync{I \cup L} \eqACZEROm \constrsync{\Sigma^*}$
+since $\factor{I} = \Sigma^*$.
+
+\begin{remark}
+	Let $L = \{a,b\}^* c \{a,b\}^*$ for distinct $a,b,c\in \Sigma$. 
+	By \crefitem{constr_sync:thm:introductory_examples}{constrsync:ex:item:abcL}, $\constrsync{L}$
+	is \PSPACE-complete. We have $\Sigma^* \setminus L = \{ u \in \Sigma^* : |u|_c = 0 \text{ or } |u|_c \ge 0 \}$
+	and $\fact{\Sigma^* \setminus L} = \{a,b,c\}^*$.
+	By \crefitem{constr_sync:thm:introductory_examples}{constrsync:ex:item:ab}, the problem
+	$\constrsync{\Sigma^* \setminus L}$ is \NL-complete.
+	Thus, in general, the computational complexity of the constrained synchronizing problem
+	is not preserved when taking the complement.
+\end{remark} 

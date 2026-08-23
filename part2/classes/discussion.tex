@@ -1,0 +1,162 @@
+%!TEX root = ./../../springer-mono-format/book.tex
+%!TEX root = ./../../thesis-trier.tex
+
+Here, we discuss the classes, and related literature, 
+introduced in this chapter. 
+Later, in \cref{sync_max:sec:subclasses,constr_sync:chap:constr_input,chap:prelim_complexity_results},
+we investigate these subclasses w.r.t.~to decision problems, automata for sets of synchronizing
+words, and the constrained synchronization problem, respectively.
+A discussion of the results from the these chapters 
+can be found in \cref{sync_max:sec:subclasses:discussion,constr_input:sec:discussion,prelim:compl:sec:discussion}.
+%But we do not discuss the work of the author presented in this thesis related to these classes, as basically the whole thesis discusses this work.
+Here, we leave out a discussion of synchronizable automata, because they are the topic of the whole work
+and some related literature was already discussed in the introductory part (\cref{intro:chap:short_intro_sync_aut}).
+The new notion of  $\rho$-automata is introduced here for the first time.
+%Also, we do not discuss $\rho$-automata, as this type of automata is a new notion introduced here for the first time.
+
+\paragraph{SI-Automata.} Rystsov introduced SI-automata in~\cite{Rystsov2000}
+and proved the bound $2(n-1)^2$ for the reset length 
+of an $n$-state SI-automata~$\mathcal A$.
+In~\cite{Rystsov2022} the author showed the bound $n - 1$ in case the group of units of~$\TS{\mathcal A}$ is trivial and the bound
+$(n-1)^2$ in case the group of units of~$\TS{\mathcal A}$ is a regular 
+permutation group~\cite{Rystsov2022}. We deduce both bounds 
+in \cref{sync_max:cor:augmentative_subset_IG,syncmax:graph:cor:OI-sync} in the case of OI-automata.
+
+\paragraph{Permutation-Reset Automata.} Permutation-reset
+automata were firstly mentioned by Zeiger
+in the conference contribution~\cite{DBLP:conf/focs/Zeiger65} (see~\cite{DBLP:journals/iandc/Zeiger67a} for the extended version) 
+in connection with the Krohn-Rhodes decomposition theory~\cite{KrohnRhodes65} (see \SEC~\ref{prelim:prelim:discussion}
+for some background on this theory).
+McNaughton~\cite{McNaughton67}
+and Thierrin~\cite{DBLP:journals/mst/Thierrin68}
+investigated permutation automata as language acceptors,
+see also~\cite{Eilenberg1976,Pin86,DBLP:reference/hfl/Pin97} for information on the class of languages
+accepted by permutation automata, the
+so-called \emph{variety of group languages}. 
+\IN{variety of group languages}
+
+\paragraph{Commutative Automata.} Commutative automata
+were introduced, to the best of our knowledge,
+by Laing and Wright~\cite{laingwright62}.
+They focused on commutative automata over a binary alphabet, gave
+normal form theorems for regular expressions modulo commutativity,
+and also considered infinite-state commutative automata
+and regularity conditions. 
+Rystsov~\cite{Rys96} gave (by an algebraic proof) the tight bound $n-1$
+for a shortest synchronizing word of an $n$-state commutative automaton.
+Fernau and Hoffmann~\cite{FernauHoffmann19} gave a different (combinatorial)
+proof and a structure theorem for commutative automata that
+reach this bound.
+Fleck~\cite{DBLP:journals/jacm/Fleck62} determined the automorphism group
+of strongly connected and commutative automata.
+Cascade product decomposition results (see the discussion in~\cref{prelim:prelim:discussion} on automata theory for this notion) for commutative automata
+were given in~\cite{Gelderie2010,DBLP:conf/lata/Gelderie11}.
+See also~\cite{DBLP:journals/actaC/EsikI81a,DBLP:journals/actaC/EsikI81,DBLP:journals/actaC/Imreh81,Peak65} for further algebraic investigations.
+Question on automata sizes for commutative regular languages
+were investigated in~\cite{DBLP:journals/iandc/Hoffmann24,DBLP:journals/ijfcs/Hoffmann23a}.
+The languages accepted by different types of commutative automata
+were investigated in~\cite{DBLP:journals/actaC/AlmeidaEP17,
+	DBLP:conf/cai/Hoffmann19,
+	DBLP:conf/wia/Hoffmann21,
+	Hoffmann23a,
+	DBLP:journals/iandc/Hoffmann24,
+	Pin86,
+	DBLP:reference/hfl/Pin97}.
+Algorithmic problems on commutative automata were investigated in~\cite{DBLP:journals/corr/abs-2108-05244},
+and the membership problem on commutative transformation semigroups in~\cite{DBLP:journals/iandc/Beaudry88}.
+ 
+\paragraph{Partially Ordered Automata.}
+This type of automata has been considered in the literature
+under different names: \emph{weakly acyclic}~\cite{Ryzhikov19a}, \emph{acyclic}~\cite{DBLP:conf/wia/JiraskovaM12},
+\emph{extensive}~\cite{Pin2022}
+or \emph{1-weak/very weak/linear}~\cite{DBLP:conf/lpar/DaxK08} (linear stems from the existence of a topological sorting of the states).
+Ryzhikov~\cite{Ryzhikov19a} investigated several synchronization
+and rank problems on partially ordered automata
+and obtained the tight bound $n - r$ for a shortest word of rank at most~$r$.
+Bruchertseifer and Fernau~\cite{DBLP:journals/ita/BruchertseiferF21}
+investigated the subclass of \emph{series-parallel automata with loops}
+with respect to questions of synchronizability in the setting of
+parameterized complexity (see the part on parameterized complexity in~\cref{prelim:compl:sec:discussion} for more information). 
+\mbox{Brzozowski} and Fich~\cite{DBLP:journals/jcss/BrzozowskiF80}
+obtained that partially ordered automata
+accept precisely those languages with $\mathcal R$-trivial syntactic monoids.
+Jir\'askov\'a and Masopust~\cite{DBLP:conf/wia/JiraskovaM12} 
+investigated the state complexity of the reverse operation for partially ordered automata,
+Dax and Klaedtke~\cite{DBLP:conf/lpar/DaxK08} investigated
+the translation of alternating partially ordered automata to nondeterministic automata
+in the setting of infinite words.
+
+\label{discussion:monotonic}
+\paragraph{Monotonic Automata.} Ananichev and Volkov~\cite{DBLP:journals/tcs/AnanichevV04} introduced monotonic automata
+and proved \cref{prelim:prop:monotonic_rank_r}.\footnote{The monotonic automata as introduced earlier 
+	by Eppstein~\cite{Eppstein90} are more general, as they are only required to respect a cyclic order and were
+	renamed \emph{oriented} automata by Ananichev and Volkov~\cite{DBLP:journals/tcs/AnanichevV04},
+and \emph{cyclically monotonic} by Martyugin~\cite{Mar2009b}). Linearly and circularly monotonic might be another
+	possible renaming for both concepts.}
+However, transformation semigroups whose elements preserve some linear order
+were investigated before, for example, in~\cite{Howie1971}.
+The bound $n - 1$ for shortest synchronizing of monotonic automata
+was stated in~\cite{AnanichevVolkov04} in the language of transformation semigroups.
+In~\cite{RyzhikovS18} problems related to (subset) synchronization problems
+on monotonic partial automata were investigated.
+% (note that here we only consider
+%complete automata as inputs to \constrsync{L}). \todo{complete oben definiert? sonst sagen transition fully defined.}
+%komischer satz, konkret sagen welches problem
+%An open problem
+%from~\cite{DBLP:journals/tcs/AnanichevV04} was investigated in~\cite{Shcherbak05}.
+Checking whether a given complete automaton is monotonic is \NP-complete~\cite{Szykula15}.
+Anachichev and Volkov~\cite{AnanichevV05}
+extended the tight bound $n-r$ on shortest words of rank at most~$r$ (\cref{prelim:prop:monotonic_rank_r})
+to so-called \emph{generalized monotonic automata}
+(these automata where defined in levels 
+that yield an infinite hierarchy even in the case of strongly strongly connected 
+automata~\cite{AlmeidaCardoso13})
+Apart from its rather simple definition,
+the behavior of monotonic automata as language acceptors 
+remains rather elusive. Shcherbak~\cite{Shcherbak05} posed
+the \emph{open problem} to give a combinatorial description (for example, by
+regular expressions) of the languages accepted by monotonic automata.
+In~\cite{DBLP:conf/icalp/Kopczynski06,Kopczynski08} monotonic
+automata were used to describe certain winning conditions in infinite games.
+In~\cite{DBLP:conf/dlt/Ananichev05} shortest words that are undefined on each state
+in partially ordered monotonic automata were investigated,
+which correspond to shortest synchronizing words in the complete automaton
+resulting from adding a trap state.
+
+\paragraph{Solvable Automata.} Rystsov~\cite{Rys96} gave the tight bound $n-1$
+for shortest synchronizing words of $n$-state $R_1$- and $R_2$-solvable automata. Here, in \cref{prelim:thm:solvrank_r}, 
+for solvable automata, we gave the bound $n - r$
+for shortest words of rank at most $r$.
+ In personal communication, Mikhail V. Volkov
+ noted  that the transition monoid of a solvable automaton $\semiautomat{A}{Q}{\Sigma}{\delta}$ 
+ is in the pseudovariety $\mathbf{DS}$ (in fact, of any automaton whose strongly connected components are blocks).
+ Automata with this property
+ admit a word of rank~$r$ and length at most~$n - r$
+ if the minimal rank among its words is~$r$~\cite[Thm.~2.6]{AlmeidaS09}.
+ \Cref{prelim:thm:solvrank_r}
+ is slightly more general since it applies
+ to values of~$r$ that do not equal
+ the minimal rank among all the ranks of the words.
+ The containment of their transition monoids in $\mathbf{DS}$
+ follows from a characterization of $\mathbf{DS}$
+ as the set of finite semigroups that are semilattices over semigroups
+ nilpotent over their kernel (see the equivalence (4c) $\Leftrightarrow$ (1b) in~\cite[Thm.~3]{She95a}
+ and~\cite{DBLP:journals/corr/abs-2409-06971,She95a} 
+ for definitions of the mentioned notions).
+ For let $P_1, \ldots, P_m$
+ be a topological sorting of the strongly connected components w.r.t.~$\lereach$.
+ Then set
+ \[
+ Y = \{ (x_1, \ldots, x_m) \in \{0,1\}^m \mid \exists w \in \Sigma^* \colon x_i = 1 \Leftrightarrow \delta(P_i,w) \subseteq P_i \}
+ \]
+ and, for $(x_1, \ldots, x_m) \in Y$, set
+ \[
+ S_{(x_1, \ldots, x_m)} = \{ \fword{\delta}{w} \colon Q \to Q \mid \forall i \in \{1,\ldots,m\} \colon x_i = 1 \Leftrightarrow \delta(P_i, w) \subseteq P_i \}.
+ \]
+ Then $Y$ is a semilattice with the operation
+ \[
+ (x_1, \ldots, x_m)(y_1, \ldots, y_m) = (\min\{x_1,y_1\},\ldots,\min\{x_m,y_m\})
+ \]
+ and $\{ S_y \}_{y \in Y}$
+ forms a semilattice of semigroups
+ where the $S_y$ are groups, and so nilpotent over their kernel.

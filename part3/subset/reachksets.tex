@@ -1,0 +1,312 @@
+%!TEX root = ../../thesis-trier.tex
+
+Here, we investigate structural limitations and implications that result from
+the reachability of $k$-sets for some fixed $k \ge 1$. \Cref{sync_max:prop:reachability-k-sets-sync},
+gives a sufficient condition of synchronizability in terms of the reachability of $k$-sets.
+Then, \cref{sync_max:prop:k-reach} 
+relates reachability 
+to the group of units.
+From this lemma we derive results relating
+the reachability of classes of subsets to 
+properties of the group of units.
+Specifically, \cref{sync_max:cor:orbits-excluded-states-defect-one}
+relates the orbits of the group of units to letters of defect one,
+\cref{sync_max:prop:single-non-perm-und-n2sets} and \cref{sync_max:cor:single_non_permutational_letter}
+give conditions for transitivity and $k$-homogeneity, respectively.
+Lastly, in \cref{sync_max:subsets:prop:num-two-set-orbits}
+we make a statement on the orbits of $2$-sets for the group of units
+in SI-automata with a single simple idempotent letter and where all $2$-sets are reachable.
+
+An automaton $\semiautomat{A}{Q}{\Sigma}{\delta}$ 
+is synchronizing if and only if there exist $q \in Q$ 
+and $u,v \in \Sigma^*$ such that
+\[
+\applytrans{\delta}{Q}{v} \subseteq \applytrans{\delta^{-1}}{q}{u},
+\]
+i.e., we can reach a subset in $\applytrans{\delta^{-1}}{q}{u}$
+for some $q \in Q$ and $u \in \Sigma^*$.
+Next, using this observation, we derive a sufficient condition for synchronizability
+in terms of reachability of $k$-sets.
+
+\begin{proposition}
+	\label{sync_max:prop:reachability-k-sets-sync}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be an $n$-state automaton
+	and $k \ge 2$. If $n > k(k-1)$ and every $k$-subset
+	is reachable in $\mathcal A$, then $\mathcal A$ is synchronizing.
+\end{proposition}
+\begin{proof}
+	Let $A \subseteq Q$ be some $k$-set.
+	Then there exists $u \in \Sigma^*$
+	such that $\applytrans{\delta}{Q}{u} = A$.
+	The $k$ sets $\applytrans{\delta^{-1}}{q}{u}$
+	for $q \in A$ partition $Q$.
+	As $n > k(k-1)$ and $k = |A|$, by the pigeonhole principle,
+	we have $|\applytrans{\delta^{-1}}{q}{u}| \ge k$ for some $q \in A$.
+	Then let $B \subseteq \applytrans{\delta^{-1}}{q}{u}$
+	be some $k$-set.
+	By assumption there exists $v \in \Sigma^*$ 
+	with $\applytrans{\delta}{Q}{v} = B$. So $\applytrans{\delta}{Q}{vu} = \applytrans{\delta}{B}{u} = \{q\}$.	
+\end{proof}
+
+Let $k \ge 2$. We do not know whether
+the bound from \cref{sync_max:prop:reachability-k-sets-sync}
+is optimal, i.e., whether there exist non-synchronizing automata
+with $k^2 - k$ states where every $k$-set is reachable.
+Next, we give a non-synchronizing automaton with $2k - 2$ states
+where every $k$-set is reachable.
+
+\begin{example} \label{sync_max:ex:k-reachable-not-sync}
+	Suppose $k \ge 2$ and $m = k - 1$. Let 
+	$\mathcal C_m = ([m], \{a,b\}, \delta_m)$
+	and $\mathcal C_m' = (\{0',1',\ldots,(m-1)'\}, \{a',b'\}, \delta_m'\})$ 
+	be two disjoint copies of the \Cerny automata from \cref{intro:fig:cerny}.
+	Consider them as one automaton over $\{a,b,a',b'\}$ with 
+	the $2m$ states $[m] \cup \{0',1',\ldots,m'\}$
+	and where the letters $a,b$ and $a', b'$
+	induce self-loops in $\{0',1,',\ldots,(m-1)'\}$ and $[m]$, respectively.
+	If $A$ is a $k$-set,
+	then $A \cap [m] \ne \emptyset$
+	and $A \cap \{0', 1', \ldots, (m-1)'\} \ne \emptyset$.
+	So, as the \v{C}ern\'y automata are completely reachable by~\cref{sync_max:thm:cerny_compl_reach},
+	there exist $u \in \{a,b\}^*$
+	and $v \in \{a', b'\}^*$
+	such that $A\cap [m] = \delta_m([m], u)$
+	and $A \cap \{0', 1', \ldots, (m-1)'\} = \delta_m(\{0', 1', \ldots, (m-1)'\}, v)$.
+	Then $uv$ maps the whole states set onto $A$.
+    Hence, every $k$-set is reachable, but this automaton is not synchronizing.	
+\end{example}
+
+In the following, we state a few corollaries of Proposition~\ref{sync_max:prop:reachability-k-sets-sync}.
+
+\begin{corollary}\label{sync_max:cor:k-sets-implies-sync}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$.
+	\begin{enumerate}
+		\item \label{sync_max:cor:2-sets-implies-sync} If $|Q| \ge 3$ and every $2$-set of states is reachable in $\mathcal A$, then $\mathcal A$ is synchronizing.\footnote{
+		This case also follows easily in the following way: Since $|Q| \ge 3$
+		there exists $a \in \Sigma$ such that $\delta(p, a) = \delta(q, a)$
+		for distinct $p,q\in Q$.
+		By assumption, $\delta(Q, u) = \{p,q\}$ for some $u \in \Sigma^*$.
+		Then we find $|\delta(Q, ua)| = 1$.}
+		
+		\item If $|Q| \ge 7$ and every $3$-set of states is reachable, then $\mathcal A$ is synchronizing.
+		
+		\item If $|Q| \ge 13$ and every $4$-set of states is reachable, then $\mathcal A$ is synchronizing.
+	\end{enumerate}
+\end{corollary}
+
+The next observation will be used to derive results on 
+the group of units under the assumption of reachability of all $k$-sets for some $k$.
+
+\begin{lemma}
+	\label{sync_max:prop:k-reach}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ and $G$ be the group of units of $\TM{\mathcal A}$.
+	Suppose $A \subseteq Q$ is a proper non-empty subset of states.
+	Then the following are equivalent.
+	
+	\begin{enumerate}
+		\item \label{sync_max:prop:k-reach:item:Areach} $A$ is reachable in $\mathcal A$.
+		
+		\item \label{sync_max:prop:k-reach:grp-units-element} There exist $g \in G$, $u \in \Sigma^*$, and a non-permutational letter $a \in \Sigma$ such that
+		\begin{equation}\label{sync_max:eqn:k_reach}
+			\applytrans{\delta}{Q}{ua} = \applyfunc{A}{g}.
+		\end{equation}
+		
+		\item \label{sync_max:prop:k-reach:complement} There exist $g \in G$, $u \in \Sigma^*$, and a non-permutational letter $a \in \Sigma$
+		such that $\applyfunc{Q \setminus A}{g} = \excl{ua}$.
+	\end{enumerate}
+\end{lemma}
+\begin{proof} Set $\Gamma = \{ a \in \Sigma \mid \rank{a} = |Q| \}$, i.e., the set of permutational letters.
+	
+$\ref{sync_max:prop:k-reach:item:Areach} \Rightarrow~\ref{sync_max:prop:k-reach:grp-units-element}$: 
+	As $1 \le |A| < |Q|$, 	
+	a word $w$ mapping $Q$ onto $A$ 
+	must contain a letter from $\Sigma \setminus \Gamma$.
+	By considering the right-most occurrence of a letter from $\Sigma \setminus \Gamma$,
+	we obtain the following equivalences:
+	\begin{align*}
+		\exists w \in \Sigma^* \colon \applytrans{\delta}{Q}{w} = A 
+		& \Leftrightarrow  \exists u \in \Sigma^* \  \exists a \in \Sigma \setminus \Gamma	\  \exists v \in \Gamma^* \colon \applytrans{\delta}{Q}{uav} = A \\
+		& \Leftrightarrow  \exists u \in \Sigma^* \  \exists a \in \Sigma \setminus \Gamma	\  \exists v \in \Gamma^* \colon \applytrans{\delta}{Q}{ua} = \applyfunc{A}{\fword{\delta}{v}^{-1}}.
+	\end{align*}
+	By \cref{sync_max:prop:grp_of_units_TA} 
+	we have $G = \{ \fword{\delta}{v} \mid v \in \Gamma^* \}$, which
+	gives~\ref{sync_max:prop:k-reach:grp-units-element}.	
+	
+$\ref{sync_max:prop:k-reach:grp-units-element} \Leftrightarrow~\ref{sync_max:prop:k-reach:complement}$:
+As $g$ is a permutation,
+we have  $Q \setminus g(A) = g(Q \setminus A)$. So, by complementation we find that~\cref{sync_max:eqn:k_reach} 
+is equivalent to $\applyfunc{Q \setminus A}{g} = \excl{ua}$.
+
+$\ref{sync_max:prop:k-reach:grp-units-element} \Rightarrow~\ref{sync_max:prop:k-reach:item:Areach}$:
+By~\cref{sync_max:prop:grp_of_units_TA} there exists $v \in \Gamma^*$
+such that $g^{-1} = \delta_v$. Then~\cref{sync_max:eqn:k_reach} yields $\delta(Q, uav) = A$.
+\end{proof}
+
+The next result relates the reachability of sets missing a single state
+to orbits of the group of units.
+
+\begin{proposition}\label{sync_max:cor:orbits-excluded-states-defect-one}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	be an automaton and $G$ be the group of units of~$\TM{\mathcal A}$.
+	Then every subset of size $|Q|- 1$ is reachable
+	in $\mathcal A$ if and only if 
+	\[ Q = \bigcup_{\substack{p \in Q \\ \exists a \in \Sigma \colon \excl{a} = \{p\}}} \Orbit{p}{G}.
+	\]
+\end{proposition}
+\begin{proof}
+	By \crefitem{sync_max:prop:k-reach}{sync_max:prop:k-reach:complement},
+	every subset of the form $Q \setminus \{q\}$ for $q \in Q$
+	is reachable in $\mathcal A$
+	if and only if for each $q \in Q$
+	there exists $g \in G$ such that $\{q\} = g(\excl{ua})$ for some $u \in \Sigma^*$
+	and non-permutational letter $a \in \Sigma$.
+	Now, as $\excl{a} \subseteq \excl{ua}$, $|\excl{ua}| = 1$ 
+	and $|\excl{a}| \ge 1$, we find $\excl{ua} = \excl{a}$.
+	Hence, reachability of every subset of the form $Q \setminus \{q\}$, $q \in Q$,
+	is equivalent to the fact that, for each $q \in Q$,
+	there exist  $g \in G$ and $a \in \Sigma$ of defect one
+	such that $\{q\} = g(\excl{a})$.
+\end{proof}
+  
+\begin{corollary}\label{sync_max:cor:single-non-permutation}
+	In an $n$-state automaton $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	with a single non-permutational letter, every $(n-1)$-set of states is reachable
+	if and only if the non-permutational letter has defect one
+	and its group of units is transitive (and so $|\Sigma| \ge 2$).
+\end{corollary} 
+\begin{proof}
+	Let $a \in \Sigma$ be the single non-permutational letter.
+	By \cref{sync_max:cor:orbits-excluded-states-defect-one},
+	every $(n-1)$-set is reachable
+	if and only if $Q =  \Orb_G(p)$ 
+	for some $p \in Q$ with $\excl{a} = \{p\}$, giving the claim.
+\end{proof}
+
+\begin{corollary}\label{sync_max:cor2:single-non-permutation}
+	In an $n$-state automaton over $\Sigma$ with $n \ge 3$ 
+	in which every $(n-1)$-set is reachable,
+	we have $|\Sigma| \ge 2$, one letter has defect one, and for $|\Sigma| = 2$ 
+	the other letter cyclically permutes the states.
+\end{corollary}
+\begin{proof}
+	At least one letter has to have defect one.
+	Then $|\Sigma| \ge 2$, as otherwise only a single $(n-1)$-set
+	would be reachable.	
+	For $|\Sigma| = 2$, by \cref{sync_max:cor:orbits-excluded-states-defect-one}, as $n \ge 3$,
+	the group of units has to be non-trivial.
+	So, the there exists a permutational letter.
+	As a single permutational letter generates a transitive
+	group if and only if it cyclically permutes its domain,
+	the claim follows from \cref{sync_max:cor:single-non-permutation}.
+\end{proof}
+
+In the two-state automaton $\semiautomat{A}{\{q_1, q_2\}}{\{a,b\}}{\delta}$
+with $\delta(\{q_1,q_2\}, a) = \{q_1\}$
+and $\delta(\{q_1, q_2\}, b) = \{q_2\}$
+all $1$-sets are reachable, but $\mathcal A$ has no permutational letter.
+Hence, \cref{sync_max:cor2:single-non-permutation} does not hold for two-state automata.
+	
+\begin{corollary}\label{sync_max:cor3:single-non-permutation}
+		A binary completely reachable automaton with at least three states
+		has a letter cyclically permuting the states and a letter of defect one.
+\end{corollary}
+\begin{proof} This directly follows from \cref{sync_max:cor2:single-non-permutation}. 
+\end{proof} 
+
+Next, we state a consequence
+for $n$-state automata having only a single non-permutational letter 
+and in which all $(n-2)$-sets are reachable.
+
+\begin{proposition}\label{sync_max:prop:single-non-perm-und-n2sets}
+	Suppose $\semiautomat{A}{Q}{\Sigma}{\delta}$ is an automaton
+	having a single non-permutational letter $a \in \Sigma$ 
+	in which every $(|Q| - 2)$-set is reachable
+	and	where $G$ is the group of units of~$\TM{\mathcal A}$. 
+	Then $a$ has defect one or two,
+	where if $a$ has defect two, then~$G$ is $2$-homogeneous,
+	and if~$a$ has defect one and $G$ has no fixpoint,
+	then $G$ is transitive. 
+\end{proposition}
+\begin{proof}	
+	The letter $a$ must have defect one or two, since otherwise
+	no set of size greater than $|Q| - 3$ would be reachable.	
+	Let $p \in \excl{a}$ and $\{s,t\} \subseteq Q$ be a $2$-set. 
+	By \crefitem{sync_max:prop:k-reach}{sync_max:prop:k-reach:complement},
+	applied to $Q \setminus \{s,t\}$,
+	there exists $g \in G$ and $u \in \Sigma^*$
+	such that $g(\{s,t\}) = \excl{ua}$.
+	We have $\excl{a} \subseteq \excl{ua}$.
+	So, $\excl{ua} = \{p,q\}$ for some $q \in Q$.
+	Then $ \{s,t\} = g^{-1}(\{p,q\})$.
+	If $a$ has defect two,
+	then we must have $\excl{a} = \{p,q\}$, i.e.,~$q$ is independent of $u$.
+	So, as $\{s,t\}$ was chosen arbitrarily, $G$ is $2$-homogeneous.
+	Otherwise, if $a$ has defect one, then $\excl{a} = \{p\}$.
+	By \cref{prelim:lem:2sets-transitive} 
+	the orbit of~$p$ in~$G$
+	has size at least $|Q| - 1$.
+	If it has precisely size $|Q| - 1$,
+	then the single state outside of it is a fixpoint of $G$,
+	which cannot be the case by assumption.
+	So, it has size $|Q|$, which 
+	means that $G$ is transitive.
+\end{proof}
+
+Next, we give a characterization for $k$-homogeneity of the group of units
+that generalizes \cref{sync_max:cor:single-non-permutation}.
+
+\begin{proposition}
+	\label{sync_max:cor:single_non_permutational_letter}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	and $1 \le k < |Q|$
+	be such that for all non-permutational letters $a,b \in \Sigma$
+	we have $\applytrans{\delta}{Q}{a} = \applytrans{\delta}{Q}{b}$
+	and $\rank{a} = k$. Then all $k$-sets are reachable in~$\mathcal A$
+	if and only if the group of units $\TM{\mathcal A}$ is $k$-homogeneous.
+\end{proposition}
+\begin{proof}
+	Clearly, if the group of units is $k$-homogeneous,
+	then all $k$-sets are reachable from $\delta(Q, a)$.
+	Conversely, let $A \subseteq Q$ be some $k$-set.
+	By assumption and~\crefitem{sync_max:prop:k-reach}{sync_max:prop:k-reach:grp-units-element},
+	there exist $u \in \Sigma^*$, a non-permutational letter $a \in \Sigma$
+	and an element $g$ from the group of units of $\TM{\mathcal A}$
+	such that $g^{-1}(\delta(Q, ua)) = A$.
+	As $|\delta(Q, ua)| = |\delta(Q, a)|$ and $\delta(Q, ua) \subseteq \delta(Q, a)$
+	we get $\delta(Q, ua) = \delta(Q, a)$.
+	Now, the set~$\delta(Q, a)$ is the same for each letter $a$ of rank $k$.
+	As this set can be mapped to any other $k$-set
+	by an element from the group of units, $G$ is $k$-homogeneous.
+\end{proof}
+
+\begin{proposition} \label{sync_max:subsets:prop:num-two-set-orbits}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	be an SI-automaton with a single simple idempotent letter $a \in \Sigma$
+	where $\delta(q, a) \ne q$ for $q \in Q$.
+	Suppose all $2$-sets are reachable in $\mathcal A$.	
+	Then for every $2$-set $\{q_1, q_2\}$ there exist $p \in Q \setminus \{q,\delta(p,a)\}$
+	and a permutational word $u \in \Sigma^*$ such that
+	\[
+	 \delta(\{p, \delta(q, a)\}, u) = \{q_1, q_2\}. 
+	\]
+	Thus the group of units $G$ of $\TS{\mathcal A}$
+	has at most $|Q|- 2$ orbits on the $2$-sets.
+\end{proposition}
+\begin{proof}
+	By \cref{sync_max:prop:k-reach}
+	we have $\delta(Q, va) = g(\{q_1, q_2\})$
+	for some $g \in G$ and $v \in \Sigma^*$.
+	This implies $|\delta(Q, va)| = 2$.
+	When choosing $va$ of minimal length,
+	we can assume $\delta(Q, v) \ne \delta(Q, va)$.
+	Since~$q$ is the only state moved by~$a$,
+	this implies $q \in \delta(Q, v)$
+	and so $\delta(q, a) \in \delta(Q, va)$.
+	Furthermore, since $q \notin \delta(Q, a)$,
+	we have $q \notin \delta(Q, va)$.
+	Thus we obtain the first part of the claim by picking $u$ such
+	that $g = \fword{\delta}{u}$.
+	Since there are at most $|Q| - 2$
+	sets of size two and of the form $\{ p, \delta(q, a) \}$ with $p \ne q$,
+	we get the rest of the claim.
+\end{proof}

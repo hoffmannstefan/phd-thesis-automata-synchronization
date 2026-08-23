@@ -1,0 +1,321 @@
+%!TEX root = ./../../springer-mono-format/book.tex
+%!TEX root = ./../../thesis-trier.tex
+
+Formal language theory is the study of $\Sigma^*$ and its subsets as a means of representing and processing information.
+Besides the notions from formal language theory already introduced in \cref{intro:sec:basic},
+here, in \cref{prelim:sec:formallang:basics}, 
+we introduce additional notions. In \cref{prelim:sec:regex} we introduce regular expressions 
+as a formalism to describe languages.
+
+\subsection{More Basic Notions}
+\label{prelim:sec:formallang:basics}
+
+In \cref{intro:sec:basic} we introduced the $*$-operation that maps a set to the monoid
+of finite sequences over this set with concatenation as the binary operation.
+Despite being introduced only for finite sets $\Sigma$ (here~$\Sigma$ always denotes a finite set),
+this operation can be applied to any set~$X$ and obeys the following property.
+
+\IN{universal mapping property}
+\begin{proposition}[Universal Mapping Property] 
+	\label{prelim:prop:UMP}
+	Suppose $X$ is a set. Then for every function $\varphi \colon X \to M$
+	into a monoid~$M$, there exists a unique morphism $\hat \varphi \colon X^* \to M$ (the evaluation morphism)
+	such that $\applyfunc{x}{\varphi} = \applyfunc{\iota(x)}{\hat \varphi}$ for all $x \in X$
+	where $\iota \colon X \to X^*$ is the embedding that maps each element from~$X$
+	to a sequence of length one in~$X^*$.\footnote{This property, in fact,
+		determines $X^*$ up to isomorphism.
+		First, note that $\operatorname{id}_{X^*} \colon X^* \to X^*$
+		fulfills $\iota(x) = \operatorname{id}_{X^*}(\iota(x))$ for all $x \in X$
+		and so, by the property, it is the unique morphism
+		fulfilling this equation (and thus the unique extension of $\iota$).		
+		Next. suppose $F(X)$ is another object fulfilling this property
+		with embedding $\iota_{F(X)} \colon X \to F(X)$.
+		Then there exist morphisms $\hat{\iota}_{F(X)} \colon X^* \to F(X)$
+		and $\hat{\iota} \colon F(X) \to X^*$
+		such that $\iota_{F(X)}(x) = \hat{\iota}_{F(X)}(\iota(x)))$
+		and $\iota(x) = \hat{\iota}(\iota_{F(X)}(x))$
+		for $x \in X$.
+		Thus $\iota(x) = \hat{\iota}(\hat{\iota}_{F(X)}(\iota(x))))$
+		for $x \in x$, and so $\concat{\hat{\iota}_{F(X)}}{\hat{\iota}} = \operatorname{id}_{X^*}$.
+        Similarly, we find $\concat{\hat{\iota}}{\hat{\iota}_{F(X)}} = \operatorname{id}_{F(X)}$
+        and so $\hat{\iota}$ and $\hat{\iota}_{F(X)}$
+        are isomorphisms.}		
+\end{proposition}
+\begin{proof} 
+	We set $\hat{\varphi}(x_1 \cdots x_n) = \varphi(x_1) \cdots \varphi(x_n)$
+	for $x_1, \ldots, x_n \in X$
+	and $\hat{\varphi}(\varepsilon)$ equal to the identity element of~$M$.
+	It is easy to verify that
+	this gives a morphism as required and that it is in fact uniquely determined.
+\end{proof}
+
+\IN{free monoid (over $X^*$)}
+The monoid $X^*$ for some set $X$ is called the 
+\emph{free monoid over $X$}. 
+For a generating set $X$ of~$M$, $\hat \varphi \colon X^* \to M$
+is surjective. So, every monoid is the surjective image
+of some free monoid.
+
+Recall that, in \cref{intro:sec:basic}, we have identified sequences of length one with~$X$, i.e., $x$ with 
+$\iota(x)$ for $x \in X$ (which made $X \subseteq X^*$ into a meaningful statement). 
+So, we can write $\varphi(x) = \hat{\varphi}(x)$ for $x \in X$.
+In the following, we denote the morphism $\hat\varphi$ by $\varphi$ as well.
+
+\Cref{prelim:prop:UMP} implies that $\varphi$ 
+is fully specified by it images on the elements from $X$.
+Thus, to specify a morphism from~$X^*$ into some monoid~$M$,
+it is sufficient to give the images of the element from~$X$.
+
+Now, let $L \subseteq X^*$.
+Applying \cref{prelim:prop:UMP}
+to $i \colon L \to X^*$ given by $i(u) = u$ for $u \in \Sigma^*$, we 
+obtain a morphism $\hat{i} \colon L^* \to X^*$.
+We then have $\hat{i}(u_1  \cdots  u_n) = u_1  \cdots  u_n$
+for $u_1, \ldots, u_n \in L$ where on the left hand side, concatenation in $L^*$
+is meant and on the right hand side concatenation in~$X^*$.
+Thus, we find $\hat{i}(L^*) = \bigcup_{i \ge 0} L^i$.
+Then, by identifying $L^*$ with $\hat{i}(L^*)$,
+the statement $L^* \subseteq X^*$ is meaningful
+and we can regard the $\ast$-operation as an operation of signature $\mathcal P(X^*) \to \mathcal P(X^*)$
+mapping $L$ to $\bigcup_{i \ge 0} L^i$.
+
+Intuitively, the identification of $L^*$ with $\hat{i}(L^*)$
+corresponds to interpreting sequences whose entries are sequences over a set~$X$ as sequences over~$X$.
+However, note that $\hat{i}$ need not be injective in general
+and in this case it is not an isomorphism.
+Thus, the submonoid $\hat{i}(L^*)$ of~$X^*$ 
+might have different properties than $L^*$ considered as the free monoid over~$L$.
+Nevertheless, the identification of $L^*$ and $\hat{i}(L^*)$
+is common practice and does not pose any problems for our applications.
+So, we use this convention in the following
+without special mention.
+
+\IN{Kleene star}
+\IN{Kleene plus}
+\label{def:Kleenestar}
+\label{def:Kleeneplus}
+Mostly, in our context, $X$ equals some finite alphabet $\Sigma$.
+In this case, for $L \subseteq \Sigma^*$, 
+we call~$L^*$, with $L^* = \bigcup_{i \ge 0} L^i$ via our identification,
+the \emph{Kleene star}.\footnote{In the literature, the Kleene star
+	is often directly defined as $\bigcup_{i \ge 0} L^i$
+	and not as a mapping of sets into a monoid of sequences
+	that yields this set under a suitable 
+	interpretation of sequences of sequences.}
+Furthermore, the \emph{Kleene plus} is $L^+ = \bigcup_{i \ge 1} L^i$. 
+
+Next, we state some rules for manipulating language equations. 
+The two equations for the Kleene star follow with the identification discussed above.
+
+\begin{proposition}\label{prelim:langeqn}
+	Let $U, V, W \subseteq \Sigma^*$. Then the following holds.
+	\begin{enumerate}
+		\item \label{prelim:langeqn:concatcap} $U(V \cap W) \subseteq UV \cap UW$ and $(V\cap W)U \subseteq VU \cap WU$,
+		
+		\item  \label{prelim:langeqn:concatcup} $U(V \cup W) = UV \cup UW$ and $(V \cup W)U = VU \cup WU$, 
+				
+		\item \label{prelim:langeqn:starcup} $(U \cup V)^* = (U^*V)^*U^*$.
+		
+		\item \label{prelim:langeqn:Kleenestar-idemp} $(U^*)^* = U^*$.
+	\end{enumerate}	
+\end{proposition} 
+
+\IN{unary language}
+\IN{binary language}
+\IN{ternary language}
+A language $L$ 
+is said to be \emph{unary} (resp.~\emph{binary} or \emph{ternary})  
+if there exists an alphabet~$\Sigma$ with $|\Sigma| = 1$ (resp.~$|\Sigma| = 2$ or $|\Sigma|=3$) such that $L \subseteq \Sigma^*$ .
+
+\IN{language quotient} 
+\index{left (language) quotient|see{language quotient}}
+\index{derivative (of a language)|see{language quotient}}
+\IN{set of suffixes} 
+\IN{set of prefixes}
+\IN{set of factors}
+\IN{proper prefix}
+\IN{proper suffix}
+\IN{proper factor}
+\label{def:pref} 
+\label{def:suff} 
+\label{def:fact}
+\label{def:quotient}
+Let $L \subseteq \Sigma^*$. For $u \in \Sigma^*$, 
+the \emph{(left) quotient (of $L$ by $u$)} 
+is $u^{-1}L = \{ v \in \Sigma^* \mid uv \in L \}$.
+Language quotients were introduced 
+by Brzozowski~\cite{DBLP:journals/jacm/Brzozowski64} (called \emph{derivatives} therein).
+Next, set $\pref{L} = \{ u \in \Sigma^* \mid \exists v \in L \ \exists x \in \Sigma^* \colon v = ux \}$,
+$\suff{L} = \{ u \in \Sigma^* \mid \exists v \in L \ \exists x \in \Sigma^* \colon v = xu \}$,
+and $\fact{L} = \{ u \in \Sigma^* \mid \exists v \in L \ \exists x,y \in \Sigma^* \colon v = xuy \}$.
+For $u \in \Sigma^*$, we set $\pref{u} = \pref{\{u\}}$, $\suff{u} = \suff{\{u\}}$,
+and $\factor{u} = \factor{\{u\}}$.\footnote{Thus we obtain functions $\Sigma^* \to \mathcal P(\Sigma^*)$.
+	Note that the extension of these functions to subsets
+	would actually give functions $\mathcal P(\Sigma^*) \to \mathcal P(\mathcal P(\Sigma^*))$,
+	which creates some ambiguity with their original definitions
+	as function with signature $\mathcal P(\Sigma^*) \to \mathcal P(\Sigma^*)$.
+	Our usage follows the standard convention and when applied to languages, we always
+	mean the functions $\mathcal P(\Sigma^*) \to \mathcal P(\Sigma^*)$
+	as originally defined, which should be clear from context so that no confusion arises.}
+We call $u \in \Sigma^*$ 
+a \emph{prefix} (resp.~\emph{suffix}, \emph{factor})
+of $v \in \Sigma^*$ if $u \in \pref{v}$ (resp.~$u \in \suff{v}$, $u \in \factor{v}$).
+A prefix (resp.~suffix, factor) $u$ of $v$ is called \emph{proper}
+if $u\ne v$, i.e., if $v \in u\Sigma^+$ (resp.~$v \in \Sigma^+u$, $v \in \Sigma^*u\Sigma^+ \cup \Sigma^+u\Sigma^*$).
+\IN{prefix}\IN{suffix}\IN{factor}\index{infix|see{factor}}
+
+\IN{left ideal language}
+\IN{right ideal language}
+\IN{ideal language}
+A \emph{left ideal language} (resp.~\emph{right ideal language})
+is a language $I \subseteq \Sigma^*$ such that $\Sigma^* I \subseteq I$ (resp.~$I\Sigma^* \subseteq I$).
+Left (resp.~right) ideals are precisely the languages of the form $\Sigma^* \setminus \suff{L}$ 
+(resp.~$\Sigma^* \setminus \pref{L}$) for some $L \subseteq \Sigma^*$.
+An \emph{ideal language} is a language that is simultaneously a left and a right ideal language.
+
+We need the following result to solve language equations.
+
+\begin{lemma}[{Arden's rule (see~\cite{HopUll79})}]\label{prelim:lem:arden}
+	Let $U, V \subseteq \Sigma^*$ with $\varepsilon \notin U$.
+	Then the language equation $X = XU \cup V$ (resp.~$X = UX \cup V$)
+	has the unique solution $X = VU^*$ (resp.~$X = U^*V$).
+\end{lemma}
+
+\begin{example} \label{prelim:eqn:Sigmastarpartition}
+	Let $L \subseteq \Sigma^+$.
+	We have $\Sigma^* = L \Sigma^* \cup (\Sigma^* \setminus L\Sigma^*)$.
+	By \cref{prelim:lem:arden} this gives
+	$\Sigma^* = L^* ( \Sigma^* \setminus L\Sigma^* )$.	
+	Note that
+	$L^* ( \Sigma^* \setminus L\Sigma^* ) =  \Sigma^* \setminus L\Sigma^* \uplus L^+ (  \Sigma^* \setminus L\Sigma^* )$.	
+\end{example}
+
+For $L \subseteq \Sigma^*$, $u \in \Sigma^*$ and $n \ge 1$
+we also need the following formulas that are easy to verify:
+\begingroup
+\allowdisplaybreaks 
+\begin{align}
+		u \in \pref{L}  & \Leftrightarrow \pref{u} \subseteq \pref{L} \label{prelim:eqn:prefu} \\
+		%u \in \pref{L^*}            & \Leftrightarrow u \in \pref{L^n} \text{ if } |u| \le n  \label{constrsync:eqn:Lm} \\
+		%\pref{L}  & = \{ u \in \Sigma^* \mid \pref{u} \subseteq \pref{L} \} \label{prelim:eqn:prefu} \\
+		\pref{L^*} \cap \Sigma^{\le n} & = \pref{L^n} \cap \Sigma^{\le n}  \label{constrsync:eqn:Lm} \\
+		\pref{L^n} & = L^{< n} ( \pref{L} \setminus L ) \cup L^n \label{constrsync:eqn:perfLn} \\
+		\pref{L^*} & = L^*\pref{L} = L^+ \cup L^* ( \pref{L} \setminus L )  \label{prelim:eqn:prefLstar}  \\
+		\pref{L^*} & = L^* ( \pref{L} \setminus L ) \text{ if } \varepsilon \notin L % iff? , schnitt mit Sigma^+ gleichheit
+		\label{prelim:eqn:prefLstarnoeps} \\
+		\Sigma^* v \Sigma^* \cap L \ne \emptyset & \Leftrightarrow \Sigma^*v \cap \pref{L} \ne \emptyset
+\end{align}
+\endgroup%
+Note that, if $\varepsilon \in L$,
+then $\varepsilon \notin L^* (\pref{L} \setminus L)$,
+so that \cref{prelim:eqn:prefLstarnoeps} does not hold in this case. For a concrete example
+let $L = \{\varepsilon, aa\}$. Then $\pref{L^*} = a^*$, 
+$\pref{L} \setminus L = \{a\}$ and $L^* = (aa)^*$
+so that \cref{prelim:eqn:prefLstarnoeps} fails.
+
+\label{def:projection}
+\label{def:Parikhmap}
+\IN{projection morphism}
+\IN{commutative language}
+\IN{Parikh map} 
+\index{Parikh morphism|see{Parikh map}}
+\label{def:occurrences_of_letters}
+Let $\Gamma \subseteq \Sigma$. The
+\emph{projection morphism} $\pi_{\Gamma} \colon \Sigma^* \to \Gamma^*$ onto~$\Gamma^*$
+is given 
+by
+$\pi_{\Gamma}(x) = x$ for $x \in \Gamma$ and 
+$\pi_{\Gamma}(x) = \varepsilon$
+for $x \notin \Gamma$. As the name suggests, $\pi_{\Gamma}$ is a monoid morphism.
+We set $|u|_a = |\pi_{\{a\}}(u)|$ for $u \in \Sigma^*$ and $a \in \Sigma$. Then $\pi_{\{a\}}(u) = a^{|u|_a}$
+and $|u|_a$
+equals the number of times the letter~$a$ occurs in the word~$u$. 
+The \emph{Parikh map}~\cite{DBLP:journals/jacm/Parikh66} 
+(or \emph{Parikh morphism}) 
+is $\psi \colon \Sigma^* \to \mathbb N_0^{\Sigma}$ 
+where $\psi(u) = (|u|_a)_{a \in \Sigma}$
+for $u \in \Sigma^*$.
+%given by $\applyfunc{u}{\psi}(a) = |u|_a$
+%for $a \in \Sigma$ and $u \in \Sigma^*$.
+A language $L \subseteq \Sigma^*$ 
+is \emph{commutative} if $\applyfunc{\applyfunc{L}{\psi}}{\psi^{-1}} = L$.
+Equivalently, if $uabv \in L$
+implies $ubav \in L$ for all $u,v \in \Sigma^*$
+and $a,b\in \Sigma$.  
+
+In expressions on languages using the operations concatenation~$\cdot$ (as a product on subsets), 
+Kleene star~$^*$, Kleene plus~$^+$
+and the set operations, when writing a single word $u$ we mean 
+to interpret it as the language $\{u\}$
+and we omit parentheses according to the following precedence rules:~$^*$ and~$^+$
+have the strongest binding, then~$\cdot$ and lastly the set operations
+due to the usual convention where set difference is evaluated before union and intersection.
+For example, $abc \cup b^*$ denotes $\{abc,\varepsilon,b,b^2,b^3,\ldots\}$.
+We also omit parenthesis for associative operations such as union and intersection.
+For cases not covered by these rules, as, for example, combinations of union and intersection,
+parenthesis are used to resolve any ambiguity.
+
+\subsection{Regular Expressions}
+\label{prelim:sec:regex} 
+
+% oder reguläre Ausdrücke als freier kleeen/starred semiring über menge/enlarged alphabet \hat{Sigma}
+% mit eval hom, was sofort diese einsetzungregeln liefert bzw wie gleichungen zu lesen sind bzw zu zeigen sind (post exchange) bzw für symbole zeigen, dann für alle bzw für sprachen dann für alle solche algebren
+% polynomalgebra über B = {0,1} 
+
+\IN{regular expression}
+\IN{rational expression}
+\label{def:RegSigma}
+Let $\Sigma$ be a finite alphabet and set $\hat \Sigma = \{ \hat a \mid a \in \Sigma\}
+\cup \{ \hat\emptyset \} \cup \{  ^*, \cdot, +, (, ) \}$.
+A \emph{regular expression} (also known as a \emph{rational expression})\footnote{
+	Eilenberg~\cite{Eilenberg1974}
+	suggested the renaming to rational expressions 
+	and there are good reasons to 
+	use the term rational
+	instead of regular when considering more general monoids
+	than the free monoid or generalizing the theory to formal power series instead of languages.
+	We refer to the literature for more information~\cite{Eilenberg1974,Eilenberg1976}.	
+	Here we are not concerned with these generalizations, and so we prefer
+	the term regular expression which was introduced, historically,
+	before.}
+is a word over $\hat \Sigma$
+inductively defined in the following way:
+$\hat a$ for $a \in \Sigma$
+and $\hat{\emptyset}$ are regular expressions, and if~$R, S$ are regular expressions, then $(R\cdot S)$ (or $(RS)$ for short), $(R + T)$, and $(R^*)$
+are regular expressions. 	
+By $\mathcal{RE}(\Sigma) \subseteq \hat{\Sigma}^*$
+we denote the \emph{set of regular expressions}.
+
+\label{def:Lregex}
+\label{def:language_reg_ex}
+Each regular expression defines a language over $\Sigma$ 
+via the  
+(interpretation or evaluation) function 
+$L \colon \mathcal{RE}(\Sigma) \to \mathcal P(\Sigma^*)$ 
+inductively defined by
+$L(\hat a) = \{a\}$, $L(\hat \emptyset) = \emptyset$, $L((RS)) = L(R)L(S)$, 
+$L((R+S)) = L(R) \cup L(S)$ and $L((R^*)) = L(R)^*$.
+
+When writing regular expressions, we leave out the hats, i.e., identify $\hat a$ with $a$ for $a \in \Sigma$ 
+and $\hat \emptyset$ with $\emptyset$, while still having the distinction between formal expressions
+and their interpretation in mind.
+Furthermore, we leave out parentheses due to the usual conventions,
+i.e., we arbitrarily add parentheses to expressions of the form $RST$ and, with the other operations, according to the following
+operation precedence:~$^\ast$ (strongest binding),~$\cdot$ and then~$+$.
+For example, $L(abc + ab^*) = L(((a(bc)) + (a(b^*))))$. If there is no danger of confusion, we also omit the $L$-function
+and simply write, for example, $abc + ab^*$ for the language $L(abc + ab^*)$.
+
+At the end of \cref{prelim:sec:formallang:basics}
+we discussed expressions over languages and precedence rules.
+Every regular expression can be readily translated
+to an expression over languages, the only difference
+being rather superficial in the usage of $\cup$
+instead of $+$. So, the reader might wonder what we have gained
+by this extra level of abstraction.
+The reason is that in computer science we are often concerned with questions of expressibility (what can be described)
+and succinctness (complexity of descriptions)
+of some formal system or description mechanism and in proving results with regard
+to these two questions we need to be precise and separate the syntax from its semantic.
+In \cref{prelim:sec:autacceptors} 
+we will characterize the class of languages describable by regular expressions
+using automata.

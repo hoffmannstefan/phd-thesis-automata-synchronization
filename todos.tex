@@ -1,0 +1,682 @@
+%
+%- cocoon paper diskutieren
+%- eine NP-hardness Bedingung mit den weakly aux state notions bzw wie die Pspace und NL-Bedingung uv^*w und u muss zurücksetzen
+
+
+\subsection{Beachten und Formales}
+
+\todo[inline]{ \footnotesize 
+	
+	- fehlender referenzen/fragezeichen
+	
+	- einige links im Index funktionieren nicht, z.B. "right coset". sieht man aber -> kein grüner Kasten. einige einträge im index keine hypoerlinks	
+	
+	- Überschriften in Figure-Liste "list of figures" nochmal überarbeiten. Einige sind zu lang
+	
+	- Uni-Affiliations von Henning und Igor adden? Oder doch nicht, siehe Vorgabe Deckblatt
+	
+	- Paragraphen durch Zeilenabstand oder durch Einrücken kennzeichnen?
+	
+	- eidesstaatliche Erklärung + wissenschaflticher Lebenslauf
+	
+	- dois in bib adden.
+	
+	- prüfen, dass alle kapitel "Discussion"-Section haben
+	
+	- nach comma slices gucken. 
+	
+	Im Notation Index:
+	- Seite 7 unten in der Mitte, danach Seitennummern oben links/rechts?
+	
+	- oben steht list of tables auf den seiten???
+	
+	- Generall Seitenzahlen noch einmal prüfen. Die nummerierung der seiten haut nicht hin, am anfang 1-14 und dann nochmal von 1
+	
+	- Notation Index sortieren bzgl. Seitenzahlen
+	
+	
+	- Im introductory Teil die eigenen Referenzen kürzer zitieren? Nur titel + author? irgendwie abgekürzt zitieren, ohne links und vollem konferenznamen?
+	%	
+	%	% https://www.google.com/search?q=cite+vs+fullcite&rlz=1C1GCEU_deDE823DE823&oq=cite+vs+fullcite&aqs=chrome..69i57j33i160l2.2398j0j7&sourceid=chrome&ie=UTF-8
+	%	% https://tex.stackexchange.com/questions/159286/biblatex-how-to-fullcite-the-first-occurences-and-cite-the-others
+	%	% https://github.com/jgm/pandoc/issues/2335
+	%	
+		
+	- partielle Funktionen wirklich nicht vor Part IV benutzt (z.b. bei Definition von circuits)?
+	
+	- nutzt man bei cref eigentlich tilde oder nicht?
+	
+	- Markos wie semiautomat rausnehmen?	
+	
+	- warum eigentlich hier $u_i$ und in anderem theorem $v_i$ genannt? solche sachen vereinheitlichen
+	
+	- nachtmodus wegnehmen
+	
+	- drucken (vordrucken mit pdf-drucker 2-seitig)
+		
+	- lebenslauf einfügen	
+	
+	- bei der reihenfolge der konkatenation überall nochmal aufpassen. 	
+	
+	- spellchecker drüber laufen lassen
+
+	- ldots zu cdots in überall in formeln!	
+	
+	- notation proper prefix, $pref^+(L)$ vielleicht? im auxiliary state avoiding teil brauche ich das oft.
+	
+	- notation max(x,y) vs $\max\{x,y\}$
+	
+	- notation $A^{\ge n}$ einführen?
+		
+	- \cref{constr_sync:thm:prefix_before}: achtung, zwei labels
+	
+	- \cref{constrsync:sec:aux}: in den sätzen oben mit w statt v bezeichnet
+	
+	- Problemname im index? oder eigener index für probleme. Irgendwo auch index aller problem? nach notation index? Abkürzungen wie PDFA auch in index. Index of open problems und conjectures.
+	
+			
+	- zitierungen sortieren
+		
+	- notation alph(vi) einführen für buchstaben in wort?
+	
+	
+	- style von paper Computational complexity of problems for deterministic presentations of sofic shifts , cai. bilder von reduktionen wie in symbolic dynamics problems paper.
+	% https://arxiv.org/pdf/2112.03484
+	 
+	
+	- bei den benutzungen von aussage nicht nur "by Cor X" zitieren, sondern kurz aussage im text nennen?
+	
+	
+	- mal discussion and conclusion, mal nur discussion genannt, die abschlusssektion... vereinheitlichen. Oder "Related Work" nennen?
+	
+	
+	- equalities, formulas, equations. wann welchen begriff nehmen?
+}
+
+\subsection{Konventionen}
+
+\begin{adjustwidth}{-1.8cm}{-1.8cm}
+	
+	\footnotesize 
+	\begin{enumerate}[itemsep=-5pt]
+		
+		\item Oxford-Comma	
+		
+		\item one-point singular idempotent  oder  idempotent one-point singular. vereinheitlichen. auch für partially ordered binary automata oder binary partially ordered. welche reihenfolge nehmen? auch: binary completely dist oder complete dist binary, einheitlich ob alpahbet zuerst oder nicht, vergleichen mit anderen stellen im dokument. english? defect one transformation vs transofrmation of defect one.
+		überalle so rum commutative partially ordered nicht partially ordered commutative 
+				
+		\item Überall "tight bound" durch "sharp bound" ersetzen.
+		
+		\item statt $\eqreach$ umgekehrt, unten der geschwungene strich?
+		
+		\item sprechweise: "proved in Theorem/Lemma/Proposition" -> ist aber nur statement, gezeigt aber im beweis also "shown in the proof of Theorem/Lemma/Proposition" besser?
+		
+		\item outdegree und indegree gucken überall ohne bindestrich geschrieben.
+		
+		\item in Bildern von Automaten Zustände auch überall grau hinterlegt und einheitliches aussehen. Schatten in einigen bildern unter zuständen fehlen.		
+		
+		\item betonungszeichen, auch bei cerny. akzente bei araujo üerall besetzt?			
+		
+		\item $a,b,c,d$ statt $p,q,s,t$ für punkte?
+		
+		\item machmal s,t, manchmal p,q für zustände benutzt, vor allem in "more notions from autoamta theory"-teil
+		
+		\item vereinheitlichen non-trivial, non-empty, non-deterministic statt nontrivial, nonempty, nondeterministic; nondisjoint, non-emtpy durch nonempty ersetzen? labelled vs labeled?
+		
+		\item bei TFAE-Aussagen Punkt am Ende von Items setzen, vereinheitlichen.  Kommas am ende von formelauflistungen auch an anderen stellen weg (konventionen: keine satzsachen bei eingerückten formeln, oxford comma, cdots für operationen, ldots für auflistungen), oder frei in punctuation in eingerückten formeln. Das irgendwo sagen? (hatte mal nachhilfeschüler die verwirrt waren)
+		%\todo{erwähnen keine punkte/kommata am ende von fallunterscheidungen.}
+		%\todo[inline]{theorem: zentrale aussage des kapitels,
+			%	proposition: eine aussage die für sich steht, aber nicht so wichtig ist,
+			%	lemma: tehcnisches ergebnis, wird in beweisen von, meist theoremen, benutzt.}
+		%
+		% 	\todo{mal $:$ mal $\mid$ bei set builder. je nachdem ob formel $\forall : etc$ folgt oder betragsstriche }
+		
+		\item sink durch trap überall ersetzen	
+		
+		\item bei Sprechweise aufpassen "Problem in NL/NP usw", aber ein Algorithmus ist nicht in NL/NP, aber läuft auf einer nondet. TM in log-space/P-time oder so, oder "Algorithm witnesses das Problem" sagen oder so
+		
+		\item einheitlich von 0 oder 1 zustände benennen. notation $[n]$ bei 0 starten lassen oder nicht.
+		
+		\item prefix in labels in Part 3 ändern. nicht mehr $sync_max$, sondern $aut_sync_words$ oder so? Und generell
+		laben-Namen vereinheitlichen
+		% https://tex.stackexchange.com/questions/289038/how-do-i-show-the-labels-of-theorems-definitions-etc
+		
+		\item proved or proven?
+		
+		\item vereinheiltlichen family oder class of sets sagen 	
+		
+		\item Sections oder Paragraphen in Diskussion-Teilen?
+		
+		\item holds true kann man schon sagen? englisch?
+		
+		\item form, type, structure? english
+		
+		\item relativ unkonsequent manchmal enum umgebungen, machmal description,machmal nur fliesstext um definitionen einzuführen. vereinheitlichen?
+		
+		\item $[n]$ durch $X$ ersetzen und sagen X finite? gucken wo ich $[n]$ durch $X$ ersetzen kann.
+		
+		\item hier reset letter/word einführen? dann bräuchte man nicht mehr synchronizing 
+		
+		\item written oder denoted by bei Definitionen schreiben?
+		
+		\item Konjugation $t^g$ weiter vorne definieren? Ist ja jetzt kein genuines Permutationsgruppenkonzept.
+		
+		\item mit $R(A)$ statt $I(A)$ bezeichnen für Rystsov graph?	
+		
+		\item bei transforamtion matrix nciht adjacenzmatrix nennen, weil kein graph. Nutze ich Adjanzenmatrizen irgendwo?
+		
+		\item A,B für zustandsmengen, S,T für semigruppen! aber S,T auch für SCCs benutzt
+		
+		\item aufpassen, nicht $S$ für mengen und semigruppe benutzen! deswegen bei semigruppen immer teilmengen von domain A/B/C...
+		
+		\item reihenfolgen in zitierungen sortieren, also dass in cite-Befehl alles aufsteigend sortiert erscheint?
+		
+		\item set builder notation mal $\mid$ mal $:$, erstes bevorzugen wegen formel mit : i def, aber wenn betragsstriche dann anderes
+		
+		\item schreibt man "... such that" oder "... be such that"? was ist besseres englisch?
+		
+		\item kapitel sparse: w oder u vereinheitlichen. Sprachen in $w^*$
+		
+		\item statt regular rational sagen?	 
+		
+		\item context-free language definieren?	 
+		
+		\item P statt C für prefix code schreiben? \cref{constr_sync:thm:prefix_before}: P als namen eher vermeiden, da meist zustände von constraint automat mit P bezeichnet
+		
+		\item appendix vor literaturverzeichnis?
+		
+		\item überall Item vorne dranschreiben, wenn man sich auf Unterpunkte von Aussage bezieht. In rank factorization paper machen die das auch so
+		
+		\item minimalautomat auch $\mathcal A_{\equiv_L}$ statt $\mathcal A_L$?
+		
+		\item schlecht, auf spätere ergebnisse zu verweisen...
+			
+		\item gucken, dass überall $\Sigma$ und $Q$ in richtiger reihenfolge bei automatonspezifikation. besondern im letzten teil, bei pto als input.		
+		
+		\item sprechweisen We state/prove/show, konsequent unterscheiden, erstes nur aussage, letzte mit beweis?		
+		
+		\item submonoid of Sigma-star oder nur monoid sagen?
+		
+		\item SI-autoamta oder automata with simple idempotents -> vereinheitlichen (siehe auch captions, letzter teil vs vorne)
+		
+		\item bei mehreren Autoren "und" statt "ambersand": Also Shyr und Yu statt Shyr \& Yu. Bianca hat da auch mal eine Mail zu geschrieben. ChatGPT sagt auch eher "und".
+		
+		\item referenzen, namen von journalen und konferenzen alle abkürzen?
+		
+		\item In proof of \cref{constrinput:pto:lem:Sigma1starSigma2Sigma3star} clauses c klein schreiben? woanders groß. vereinheitlichen
+		
+		\item Sec. oder Sect. als Abküzrung (in zitierungen)? kommando dafür. 
+		%\todo[inline]{für "Thm." usw in cite-befehlen eigens kommando, THMCITE oder so, auch in align gleichungsketten}
+				
+		\item makro! nconcat für n-fache konkatenation mit pünktchenschreibweise? 
+		
+	\end{enumerate}
+\end{adjustwidth}
+
+
+\subsection{Noch machen}
+
+
+\begin{adjustwidth}{-1.8cm}{-1.8cm}
+
+\footnotesize 
+	\begin{enumerate}[itemsep=-5pt]
+	\item Diagramm Kapitelabhängigkeiten (draw.io, chatgpt + tikz). Wie in Martin Davis Computability Lehrbuch
+		
+	\item spezielle notation für partielle funktion, so mit gekreuztem pfeil oder so? dann in nomenclature auch erwähnen? 
+	
+	\item  begriff uniformly minimal einführen?
+	
+	\item  pfeilspitzen in manchen bildern größer
+	
+	\item runtime vs running time? Und "algorithm that runs" oder "algorithm running"?
+	
+	\item  prüfen, dass alle decision problems mit Namen auch im Index auftauchen
+	
+	\item Kommando "semiautomat" durch "semiautomaton" oder "semiaut" ersetzen. Und auch "automat" durch "automaton"?
+	
+	\item applyfunc und concat überall konsequent nutzen
+	
+	\item notation für orbitalgraphen?
+	
+	\item kommt begriff concept irgendwo vor?
+	
+	\item brauche ich reset automaton irgendwo, ist verwirrend mit synchronizing automaton?	
+	
+	\item In Index steht cyclic automaton, SI-automaton, strongly connected automaton, usw separate Einträge. oder automaton-Eintrag und die Typen drunter?	
+	
+	\item In "classes of automata"-chapter section strongly connected and strongly trap-connected automata?    
+		
+	\item Primitive Matrizen diskutieren?
+		
+	\item Grundidee des P-time Algorithmus von Szykula/Ferens skizzieren
+	
+	\item Namen für decision problem {\sc DFA-Distingusish} oder so? 
+	
+	\item schönere tcolorbox statt fbox nehmen?
+	
+	\item die autoamtenfamilien im slowly-sync-teil mit mathscr und nicht mathcal? (dann keine überschneidung mit alternating group)	
+	
+	\item  besseren nconcat befehl nutzen für n-fache composition, und umbennnene in comp wegen composition statt concat; ist ja keine concatenation...
+		
+	\item nochmal schauen, alles in aschbacher style schreiben. oder downey/fellows
+	%\todo[inline]{genauer, in section so und so; nochmal mit Aschbacher und Harary vergleichen}
+	% \todo[inline]{ist das eigentlich üblich, einführung mit nicht-definierten begriffen zu schreiben und diese erst im kapitel einzuführen.
+		% 	aschbacher macht es, harary? und in artikeln?
+		% }
+	% 
+		
+	\item ack,abstract,zusammenfssung auch in table of contents erwähnen, wie in Ryzhikov diss
+	
+	\item die Autoamten $A_t$ und $A_c$ am Anfang einführen und nicht erst in \cref{constrsync:prop:SI-binary-sync-in-L} ?
+	
+	\item die bezeichner a,b,c,d in der reihenfolge aussage/beweis in den bedingugnen für transitivität (Lemma~\ref{prelim:lem:2sets-transitive} und folgende in permutation groups-section) vereinheitlichen	
+	
+	\item circular in subclasses teil von prelim einführen, dann kann ich auch ein wenig mehr zu denen sagen (martyugin arbeiten, pin/dubuc)	
+		
+	\item Section "Synchronizing Autoamta and the Reachabiltiy Order", teile davon verallgemeinerung die Ergebnisse für trap-state automata davor. Vielleicht kapitel anders anordnen um dise Ergebnisse in trap-state Kapitel nutzen
+		
+	\item doppelpfeile an automaten für hin und zurück irgendwo erklaeren bzw einführen. kommt bei kleinen familien D,E usw oft vor (am anfang, wo state diagrams eingeführt, aber dann auch beispiel dazu? noch neben cerny anderen automaten)
+	% https://tex.stackexchange.com/questions/445108/drawing-a-double-headed-latex-arrow
+	
+	\item wie steinberg primitive monoide definieren. primitive automaten einführen? % dann macht die definition von primitiven gruppen ohne transitiv auch mehr sinn (bzw. brauch ich di egar nicht extra definieren, aber bemerkung, dass hier ncht transitiv wäre gut)
+		
+	\item die Gleichungen aus Formal Languaees Teil nach Part IV verschieben?	
+	
+	\item Aussagen bei Einführung vom Power Automaton für beliebige Transformationen formulieren?
+	
+	\item für relationen auch transition matrix definieren? Wird bisher nur kurz in \cref{prelim:sec:remarks_func_comp} erwähnt.
+		
+	\item Sprechweise permutes SCCs, betonen wenn sets gemeint (siehe Hennings bemerkung von S.122 (92) )	
+		
+	\item auch nochmal später schauen, dass nicht G(A) = I(A) geschrieben (der Automatengraph hat ja noch ganz viele self-loops). Bemerkung dazu
+	
+	\item kapitel kommutative automaten: wie wäre es,w enn ich nithct immer fixed, sondern einfach even unary scheribe?
+	
+	
+	\item \cref{prelim:remarks_trans_semigrp_semiautomata} umformulieren, semiautomat nicht bloß transformation semigroups mit gen set (faithful)
+	%
+	% -bzgl. beziehungs transformations semigroups vs automaten: vielleicht automaten immer mit start und final und semiautomaten komplett rauslassen? nur von transformatio
+	%	semigroups sprechen? wobei bei automat nicht der quotient in Sigma star, also keine faithful darstellung unbedingt.
+		
+	% hier auch so ein graph am anfang:
+	% https://wiki.epfl.ch/provenance2011/documents/foundations+of+databases-abiteboul-1995.pdf	
+	
+	\item in \cref{constr_sync:subsec:morphisms} ganz oft für sigma nicht applyfunc benutzt!
+	
+	\item kurzschreibweise, regex für mengen bzw für ausdrücke. ich mische $\{\cdot\}$ und ohne klammern notation. also regex und sprache z.B. a(a+b)* vs $a\{a,b\}^*$ einheitlich, $\{a,b\}^*$ oder $(a+b)^*$
+	
+	\item circular automata doch schon früher einführen weil schon in \cref{prelim:compl:sec:discussion} erwähnt.
+	
+	\item PDFAs einhetlich mit mathcal B? aber eingeüfhrt mit mathcal A statt mathcal B?
+		
+	\item Konkrete beispiele codes abschnitt: siehe journal artikel cocoon, version 30.06.2023 
+		
+	\item übersichtstabelle small state constraint PDFAs: bei rot striche nutzen, und bei grün punkte, wegen farbsehschwächen und s/w druck
+	
+	\item nutze square-and-multiply argument/algo an einigen stellen, z-.B. im Beweis von \cref{sparse:thm:bounded_in_NP}. Denn irgendwo am anfang erklären?
+	
+	\item auch nochmal die alten mails von nugant durchgucken
+	
+	\end{enumerate}
+\end{adjustwidth}
+
+
+
+
+%\setlength{\marginparwidth}{13cm}
+\todo[inline]{ \footnotesize 
+	
+	- Im Abschnitt über bounded languages: oben w genannt, unten wieder $u$? vereinheitlichen?
+	
+	- Im Beweis von \cref{constrsync:thm:sparsemonoid-regular} (teil growth of languages): Bezout in allgeminer form, wie der shallit pighizinni satz; vorne zum zitieren. und die fussnote zu frobenius coin problem in dem beweis als eigenen text nach statement
+	
+	- probleme mit cref auf arbeitsrechner. erwähnen vorm einschicken
+		
+	- when bounded by a polynomial oder if bounded? also grammatik when vs if im englischen?
+		
+	- neg oder overline um negation von booleschen Variablen auszudrücken?
+		
+	- konstanten in circuits kann man nur mit mindestens einer eingeabe erzeugen, in section zu circuits erwähnen?
+		
+	- We can assume $s \ne t$ and that~$s$ has no incoming edges and~$t$ has no outgoing edges.
+	vielleicht das immer sagen und auf k-DAG-ST verzichten.
+	Gucken wo ich das alles brauch. falls nur 1x dann ja
+	
+	
+	- in def solvable taucht auch notation mit anwendung auf teilmenge auf, aber das ist mehrdeutig, weil da nicht
+	die erweiterung auf mengen gemeint.
+	
+	
+	% permutes the set of vs permute each strongly connected 
+	
+	
+	
+	- vielleicht extra notation k-SFS, oder Sigma-SFS? nutze es für fixe alphabet im beweis von \cref{constr_sync:thm:introductory_examples}
+	
+	
+	- nach fehlenden referenzen, fragezeichen im dokument suchen
+	
+	% kapitelabhängigkeiten
+	% https://webhomes.maths.ed.ac.uk/~v1ranick/papers/cohnalg1.pdf
+	
+	
+	
+	% In Überschriften (Semi-) zu (Semi). Und dort, wo es eingeführt wird.
+	%
+	% https://www.reddit.com/r/asklinguistics/comments/7jgtgd/what_is_the_proper_or_closest_method_to_indicate/
+	%	https://www.google.com/search?q=how+to+mark+optional+parts+of+words+in+english&rlz=1C1GCEU_deDE823DE823&oq=how+to+mark+optional+parts+of+words+in+english&gs_lcrp=EgZjaHJvbWUyBggAEEUYOTIHCAEQIRigATIHCAIQIRigAdIBCTEwMDQ3ajBqN6gCALACAA&sourceid=chrome&ie=UTF-8
+	%	https://www.reddit.com/r/asklinguistics/comments/7jgtgd/what_is_the_proper_or_closest_method_to_indicate/
+	%	
+	%	To mark optional parts of words in English, especially prefixes or suffixes, use parentheses like (un)happy or happi(ness), or square brackets for linguistic glossing like boy[NOM.SG]. For optional words or phrases within sentences, use ellipses (...) for omitted content or braces {} (though less common) for annotations, or just omit the word if the meaning remains clear, as in informal writing. 
+	%	For Prefixes & Suffixes (Morphology/Linguistics)
+	%	Parentheses (): Common for showing an optional part of a word.
+	%	(un)do (meaning 'undo' or 'do')
+	%	anti(biotic) (meaning 'antibiotic' or 'biotic')
+	%	Square Brackets [] (Linguistic Glossing): Used to show elements that aren't overtly present or are optional in a specific context.
+	%	puer-Ø (meaning 'boy' with an unmarked singular noun). 
+	%	For Words & Phrases (Syntax/Writing)
+	%	Ellipsis ...: Indicates omitted words or phrases, common in quotes or informal speech, signaling something is left out.
+	%	"Four score and seven years ago... our fathers...".
+	%	Parentheses (): Can enclose optional phrases or extra, non-essential information in sentences.
+	%	"The dog (a golden retriever) ran in the park.".
+	%	Omission: Simply remove the word if the sentence still makes sense, common for adjuncts (optional adverbs/phrases).
+	%	"John went to the store (yesterday)." -> "John went to the store.". 
+	%	Other Methods
+	%	Hyphens: Can sometimes link optional parts, though less standardized.
+	%	Braces {}: Sometimes used in linguistic analysis to group optional elements. 
+	
+	%\todo{oder (semi)automaton oder (semi-)automaton?
+		%https://english.stackexchange.com/questions/427661/how-to-correctly-hyphenate-a-phrase-with-clarifying-word-in-parenthesis
+		%} 
+	%
+	
+	
+	%%%%%%%%%%%%%%%%%% Sonstige Bemerkungen %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	
+	% Ideas, on their own, are worthless
+	% https://www.youtube.com/watch?v=5RFwX1g9bq8 
+	
+	% https://www.dickimaw-books.com/latex/thesis/html/biblatextroubleshooting.html
+	
+	% https://en.wikipedia.org/wiki/Fundamental_theorem_of_software_engineering
+	
+	% ://tex.stackexchange.com/questions/415395/what-is-causing-this-error-which-i-think-has-something-to-do-with-fonts
+	
+	
+	
+	
+	
+	
+	
+	%\todo{beweis über generating set von Sn ohne die relation \sim formulieren, direkt mit graph und pfaden}
+	
+	
+	
+	
+	
+	%	\todo{nfold product verwechslunggefhar, z.B. bei logarithmen, mit n facher mulitplikation
+		%		
+		%		%	https://en.wikipedia.org/wiki/Function_composition
+		%	}
+	%	
+	
+}
+
+
+
+
+\todo[inline]{
+	\footnotesize 
+	As Ernest Hemingway famously said, “the only kind of writing is rewriting.” Few writers will produce a first draft that they're happy with. Through the process of creating a second and third draft, you will hone the language, cut out superfluous material and refine your manuscript
+	
+	in ack, hier ja oft neu geschreiben und paper neu geschrieben - jeder beweis does nto have much commonalities
+	with everything pusblished by me so far on which
+	this wordk is based. erweitert, vereinfacht, took the chance when writing this thesis to revise etc
+	
+	
+	damit geduld der gutachter strapaziert
+	
+		
+	prof müller-hannemann auch für verständnis danken
+	
+	paper ergebnisse, aber auch thesis selbst.
+	i can safely say I haven written almost three different version of the present thesis until this (has-to-be) final version.
+	
+		
+	
+	- in ack, trotz revisting behaupte ich nicht, dass definite form erreicht
+}
+
+%https://tex.stackexchange.com/questions/103608/how-to-force-latex-not-to-break-the-line-after-a-hyphen
+%https://tex.stackexchange.com/questions/9691/avoid-hyphenation-in-2-d
+
+
+
+\subsection{Ideen, nicht so wichtig erstmal}
+
+\todo[inline]{ \footnotesize
+
+	- Noch die Subset Mapping Problems für SI-Automaten untersuchen. Für binäre sollte es machbar sein. In dem Fall erreichbare Mengen klassifizieren.
+
+	- vielleicht noch anhang, further notions of synchronization mit NEA, partialle, parikh automata, ...
+	
+	- die fakten über endormorphismen in morphisme-teil mit bildern untermauern?
+	
+	-  Aussagen über Morphismen für gerichtete Multigraphen statt nur  Automaten formulieren, z.B. strongly connected auf strongly connected für morphismem, oder: ein Endomorphismus eines endlichen, stark zusammenhängenden gerichteten
+	%Multigraphen ist ein Isomorphismus
+	
+		
+	- reguläre ausdrücke über universelle konstruktion einführen? darum beweise mit sprachen für gleichungen
+	
+	- wer hat free monoid iegentlich zuerst untersucht, zeichenketten? thue? 
+	quinte arbeit in lit/free-monoid ordner, tarski?
+	% https://en.wikipedia.org/wiki/Concatenation_theory
+	die leute, die ersetzungssysteme zuerst untersucht haben?
+	
+
+}
+
+
+% beispiele solid code aus meinem FCTCS'21 paper nochmal angucken
+
+% levis lemma bei formal langauge vielleicht erwähnen?
+
+% noch doppelte labels bei statements suchen
+
+% kapitel "more on prefix codes" umbenennen in factorizations and prefix codes und den PDFA-teil wieder raus nach vorne
+
+% COCOON paper besprechen, dort die andere relation benutzt sagen für konstruktionen
+
+% für two state strongly connected constraint PDFA  NL-c folgt einfach, wenn zustand wo eine transition undefiniert, aber an anderem definiert und geht
+% rüber, dann aux state avoding mit dem am ende, also so start und final wählen, dass einer so drin ist
+
+% - freie NOT-gates vs nur an eingängen, wenn ausgabe von teilzierkuit und negation benutzt, muss man mitunter zwei anlegen, also faktor 2
+
+% begründen, warum feinere reduktionsbegriffe benutzt?
+
+
+%\todo[inline]{integer/non-negative integer statttt number sagen?}
+
+
+% gucken, dass alle probleme, die benutzt werden, auch irgendwo definiert sind
+
+
+
+
+%%%%%%%%%%%%%%%%%
+%% War vorher in Automata and Encodings-Teil
+
+%	Gerne — hier ist ein **sauber formulierter, paper-tauglicher Fußnotentext** in gutem akademischem Englisch:
+%
+%> *One possible way to encode a list of binary strings as a single binary string is to use a simple escape-based scheme: encode each bit `0` as `00` and each bit `1` as `11`, and use `01` as a separator between successive strings. Since the separator does not occur inside any encoded string, this yields a uniquely decodable representation. Such an encoding is easy to define and sufficient for our purposes; efficiency considerations are irrelevant here.*
+%
+%Wenn du es **noch knapper** oder **noch formeller** brauchst (z. B. für STOC/FOCS-Stil oder ein Buch), sag kurz Bescheid.
+%
+%
+%
+%
+%
+%
+%Für ein **Buch** würde ich eine Variante empfehlen, die
+%(1) zeitlos klingt,
+%(2) sehr klar ist,
+%(3) unnötige Details vermeidet,
+%(4) und den Eindruck vermittelt, dass dies eine **konventionelle, unkritische technische Wahl** ist.
+%
+%Hier ist eine **buch-taugliche, ruhige und elegante** Fußnotenfassung:
+%
+%> *One convenient way to encode a finite list of binary strings as a single binary string is to use a simple escape-based scheme: each bit `0` is replaced by `00`, each bit `1` by `11`, and the block `01` is used as a separator between successive strings. Since the separator cannot occur within an encoded string, the resulting representation is uniquely decodable. We fix such an encoding once and for all and abstract away from its concrete details in the sequel.*
+%
+%Warum diese Version gut für ein Buch ist:
+%
+%* **„one convenient way“** → signalisiert Austauschbarkeit
+%* **„fix such an encoding once and for all“** → klassischer Buchstil
+%* **„abstract away from its concrete details“** → bereitet spätere Abkürzungen vor
+%* Keine Rechtfertigungen zur Effizienz → wirkt souverän
+%
+%Wenn du möchtest, kann ich sie auch:
+%
+%* stärker **formal** (Lehrbuchstil),
+%* oder etwas **weicher** (einführendes Kapitel),
+%* oder explizit auf **Existenzargumente** zuschneiden.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%
+
+%\todo[inline]{beispiele und ergebnisse nennen. % https://en.wikipedia.org/wiki/Circuit_complexity#History,
+%	
+%	wer war eigentlich der erste, der NC mit schaltkreisen definierte?
+%	
+%	in welchen paper wurde zuerst der zusammenhang mit parallelcomputern formalisiert und gezeigt?
+%}
+
+
+%%%%%%%%%
+
+% - vielleicht bei *-operation discuss nur sagen kleene-star meint was anderes, operation auf sprachen.
+%   mit bemerkung wie in kufleitner/volker-buch
+% - und für zusammenhänge das in anhang packen
+
+
+%\todo{kommando automat und minaut arbeiten nicht gut zusammen} %$\automat{{\minaut{{\normalfont L}}}}{Q_L}{\Sigma}{\delta_L}{[\varepsilon]_{\equiv_L}}{F_L}$
+
+
+
+
+%%%%%%%%%%%%%%
+
+% leonardo da vinci, art is never finished, only abandond
+
+
+
+% \todo{bemerken sum_{emptyset} = 0 und in induktionsbeweisen $x_{i-1}x_i$ für i = 1 und keine i = 0 existent}
+
+
+
+
+
+% pfeilspitzen wie in 
+% https://arxiv.org/pdf/2205.09404
+
+
+
+%\todo{silbentrennung prüfen, ist hier vielleicht manchmal komisch
+%	
+%	https://www.silbentrennung24.de/wort/aktuell/
+%}
+
+
+
+
+\todo[inline]{bei def primitive group: vielleicht das bild aus meinem hightlights oder von grohe vortrag? }
+
+
+
+% - halle vortrag reingucken und vergleichen charakterisierung primitivität mit uniform minimal; meine formulierung gut? 
+
+
+
+% - bilder vereinheitlichen. auch wenn zustände kleiner dargestellt grau mit schatten
+
+
+
+%\todo{ uniform minimal einführen?}
+
+
+% kapitelabhängigkeiten:
+% https://www.mimuw.edu.pl/~malcin/book/parameterized-algorithms.pdf
+
+
+
+% preface so aufbauen mit den teilen?
+% file:///C:/Users/StefanH/AppData/Local/Temp/beb5948b-cb11-43e3-9a4a-cdc1919aff92_GTM-master.zip.f92/GTM-master/GTM258.Foundation.of.Optimization.pdf
+
+
+
+% proper suffix/prefix definiert?
+
+% proper prefix definiert? u mit uSigma^+ \cap L != emptyset
+
+
+
+
+
+
+
+
+
+% binary completely reachable vs completely reachable binary; überall vereinheitlichen
+
+
+
+	%state/.style={circle,draw,minimum size=8mm}
+	
+	
+	
+	
+	
+% noch sagen, root state, tail state, cycle state terminology von induzierten tranformationsn
+
+
+
+
+
+% automatenabbildungen vereinheitlichen. manchmal mit schatten, manchmal ohne in einführungsteil
+
+
+
+
+
+% - synonym cyclic permutation für cycle rausgenommen. benutzt ich glaube ich nirgends. nochmal gucken
+
+
+
+
+% \crefitem im springer-format noch klammern um letzten verweis adden
+% macros bedingt, auch partwithquote anpassen
+
+
+
+% grafiken in springer-teil zu groß. statt cm vielleicht em-Angaben nutzen?
+
+
+% die paragraphen sehen komisch aus im springer-format.
+
+
+
+
+% im makefile noch einbauen, dass man nur einzelne kapitel erzeugen kann
+
+
+% crefitem für springer anpassen
+
+
+
+% https://dl.acm.org/doi/10.1145/103418.103468
+
+
+
+%\todo[inline]{stattdessen sagen, nicht transition matrices als eingabe, sondern let transition matrices und auf diese section verweisen}
+

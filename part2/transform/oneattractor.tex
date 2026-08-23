@@ -1,0 +1,726 @@
+%!TEX root = ./../../springer-mono-format/book.tex
+%!TEX root = ./../../thesis-trier.tex
+
+\IN{one-point singular}
+A transformation $t \colon X \to X$ 
+is said to be \emph{one-point singular}~\cite{Rystsov2024}
+if $\dupl{t}$ is a singleton. 
+As a slight abuse of language, using an adjective as a noun, we call
+a one-point singular transformation simply a one-point singular.
+
+To give a few examples, simple idempotents
+and, by  \crefitem{prelim:prop:gentransdef}{prelim:prop:item:defdupl2},
+defect-one transformations on finite sets are one-point singulars.
+\Cref{prelim:trans:fig:onepointsing} depicts the functional graph
+of an example one-point singular.
+
+\Cref{prop:char-one-attractor0,prop:char-one-attractor}
+provide characterizations of transformations
+that are injective or one-point singulars,
+the latter investigating the case of a finite domain.
+\Cref{prelim:trans:cor:char-one-point-singular} gives a characterization
+in the special case of quasipermutations.
+\Cref{prelim:prop:comp-one-point-singular-cases}
+characterizes when the composition of two transformations
+gives a one-point singular. The special case when both transformations
+are one-point singulars is given in \cref{prelim:cor:comp-one-point-singulars}.
+
+\begin{figure}[ht]
+	\centering
+	\begin{tikzpicture}
+		\tikzset{every node/.style={draw,circle,inner sep=2.5pt}}
+		
+		\def\radius{2cm}
+		\def\shiftX{5cm}
+		\def\nA{10}
+		\def\nB{8}
+		
+		\foreach \i in {1,...,\nA} {
+			\node (A\i) at ({\radius*cos(360/\nA * \i)}, {\radius*sin(360/\nA * \i)}) {};
+		}
+		
+		\foreach \i in {2,...,\nA} {
+			\path[->] (A\the\numexpr\i-1\relax) edge (A\i);
+		} 
+		\path[->] (A\nA) edge (A1);
+		
+		\foreach \j in {1,...,\nB} {
+			\node (B\j) at ({\shiftX + 0.8*\radius*cos(360/\nB * \j)}, {0.8*\radius*sin(360/\nB * \j)}) {};
+		}				
+		
+		\foreach \i in {2,...,\nB} {
+			\path[->] (B\the\numexpr\i-1\relax) edge (B\i);
+		} 
+		\path[->] (B\nB) edge (B1);
+		
+		\node[above = of A4] (T11) {};
+		\node[left = of T11] (T12) {};
+		\node[left = of T12] (T13) {};
+		
+		\node[left = of A4] (T21) {};
+		
+		\node[below left = of A4] (T31) {};
+		\node[below = of T31] (T32) {};
+		
+		\path[->] (T13) edge (T12);
+		\path[->] (T12) edge (T11); 
+		\path[->] (T11) edge (A4);
+		
+		\path[->] (T21) edge (A4);
+		
+		\path[->] (T32) edge (T31);
+		\path[->] (T31) edge (A4);
+	\end{tikzpicture}
+	\caption[Functional graph of a one-point singular]{Functional graph of a one-point singular transformation.}
+	\label{prelim:trans:fig:onepointsing}
+\end{figure}
+
+\begin{proposition} \label{prop:char-one-attractor0}
+ Let $t \colon X \to X$. Then the following are equivalent.	
+\begin{enumerate}
+\item \label{prop:char-one-attractor0:1} $t$ is injective or a one-point singular.
+
+\item \label{prop:char-one-attractor0:2} for all $x,x',z,z' \in X$,
+ if $x \ne x'$, $z \ne z'$, $t(x) = t(x')$, and $t(z) = t(z')$, then $t(x) = t(z)$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+This follows directly from the definitions.
+\end{proof}
+
+\begin{proposition}\label{prop:char-one-attractor}
+	Let $t \colon [n] \to [n]$. Then the following are equivalent.
+	\begin{enumerate}
+		\item \label{prelim:prop:charone:item:one} $t$ is a permutation or a one-point singular.
+		
+		\item \label{prelim:prop:charone:item:invduple0} $|t^{-1}(\dupl{t})| \le \defect{t} + 1$.
+		
+		\item \label{prelim:prop:charone:item:invduple} $t$ is a permutation or $|t^{-1}(\dupl{t})| = \defect{t} + 1$. 
+		
+		\item \label{prelim:prop:charone:item:def1y} There exists $y \in [n]$ such that $|\applyfunc{y}{t^{-1}}| = \defect{t} + 1$.
+		
+		\item \label{prelim:prop:charone:item:def1} $t$ has kernel type $(\defect{t}+1,1,\ldots,1)$.
+		
+		\item \label{prelim:prop:charone:item:k111} $t$ has kernel type $(k,1,\ldots,1)$ for some $k \ge 1$.
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+	$\ref{prelim:prop:charone:item:one} \Rightarrow~\ref{prelim:prop:charone:item:invduple0}$:
+	By \crefitem{prelim:prop:gentransdef}{prelim:prop:item:defdupl0} we have
+	$|t^{-1}(\dupl{t})| = \defect{t} + |\dupl{t}|$.
+	Since, by assumption, $|\dupl{t}|\le 1$, we obtain the claim.	
+	
+	$\ref{prelim:prop:charone:item:invduple0} \Rightarrow~\ref{prelim:prop:charone:item:invduple}$: 
+	We have $|t^{-1}(\dupl{t})| = \defect{t} + 1$
+	or $|t^{-1}(\dupl{t})| = \defect{t}$.
+	In the latter case, from \crefitem{prelim:prop:gentransdef}{prelim:prop:item:defdupl0},
+	we get $|\dupl{t}| = 0$. So~$t$ is a permutation.
+	 
+	$\ref{prelim:prop:charone:item:invduple}\Rightarrow~\ref{prelim:prop:charone:item:def1y}$: Clearly, the implication is true for a permutation. 
+	Otherwise, by~\crefitem{prelim:prop:gentransdef}{prelim:prop:item:defdupl0}
+	we have $\defect{t} + |\dupl{t}| = |t^{-1}(\dupl{t})| = \defect{t} + 1$.
+	So, $|\dupl{t}| = 1$ and 
+	$|t^{-1}(y)| = \defect{t} + 1$
+	for the unique $y \in \dupl{t}$.
+	
+	$\ref{prelim:prop:charone:item:def1y} \Rightarrow~\ref{prelim:prop:charone:item:def1}$: Let $y' \in [n] \setminus \{y\}$.
+	Then we have
+	\begin{align*}
+	\defect{t} & \ge |t^{-1}(\{y,y'\})| - 2 \tag{\crefitem{prelim:prop:gentransdef}{prelim:prop:item:defA}} \\
+	& = |t^{-1}(y)| + |t^{-1}(y')| - 2 \tag{$|t^{-1}(\{y,y'\})| = |t^{-1}(y)| + |t^{-1}(y')|$} \\
+	& = \defect{t} + |t^{-1}(y')| - 1. \tag{$|t^{-1}(y)| = \defect{t} + 1$}
+	\end{align*}
+	Hence $|t^{-1}(y')| \le 1$.	
+	
+	$\ref{prelim:prop:charone:item:def1} \Rightarrow~\ref{prelim:prop:charone:item:k111}$ ~ \& ~
+	$\ref{prelim:prop:charone:item:k111} \Rightarrow~\ref{prelim:prop:charone:item:one}$: These implications are obvious.
+\end{proof}
+
+\begin{proposition} \label{prelim:trans:cor:char-one-point-singular}
+	Let $t \colon [n] \to [n]$ be a quasipermutation.
+	Then $t$ is a permutation or a one-point singular
+	if and only if there exists $y \in [n]$ with $\excl{t} \subseteq t^{-1}(y)$.	
+\end{proposition}
+\begin{proof}
+	By \cref{prelim:trans:lem:stable-fibers} we have $\dupl{t} = t(\excl{t})$.
+	By assumption, we have $|\dupl{t}| \le 1$.
+	Now $|t(\excl{t})| \le 1$ holds if and only if
+	$t(\excl{t}) \subseteq \{y\}$ for some $y \in [n]$, which is
+	$\excl{t} \subseteq t^{-1}(y)$.
+\end{proof}
+
+\begin{remark} 
+	\Cref{prelim:trans:cor:char-one-point-singular}
+	might fail if~$t$ is not a quasipermutation.
+	For example, let $t \colon \{1,2,3,4\} \to \{1,2,3,4\}$
+	with $t(1) = t(3) = 2$ and $t(2) = t(4) = 4$.
+	Then $\excl{t} = \{1,3\} \subseteq t^{-1}(2)$,
+	but~$t$ has kernel type $(2,2)$.
+\end{remark}
+
+%\begin{lemma} \label{prelim:trans:lem:dupl-restr-onepoint}
+%	Let $t \colon X \to X$ be one-point singular, let $h \colon X \to X$,
+%	and put $Z = t(X) \setminus \dupl{t}$. Then
+%	\[
+%	\dupl{h_{|t(X)}} = \dupl{h_{|Z}} \cup \bigl( h(\dupl{t}) \cap h(Z) \bigr).
+%	\]
+%\end{lemma}
+%\begin{proof}
+%	Apply \cref{prelim:func:eqn:duplicate-partition} to the partition
+%	$t(X) = \dupl{t} \cup Z$:
+%	\[
+%	\dupl{h_{|t(X)}} = \dupl{h_{|\dupl{t}}} \cup \dupl{h_{|Z}}
+%	\cup \bigl( h(\dupl{t}) \cap h(Z) \bigr).
+%	\]
+%	Since~$t$ is one-point singular, $\dupl{t}$ is a singleton set
+%	and hence $\dupl{h_{|\dupl{t}}} = \emptyset$.
+%\end{proof}
+%
+%\begin{corollary} \label{prelim:trans:cor:dupl-restr-onepoint}
+%	In the situation of \cref{prelim:trans:lem:dupl-restr-onepoint}:
+%	\begin{enumerate}
+%		\item If $h(\dupl{t}) \cap h(Z) = \emptyset$, then $\dupl{h_{|t(X)}} = \dupl{h_{|Z}}$.
+%		\item If $h_{|Z}$ is injective, then $\dupl{h_{|t(X)}} \subseteq h(\dupl{t})$.
+%		In particular, as $h(\dupl{t})$ is a singleton set,
+%		$\dupl{h_{|t(X)}}$ is either empty or equal to $h(\dupl{t})$.
+%	\end{enumerate}
+%\end{corollary}
+
+
+
+
+%In the remainder of this section let $t,h \colon X \to X$ and put
+%$Z = t(X) \setminus \dupl{t}$.
+%Note that a restriction $h_{|Y}$ with $Y \subseteq t(X)$ need not be a
+%transformation, as its image need not be contained in~$Y$.
+%Moreover, as $\dupl{t} \subseteq t(X)$, injectivity of $h_{|t(X)}$ implies
+%$|h(\dupl{t})| = |\dupl{t}|$; in particular, $h(\dupl{t})$ is then a singleton set
+%if and only if~$t$ is a one-point singular.
+%
+%\begin{proposition}  \label{prelim:prop:comp-one-attractor}
+%	Let $t,h \colon X \to X$.
+%	Then $\concat{t}{h}$ is a one-point singular if and only if exactly one of the
+%	following two cases occurs.
+%	\begin{enumerate}
+%		\item $t$ is injective and $\dupl{h_{|Z}}$ is a singleton set.
+%		
+%		\item $\dupl{h_{|Z}} \subseteq h(\dupl{t})$ and $h(\dupl{t})$ is a singleton set.
+%	\end{enumerate}
+%	%	Moreover, $h_{|Z}$ in each case may be replaced independently
+%	%	by any subset~$Y$ with $Z \subseteq Y \subseteq t(X)$
+%	%	since each case, separately, holds for one such~$Y$ if and only if it holds 
+%	%	for every such~$Y$.
+%\end{proposition}
+%\begin{proof}
+%	By \cref{prelim:eqn:dupl} we have $\dupl{\concat{t}{h}} = h(\dupl{t}) \cup \dupl{h_{|Z}}$.
+%	Thus, $\dupl{\concat{t}{h}}$ is a singleton set
+%	if and only if $\dupl{t} = \emptyset$ and $\dupl{h_{|Z}}$
+%	is a singleton set, or if $h(\dupl{t})$ is a singleton set and contains
+%	$\dupl{h_{|Z}}$.
+%	The two cases are mutually exclusive, since in the second case
+%	$h(\dupl{t}) \ne \emptyset$ and hence $\dupl{t} \ne \emptyset$.
+%\end{proof}
+%
+%\begin{remark} \label{prelim:rem:comp-one-attractor}
+%	Let $Z \subseteq Y \subseteq t(X)$.
+%	Then we have
+%	\begin{align*}
+%		\text{$t$ is injective} & \Leftrightarrow Z = Y = t(X), \\
+%		\dupl{h_{|Z}} \subseteq h(\dupl{t}) & \Leftrightarrow \dupl{h_{|Y}} \subseteq h(\dupl{t}).
+%	\end{align*}
+%	For the first equivalence, note that~$t$ is injective if and only if
+%	$\dupl{t} = \emptyset$, which by $\dupl{t} \subseteq t(X)$ is equivalent to
+%	$Z = t(X)$; and then $Y = t(X)$ is the only admissible choice.
+%	The second equivalence follows since, by
+%	\cref{prelim:func:eqn:duplicate-partition}, we have
+%	$
+%	\dupl{h_{|Y}} \setminus \dupl{h_{|Z}} \subseteq h(\dupl{t}).
+%	$
+%	Thus, we can, separately,
+%	replace $Z$ by such a set $Y$ in each of the conditions from
+%	\cref{prelim:prop:comp-one-attractor},
+%	since it holds for some such~$Y$ if and only if it holds for every such~$Y$.
+%\end{remark}
+%
+%\begin{corollary} \label{prelim:cor:comp-one-attractor}
+%	Let $t, h \colon X \to X$. Set $B = h(Z) \cap h(\dupl{t})$.
+%	Then $\concat{t}{h}$ is a one-point singular if and only if exactly one of the
+%	following cases occurs.
+%	\begin{enumerate}
+%		\item $t$ is injective and $\dupl{h_{|Z}}$ is a singleton set.
+%		
+%		\item $h_{|t(X)}$ is injective and~$t$ is a one-point singular.
+%		
+%		\item $B \ne \emptyset$ or $\dupl{h_{|\dupl{t}}} \ne \emptyset$,
+%		$h_{|Z}$ is injective, and $h(\dupl{t})$ is a singleton
+%		set.\footnote{By \cref{prelim:func:eqn:duplicate-partition}, for injective
+%			$h_{|Z}$ we have $B \ne \emptyset$ or $\dupl{h_{|\dupl{t}}} \ne \emptyset$
+%			if and only if $h_{|t(X)}$ is not injective.}
+%		
+%		\item $\dupl{h_{|Z}} = h(\dupl{t})$ and this set is a singleton set.
+%	\end{enumerate}
+%\end{corollary}
+%\begin{proof}
+%	By \cref{prelim:prop:comp-one-attractor} it suffices to split its second case,
+%	the first one being the first case above.
+%	So let $h(\dupl{t})$ be a singleton set.
+%	Then $\dupl{h_{|Z}}$, being contained in it, is empty or equal to it, and by
+%	\cref{prelim:func:eqn:duplicate-partition} the condition
+%	$\dupl{h_{|Z}} \subseteq h(\dupl{t})$ splits into the mutually exclusive cases
+%	\begin{enumerate}
+%		\item $h_{|t(X)}$ is injective,
+%		
+%		\item $B \ne \emptyset$ or $\dupl{h_{|\dupl{t}}} \ne \emptyset$, and
+%		$h_{|Z}$ is injective,
+%		
+%		\item $\dupl{h_{|Z}} = h(\dupl{t})$.
+%	\end{enumerate}
+%	Then the claim follows with the observation that injectivity of $h_{|t(X)}$
+%	implies that~$t$ is a one-point singular if $h(\dupl{t})$ is a singleton set.
+%\end{proof}
+%
+%
+%
+%\begin{remark} \label{prelim:trans:rem:Y-dependence}
+%	The condition $\dupl{h_{|Y}} \subseteq h(\dupl{t})$
+%	from \cref{prelim:rem:comp-one-attractor} can also be split into the following
+%	two conditions:
+%	\begin{enumerate}
+%		\item \label{prelim:trans:comp-cases:II} $h_{|Y}$ is injective and $h(\dupl{t})$ is a singleton set, or
+%		\item \label{prelim:trans:comp-cases:III} $\dupl{h_{|Y}} = h(\dupl{t})$ and this set is a singleton set.
+%	\end{enumerate}
+%	However, the specific case that applies to a pair $(t,h)$ then depends on~$Y$.
+%
+%	For example, let $X = \{1,\ldots,5\}$ with
+%	$t(1) = t(2) = 1$, $t(3) = t(4) = 2$, $t(5) = 5$ and
+%	$h(1) = h(2) = h(3) = 3$, $h(4) = 4$, $h(5) = 5$.
+%	Then $\dupl{t} = \{1,2\}$, $Z = \{5\}$, $h(\dupl{t}) = \{3\}$,
+%	$\dupl{h_{|Z}} = \emptyset$, $\dupl{h_{|t(X)}} = \{3\}$, and $\concat{t}{h}$
+%	maps $1,2,3,4$ to~$3$ and fixes~$5$. So $\dupl{\concat{t}{h}} = \{3\}$, and
+%	case~\ref{prelim:trans:comp-cases:II} occurs for $Y = Z$ while
+%	case~\ref{prelim:trans:comp-cases:III} occurs for $Y = t(X)$.
+%\end{remark}
+%
+%With \cref{prelim:eqn:dupl0,prelim:eqn:dupl} we also obtain families of statements
+%parameterized by a set $Y$ with $Z \subseteq Y \subseteq t(X)$ characterizing
+%the composition being one-point singular.
+%We state them next. Among these, the last one differs in that its second
+%alternative combines the weakest injectivity hypothesis with the strongest
+%companion condition.
+%Injectivity of $h_{|Y'}$ implies injectivity of $h_{|Y}$ for $Y \subseteq Y'$,
+%so the hypothesis is least demanding, and cheapest to verify, for $Y = Z$;
+%and~$t$ being a one-point singular implies, but is in general not implied by,
+%$h(\dupl{t})$ being a singleton set, the converse holding when $h_{|t(X)}$
+%is injective.
+%In the third of the statements below the two are tied together, as the strong
+%companion condition is available only for $Y = t(X)$, whereas the last statement
+%has it for every~$Y$.
+%This is paid for in its first alternative, which has to be stated in terms of
+%$\dupl{h_{|t(X)}}$ rather than $\dupl{h_{|Y}}$, see
+%\cref{prelim:trans:rem:Y-vs-tX}.
+%
+%\begin{proposition} \label{prelim:trans:prop:comp-criterion}
+%	Let $t,h \colon X \to X$, let~$Y$ be a set with $Z \subseteq Y \subseteq t(X)$
+%	and put $A = h(\dupl{t})$ and $D_Y = \dupl{h_{|Y}}$. Then the following are
+%	equivalent.
+%	\begin{enumerate}
+%		\item \label{prelim:trans:comp-criterion:1}
+%		$\concat{t}{h}$ is a one-point singular.
+%		
+%		\item \label{prelim:trans:comp-criterion:sym}
+%		$A \subseteq D_Y$ and~$D_Y$ is a singleton set, or
+%		$D_Y \subseteq A$ and~$A$ is a singleton set.
+%		
+%		\item \label{prelim:trans:comp-criterion:normD}
+%		$A \subseteq D_Y$ and~$D_Y$ is a singleton set, or
+%		$h_{|Y}$ is injective and~$A$ is a singleton set.
+%		
+%		\item \label{prelim:trans:comp-criterion:normA}
+%		$t$ is injective and~$D_Y$ is a singleton set, or
+%		$D_Y \subseteq A$ and~$A$ is a singleton set.
+%		
+%		\item \label{prelim:trans:comp-criterion:mixed}
+%		$A \subseteq \dupl{h_{|t(X)}}$ and $\dupl{h_{|t(X)}}$ is a singleton
+%		set, or $h_{|Y}$ is injective and~$t$ is a one-point singular.
+%	\end{enumerate}
+%\end{proposition}
+%\begin{proof}
+%	By \cref{prelim:eqn:dupl0,prelim:eqn:dupl}, we have
+%	$
+%	\dupl{\concat{t}{h}} = A \cup \dupl{h_{|Z}}
+%	= A \cup \dupl{h_{|t(X)}}.
+%	$
+%	Since  $\dupl{h_{|Z}} \subseteq \dupl{h_{|Y}} \subseteq \dupl{h_{|t(X)}}$
+%	we obtain $\dupl{\concat{t}{h}} = A \cup \dupl{h_{|Y}}$.
+%	This equation gives the equivalence of
+%	\crefitem{prelim:trans:prop:comp-criterion}{prelim:trans:comp-criterion:1}
+%	to every other of the first four conditions,
+%	where for
+%	\crefitem{prelim:trans:prop:comp-criterion}{prelim:trans:comp-criterion:normA}
+%	we also use that $t$ is injective if and only if $h(\dupl{t}) = \emptyset$;
+%	note that this condition is
+%	\cref{prelim:prop:comp-one-attractor} with~$Z$ replaced as in
+%	\cref{prelim:rem:comp-one-attractor}.
+%	
+%	$\ref{prelim:trans:comp-criterion:1} \Leftrightarrow
+%	\ref{prelim:trans:comp-criterion:mixed}$:
+%	First, suppose $\concat{t}{h}$ is a one-point singular.
+%	Consider the case that $h_{|t(X)}$ is injective.
+%	Then $h_{|Y}$ is injective.
+%	By \cref{prelim:eqn:dupl0}, $h(\dupl{t})$ is a singleton set.
+%	So, injectivity of $h_{|t(X)}$ then gives that~$t$ is a one-point singular.
+%	Otherwise, by \cref{prelim:eqn:dupl0} $\dupl{h_{|t(X)}}$ is a singleton set
+%	and it contains $h(\dupl{t})$.
+%	
+%	The converse implication follows from \cref{prelim:eqn:dupl0},
+%	\crefitem{prelim:trans:prop:comp-criterion}{prelim:trans:comp-criterion:normD}
+%	and the fact that $h(\dupl{t})$ is a singleton set if~$t$
+%	is a one-point singular.
+%\end{proof}
+%
+%\begin{remark} \label{prelim:trans:rem:Y-vs-tX}
+%	In
+%	\crefitem{prelim:trans:prop:comp-criterion}{prelim:trans:comp-criterion:mixed}
+%	the set $\dupl{h_{|t(X)}}$ cannot be replaced by $\dupl{h_{|Y}}$.
+%	Consider the example from \cref{prelim:trans:rem:Y-dependence}.
+%	There $\concat{t}{h}$ is a one-point singular.
+%	For $Y = Z$, however, neither $h(\dupl{t}) \subseteq \dupl{h_{|Z}}$
+%	with $\dupl{h_{|Z}}$ a singleton set nor~$t$ being a one-point singular holds.
+%\end{remark}
+
+In the remainder of this section let $t,h \colon X \to X$ and put
+$Z = t(X) \setminus \dupl{t}$.
+Note that a restriction $h_{|Y}$ with $Y \subseteq t(X)$ need not be a
+transformation, as its image need not be contained in~$Y$.
+Moreover, as $\dupl{t} \subseteq t(X)$, injectivity of $h_{|t(X)}$ implies
+$|h(\dupl{t})| = |\dupl{t}|$; in particular, $h(\dupl{t})$ is then a singleton set
+if and only if~$t$ is a one-point singular.
+
+By \cref{prelim:eqn:dupl}, it is easy to see that $\concat{t}{h}$
+is a one-point singular precisely if 
+$h(\dupl{t}) \subseteq \dupl{h_{|Z}}$
+where $\dupl{h_{|Z}}$ is a singleton set, or
+$\dupl{h_{|Z}} \subseteq h(\dupl{t})$ where $h(\dupl{t})$
+is a singleton set.
+By \cref{prelim:eqn:dupl}, a similar statement holds with $t(X)$ in place of~$Z$. 
+In fact, since 
+$\dupl{h_{|Z}} \subseteq \dupl{h_{|Y}} \subseteq \dupl{h_{|t(X)}}$
+and $\dupl{h_{|Y \setminus Z}} \subseteq h(\dupl{t})$
+for $Z \subseteq Y \subseteq t(X)$ as $Y \setminus Z \subseteq \dupl{t}$,
+we can substitute any set $Y$ with $Z \subseteq Y \subseteq t(X)$
+for~$Z$ and obtain a valid characterization
+for $\concat{t}{h}$ being a one-point singular.
+Here, we replaced~$Z$ in each disjunct by the same set
+and the question might arise, under what circumstances
+can we replace~$Z$ in each disjunct independently,
+or whether we can find similar statement where this is possible.
+For example, it can be shown that, for each $Z \subseteq Y_1, Y_2 \subseteq t(X)$,
+$\concat{t}{h}$ is a one-point singular if and only if
+$t$ is injective and $\dupl{h_{|Z_1}}$ a singleton,
+or $\dupl{h_{|Z_2}} \subseteq h(\dupl{t})$ where $h(\dupl{t})$ is a singleton.
+In the following we give a more detailed analysis driven by this question.
+
+\begin{proposition} \label{prelim:prop:comp-one-point-singular-cases}
+	Let $t, h \colon X \to X$ and $Z \subseteq Y \subseteq t(X)$.
+	Set
+	\[
+	A = h(\dupl{t}), \qquad
+	D_S = \dupl{h_{|S}} \ \text{ for } S \subseteq t(X), \qquad
+	B_Y = h(Z) \cap h(Y \setminus Z).
+	\]
+	Then $\concat{t}{h}$ is a one-point singular if and only if exactly one of the
+	following cases occurs.
+	\begin{enumerate}
+		\item[$1$.] $t$ is injective and $D_Z$ is a singleton set.
+		
+		\item[$2$.] $h_{|t(X)}$ is injective and~$t$ is a one-point singular.
+		
+		\item[$3_Y$.] $B_Y \ne \emptyset$, $h_{|Z}$ is injective, and~$t$ is a
+		one-point singular.\footnote{Note that $D_{Y \setminus Z} = \emptyset$
+			if~$t$ is a one-point singular, as then $Y \setminus Z$ is contained in
+			the singleton set $\dupl{t}$.}
+		
+		\item[$3_{\lnot Y}$.] $h_{|t(X)}$ is not injective, $B_Y = \emptyset$,
+		$h_{|Z}$ is injective, and~$t$ is a one-point singular.
+		
+		\item[$4_Y$.] $B_Y \ne \emptyset$ or $D_{Y \setminus Z} \ne \emptyset$,
+		$h_{|Z}$ is injective, $|A| = 1$, and~$t$ is not a one-point singular.
+		
+		\item[$4_{\lnot Y}$.] $B_Y = D_{Y \setminus Z} = \emptyset$,
+		$h_{|Z}$ is injective, $|A| = 1$, and~$t$ is not a one-point singular.
+		
+		\item[$5$.] $D_Z = A$ and this set is a singleton set.
+	\end{enumerate}
+	Which cases can occur depends on~$Y$.
+	For $Y = t(X)$, where $Y \setminus Z = \dupl{t}$, the cases $3_{\lnot Y}$
+	and $4_{\lnot Y}$ cannot occur; writing~$3$ and~$4$ for $3_Y$ and $4_Y$, we
+	are left with the five mutually exclusive cases $1$, $2$, $3$, $4$, $5$.
+	For $Y = Z$ the cases $3_Y$ and $4_Y$ cannot occur, and for
+	$Z \ne Y \ne t(X)$ only the cases $4_Y$, $4_{\lnot Y}$ and~$5$ can occur.
+	
+	See \cref{prelim:trans:tab-one-point-singular-cases} for a list of the cases
+	with the above sets.
+\end{proposition}
+\begin{proof}
+	That the listed cases are mutually exclusive is easy to see. Next, 
+	we use $\dupl{\concat{t}{h}} = A \cup D_Z$ from \cref{prelim:eqn:dupl} and
+	\begin{equation} \label{prelim:trans:eqn:DY-split}
+		D_Y = D_Z \cup D_{Y \setminus Z} \cup B_Y
+	\end{equation}
+	from \cref{prelim:func:eqn:duplicate-partition}. As
+	$Y \setminus Z \subseteq \dupl{t}$, we have $D_{Y \setminus Z} \subseteq A$
+	and $B_Y \subseteq A$.
+	
+	Let $\concat{t}{h}$ be a one-point singular, that is, $|A \cup D_Z| = 1$.
+	If~$t$ is injective, then $A = \emptyset$, so~$D_Z$ is a singleton set:
+	case~$1$.
+	Otherwise $A \ne \emptyset$, whence $|A| = 1$ and $D_Z \subseteq A$. If
+	$D_Z = A$, we are in case~$5$; so let $D_Z = \emptyset$, that is, $h_{|Z}$ be
+	injective. If~$t$ is a one-point singular, then injectivity of $h_{|t(X)}$
+	gives case~$2$, and otherwise we are in case $3_Y$ or $3_{\lnot Y}$ according
+	to whether $B_Y \ne \emptyset$ or not. If~$t$ is not a one-point singular, we
+	are in case $4_Y$ or $4_{\lnot Y}$ according to whether $B_Y \ne \emptyset$ or
+	$D_{Y \setminus Z} \ne \emptyset$ holds or not.
+	
+	Conversely, each case gives $|A \cup D_Z| = 1$: in case~$1$ we have
+	$A = \emptyset$ with~$D_Z$ a singleton set, in case~$5$ we have
+	$A \cup D_Z = A$, and in the other five we have $D_Z = \emptyset$ and
+	$|A| = 1$, the latter in case~$2$ since~$t$ is a one-point singular.
+		
+	For $Y = t(X)$ we have $Y \setminus Z = \dupl{t}$. In case $3_{\lnot Y}$ then
+	\cref{prelim:trans:eqn:DY-split} reads $D_{t(X)} = B_Y$, as $D_Z = \emptyset$
+	and $D_{\dupl{t}} = \emptyset$ for a singleton set $\dupl{t}$; but the
+	left-hand side is non-empty as $h_{|t(X)}$ is not injective. In case
+	$4_{\lnot Y}$ we have $|\dupl{t}| \ge 2$, as $A \ne \emptyset$ and~$t$ is not
+	a one-point singular, so~$h$ identifies the points of $\dupl{t}$ as
+	$h(\dupl{t}) = A$ is a singleton set, giving $D_{Y \setminus Z} = A$. Both
+	contradict the respective case hypotheses.
+	For $Y = Z$ we have $Y \setminus Z = \emptyset$ and hence
+	$B_Y = D_{Y \setminus Z} = \emptyset$, excluding $3_Y$ and $4_Y$.
+	For $Z \ne Y \ne t(X)$, such a~$Y$ exists only if $\dupl{t}$ has at least two
+	points, so~$t$ is neither injective nor a one-point singular, excluding the
+	cases~$1$, $2$, $3_Y$ and $3_{\lnot Y}$.
+\end{proof}
+
+\begin{table}[htb]
+	\centering
+	\caption[Cases for composition being a one-point singular]
+	{The cases from \cref{prelim:prop:comp-one-point-singular-cases} for a fixed
+		set~$Y$ with $Z \subseteq Y \subseteq t(X)$; an entry~$A$ means equality
+		with~$A$.
+		We have $D_Z \subseteq D_Y \subseteq D_{t(X)}$
+		and, if~$t$ is injective, these sets are all equal,
+		see \cref{prelim:trans:rem:equivalences-one-point-sing},
+		and contained in~$A$ if $A \ne \emptyset$.
+		With \cref{prelim:eqn:dupl0,prelim:eqn:dupl} $A,D_Z,D_Y,D_{t(X)}$ each 
+		can contain at most one point.
+		For $|\dupl{t}| \ge 2$ we have $D_{\dupl{t}} = A$, as~$h$ 
+		then identifies the points of $\dupl{t}$ since $|A| = 1$.
+	}
+		%See \cref{prelim:trans:rem:table-entries} for a justification.}
+	\label{prelim:trans:tab-one-point-singular-cases}
+	{\setlength{\tabcolsep}{10pt}
+		\renewcommand{\arraystretch}{1.15}
+		\begin{tabular}{lccccc}
+			Case & $|\dupl{t}|$ & $A$ & $D_Z$ & $D_Y$ & $D_{t(X)}$ \\ \hline
+			$1$           & $0$     & $\emptyset$ & singleton   & singleton   & singleton \\
+			$2$           & $1$     & singleton   & $\emptyset$ & $\emptyset$ & $\emptyset$ \\
+			$3_Y$         & $1$     & singleton   & $\emptyset$ & $A$         & $A$ \\
+			$3_{\lnot Y}$ & $1$     & singleton   & $\emptyset$ & $\emptyset$ & $A$ \\
+			$4_Y$         & $\ge 2$ & singleton   & $\emptyset$ & $A$         & $A$ \\
+			$4_{\lnot Y}$ & $\ge 2$ & singleton   & $\emptyset$ & $\emptyset$ & $A$ \\
+			$5$           & $\ge 1$ & singleton   & $A$         & $A$         & $A$
+	\end{tabular}}
+\end{table}
+
+%\begin{remark} \label{prelim:trans:rem:table-entries}
+%	The entries of \cref{prelim:trans:tab-one-point-singular-cases} follow from
+%	the proof of \cref{prelim:prop:comp-one-point-singular-cases}.
+%	In case~$1$ we have $\dupl{t} = \emptyset$ and $Y = Z = t(X)$, so the three
+%	sets for~$D$ coincide; in case~$2$ injectivity of $h_{|t(X)}$ makes them
+%	empty; and in case~$5$ all terms of \cref{prelim:trans:eqn:DY-split} are
+%	contained in $D_Z = A$.
+%	In the four cases~$3$ and~$4$ we have $D_Z = \emptyset$, so
+%	$D_Y = D_{Y \setminus Z} \cup B_Y \subseteq A$ is empty or equal to the
+%	singleton set~$A$, the latter precisely under the condition splitting them.
+%	For $D_{t(X)}$ note that $D_{\dupl{t}} = \emptyset$ in the cases~$3$, so that
+%	$D_{t(X)} = B_{t(X)}$, which is non-empty as $B_Y \ne \emptyset$ in case $3_Y$
+%	and as $h_{|t(X)}$ is not injective in case $3_{\lnot Y}$; and that
+%	$D_{\dupl{t}} = A$ in the cases~$4$, as there~$h$ identifies the at least two
+%	points of $\dupl{t}$.
+%\end{remark}
+
+\Cref{prelim:trans:tab-one-point-singular-combining-cases} lists further
+conditions, each equivalent to the disjunction of a subset of the cases from
+\cref{prelim:prop:comp-one-point-singular-cases}.
+Hence the disjunction of any set of rows whose marks cover every column
+yields a characterization for $\concat{t}{h}$ being a one-point singular.
+
+\begin{table}[htb]
+	\centering
+	\caption[Conditions covering cases for composition being one-point singular]
+	{The columns show the cases from
+		\cref{prelim:prop:comp-one-point-singular-cases}, where ``o.p.s.''
+		abbreviates ``one-point singular''.
+		Each row gives a condition equivalent to the disjunction of the cases
+		marked in it.}
+	\label{prelim:trans:tab-one-point-singular-combining-cases}
+	{\setlength{\tabcolsep}{7pt}
+		\begin{tabular}{@{}lccccccc@{}}
+			\toprule
+			&   &   & \multicolumn{2}{c}{Case 3} & \multicolumn{2}{c}{Case 4} &   \\
+			\cmidrule(lr){4-5} \cmidrule(lr){6-7}
+			& 1 & 2 & $3_Y$ & $3_{\lnot Y}$ & $4_Y$ & $4_{\lnot Y}$ & 5 \\
+			\midrule
+			$t$ injective, $D_Z$ singleton                        & x &   &   &   &   &   &   \\
+			\midrule
+			$h_{|Z}$ injective, $A$ singleton                     &   & x & x & x & x & x &   \\
+			$h_{|Y}$ injective, $A$ singleton                     &   & x &   & x &   & x &   \\
+			$h_{|t(X)}$ injective, $A$ singleton                  &   & x &   &   &   &   &   \\
+			$h_{|Z}$ injective, $t$ o.p.s.                        &   & x & x & x &   &   &   \\
+			$h_{|Y}$ injective, $t$ o.p.s.                        &   & x &   & x &   &   &   \\
+			$h_{|t(X)}$ injective, $t$ o.p.s.                     &   & x &   &   &   &   &   \\
+			\midrule
+			$D_Y \subseteq A$, $A$ singleton                      &   & x & x & x & x & x & x \\
+			$D_Z \subseteq A$, $A$ singleton                      &   & x & x & x & x & x & x \\
+			$D_{t(X)} \subseteq A$, $A$ singleton                 &   & x & x & x & x & x & x \\
+			\midrule
+			$A \subseteq D_Z$, $D_Z$ singleton                    & x &   &   &   &   &   & x \\
+			$A \subseteq D_Y$, $D_Y$ singleton                    & x &   & x &   & x &   & x \\
+			$A \subseteq D_{t(X)}$, $D_{t(X)}$ singleton          & x &   & x & x & x & x & x \\
+			\midrule
+			$A = D_Z$, this set singleton                         &   &   &   &   &   &   & x \\
+			$A = D_Y$, this set singleton                         &   &   & x &   & x &   & x \\
+			$A = D_{t(X)}$, this set singleton                    &   &   & x & x & x & x & x \\
+			\bottomrule
+	\end{tabular}}
+\end{table}
+
+\begin{remark} \label{prelim:trans:rem:equivalences-one-point-sing}
+	We have
+	\begin{align*}
+		\text{$t$ injective and $D_Z$ a singleton}
+		& \Leftrightarrow \text{$t$ injective and $D_Y$ a singleton,} \\
+		\text{$D_Z \subseteq A$ and $A$ a singleton}
+		& \Leftrightarrow \text{$D_Y \subseteq A$ and $A$ a singleton,} \\
+		\text{$h_{|t(X)}$ injective and $A$ a singleton}
+		& \Leftrightarrow \text{$h_{|t(X)}$ injective and~$t$ a one-point singular.}
+	\end{align*}
+	
+	For the first equivalence, note that~$t$ is injective if and only if
+	$\dupl{t} = \emptyset$, which by $\dupl{t} \subseteq t(X)$ is equivalent to
+	$Z = t(X)$; and then $Y = t(X)$ is the only admissible choice.
+	The second follows since, by \cref{prelim:func:eqn:duplicate-partition}, we
+	have $\dupl{h_{|Y}} \setminus \dupl{h_{|Z}} \subseteq h(\dupl{t})$.
+	The third is the last statement of the paragraph preceding
+	\cref{prelim:prop:comp-one-point-singular-cases}.
+	
+	In \cref{prelim:trans:tab-one-point-singular-combining-cases} the marks of the
+	rows \emph{$t$ injective, $D_Z$ singleton} and
+	\emph{$D_Z \subseteq A$, $A$ singleton} cover every column. Hence
+	$\concat{t}{h}$ is a one-point singular if and only if~$t$ is injective
+	and~$D_Z$ is a singleton set, or $D_Z \subseteq A$ and~$A$ is a singleton set;
+	and by the above equivalences~$Z$ can be replaced by any set~$Y$ between~$Z$
+	and $t(X)$, independently in each disjunct, since each holds for some such~$Y$
+	if and only if it holds for every such~$Y$.
+	
+	Next, consider the two conditions
+	\begin{enumerate}
+		\item $A \subseteq D_{t(X)}$ and $D_{t(X)}$ a singleton, or $h_{|Y}$
+		injective and~$t$ a one-point singular;
+		
+		\item $A \subseteq D_Z$ and $D_Z$ a singleton, or $h_{|Y}$ injective
+		and~$t$ a one-point singular.
+	\end{enumerate}
+	The first is equivalent to $\concat{t}{h}$ being a one-point singular, but the
+	second is not, as by
+	\cref{prelim:trans:tab-one-point-singular-combining-cases} the cases $3_Y$,
+	$4_Y$ and $4_{\lnot Y}$ are not covered by it.
+	For a concrete example, 
+	let $X = \{1,\ldots,5\}$ with
+	$t(1) = t(2) = 1$, $t(3) = t(4) = 2$, $t(5) = 5$ and
+	$h(1) = h(2) = h(3) = 3$, $h(4) = 4$, $h(5) = 5$.
+	Then $\dupl{t} = \{1,2\}$, $A = \{3\}$, $D_Z = \emptyset$,
+	$D_{t(X)} = \{3\}$, and $\concat{t}{h}$ maps $1,2,3,4$ to~$3$ and fixes~$5$.
+	So $\dupl{\concat{t}{h}} = \{3\}$ and $\concat{t}{h}$ is a one-point singular.
+	Here $Z = \{5\}$ and $\dupl{t}$ has two points, so we are in case $4_Y$ for
+	$Y = t(X)$ and in case $4_{\lnot Y}$ for every other admissible~$Y$.
+	Since $t$ is not a
+	one-point singular and $A = \{3\} \not\subseteq \emptyset = D_Z$, both
+	disjuncts of the second condition fail for every admissible~$Y$.
+\end{remark}
+
+\begin{remark} \label{prelim:trans:rem:Xfinite}
+	If~$X$ is finite, then $\concat{t}{h}$ is a one-point singular
+	if $t$ is injective and $h$ a one-point singular,
+	since then $t(X) = X$ and so, with \cref{prelim:eqn:dupl0},
+	we have $\dupl{\concat{t}{h}} = \dupl{h_{|t(X)}} = \dupl{h}$.
+	However, this might fail for infinite~$X$.
+	For $X = \mathbb{N}$ with $t(n) = n+1$, and
+	$h(1) = h(2) = 1$ and $h(n) = n$ for $n \ge 3$, the transformation~$h$ is
+	one-point singular with $\dupl{h} = \{1\}$ and $h(\dupl{t}) = \emptyset$
+	as~$t$ is injective; but $\concat{t}{h}$ maps~$1$ to~$1$ and~$n$ to $n+1$
+	for $n \ge 2$ and hence is injective.
+\end{remark}
+
+\begin{remark}
+	By \cref{prelim:trans:rem:Xfinite}, if~$h$ is a one-point singular,
+	for finite~$X$, we have $\dupl{\concat{t}{h}} = \dupl{h}$
+	precisely if $h(\dupl{t}) \subseteq \dupl{h}$. The example from
+	\cref{prelim:trans:rem:Xfinite}
+	also shows that this equivalence might fail for infinite~$X$.
+\end{remark}
+
+\begin{remark}
+	Let $\dupl{h} = \{c\}$ and $S \subseteq X$. Note that then
+	$h_{|S}$ is injective if and only if $|S \cap h^{-1}(\dupl{h})| \le 1$,
+	as every pair of points identified by~$h$ is mapped to~$c$.
+\end{remark}
+
+Finally we spell out the case in which both of the transformations are assumed
+to be one-point singulars.
+
+\begin{corollary} \label{prelim:cor:comp-one-point-singulars}
+	Let $t,h \colon X \to X$ be one-point singulars.
+	Then the following are equivalent.
+	\begin{enumerate}
+		\item \label{prelim:cor:comp-one-point-singulars:1}
+		$\concat{t}{h}$ is a one-point singular.
+		
+		\item \label{prelim:cor:comp-one-point-singulars:2}
+		$h(\dupl{t}) = \dupl{h}$ or $h_{|t(X)}$ is injective.
+		
+		\item \label{prelim:cor:comp-one-point-singulars:3}
+		Exactly one of the following holds:
+		\begin{enumerate}
+			\item \label{prelim:cor:comp-one-point-singulars:3a}
+			$h_{|t(X)}$ is injective.
+			
+			\item \label{prelim:cor:comp-one-point-singulars:3b}
+			$h(Z) \cap h(\dupl{t}) \ne \emptyset$ and $h_{|Z}$ is injective.
+			
+			\item \label{prelim:cor:comp-one-point-singulars:3c}
+			$\dupl{h_{|Z}} = h(\dupl{t})$.
+		\end{enumerate}
+	\end{enumerate}
+\end{corollary}
+\begin{proof}
+	Here $h(\dupl{t})$ is a singleton set, $\dupl{h_{|\dupl{t}}} = \emptyset$,
+	and~$t$ is not injective.
+	By \cref{prelim:eqn:dupl0} and $\dupl{h_{|t(X)}} \subseteq \dupl{h}$, the set
+	$\dupl{\concat{t}{h}} = h(\dupl{t}) \cup \dupl{h_{|t(X)}}$ is a singleton set
+	precisely if $\dupl{h_{|t(X)}} = \emptyset$ or $h(\dupl{t}) = \dupl{h}$,
+	which gives~\ref{prelim:cor:comp-one-point-singulars:2}.
+	For~\ref{prelim:cor:comp-one-point-singulars:3} apply
+	\cref{prelim:prop:comp-one-point-singular-cases} for $Y = t(X)$:
+	only case $2$,$3$ and~$5$ apply and reduce to the stated conditions.
+\end{proof}
+
+In \crefitem{prelim:cor:comp-one-point-singulars}{prelim:cor:comp-one-point-singulars:3}
+the former two conditions can be combined into
+the single condition that $h_{|Z}$ is injective,
+and the latter two conditions can be combined
+into $\dupl{h_{|t(X)}} = h(\dupl{t})$.
+
+\Cref{prelim:trans:fig:duplconcatingduplf} shows some cases
+where the composition of two one-point singulars results in a one-point singular.

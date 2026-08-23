@@ -1,0 +1,205 @@
+%!TEX root = ../../springer-mono-format/book.tex
+%!TEX root = ../../thesis-trier.tex
+
+\IN{partially ordered automaton}
+The automaton $\semiautomat{A}{Q}{\Sigma}{\delta}$ is called \emph{partially ordered} 
+if $q \eqreach p$ implies $p = q$, i.e., the reachability quasiorder
+is a partial order. % (and so we can speak about maximal states, or states that are maxima). 
+This is equivalent to the fact that all cycles 
+are induced by self-loops, i.e., $\applytrans{\delta}{q}{u} = q$
+implies $\applytrans{\delta}{q}{v} = q$ for every factor $v$ of $u$, in particular for the letters $v \in \Sigma$. 
+Equivalently, the strongly connected components are singletons (and so also blocks). Hence, 
+the subset mapping properties from \cref{prelim:subclasses:block}
+hold for partially ordered automata.
+
+Here, we collect results for partially ordered automata that we need
+later and, in~\cref{compl:cor:pto_sync_trap},
+characterizes synchronizable partially ordered automata as those with a unique trap state.
+
+\begin{example}\label{prelim:classes:pto-non-monotonic}
+	\Cref{prelim:classes:fig:pto-non-monotonic} depicts
+	a partially ordered automaton with four states.
+    This automaton is not monotonic.
+	For assume $\le$ is a linear order on $Q$.
+	If $q_3 \le q_4$ (resp.~$q_4 \le q_3$), then
+	$q_2 = \delta(q_3, aab) \le \delta(q_4, aab) = q_1$
+	(resp.~$q_1 \le q_2$)
+	and $q_1 = \delta(q_3, bba) \le \delta(q_4, bba) = q_2$ (resp.~$q_2 \le q_1$),
+	so $q_1 = q_2$. However, since $q_1 \ne q_2$,~$\mathcal A$ is not monotonic.
+\end{example}
+
+\begin{figure}[tbh]
+	\centering 	
+	\begin{tikzpicture}[node distance = 5em, on grid, auto, ->]
+		\node (q1) [state] {$q_1$};
+		\node (q2) [state, above of = q1] {$q_2$};
+		\node (q3) [state, right of = q2] {$q_3$};
+		\node (q4) [state, left of = q2] {$q_4$};
+		
+		\path (q4) edge node {$a$} (q2)
+		(q4) edge [loop left] node {$b$} (q4)
+		(q3) edge [loop right] node {$a$} (q3)
+		(q3) edge [above] node {$b$} (q2)
+		(q2) edge [loop above] node {$b$} (q2)
+		(q2) edge node {$a$} (q1)
+		(q1) edge [loop right] node {$a,b$} (q1);
+	\end{tikzpicture}
+	\caption[Partially ordered automaton that is not monotonic]{Partially ordered automaton} % that is not monotonic, see Example~\ref{prelim:classes:pto-non-monotonic}.}
+\label{prelim:classes:fig:pto-non-monotonic}
+\end{figure}
+
+\todo[inline]{label in einigen statements vereinheitlichen}
+\begin{proposition} \label{prelim:classes:pto:prop:max-equal-trap}
+		\label{prelim:fact:pto_trap_iff_maximal} 
+	In a partially ordered automaton $\semiautomat{A}{Q}{\Sigma}{\delta}$ 
+	a state is maximal for $\lereach$
+	if and only if it is a trap state.\footnote{We note that this is only true for the model of complete automata considered in the first half of the present work, but not for the more general model of PDFAs introduced later in \cref{constr_sync:subsec:pdfa}.} In particular,
+	there exists at least one trap state, and every upper set contains at least one trap state.
+\end{proposition}
+\begin{proof}
+	Clearly, a trap state is maximal. Furthermore, for a maximal state $q \in Q$ and $a \in \Sigma$ we have $\delta(q, a) \eqreach q$,
+	so that $\delta(q, a) = q$. Hence, $q$ is a trap state.
+\end{proof}
+
+Since trap states equal maximal states, the subset mapping conditions in terms of maximal states from 
+\cref{prelim:subclasses:block} involve sets of trap states. For example, the following conditions follows from \cref{prelim:classes:block:cor:Q-into-S}.
+
+\begin{proposition} \label{cor:pto-trap-states}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be a partially ordered automaton
+	and $S \subseteq Q$.
+	Then $\delta(Q, u) \subseteq S$ for some $u \in \Sigma^*$
+	if and only if  $S$ contains all trap states of~$\mathcal A$.  
+\end{proposition}
+
+\begin{proposition}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be partially ordered.
+	Then for $q \in Q$, $i \ge 0$, 
+	and $u \in \Sigma^*$ we have
+	\begin{equation}\label{prelim:classes:eqn:pto}
+		\applytrans{\delta}{q}{u^i} = \applytrans{\delta}{q}{u^{\min\{|Q| - 1, i\}}}.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	By finiteness, we have $\delta(q, u^{j + p}) = \delta(q, u^j)$
+	for some $0 \le j < |Q|$ and some minimal $p > 0$.
+	Since~$\mathcal A$ is partially ordered, it is $p = 1$.
+	Hence, for $i > |Q| - 1 \ge j$,
+	we find $\delta(q, u^i) = \delta(q, u^{|Q| - 1})$, which gives \cref{prelim:classes:eqn:pto}.
+\end{proof}
+
+\begin{proposition} \label{prelim:pto:prop:power-of-word-to-trap-state}
+ Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be partially ordered
+ and $u \in \bigcap_{a \in \Sigma} \Sigma^* a \Sigma^*$.
+ Then $\delta(q, u^{|Q| - 1})$ is a trap state.	
+\end{proposition}
+\begin{proof}
+	This follows from \cref{prelim:classes:pto:prop:u-raised-to-n,prelim:classes:pto:prop:max-equal-trap}.
+\end{proof}
+
+\begin{proposition}	\label{compl:cor:pto-sync-state}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be a partially ordered automaton
+	and $q \in Q$. Then the following are equivalent.
+	\begin{enumerate}	
+		\item \label{compl:cor:pto-sync-state:1} The state $q$ is a synchronizing state.
+		
+		\item \label{compl:cor:pto-sync-state:2} The state $q$ is a unique trap state.
+		
+		\item \label{compl:cor:pto-sync-state:3} The state $q$ is a maximum state in the partial order.
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+	$\ref{compl:cor:pto-sync-state:1} \Rightarrow~\ref{compl:cor:pto-sync-state:2}$: 
+	By \cref{prelim:cor:sync_trap_state}, $q$ is a trap state.
+	By \cref{prelim:classes:sync:cor:sync-implies-at-most-one-trap}, 
+	$q$ is a unique trap state in~$\mathcal A$. 
+	
+	$\ref{compl:cor:pto-sync-state:2} \Rightarrow \ref{compl:cor:pto-sync-state:3}$: By \cref{prelim:fact:pto_trap_iff_maximal}
+	the state $q$ is the unique maximal state, i.e., is a maximum.
+	
+	$\ref{compl:cor:pto-sync-state:3} \Rightarrow \ref{compl:cor:pto-sync-state:1}$: 
+	This follows from \crefitem{prelim:classes:sync:cor:sync-trap-state}{prelim:cor:sync_trap_state:item:uniquemax}.
+\end{proof}
+
+By \cref{compl:cor:pto-sync-state}, a state is a synchronizing
+state if and only if it is a unique trap state, giving
+the following corollary.
+
+\begin{corollary}
+	\label{compl:cor:pto_sync_trap}
+	A partially ordered automaton is synchronizing
+	if and only if it has a unique trap state.
+\end{corollary}
+
+Comparing \cref{compl:cor:pto_sync_trap} 
+with \cref{prelim:cor:sync_trap_state},
+we see that we do not have to state that the unique trap state
+is reachable from every other state, since this is automatically fulfilled.
+
+By \cref{prelim:fact:pto_trap_iff_maximal} the set of maximal states $S$
+equals the set of trap states in partially ordered $\mathcal A$. So, $\mathcal A_{|S}$
+is synchronizing if and only if $|S| = 1$.
+As, by \crefitem{prelim:thm:SCC_sync_words}{prelim:thm:SCC_sync_words:Ssync},
+$\mathcal A$ is synchronizing if and only if $\mathcal A_{|S}$
+is synchronizing, we obtain another proof for \cref{compl:cor:pto_sync_trap}.
+%Note that $|S| = 1$ implies $\mathcal A \cong \mathcal A / {\sim_S}$.
+
+Next, by \cref{compl:cor:pto_sync_trap} together with \cref{prelim:subclasses:sync:alg-unique-trap}
+we obtain the following time and space bounds on checking synchronizability,
+since we simply have to check existence of a unique trap state.
+
+\begin{proposition}
+	For $n$-state partially ordered automata we can test
+	in time $O(n)$ and space $O(1)$
+	whether it is synchronizing.
+\end{proposition}
+
+Later, in \cref{compl:prop:ST-pto-bound}, we
+will prove a statement implying that for a shortest $u \in \Sigma^*$
+such that $\delta(S, u) \subseteq T$
+we have $|u| \le |S| ( |Q| - 1 )$.
+
+\begin{lemma} \label{prelim:classes:lem:pto}
+	Let $\mathcal A = (Q, \Sigma,\delta)$ be a partially ordered automaton.
+	Then, for $q \in Q$, $i \ge 0$,	and $u \in \Sigma^*$ we have
+	$
+	%\begin{equation}\label{prelim:classes:eqn:pto}
+	\applytrans{\delta}{q}{u^i} = \applytrans{\delta}{q}{u^{\min\{|Q|-1, i\}}}.	
+	%\end{equation}
+	$
+\end{lemma}
+\begin{proof}
+	By finiteness, there exists 
+	such that $\delta(q, u^j) = \delta(q, u^l)$
+	for some $0 \le j < |Q|$. We have $l \le |Q|$. Now, set $p = l - j$.
+	Then $\{ \delta(q, u^j), \delta(q, u^{j+1}), \ldots, \delta(q, u^{j+p-1}) \}$
+	is strongly connected, and so must be a singleton
+	as $\mathcal A$ is partially ordered. Hence, by the minimal choice of~$l$,
+	we have $p = 1$. This gives
+	$\delta(q, u^{r}) = \delta(q, u^{|Q|-1})$ for all $r \ge |Q| - 1$.
+	So, we find $\applytrans{\delta}{q}{u^i} = \applytrans{\delta}{q}{u^{\min\{|Q|-1, i\}}}$.
+\end{proof}
+
+\begin{corollary}\label{prelim:classes:cor:com-po}
+	Let $\Sigma = \{a_1, \ldots, a_k\}$ with $k = |\Sigma|$.
+	Suppose $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	is a  partially ordered commutative automaton.
+	Then, for $n \ge |Q| - 1$, $q \in Q$, and $u \in \Sigma^*$ we have
+	\begin{equation} \label{compl:eqn:com_pto_ST}
+		\applytrans{\delta}{q}{u} = \applytrans{\delta}{q}{a_1^{\min\{n,|u|_{a_1}\}} \cdots a_k^{\min\{n,|u|_{a_k}\}}}.
+	\end{equation}
+\end{corollary}
+\begin{proof}
+	By commutativity,
+	we have $\delta(q, u) = \delta(q, a_1^{|u|_{a_1}} \cdots a_k^{|u|_{a_k}})$.
+	Then, for $i \in \{1,\ldots,k\}$, with \cref{prelim:classes:lem:pto}, 
+	we find 
+	\begin{align*}
+		\delta(q, a_1^{|u|_{a_1}} \cdots a_k^{|u|_{a_k}})
+		& = \delta(q, a_1^{|u|_{a_1}} \cdots a_{i-1}^{|u|_{a_{i-1}}} a_{i+1}^{|u|_{a_{i+1}}} \cdots a_k^{|u|_{a_k}} a_i^{|u|_{a_i}}) \\
+		& = \delta(q, a_1^{|u|_{a_1}} \cdots a_{i-1}^{|u|_{a_{i-1}}} a_{i+1}^{|u|_{a_{i+1}}} \cdots a_k^{|u|_{a_k}} a_i^{\min\{n,|u|_{a_i}\}}) \\ 
+		& = 
+		\delta(q, a_1^{|u|_{a_1}} \cdots a_{i-1}^{|u|_{a_{i-1}}} a_i^{\min\{n,|u|_{a_i}\}}a_{i+1}^{|u|_{a_{i+1}}} \cdots a_k^{|u|_{a_k}}).
+	\end{align*}
+	By applying the above reasoning successively to each $i \in \{1,\ldots,k\}$
+	we obtain the claim.
+\end{proof}

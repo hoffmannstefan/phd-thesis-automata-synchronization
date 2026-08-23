@@ -1,0 +1,309 @@
+%!TEX root = ./../../springer-mono-format/book.tex
+%!TEX root = ./../../thesis-trier.tex
+
+\index{OI-automaton|see{automaton with one-point singular idempotents}} \IN{automaton with one-point singular idempotents}
+\index{SI-automaton|see{automaton with simple idempotents}} \IN{automaton with simple idempotents}
+Let $\semiautomat{A}{Q}{\Sigma}{\delta}$.
+We call $\mathcal A$ an \emph{automaton with one-point singular idempotents (OI-automaton)}
+if every letter is either permutational or induces a one-point singular idempotent.
+We call $\mathcal A$ an \emph{automaton with simple idempotents (SI-automaton)}
+if every letter is either permutational or a simple idempotent.
+Clearly, every SI-automaton is an OI-automaton.
+
+For example, the \Cerny automata from
+Section~\ref{intro:cerny_rt} (Figure~\ref{intro:fig:cerny})
+are SI-automata.
+Rystsov~\cite{Rystsov2000} introduced SI-automata and proved that
+every synchronizing SI-automaton with $n$ states admits a synchronizing
+word of length at most $2(n-1)^2$.
+In \cref{sync_max:graphs:sec:extend-bound}, we extend this bound to OI-automata.
+
+For an OI-automaton  $\semiautomat{A}{Q}{\Sigma}{\delta}$, we set \label{def:subalphabets_SI}
+\begin{align*} 
+	\Sigma_I & = \{ a \in \Sigma \mid a \text{ induces a one-point singular idempotent } \}, \\
+	\Sigma_G & = \{ a \in \Sigma \mid a \text{ is a permutational letter } \}.
+\end{align*} 
+Then $\Sigma = \Sigma_I \cup \Sigma_G$. 
+
+First, in
+\cref{prop:structure_simp_idem_binary},
+we classify synchronizing binary SI-automata, a result originally
+due to Martyugin~\cite[Prop.~6.2]{Mar2009b}.
+\Cref{prelim:prop:binary-SI-sync-words} gives synchronizing words for
+binary SI-automata.
+\Cref{lem:each_sync_word_contains_a} establishes a lower bound on the rank
+of a reachable subset, and
+\cref{cor:each_sync_word_contains_a} establishes a lower bound on the
+length of a word of a given rank.
+\Cref{prelim:prop:SI-without-perm:reach-bound} determines the length of shortest
+words reaching a given subset in SI-automata.
+
+\begin{proposition}[{Martyugin~\cite[Prop.~6.2]{Mar2009b}}] \label{prop:structure_simp_idem_binary}
+	Let $\semiautomat{A}{Q}{\{a,b\}}{\delta}$ be an $n$-state binary synchronizing SI-automaton.
+	Then we have $n \le 2$ or one of the following holds:
+	\begin{enumerate}
+		\item $n = 3$ and $\mathcal A$ is, up to renaming of the letters, one of the automata in \cref{prelim:fig:three-state-sync-binary-SI-a,prelim:fig:three-state-sync-binary-SI-b}, or
+		\item one letter, say $a$, is a simple idempotent with $\delta(s,a)=t$ for distinct
+		$s,t\in Q$, the letter $b$ permutes the states with
+		$
+		Q=\{\delta(s,b^i)\mid i\ge0\}\cup\{t\},
+		$
+		and either
+		\begin{enumerate}
+			\item $t$ is a trap state (see \cref{prelim:fig:binarySI-sync-trap}), or
+			\item $\delta(s,b^d)=t$ for some $0<d<n$ with $\gcd(d,n)=1$
+			(see \cref{prelim:fig:binarySI-sync-SCC}).\footnote{In~\cite[Prop.~6.2]{Mar2009b} a 
+				different naming of the states is used,
+				with a parameter $2\le p\le n$ such that $p=n-d+1$. There appears to be a minor
+				mistake in~\cite[Prop.~6.2]{Mar2009b}. It is claimed that the 
+				automaton is not synchronizing whenever
+				$\gcd(n,p)>1$. However, if $p=n$ (which results in the \Cerny automaton),
+				then $\gcd(n,p)=n$. The correct condition is
+				$\gcd(n,n-p+1)>1$.}
+		\end{enumerate}
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+	Clearly, one letter, say~$a$, must be a simple idempotent.
+		
+	First, suppose~$a$ and~$b$ are both simple idempotents.
+	If $n \ge 4$, then, since each letter moves only one state,
+	there exist two distinct states $p,q \in Q$
+	that are fixed by both letters.
+	Consequently, every word fixes them, and so
+	no word synchronizes the automaton.
+	Thus, we have $n \le 3$.
+	It is clear that for $n \le 2$, $\mathcal A$
+	is always synchronizing.
+	For $n = 3$, 
+	a simple case analysis yields that~$\mathcal A$
+	is synchronizing if and only if it equals,
+	up to renaming of the letters, one 
+	of the automata from \cref{prelim:fig:three-state-sync-binary-SI-a,prelim:fig:three-state-sync-binary-SI-b}.
+	
+	Next, let~$b$ be a permutational letter. Let $s,t \in Q$ be distinct with $\delta(s, a) = t$.
+	Set $S = \{\delta(s, b^i) \mid i \ge 0\}$
+	and $T = \{\delta(t, b^i) \mid i \ge 0\}$.
+	As $\delta(S \cup T, x) \subseteq S \cup T$
+	and $\delta(Q \setminus (S \cup T), x) \subseteq Q \setminus (S \cup T)$ for $x \in \{a,b\}$,
+	we have $Q = S\cup T$.	
+	If $s \notin T$, then $\delta(T, x) = T$
+	for all $x \in \Sigma$, which gives
+	$T = \{t\}$ and that~$t$ is a trap state.
+	Otherwise, $s \in T$ implies $S = T$. Then
+	$\delta(s, b^d) = t$ for some 
+	$0 < d < n$. Set $r = \gcd(d, n)$
+	and, for $p, q \in Q$, write $p \sim q$
+	if there exists $i \ge 0$ such that $\delta(p, b^{ir}) = q$.
+	For all $x \in \{a,b\}$ and $p,q \in Q$ we have
+	\[
+	p \sim q \Leftrightarrow \delta(p, x) \sim \delta(q, x).
+	\]
+	So $|\delta(\{p,q\}, u)| = 2$ for all $p, q \in Q$ with $p \not\sim q$.
+	Hence, as $\mathcal A$ is synchronizing, all states must be equivalent
+	w.r.t.~$\sim$, which implies $r = 1$.	
+%	
+%		Next, suppose~$b$ permutes the states in a single cycle.
+%		Then we can assume $Q = [n]$ and $b$ adds one modulo $n$
+%		to each state. For all states $p,q \in Q$
+%		we have that 
+%		\[p \equiv q \pmod{\gcd(d,n)} \Leftrightarrow 
+%		\applytrans{\delta}{p}{x} \equiv \applytrans{\delta}{q}{x} \pmod{\gcd(d,n)}
+%		\]
+%		for each $x \in \Sigma$.
+%		So, it is not possible to map two states in different residue classes
+%		to the same state and hence, for $\gcd(d,n) > 1$,
+%		the automaton is not synchronizable. 
+\end{proof}
+
+\input{../tikz_simple_idemp}
+
+Next, we give synchronizing words for each of the two types of automata
+from \cref{prop:structure_simp_idem_binary}.
+
+\begin{proposition}	Let $n \ge 2$.
+	\label{prelim:prop:binary-SI-sync-words}
+	\begin{enumerate}
+		\item \label{prelim:prop:binary-SI-sync-words:1} The word $(ab)^{n-2}a$ synchronizes the $n$-state SI-automaton 
+		from \cref{prelim:fig:binarySI-sync-trap}.
+		
+		\item \label{prelim:prop:binary-SI-sync-words:2} The word $(ab^{n-d})^{n-2}a$ synchronizes the $n$-state SI-automaton 
+		from \cref{prelim:fig:binarySI-sync-SCC}.
+	\end{enumerate}
+\end{proposition} 
+\begin{proof} We use the notation from \cref{prop:structure_simp_idem_binary}.
+	
+\ref{prelim:prop:binary-SI-sync-words:1}: 
+For $i \in \{1,\ldots,n-1\}$ we have
+\[
+t = \delta(s, b^i (ab)^{(n - 1) - i}a) = \delta(s, b^i (ab)^{n-2}a).
+\]
+Since the state set is $\{ s, \delta(s, b), \ldots, \delta(s, b^{n-2})\} \cup \{t\}$ 
+and~$t$ is a trap state, we find $\delta(Q, (ab)^{n-2}a) = \{t\}$.
+
+\ref{prelim:prop:binary-SI-sync-words:2}: We can assume $n \ge 3$.
+For $i \in \{0,1,\ldots,n-1\}$ set
+$Q_i = \{\, s, \delta(s,b^{d}), \ldots, \delta(s,b^{id}) \,\}$.
+Since $d$ and~$n$ are coprime, the smallest $x > 0$ with $xd \equiv 0 \pmod{n}$
+is $x = n$. Hence the states $\delta(s,b^{jd})$ for $j \in \{0,1,\ldots,n-1\}$
+are pairwise distinct, so $|Q_i| = i+1$ and $Q_{n-1} = Q$.
+
+We show by induction on~$i$ that $Q_i \subseteq \delta^{-1}(s, (ab^{n-d})^{i})$.
+This is easy to see for $i = 1$. Next, suppose $i > 1$.
+By induction hypothesis, we have $Q_{i-1} \subseteq \delta^{-1}(s, (ab^{n-d})^{i-1})$.
+For $j \in \{0,1,\ldots,i-1\}$, since $d$ and $n$ are coprime, we have $(j+1)d \not\equiv 0 \pmod{n}$
+and thus $\delta(s, b^{(j+1)d}) \ne s$.
+This gives
+$
+\delta(s, b^{(j+1)d} a b^{n-d}) = \delta(s, b^{jd}).
+$
+With $\delta(s, ab^{n-d}) = s$ 
+we find $\delta(Q_i, ab^{n-d}) \subseteq Q_{i-1}$.
+Thus $Q_i \subseteq \delta^{-1}(s, (ab^{n-d})^{i})$. This concludes our induction argument.
+
+Now, set $q = \delta(s, b^{(n-1)d})$. We have $\delta(q, (ab^{n-d})^{n-2}) = \delta(s, b^d)$
+and so
+\[
+\delta(Q, (ab^{n-d})^{n-2}) = \delta(Q_{n-2} \cup \{q\}, (ab^{n-d})^{n-2})
+= \{s, \delta(s, b^d) \}.
+\]
+Thus, $\delta(Q, (ab^{n-d})^{n-2}a) = \{ \delta(s, b^d)\}$.
+%
+%
+%
+%First, we show that for $i \in \{0,1,\ldots,n-2\}$ we have
+%\[
+%\delta(Q, (ab^{n-d})^i) = \{ s, \delta(s, b^d), \ldots, \delta(s, b^{(n - (i+1))d}) \}
+%\]
+%Since $n$ and $d$ are coprime, the smallest $x > 0$ such that $xd \equiv 0 \pmod{n}$
+%is $x = n$
+%and so $Q = \{ s, \delta(s, b^d), \ldots, \delta(s, b^{(n - 1)d}) \}$.
+%This gives the claim for $i = 0$.
+%Next, suppose for $i \in \{0,1,\ldots,n-3\}$ we have
+%\[
+%\delta(Q, (ab^{n-d})^i) = \{ s, \delta(s, b^d), \ldots, \delta(s, b^{(n - (i+1))d}) \}
+%\]
+%Then
+%$
+%\delta(Q, (ab^{n-d})^ia) = \{ \delta(s, b^d), \ldots, \delta(s, b^{(n - (i+1))d}) \}
+%$
+%and so 
+%\[ 
+%\delta(Q, (ab^{n-d})^{i+1}) = \{ s, \delta(s, b^d), \ldots, \delta(s, b^{(n - (i + 2))d}) \}.
+%\]
+%By induction, our first claim holds. Then 
+%we find $\delta(Q, (ab^{n-d})^{n - 2})a) = \delta(\{ s, \delta(s, b^d)\}, a) = \{\delta(s, b^d)\}$
+%and so the word $(ab^{n-d})^{n - 2})a$ synchronizes the automaton.
+%
+%Note that $\delta(s, b^{j(n - d)}) = \delta(s, b^{(n - j)d})$ for $j \in \{0,1,\ldots,n-1\}$
+%and so for $i \in \{0,1,\ldots,n-1\}$ we get
+%\[
+%\{ s, \delta(s, b^d), \ldots, \delta(s, b^{(n - (i+1))d}) \}
+%= Q \setminus \{\delta(s, b^{i(n-d)}), \ldots, \delta(s, b^{n-d}) \}. 
+%\]
+%We also have
+%$
+%\delta^{-1}(s, (ab^{n-d})^{i}) = \{ s, \delta(s, b^d), \ldots, \delta(s, b^{id}) \}
+%$
+%for $i \in \{0, 1,\ldots,n-1\}$.
+%
+%For an alternative proof, consider the automaton from \cref{prelim:fig:binarySI-sync-SCC} 
+%and define an automaton~$\mathcal B$ with the same state 
+%over two letters $a$ and $c$ where $c$ induces the same transformation as $b^d$ on the states.
+%As $d$ and $n$ are coprime,
+%the resulting automaton is isomorphic to the \v{C}ern\'y automaton. So, from the method
+%of proof of~\cref{intro:cerny_rt}
+%we get the synchronizing word $(ac^{(n-1)})^{n-2}a$ for $\mathcal B$,
+%which yields the synchronizing word $(ab^{d(n-1)})^{n-2}a$ for the automaton from \cref{prelim:fig:binarySI-sync-SCC}.
+%As $dn - d \equiv n - d \pmod{n}$
+%the words $b^{d(n-1)}$ and $b^{n - d}$
+%induce the same permutation on the states. Hence,
+%the word $(ab^{n - d})^{n-2}a$ synchronizes this automaton as well.	
+\end{proof}
+
+Further synchronizing words can be constructed. For example,
+for the automata from \cref{prelim:fig:binarySI-sync-trap},
+all words in
+	\[
+\Sigma^*a^+(b((ba^*)^{n-1})^*)a^+)^{n-2}\Sigma^*
+\]
+synchronize it, or $abbabbabbabba$ synchronizes this automaton for $n = 6$.
+For the automata from \cref{prelim:fig:binarySI-sync-SCC} 
+all words in 
+$
+\Sigma^*a^+((ba^*)^{n-p}(ba^*)^n a^+)^{n-2}\Sigma^*
+$
+synchronize it.
+
+\begin{lemma} \label{lem:each_sync_word_contains_a}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be an SI-automaton.
+	Then for $S \subseteq Q$ and $u \in \Sigma^*$
+	we have $|S| - \sum_{a \in \Sigma_I} |u|_a \le |\delta(S, u)|$.
+\end{lemma}
+\begin{proof}
+	Clearly, the claim holds for $u = \varepsilon$.
+	Next, let $u = wx$ with $x \in \Sigma$ and $w \in \Sigma^*$.
+	Set $T = \delta(S, w)$. Inductively, we have
+	\begin{equation} \label{prelim:SI:reach-lower-bound}
+		|S| - \sum_{a \in \Sigma_I} |w|_a \le |T|.		
+	\end{equation}
+	For $x \in \Sigma_I$,
+	since $x$ maps only two states to one state,
+	we have $|T| - 1 \le |\delta(T,x)|$.
+	Thus, with $\delta(S, u) = \delta(T,x)$ and \cref{prelim:SI:reach-lower-bound}, we find
+	\[
+	|S| - \sum_{a \in \Sigma_I} |u|_a
+	= |S| - \left( \sum_{a \in \Sigma_I} |w|_a \right) - 1
+	\le |T| - 1
+	\le |\delta(S, u)|.
+	\]
+	For $x \in \Sigma_G$,
+	we have $|\delta(T, x)| = |T|$
+	and $\sum_{a \in \Sigma_I} |u|_a = \sum_{a \in \Sigma_I} |w|_a$
+	and substituting these values into \cref{prelim:SI:reach-lower-bound}
+	we get the claim.
+\end{proof}
+
+\begin{corollary} \label{cor:each_sync_word_contains_a}
+	In an $n$-state SI-automaton  $\semiautomat{A}{Q}{\Sigma}{\delta}$ for a
+	word $u$ of rank~$m$
+	we have $n - m \le |u|$. 
+\end{corollary}
+\begin{proof}
+	By \cref{lem:each_sync_word_contains_a} we have $n - \sum_{a \in \Sigma_I} |u|_a \le m$.
+	This gives $n - m \le \sum_{a \in \Sigma_I} |u|_a \le |u|$.	
+\end{proof}
+
+Lastly, we note a bound on shortest words reaching a given subset of states
+in SI-automata without permutational letters.
+
+\begin{proposition} \label{prelim:prop:SI-without-perm:reach-bound}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be an SI-automaton without permutational letters.
+	Then for a shortest word $u \in \Sigma^*$ such that $\delta(Q, u) = S$
+	we have $|u| = |Q| - |S|$.
+\end{proposition}
+\begin{proof}	
+	We can assume $S \ne Q$.
+	Let $u_1, \ldots, u_m \in \Sigma$ and $p_1, \ldots, p_m \in Q$
+	be such that $u = u_1 \cdots u_m$ and $\excl{u_i} = \{p_i\}$
+	for $i \in \{1,\ldots,m\}$.
+	Next, by induction, we show that for $i \in \{1,\ldots,m\}$ we have
+	\begin{enumerate}	
+		\item $\delta(Q, u_1 \cdots u_i) = Q \setminus \{ p_1, \ldots, p_i \}$ and
+		
+		\item the states $p_1, \ldots, p_i$ are pairwise distinct.
+	\end{enumerate}	
+	The claim is clear for $i = 1$. Now let $i > 1$.
+	By the minimal choice of~$u$,
+	we have $p_i \in \delta(Q, u_1 \cdots u_{i-1})$
+	since otherwise the letter $u_i$ fixes every state in $\delta(Q, u_1 \cdots u_{i-1})$
+	and thus can be omitted.
+	Since, inductively, $\delta(Q, u_1 \cdots u_{i-1}) = Q \setminus \{p_1, \ldots, p_{i-1}\}$,
+	we find $\delta(Q, u_1 \cdots u_i) = Q \setminus \{ p_1, \ldots, p_i \}$
+	and $p_i \notin \{p_1, \ldots, p_{i-1}\}$.
+	Since $p_1, \ldots, p_{i-1}$ are pairwise distinct by induction hypothesis,
+	the states $p_1, \ldots, p_i$ are pairwise distinct.
+	
+	Finally, for $i = m$ we find $|S| = |\delta(Q, u)| = |Q| - m$.
+	Thus $m = |Q| - |S|$.	
+\end{proof}

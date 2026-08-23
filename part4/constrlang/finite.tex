@@ -1,0 +1,58 @@
+%!TEX root = ./../../thesis-trier.tex
+
+Here, in \cref{constr_sync:thm:finite}, 
+we prove that for finite $L \subseteq \Sigma^*$, which are obviously sparse, the problem \constrsync{L} is in $\AC^0$.
+In \cref{constr_sync:prop:finite} we prove that removing finite sets
+from a constraint language does not lower the complexity if the resulting language is non-empty.
+
+\begin{theorem}
+\label{constr_sync:thm:finite}
+	Let $L \subseteq \Sigma^*$ be finite.
+	Then \constrsync{L} is in $\AC^0$
+	(and in constant time for $L = \emptyset$ or $L = \{\varepsilon\}$). 
+\end{theorem}
+\begin{proof}
+	An algorithm for \constrsync{\emptyset} always
+	returns {\sc NO}, and for \constrsync{\{\varepsilon\}}
+	it returns {\sc YES} if and only if the input
+	automaton has a single state and {\sc NO} otherwise;
+	both algorithms run in constant time.
+	Next, let $u \in \Sigma^*$ and consider
+	the morphism $\varphi \colon \{a\}^* \to \Sigma^*$ 
+	given by $\varphi(a) = u$.
+	By \cref{thm:hom_lower_bound_complexity},
+	we get $\constrsync{\{u\}} \leACZEROm \constrsync{\{a\}}$,
+	where the latter problem is in $\AC^0$ by \crefitem{constr_sync:thm:introductory_examples}{constrsync:ex:item:a}.
+	So, $\constrsync{\{u\}}$ for $u \in \Sigma^*$
+	is in $\AC^0$.
+	Then, for finite~$L$, the claim follows from 
+	\cref{constr_sync:thm:union}.	
+\end{proof} 
+
+More precisely, by closer inspection of the proof of \cref{constr_sync:thm:finite}
+(and the proofs of the referenced statements), we obtain that finite sets can be handled
+inside of $\leACZEROm$-reductions, giving the following statement.
+
+\begin{proposition} \label{constr_sync:prop:finite}
+	Let $L \subseteq \Sigma^*$ be regular and $F \subseteq \Sigma^*$
+	be finite. Then $\constrsync{L \cup F} \leACZEROm \constrsync{L}$.	
+\end{proposition}
+\begin{proof}
+	Looking into the proof of \cref{constr_sync:thm:finite},
+	checking whether a word from a finite set
+	synchronizes an input automaton can be incorporated into
+	an $\leACZEROm$-reduction.
+	Specifically, the reduction first checks whether
+	an input automaton has a synchronizing word in~$F$
+	and if it does, passes a \rYES-instance to $\constrsync{L}$,
+	or otherwise passes the input to~$\constrsync{L}$.	
+\end{proof}
+
+\begin{corollary}
+	For regular $L \subseteq \Sigma^*$
+	and finite~$F \subseteq \Sigma^*$
+	we have $\constrsync{L} \leACZEROm \constrsync{L \setminus F}$.
+\end{corollary}
+\begin{proof}
+	This follows from \cref{constr_sync:prop:finite} since $L = ( L \setminus F ) \cup (L \cap F)$.	
+\end{proof}

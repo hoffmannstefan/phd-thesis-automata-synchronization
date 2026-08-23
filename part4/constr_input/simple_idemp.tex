@@ -1,0 +1,698 @@
+%!TEX root = ../../thesis-trier.tex
+
+Here, we investigate the constrained synchronization problem
+for binary SI-automata as input.
+\Cref{constrsync:input:SI:sec:monoid} collects results
+for constraint languages that are monoids.
+\Cref{constrsync:input:SI:sec:bounded} collects results
+for bounded constraint languages.
+Lastly, \cref{constrsync:input:SI:sec:constraintaut}
+shows that for constraint PDFAs with up to three states
+and binary SI-automata as input 
+the constrained synchronization problem is in \NL.
+ 
+\begin{center} 
+	\fbox{
+		\begin{minipage}{30em}
+			In the remainder of this section we denote by $\mathcal A_t$ the synchronizing
+			binary SI-automaton from~\cref{prelim:fig:binarySI-sync-trap} with a trap state
+			and by $\mathcal A_c$ the other automaton from~\cref{prelim:fig:binarySI-sync-SCC}
+			where $b$ permutes the states,~$a$ is a simple idempotent
+			and $s,t \in Q$ and $0 < d < n$
+			are the parameters as in \cref{prop:structure_simp_idem_binary} w.r.t.~$\mathcal A_t$ and $\mathcal A_c$
+			for $n \ge 4$.
+		\end{minipage}
+	}
+\end{center}
+\label{def:AtAc}
+
+\subsection{Monoid Constraint Languages} 
+\label{constrsync:input:SI:sec:monoid}
+
+Here, we collect various results on monoid languages.
+For example, \cref{constrsync:subclasses:SI:prop:uAc} characterizes those words $u \in b^*ab^*$ 
+with precisely one $a$ such that~$u^*$ contains a synchronizing word for~$\mathcal A_c$.
+
+% für m > 2 sogar mengen die von a und bestimmten wörtern permutiert.
+\begin{proposition} \label{constrsync:subclasses:prop:SI:permutesset-new}
+	Suppose $L \subseteq ( (ba^*)^{m - 1}b )^*$
+	for a divisor $m$ of~$n$ (resp.~$n- 1$)
+	with $m > 1$.
+	Then there exists a proper subset of states of size $n / m$ (resp.~$(n-1)/m$)
+	permuted by each word from~$L$ in $\mathcal A_c$ (resp.~$\mathcal A_t$).
+\end{proposition}
+\begin{proof}
+	Recall that $s \in Q$ denotes the unique state with $\delta(s, a) \ne s$.
+	Set $S = \{ \delta(s, b^{mi}) \mid i \ge 0 \}$.
+	Then $|S| = n / m$ (resp.~$(n-1)/m$) in $\mathcal A_c$ (resp.~$\mathcal A_t$).
+	We have $s \notin \delta(S, b^i)$ for all $1 \le i \le m - 1$.
+	Thus $\delta(q, a) = q$ for all $q \in \delta(S, b^i)$ with $1 \le i \le m - 1$.
+	This gives $\delta(S, u) = \delta(S, u^{|u|_b}) = S$
+	for all $u \in L$.	
+\end{proof}
+
+\begin{corollary} \label{constrsync:subclasses:cor:SI:permutesset-new}
+	For $\mathcal A_c$ and $n$ even (resp.~$\mathcal A_t$ and $n$ odd) %and $n \ge 4$
+	there exists a proper subset of states of size $n / 2$ (resp.~$(n-1) / 2$) permuted by each word in $(ba^*b)^*$.
+\end{corollary}
+
+The next statement generalizes 
+\crefitem{prelim:prop:binary-SI-sync-words}{prelim:prop:binary-SI-sync-words:1}.
+
+\begin{proposition} \label{constrsync:subclasses:SI:prop:u-coprime-bs}
+	Let $u \in \{a,b\}^*$ with $|u|_a > 0$ and $|u|_b > 0$
+	and suppose $|u|_b$ and $n - 1$ are coprime. Then
+	$\Syn(\mathcal A_t) \cap u^* \ne \emptyset$.
+\end{proposition}
+\begin{proof}
+	As $|u|_b$ and $n - 1$ are coprime,
+	there exists $i \ge 1$ such that $i\cdot |u|_b \equiv 1 \pmod{n - 1}$
+	and so~$b^{i \cdot |u|_b}$ and $b$ induce
+	the same permutation on $Q$.
+	Hence, for each $q \in Q$, we have
+	$\delta(q, u^i) \in \{t, \delta(q, b)\}$.
+	As $|u|_a > 0$ there exists $q \in Q \setminus \{t \}$
+	such that $\delta(q, u) = t$.
+	So, we obtain that for each  $p \in Q \setminus \{t\}$ there exists $0 \le j < n - 1$
+	such that $\delta(p, u^j) \in  \{t,q \}$,
+	which gives $\delta(p, u^{j+1}) = t$.
+	Hence $\delta(p, u^{n-1}) = t$ for all $p \in Q$
+	and so $u^{n-1} \in \Syn(\mathcal A_t)$.    
+\end{proof}
+
+\begin{proposition}
+	\label{constrsync:subclasses:SI:prop:uAc}
+	Let $u \in b^*ab^*$.
+	%
+	% $i\cdot |u|_b + d \equiv 0 \pmod{n}$ for some $i \ge 1$.
+	% permutiert dann s,s.u, ... s.u^i, weil s.u^i = s mit der wahl
+	Then $\Syn(\mathcal A_c) \cap u^* \ne \emptyset$
+	if and only if $d + |u|_b \equiv 0 \pmod{n}$.
+\end{proposition}
+\begin{proof}
+	We have $\fact{u^*} = \fact{(ab^{|u|_b})^*}$.
+	So, by~\cref{constr_sync:cor:factors_sets_included},
+	we can assume $u = av$ for some $v \in b^*$.
+	Let $m = \gcd(|u|_b, n)$.
+	Then $v$ induces $m$ cycles of size $n / m$
+	on the states. As $a$ only moves the state $s$, for $m > 1$,
+	we get $\Syn(\mathcal A_c) \cap u^* = \emptyset$.
+    Also, since $d + |u|_b \equiv 0 \pmod{n}$
+    implies $d + |u|_b \equiv 0 \pmod{m}$
+    and so $d \equiv 0 \pmod{m}$,
+    for $m > 1$, we have $d + |u|_b \not\equiv 0 \pmod{n}$.    
+    So, the claim follows
+    when it holds for $m = 1$,
+    which we assume in the following.
+	Then $d \equiv j\cdot |u|_b \pmod{n}$ for some $0 < j < n$.
+	%	which is coprime to $n$ by \cref{prelim:eqn:ab_divisor}.
+	So,~$a$ induces $\SI{s}{\delta(s, v^j)}$
+	and $v$ induces $(s ~ \delta(s, v) ~ \ldots ~ \delta(s, v^{n-1}))$
+	as transformations on the states.
+	By \cref{prelim:eqn:SIcycle2},
+	the largest set permuted 
+	by $av$ is $\{ \delta(s, v^{j+1}), \delta(s, v^{j+2}), \ldots, \delta(s, v^n)\}$.
+	Hence,
+	$\Syn(\mathcal A_c) \cap u^* \ne \emptyset$
+	if and only if $\delta(s, v^{j+1}) = \delta(s, v^n) = s$,
+	which is equivalent to $(j+1)|u|_b \equiv 0 \pmod{n}$.
+	As $(j+1)|u|_b \equiv d + |u|_b \pmod{n}$,
+	$
+	\Syn(\mathcal A_c) \cap u^* \ne \emptyset
+	$
+	if and only if
+	$
+	d + |u|_b \equiv 0 \pmod{n}.
+	$	
+\end{proof}
+
+The condition $d + |u|_b \equiv 0 \pmod{n}$
+implies that $|u|_b$ and~$n$ are coprime.
+For certain words~$u$, this is, in fact, a necessary condition.
+For example, the word $bab^{m - 1}$
+for a divisor~$m > 1$ of~$n$ cannot synchronize~$\mathcal A_c$
+by \cref{constrsync:subclasses:prop:SI:permutesset-new}.
+
+\begin{corollary}
+	\label{constrsync:subclasses:SI:cor:uAc}
+	Let $u \in b^*ab^*$ and $i \ge 1$ coprime to $n$. Then $(u+b^i)^* \cap \Syn(\mathcal A_c) \ne \emptyset$.	
+\end{corollary}
+\begin{proof}
+	By coprimality of $i$ and $n$ there exists $j \ge 0$
+	such that $|u|_b + j \cdot i + d \equiv 0 \pmod{n}$.
+	Then set $v = ub^{j\cdot i}$
+	and apply \PROP~\ref{constrsync:subclasses:SI:prop:uAc}.
+\end{proof}
+
+\begin{corollary}
+	\label{constrsync:subclasses:SI:abb} 	\label{constrsync:SI:base-cases}
+	Let $\semiautomat{A_t}{Q}{\{a,b\}}{\delta}$ be an $n$-state SI-automaton
+	with %\footnote{A two-state automaton with a simple idempotent letter is always synchronizing.}
+	$n \ge 4$,
+	simple idempotent letter $a$
+	and permutational letter $b$. 	Then the following are equivalent.
+	\begin{enumerate}
+	\item \label{constrsync:SI:item:abb} $\Syn(\mathcal A) \cap (a+bb)^* \ne \emptyset$,
+		
+	\item \label{constrsync:SI:item:bab} $\Syn(\mathcal A) \cap (ba^*b)^* \ne \emptyset$,
+		
+	\item \label{constrsync:SI:item:AcAt} $\mathcal A = \mathcal A_t$ and $n$ is even or $\mathcal A = \mathcal A_c$ and $n$ is odd.	
+	\end{enumerate}
+\end{corollary}
+\begin{proof}
+$\ref{constrsync:SI:item:abb} \Leftrightarrow \ref{constrsync:SI:item:bab}$:
+As $\fact{(a+bb)^*} = \fact{(ba^*b)^*}$,
+this follows from~\cref{constr_sync:cor:factors_sets_included}.
+
+$\ref{constrsync:SI:item:AcAt} \Rightarrow \ref{constrsync:SI:item:bab}$:
+	For $\mathcal A = \mathcal A_t$
+	and $n$ even, by~\cref{constrsync:subclasses:SI:prop:u-coprime-bs},	
+	we have $\Syn(\mathcal A_t) \cap (ba^*b)^* \ne \emptyset$.
+	For $\mathcal A = \mathcal A_c$
+	and $n$ odd, by~\cref{constrsync:subclasses:SI:cor:uAc},
+	we have $\Syn(\mathcal A_c) \cap  (a+bb)^* \ne \emptyset$
+	and the claim follows as~\ref{constrsync:SI:item:abb} 
+	and~\ref{constrsync:SI:item:bab} are equivalent.
+	
+$\ref{constrsync:SI:item:bab} \Rightarrow \ref{constrsync:SI:item:AcAt}$:
+	By~\cref{prop:structure_simp_idem_binary},
+	we have $\mathcal A = \mathcal A_t$
+	or $\mathcal A = \mathcal A_c$.
+	By~\cref{constrsync:subclasses:cor:SI:permutesset-new} 
+	we find that in the former case $n$ must be even,
+	and in the latter case $n$ must be odd.		
+\end{proof}
+
+Lastly, we collect various constraint languages
+which give a problem equivalent to the unconstrained
+problem for a specific choice of a simple idempotent
+letter and a permutational letter.
+
+\begin{lemma}\label{constrsync:subclasses:SI:equiv-unconstrained}
+	Let $\semiautomat{A}{Q}{\{a,b\}}{\delta}$ be an $n$-state SI-automaton
+	with simple idempotent letter~$a$
+	and permutational letter $b$.
+	Then the following are equivalent:
+	\begin{enumerate}
+		\item \label{constrsync:subclasses:SI:equiv-unconstrained:1} $\Syn(\mathcal A) \ne \emptyset$,
+		
+		\item \label{constrsync:subclasses:SI:equiv-unconstrained:2} $\Syn(\mathcal A) \cap (bb^*a)^* \ne \emptyset$,
+		
+		\item \label{constrsync:subclasses:SI:equiv-unconstrained:3} $\Syn(\mathcal A) \cap (ab^*a)^* \ne \emptyset$,
+		
+		\item \label{constrsync:subclasses:SI:equiv-unconstrained:4} $\Syn(\mathcal A)  \cap (b+aa)^* \ne \emptyset$,
+		
+		\item \label{constrsync:subclasses:SI:equiv-unconstrained:5} $\Syn(\mathcal A)  \cap (b+ab)^* \ne \emptyset$,
+		
+		\item \label{constrsync:subclasses:SI:equiv-unconstrained:6} $\Syn(\mathcal A) \cap (bb+ab)^* \ne \emptyset$,
+		
+		\item \label{constrsync:subclasses:SI:equiv-unconstrained:7} $\Syn(\mathcal A) \cap (bb+ba)^* \ne \emptyset$.
+	\end{enumerate}	
+
+\end{lemma}
+\begin{proof}
+$\ref{constrsync:subclasses:SI:equiv-unconstrained:1} 
+\Leftrightarrow \ref{constrsync:subclasses:SI:equiv-unconstrained:2} 
+\Leftrightarrow \ref{constrsync:subclasses:SI:equiv-unconstrained:3} 
+\Leftrightarrow \ref{constrsync:subclasses:SI:equiv-unconstrained:4} 
+\Leftrightarrow \ref{constrsync:subclasses:SI:equiv-unconstrained:5}$: As $a$ is a simple idempotent
+	we can replace, for any $i > 0$, each~$a$ by~$a^i$.
+	This gives the following equivalences:
+	\begin{multline*}
+		\Syn(\mathcal A) \ne \emptyset 
+		\Leftrightarrow (bb^*a)^* \cap \Syn(\mathcal A) \ne \emptyset 
+		\Leftrightarrow (ab^*a)^* \cap \Syn(\mathcal A) \ne \emptyset \\
+		\Leftrightarrow (b+aa)^* \cap \Syn(\mathcal A) \ne \emptyset  
+		\Leftrightarrow (b+ab)^* \cap \Syn(\mathcal A) \ne \emptyset.
+	\end{multline*}
+
+$\ref{constrsync:subclasses:SI:equiv-unconstrained:1} \Leftrightarrow 
+\ref{constrsync:subclasses:SI:equiv-unconstrained:6}$:
+	Suppose $\Syn(\mathcal A) \ne \emptyset$.
+By~\cref{prop:structure_simp_idem_binary} 
+we have that $\mathcal A$ equals~$\mathcal A_t$
+or~$\mathcal A_c$. Set
+\[
+w = \begin{cases}
+	(ab)^{n-1}         & \text{if } \mathcal A = \mathcal A_t, \\
+	(ab^{n-d})^{n-2}ab & \text{if } \mathcal A = \mathcal A_c \text{ and $n$ is even, } \\
+	(a(b(b^{n+1})^{n-d-1})^{n-2}ab & \text{if } \mathcal A = \mathcal A_c \text{ and $n$ is odd. } \\ 
+\end{cases}
+\]
+For odd $n$ and $\mathcal A = \mathcal A_c$, $b^{n+1} \in (bb)^*$ induces the same transformation as $b$
+on the states. Then, by \cref{prelim:prop:binary-SI-sync-words},
+in each case, we have $w \in \Syn(\mathcal A) \cap (bb+ab)^*$.
+This yields that $\Syn(\mathcal A) \ne \emptyset$
+if and only if $\Syn(\mathcal A) \cap (bb+ab)^* \ne \emptyset$.
+
+	
+$\ref{constrsync:subclasses:SI:equiv-unconstrained:6} \Leftrightarrow 
+\ref{constrsync:subclasses:SI:equiv-unconstrained:7}$:
+As $\fact{(bb+ab)^*} = \fact{(bb+ba)^*}$,
+this follows from~\cref{constr_sync:cor:factors_sets_included}.
+\end{proof}
+
+% oder einfach annehmen, keine zwei a's hintereinander?
+% also wenn a \in Sigma_{1,2}, dann a nicht in Sigma22 oder Sigma23? ne, nur Sigma22
+
+\subsection{Bounded Constraint Languages}
+\label{constrsync:input:SI:sec:bounded} 
+
+Here, \cref{constrsync:subclasses:SI:prop:rho} 
+states a lower bounds in terms of $\rho \colon \Sigma^* \to \mathbb N_0$
+for the size of subsets 
+reachable from a given set (recall that $\rho \colon \Sigma^* \to \mathbb N_0$ from Section~\ref{constr_sync:sec:growth} 
+measures the number of symbol switches).
+Then, in \cref{constrsync:subclasses:SI:cor:rho}, 
+we show that we can decide in constant time whether
+a given SI-automaton has a synchronizing
+word in a fixed letter-bounded language.
+Lastly, in \cref{constrsync:prop:SI:boundedLcase},
+we show that deciding whether
+a given SI-automaton has a synchronizing
+word in a regular language in $u_1^* \cdots u_k^*$
+with $\rho(u_j) \le 1$ for each $j \in \{1,\ldots,k\}$
+is in \LOGSPACE.
+
+\begin{proposition}\label{constrsync:subclasses:SI:prop:rho}
+	%\label{constr_sync:prop:SI-automata_equal_letter_runs}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be an SI-automaton, $S \subseteq Q$
+	and $u \in \Sigma^*$. Then $|S| - \rho(u) - 1 \le |\applytrans{\delta}{S}{u}|$.	
+	In particular, $|\applytrans{\delta}{S}{u}| = 1$
+	implies $\rho(u) \ge |S| - 2$. 
+\end{proposition}
+\begin{proof}
+	First, let $i \ge 0$ be maximal
+	such that $u = vx^i$ for some $v \in \Sigma^*$ and $x \in \Sigma$.
+	%We can assume $u \ne \varepsilon$, so that $i > 0$.
+	Since $x$ is a permutational letter or a simple idempotent,
+	we have
+	\begin{equation} \label{eqn:SIrho}
+	|\delta(S, v)| - 1 \le |\delta(S, u)|.
+    \end{equation}
+    
+    Next, to prove the statement, we do induction on $\rho(u)$.
+    For $\rho(u) = 0$, we have $v = \varepsilon$
+    and \cref{eqn:SIrho} gives $|S| - 1 \le |\delta(S, u)|$. % the claim.
+	Next, suppose $\rho(u) > 0$.
+	Then $v$ ends with a letter different from $x$,
+	so $\rho(u) = \rho(v) + 1$.
+    Now, we have the following:
+	\begin{align*}
+		|S| - \rho(u) - 1 & = |S| - \rho(v) - 1 - 1 \tag{$\rho(u) = \rho(v) + 1$} \\
+		                  & \le |\delta(S, v)| - 1 \tag{induction hypothesis}\\
+		                  & \le |\delta(S, u)|.   \tag{Eqn.~\eqref{eqn:SIrho}}
+	\end{align*}
+	Thus, by induction, we obtain the claim.
+\end{proof}
+
+\begin{corollary}\label{constrsync:subclasses:SI:cor:rho}
+	Let $L \subseteq \Sigma^*$ be a fixed letter-bounded language.
+	
+	\begin{enumerate}
+	\item \label{SI:cor:rho:item:1} There exist only finitely many SI-automata $\mathcal A$
+	with $\Syn(\mathcal A) \cap L \ne \emptyset$.%	having a synchronizing word in~$L$.	
+	
+	\item \label{item:SI:cor:rho:constant} For a given SI-automaton we can decide in constant time
+	whether it has a synchronizing word in $L$.
+	\end{enumerate}	
+\end{corollary}
+\begin{proof}
+\ref{SI:cor:rho:item:1} By~\cref{constr_sync:prop:letter_bounded_iff_equal_letter_runs_bounded}
+we have $\applyfunc{u}{\rho} \le N$ for some $N \ge 0$
+and all $u \in L$.
+Then, \cref{constrsync:subclasses:SI:prop:rho}
+gives that for an SI-automaton $\semiautomat{A}{Q}{\Sigma}{\delta}$
+we have $|\delta(Q, u)| \ge |Q| - N - 1$
+so that for a synchronizing word $u \in \Sigma^*$
+we find $N + 2 \ge |Q|$.
+
+\ref{item:SI:cor:rho:constant} By~\ref{SI:cor:rho:item:1}, to test whether a given SI-automaton
+has a synchronizing word in~$L$
+we only have to compare it against finitely many automata, which can be done
+in constant time.		
+\end{proof}
+
+\begin{proposition} \label{constrsync:prop:SI:boundedLcase}
+	Let $L \subseteq u_1^* \cdots u_k^*$
+	be regular with $u_1, \ldots, u_k \in a^* b^* \cup b^* a^*$.
+	Then deciding whether an SI-automaton $\semiautomat{A}{Q}{\{a,b\}}{\delta}$ 
+	has a synchronizing word in~$L$	is in~\LOGSPACE.
+\end{proposition}
+\begin{proof}
+	Let $n$ be the number of states of~$\mathcal A$.
+	We can assume $n \ge 1$ and that~$\mathcal A$ has 
+	a simple idempotent letter and a permutational letter.	
+	Since~$L$ is regular, it has a finite number~$m$ of Myhill-Nerode equivalence
+	classes by \cref{prelim:min_aut:terminal_object}.
+	
+	Let $u_1^{m_1} \cdots u_k^{m_k} \in L$ be a shortest
+	synchronizing word for $\mathcal A$.	
+	Assume we have $m_j \ge nm$ for some $j \in \{1,\ldots,k\}$.
+	By finiteness, we have
+	\[
+	u_1^{m_1} \cdots u_{j-1}^{m_{j-1}} u_j^{i_1} \equiv_{L} 
+	u_1^{m_1} \cdots u_{j-1}^{m_{j-1}} u_j^{i_1 + p_1}
+	\]
+	for some $0 \le j_1 < m$ and $0 < p_1 < m$.
+	Now, $u_j$ either is a permutational word, a simple idempotent,
+	or the composition of a permutational word with a simple idempotent.
+	With \cref{constrsync:prop:concat_cycle_SI} 
+	we have $\delta(q, u_j^{i_2}) = \delta(q, u_j^{i_2 + p_2})$
+	for all $q \in Q$ for some $0 \le i_2 < n$
+	and $0 < p_2 < n$.
+	Since 
+	\[
+	nm - p_1 p_2 = (n- p_2) m + p_2(m - p_1) = n ( m - p_1 ) - (n - p_2) p_1
+	\]
+	we have $m_j - p_1 p_2 \ge nm - p_1 p_2 \ge \max\{ j_1, j_2 \}$.
+	Thus, we find
+	\[
+	u_1^{m_1} \cdots u_j^{m_j - p_1 p_2} \cdots u_k^{m_k} \equiv_L 
+	u_1^{m_1} \cdots u_j^{m_j} \cdots u_k^{m_k}
+	\]
+	and $\delta(q, u_j^{m_j - p_1 p_2}) = \delta(q, u_j^{m_j})$
+	for all $q \in Q$.
+	This yields that $u_1^{m_1} \cdots u_j^{m_j - p_1 p_2} \cdots u_k^{m_k} \in L$
+	and that this word synchronizes~$\mathcal A$,
+	which contradicts the minimal choice of the original word.
+	Thus, we have $m_j < nm$ for all $j \in \{1,\ldots,k\}$.
+		
+	Hence, there exists a synchronizing word in $L$ if and only if there exists one of the form $u_1^{m_1} \cdots u_k^{m_k}$ in $L$
+	with $0 \le m_1, \ldots, m_k < nm$, and so we only have to search among these words.
+	By utilizing~$k$ counters each 
+	using $\log nm$ space,
+	we iterate through all tuples $(m_1, \ldots, m_k)$
+	representing the words $u_1^{m_1} \cdots u_k^{m_k}$
+	with $0 \le m_1, \ldots, m_k < nm$.
+	In each iteration, we test whether  $u_1^{m_1} \cdots u_k^{m_k}$
+	synchronizes~$\mathcal A$ and is in $L$.
+	The word $u_1^{m_1} \cdots u_k^{m_k}$
+	can be tested to be synchronizing for $\mathcal A$ in deterministic log-space
+	by iterating through $Q = \{q_1, \ldots, q_n\}$,
+	compute $\delta(q_i, u_1^{m_1} \cdots u_k^{m_k})$ on-the-fly
+	and test, for $i > 1$, whether $q_{i-1}$ equals $q_i$.
+	This only requires two additional memory cells and three counters for 
+	the state $q_i$, $i \in \{1,\ldots,n\}$, for the index $j \in \{1,\ldots,k\}$
+	and for $u_j^{i}$ with $0 \le i \le m_j$.
+	Checking whether $u_1^{m_1} \cdots u_k^{m_k} \in L$
+	with input $(m_1, \ldots, m_k)$ can be done
+	by simulating an automaton accepting~$L$ from the start state while using
+	counters as before.
+\end{proof} 
+
+\subsection{Binary SI-Automata and Small Constraint Automata}
+\label{constrsync:input:SI:sec:constraintaut}
+
+Here, first, in \cref{constrsync:prop:SI-binary-sync-in-L-hard} 
+we show \LOGSPACE-hardness of deciding whether
+a given binary SI-automaton has a synchronizing word in 
+a certain constraint language. Recall
+that by \cref{syncmax:SI-aut:prop:sync-L-complete}
+the unconstrained synchronization problem is \LOGSPACE-complete
+on binary SI-automaton as input.
+In \cref{constrsync:input:SI:lem:threestates} 
+we show that for binary $3$-state constraint PDFAs $\mathcal B$
+with two strongly connected components,
+deciding
+whether a given SI-automaton has a synchronizing
+word in $L(\mathcal B)$ is in~\LOGSPACE.
+Lastly, \Cref{constrsync:input:SI:thm:atmostthreestates} 
+states that the constrained synchronization problem
+for binary constraint PDFAs with at most three states and SI-automata
+as input is in \NL. 
+
+\begin{proposition} \label{constrsync:prop:SI-binary-sync-in-L-hard}
+	Let $L \subseteq \{a,b\}^*$ 
+	be such that $v u^* w \subseteq L$ for some $v,w \in \Sigma^*$
+	and $u \in \Sigma^*a\Sigma^* \cap \Sigma^*b\Sigma^*$.
+	Then it is \LOGSPACE-hard w.r.t.~$\leACZEROm$-reductions
+	to test whether a given input SI-automaton
+	has a synchronizing word in $L$.	
+\end{proposition}
+\begin{proof}
+	We give a reduction from \SCP, which is \LOGSPACE-complete
+	by \cref{prelim:thm:complexities}.
+    Let $f \colon [m] \to [m]$
+	be a permutation. 
+	By modifying $f$ by  
+	adding a new point $n$
+	and mapping $m-1$ to $m$
+	and $m$ to $f(m-1)$,
+	we obtain a permutation on $[m+1]$
+	that cyclically permutes its domain
+	if and only if $f$ cyclically permutes $[m]$.
+    So, assume that~$m$ and~$|u|_b$
+	are coprime.
+	Then, let $\semiautomat{A}{Q}{\{a,b\}}{\delta}$
+	with $Q = [m] \cup \{t\}$ where~$a$ induces a simple idempotent mapping $0$ to $t$, $\delta(t, b) = t$
+	and $\delta(q, b) = f(q)$ for $q \in [m]$.
+		
+	For the input $1^m$, since coprimality can be tested in \LOGSPACE 
+	for unary inputs by \cref{prelim:prop:coprime_in_L}, a Turing machine can determine how many points must be added 
+	to the input $f$ so that the total number of points is coprime to $|u|_b$, 
+	and can compute an $\AC^0$ circuit realizing this modification of $f$ 
+	and computing~$\mathcal{A}$. Hence, we obtain an~$\leACZEROm$-reduction.	
+		
+%We give a reduction from \SCP. Let $f \colon [n] \to [n]$
+%be a permutation.
+%Let $0 < m \le |u|_b+1$
+%such that $n + m \equiv 1 \pmod{|u|_b}$. % uniform TM, rest |u|_b bestimmen, dann draufaddiern
+%Set $\semiautomat{A}{Q}{\{a,b\}}{\delta}$
+%with $Q = [n] \cup \{q_1, \ldots, q_m, t\}$ where~$a$ induces a simple idempotent mapping $0$ to $t$
+%and
+%
+%\[
+%\delta(q, b) = \begin{cases}
+%	q_1     & \text{if } q = 0, \\
+%	q_{i+1}	& \text{if } q = q_i \text{ for } i \in \{1,\ldots,m-1\}, \\
+%	f(0)    & \text{if } q = q_m, \\
+%	f(q)	& \text{if } q \in \{1,\ldots,n-1\}, \\
+%	t       & \text{if } q = t.
+%\end{cases}
+%\]
+%
+%A Turing machine on input $1^n$
+%can compute $m$ by computing the remainder~$r$
+%of $n$ when divided by $|u|_b$
+%and setting $m = |u|_b - r + 1$.
+%Then it can output an~$\AC^0$ circuit computing $\mathcal A$.
+%So, we obtain an $\leACZEROm$-reduction.
+
+	Now, $f$ cyclically permutes $[m]$
+	if and only if $\mathcal A$ is isomorphic 
+	to the automaton from \cref{prelim:fig:binarySI-sync-trap}.	
+	So, if~$f$ cyclically permutes $[m]$, by \cref{constrsync:subclasses:SI:prop:u-coprime-bs},
+	as $|Q|-1$ and $|u|_b$ are coprime
+	we have $u^i \in \Syn(\mathcal A)$
+	for some $i \ge 1$.
+	Then, $vu^iw \in \Syn(\mathcal A)$.
+	Conversely, if $L \cap \Syn(\mathcal A) \ne \emptyset$,
+	then, as $\mathcal A$ has a trap state, it 
+	must be isomorphic to the automaton from \cref{prelim:fig:binarySI-sync-trap}.
+	So, $f$ cyclically permutes $[m]$.
+	Hence, we have a valid reduction.	
+\end{proof} 
+
+
+\begin{lemma} \label{constrinp:lem:three-states-two-SCC}
+	Let $\automat{B}{\{1,2,3\}}{\{a,b\}}{\mu}{1}{\{3\}}$
+	be a trim $3$-state constraint automaton
+	with two strongly connected components.
+	Then $L(\mathcal B)$
+	is letter-bounded
+	or there exist $v,u,w \in \Sigma^*$
+	with $vu^*w \subseteq L(\mathcal B)$
+	and $|u|_a, |u|_b > 0$.
+\end{lemma}
+\begin{proof}
+	Let $p \in \{1,2,3\}$
+	be a state in the strongly connected component
+	of size two and~$q$
+	be the single state in the other strongly connected component.
+	By \cref{constr_sync:thm:regular_prefix_codes_and_automata}
+	we have $L(\mathcal B_{p,\{p\}}) = C_1^*$
+	and $L(\mathcal B_{q,\{q\}}) = C_2^*$
+	where $C_1$ is a prefix code (the case $C_1 = \emptyset$ is not possible
+	since the strongly connected component has size two)
+	and $C_2 = \emptyset$ or it is also a prefix code.
+	Now, $L(\mathcal B)$
+	is letter-bounded if and only if $C_1 \subseteq x^*$
+	and $C_2 \subseteq y^*$ for $x,y \in \Sigma$.
+	Otherwise, $C_1^*$ or $C_2^*$
+	contains a word $u$
+	with $|u|_a, |u|_b > 0$.
+	Without loss of generality, suppose $u \in C_1^*$.
+	We have $u^* \subseteq C_1^*$
+	and since~$\mathcal B$
+	is trim,
+	we have $\mu(1, v) = p$
+	and $\mu(p, w) = 3$
+	for some $v,w \in \{a,b\}^*$.
+	This gives $vu^*w \subseteq L(\mathcal B)$.
+\end{proof}
+
+\begin{lemma}\label{constrsync:input:SI:lem:threestates}
+	Let $\automat{B}{\{1,2,3\}}{\{a,b\}}{\mu}{1}{\{3\}}$
+	be a trim $3$-state constraint automaton
+	with two strongly connected components.
+	Then the problem to decide
+	whether a given SI-automaton over $\{a,b\}$
+	has a synchronizing word in $L(\mathcal B)$ is in \LOGSPACE.
+\end{lemma}
+\begin{proof}
+	Let $\semiautomat{A}{Q}{\{a,b\}}{\delta}$
+	be an $n$-state input SI-automaton.  
+	As finitely many cases can be hard-coded into a decision algorithm, we can 
+	assume $n \ge 24$.  	
+	Then, by \cref{prop:structure_simp_idem_binary}, 
+	a necessary condition for $\mathcal A$
+	having a synchronizing word in~$L$
+	is that it equals, up to renaming of the letters,
+	$\mathcal A_c$
+	or $\mathcal A_t$.
+	By \cref{constrsync:prop:SI-binary-sync-in-L}
+	we can test in deterministic log-space whether this is the case
+    and compute the respective parameters.
+    So, we can assume 
+    $\mathcal A$ equals $\mathcal A_c$ or $\mathcal A_t$,
+    where $a$ is a simple idempotent and $b$
+    the permutational letter.
+    Further, assume 
+    $\fact{L(\mathcal B}) \ne \{a,b\}^*$,
+    as otherwise, by~\cref{constr_sync:cor:factors_sets_included},
+    when $\mathcal A$ equals $\mathcal A_c$
+    or $\mathcal A_t$ it is $\Syn(\mathcal A) \cap L(\mathcal B) \ne \emptyset$.    
+    %the problem is solved after testing $\Syn(\mathcal A) \ne \emptyset$.    
+	Next, set $\Sigma_{i,j} = \{ x \in \Sigma \mid \mu(i, x) = j \}$
+	for $i,j \in \{1,2,3\}$.
+	Let $S \subseteq \{1,2,3\}$
+	be the strongly connected component with two states.
+	Then 
+	\begin{equation}\label{constrsync:SI:eqn:threestates}
+		L(\mathcal B) = \begin{cases}
+			( \Sigma_{1,1}^* \Sigma_{1,2} \Sigma_{2,2}^* \Sigma_{2,3} \cup \Sigma_{1,1}^* \Sigma_{1,3} ) L(\mathcal B_{3,\{3\}}) & \text{if } S = \{2,3\}, \\
+			L(\mathcal B_{1,\{1\}}) ( \Sigma_{1,3}\Sigma_{3,3}^* \cup \Sigma_{1,2}\Sigma_{2,2}^* \Sigma_{2,3} \Sigma_{3,3}^*) & \text{if } S = \{1,2\}.
+		\end{cases}
+	\end{equation}
+    So, $L(\mathcal B) = ULV$ for letter-bounded $U, V \subseteq \Sigma^*$
+    with $\rho(u) \le 4$ for $u \in U \cup V$
+    and~$L$ equals $L(\mathcal B_{3,\{3\}})$ for $S = \{2,3\}$
+    or $L(\mathcal B_{1,\{1\}})$ for $S = \{1,2\}$.    
+    As $\fact{L(\mathcal B}) \ne \{a,b\}^*$, we have
+    $|\Sigma_{i,i}| \le 1$ for all $i \in \{1,2,3\}$
+    and only two or three transitions
+    are defined among the states in $S$.
+    This yields that there are only~$13$
+    possible cases for~$L$, which we handle next.  
+    Observe that, as $L \subseteq \fact{L(\mathcal B)}$,
+    by \cref{constr_sync:thm:L_in_FactLbar},
+    $\Syn(\mathcal A) \cap L \ne \emptyset$
+    implies $\Syn(\mathcal A) \cap L(\mathcal B) \ne \emptyset$.     
+    
+    \medskip
+    \noindent\underline{$(ab)^*, (ba)^*, (a+ba)^*, (aa^*b)^*, (ab+aa)^*$}:
+       As $a$ is a simple idempotent,
+       we can replace $(a+ba)^*$, $(aa^*b)^*$
+       or $(ab+aa)^*$ by the bounded languages
+       $(a+\varepsilon)(ba)^*$, $(ab)^*$
+       or $(ab)^*(a+\varepsilon)$, respectively.
+       So, for each language, 
+       we can assume that we have $L(\mathcal B) = ULV \subseteq u_1^* \cdots u_k^*$
+       for some words $u_i \in \Sigma^{\le 2}$ with $i \in \{1,\ldots,k\}$.
+       Then, by \PROP~\ref{constrsync:prop:SI:boundedLcase},
+       we find that the decision problem is in~\LOGSPACE, giving the claim.
+    
+    \medskip
+    \noindent\underline{$(bb^*a)^*, (ab^*a)^*, (b+aa)^*, (b+ab)^*, (bb+ab)^*, (bb+ba)^*$}:
+    By \cref{constrsync:subclasses:SI:equiv-unconstrained},
+    as it lists these languages, $\Syn(\mathcal A) \ne \emptyset$
+    is equivalent to $\Syn(\mathcal A) \cap L \ne \emptyset$. 
+    As $\Syn(\mathcal A) \cap L \ne \emptyset$
+    implies $\Syn(\mathcal A) \cap L(\mathcal B) \ne \emptyset$,
+    we find that $\Syn(\mathcal A) \cap L(\mathcal B) \ne \emptyset$
+    is equivalent to $\Syn(\mathcal A) \ne \emptyset$,
+    which gives the claim.       
+
+    \medskip
+    \noindent\underline{$(ba^*b)^*$, $(a+bb)^*$}:
+    First, assume $\mathcal A = \mathcal A_c$ and~$n$
+    is even (resp.~$\mathcal A = \mathcal A_t$ and $n$ is odd).
+    Let  $u_1 \in U$, $u_2 \in L$ 
+    and $u_3 \in V$. 
+    By \cref{constrsync:subclasses:cor:SI:permutesset-new},
+    there exists $S \subseteq Q$
+    with $|S| \ge n/2 \ge 12$ (resp.~$|S| \ge (n-1)/2 \ge 12$)
+    such that $\delta(S, u_2) = S$.
+    As $\rho(u_1), \rho(u_3) \le 4$, by~\cref{constrsync:subclasses:SI:prop:rho},
+    we get
+    \[
+    |\delta(Q, u_1)| \ge n - 5 \quad\text{ and }\quad 
+    |\delta(Q, u_1 u_2 u_3)| \ge |\delta(Q, u_1 u_2)| - 5.
+    \]
+    The former equation yields $|\delta(Q, u_1) \cap S| \ge 7$.
+    As $u_2$ permutes the states in~$S$
+    we have $|\delta(Q, u_1u_2) \cap S| = |\delta(Q, u_1) \cap S|$.
+    Then the latter equation yields $|\delta(Q, u_1 u_2 u_3)| \ge |\delta(Q, u_1 u_2) \cap S| - 5 \ge 2$.
+    So, $\Syn(\mathcal A) \cap L(\mathcal B) = \emptyset$.    
+    Otherwise, if $\mathcal A = \mathcal A_c$ and $n$ is odd
+    (resp.~$\mathcal A = \mathcal A_t$ and $n$ even),
+    then, by \cref{constrsync:subclasses:SI:abb},
+    we have $\Syn(\mathcal A) \cap L \ne \emptyset$.
+    As written above, this implies $\Syn(\mathcal A) \cap L(\mathcal B) \ne \emptyset$.
+    Now, whether $n$ is odd or even can be decided 
+    in deterministic log-space.    
+\end{proof}
+
+\begin{proposition} \label{constrsync:input:SI:prop:threestates-not-SCC}
+	Let $\mathcal B = (P, \{a,b\}, \mu, p_0, F)$
+	be a constraint automaton with $|P| \le 3$
+	that is not strongly connected.
+	For an SI-automaton $\semiautomat{A}{Q}{\{a,b\}}{\delta}$
+	the problem to decide whether it has a synchronizing
+	word is decidable in constant time if $L(\mathcal B)$
+	is letter-bounded and it is \LOGSPACE-complete
+	otherwise.
+\end{proposition}
+\begin{proof}
+	For $|P| \le 2$
+	or if $\mathcal B$ has precisely three strongly connected components and three states,
+	then it is easy to see that either $L(\mathcal B)$ is letter-bounded
+	or $\factor{L(\mathcal B)} = \{a,b\}^*$ (in fact, in the latter case, 
+	we have $L(\mathcal B_{p,\{p\}}) = \{a,b\}^*$
+	for some $p \in P$ that can assumed to be final,
+	which gives $\factor{L(\mathcal B)} = \{a,b\}^*$,
+	or for all $p \in P$ we have $L(\mathcal B_{p,\{p\}}) \subseteq x^*$
+	for some $x \in \Sigma$,
+	and so the accepted language is letter-bounded by \crefitem{constr_sync:prop:letterboundedreg}{constr_sync:prop:letterboundedreg:item:uvw}).	
+	In the latter case,
+	by \cref{constr_sync:cor:factors_sets_included} 
+	the problem is the same as deciding whether the automaton
+	is synchronizing, and so \LOGSPACE-complete
+	by \cref{syncmax:SI-aut:prop:sync-L-complete}.
+	In the former case, the problem is solvable in constant time
+	by \crefitem{constrsync:subclasses:SI:cor:rho}{item:SI:cor:rho:constant}.
+
+	Lastly, if $|P| = 3$ and~$\mathcal B$
+	has two strongly connected components,
+	then we can assume $F = \{3\}$
+	by \cref{constr_sync:prop:final_states,gen_results:cor:factors_etc_complexity}
+	and since~$\mathcal B$ is trim.
+	Then \cref{constrinp:lem:three-states-two-SCC,constrsync:input:SI:lem:threestates,constrsync:prop:SI-binary-sync-in-L-hard,constrsync:subclasses:SI:cor:rho} give the claim.	
+\end{proof}
+
+\Cref{constrsync:input:SI:prop:threestates-not-SCC} shows that for several constraint languages
+that yield \PSPACE-complete problems in general,
+for SI-automata as input the complexity drops to containment in \LOGSPACE-completeness.
+
+\begin{theorem}\label{constrsync:input:SI:thm:atmostthreestates}
+		Let $\mathcal B = (P, \{a,b\}, \mu, p_0, F)$
+		be a constraint automaton with $|P| \le 3$.
+		For an $n$-state SI-automaton $\semiautomat{A}{Q}{\{a,b\}}{\delta}$
+		we can decide in \NL\  whether it has a synchronizing word in $L(\mathcal B)$.
+\end{theorem}
+\begin{proof}
+	If~$\mathcal B$ is strongly connected,
+	then the claim follows from \cref{constrsync:cor:SCC}.
+	Otherwise, it follows from \cref{constrsync:input:SI:prop:threestates-not-SCC}.
+\end{proof}

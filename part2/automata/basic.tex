@@ -1,0 +1,49 @@
+%!TEX root = ./../../springer-mono-format/book.tex
+%!TEX root = ./../../thesis-trier.tex
+
+\label{def:inverse_transition}
+Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be an automaton. For $u,v \in \Sigma^*$, $S \subseteq Q$ and $q \in Q$, we set 
+$\applytrans{\delta^{-1}}{S}{u} %= f_u^{-1}(S) 
+= \{ p \in Q \mid \applytrans{\delta}{p}{u} \in S \}$
+and $\applytrans{\delta^{-1}}{q}{u} = \applytrans{\delta^{-1}}{\{q\}}{u}$. 
+We have the following formula (related to \cref{prelim:eqn:invcomp}):
+\begin{equation}\label{prelim:eqn:delta_inverse}
+	\applytrans{\delta^{-1}}{S}{uv}
+	= \applytrans{\delta^{-1}}{\applytrans{\delta^{-1}}{S}{v}}{u}.
+\end{equation}
+
+\IN{automaton graph}
+The \emph{automaton (di-)graph} corresponding to $\mathcal A$ 
+is the digraph $G(\mathcal A) = (Q, E)$ with $E = \{ (s,t) \mid \exists x \in \Sigma : \applytrans{\delta}{s}{x} = t \}$. \label{def:aut_graph}
+%Via the automaton graph, graph theoretical concept transfer
+%to automata.
+
+\IN{self-loop}
+\IN{trap state}
+\index{sink state|see{trap state}}
+We say $\mathcal A$ has a \emph{self-loop} at $q \in Q$ w.r.t.~$x \in \Sigma$ (or $x$ induces a self-loop at $q$)
+if $\applytrans{\delta}{q}{x} = q$.
+The state $q \in Q$ is called a \emph{trap} (or \emph{sink}) \emph{state} if
+$\applytrans{\delta}{q}{x} = q$ for all $x \in \Sigma$, i.e., every letter induces a self-loop at $q$.\footnote{A sink state is sometimes defined to be a trap state reachable from every other state, but here it is just another name for a trap state.}
+
+An automaton $\semiautomat{A}{Q}{\Sigma}{\delta}$ 
+is called a \emph{unary} (resp.~\emph{binary}, \emph{ternary}) \emph{automaton} if $|\Sigma| = 1$ (resp.~$|\Sigma| = 2$, $|\Sigma| = 3$).
+The automata from the \v{C}ern\'y
+family (Figure~\ref{intro:fig:cerny}) are binary.
+\IN{unary automaton}
+\IN{binary automaton}
+\IN{ternary automaton}
+
+\IN{primitive automaton}
+We call $\mathcal A$ \emph{primitive} if the trivial $\TS{\mathcal A}$-congruences
+are the only $\TS{\mathcal A}$-congruences.
+
+\IN{block!in automaton}
+A subset $S \subseteq Q$ is said to be a \emph{block} in $\mathcal A$
+if it is non-empty and $\delta(S, x) = S$
+or $\delta(S, x) \cap S = \emptyset$
+for all $x \in \Sigma$. This extends the notion of a block from permutation group theory
+introduced in \cref{prelim:sec:permgrp} (see \pageref{def:block-perm-grp})
+to automata. 
+The context should make it clear whether we are referring to a block in a permutation group 
+or in an automaton, so no confusion should arise.

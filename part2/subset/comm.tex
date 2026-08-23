@@ -1,0 +1,293 @@
+%!TEX root = ./../../springer-mono-format/book.tex
+%!TEX root = ./../../thesis-trier.tex
+
+Here, we show the following:
+\begin{enumerate}
+\item \DFAINT, \DST, and \ST are \LOGSPACE-completeness for partially ordered commutative automata
+over a fixed non-empty alphabet (\cref{thm:SF-ST-comm}).
+Recall that in \cref{compl:sec:solv} we have shown that these problems
+are \NP-complete for partially ordered commutative automata over an unbounded alphabet.
+
+\item \SFS is \LOGSPACE-complete for commutative automata (\cref{thm:SF-ST-comm})
+even for unary partially ordered automata. Recall that this problem is \NP-complete
+for solvable automata by \cref{thm:SF-solvable}.
+
+\item \DFASWS\ is \LOGSPACE-complete for commutative automata over a fixed alphabet 
+and \NP-complete for an unbounded alphabet (\cref{compl:thm:comm-syncshort}).
+Hardness remains in both cases even for partially ordered commutative automata.
+\end{enumerate}
+
+In this section, we assume an ordering $\Sigma = \{a_1, \ldots, a_k\}$ of each input alphabet~$\Sigma$
+with $k \ge 1$ (the case $\Sigma = \emptyset$ is trivial and most problems are solvable in constant time).
+
+\begin{theorem}\label{thm:SF-ST-comm}
+	\begin{enumerate}		
+		\item \SFS is \LOGSPACE-complete for commutative automata over an unbounded alphabet, where \LOGSPACE-hardness holds even for unary partially ordered automata.
+		
+		\item \ST, \DST, \DFAINT are \LOGSPACE-complete for partially ordered commutative automata over a fixed non-empty alphabet
+		even for an alphabet of size one.
+	\end{enumerate}
+\end{theorem}
+\begin{proof}
+	By \cref{compl:prop:reductions},
+	where the reductions preserve
+	the properties of commutativity, partial orderness,
+	and the alphabet,
+	it is sufficient to show the second claim for \ST.	
+	
+	For hardness, we give a reduction from \ONEDAGST that works for \SFS 
+	and \ST, and also even if we fix $k$ to be equal to one. 
+	For an \ONEDAG-instance $(G, s, t)$ with $G = (V,E)$,
+	let $\semiautomat{A}{V}{\Sigma}{\delta}$
+	where, for $p \in V$ and $x \in \Sigma$, 
+	\[
+	\delta(p, x) = \begin{cases}
+		q & \text{if } (p,q) \in E \text{ for some } q\in V, \\
+		p & \text{otherwise.}		
+	\end{cases}
+	\]
+	
+	We have the following:	
+	\begin{enumerate}
+	\item $\mathcal A$ is a well-defined deterministic and complete automaton
+	as for every $p \in V$ there exists at most one $q \in Q$ such that $(p,q) \in E$.
+	
+	\item $\mathcal A$ is a partially ordered commutative automaton.
+		
+	\item $t$ is a trap state in $\mathcal A$ since it has no outgoing transitions in~$G$.
+	\end{enumerate}
+
+	Now, the following are equivalent:
+	\begin{enumerate}
+		\item there exists a path from $s$ to $t$ in $G$,
+		
+		\item $\delta(\{s\}, u) = \{t\}$ for some $u \in \Sigma^*$,
+		
+		\item $|\delta(\{s,t\}, u)| = 1$ for some $u \in \Sigma^*$,
+	\end{enumerate}
+	where the latter two properties are equivalent
+	as $t$ is a trap state and so must be the synchronizing state.
+	By these equivalences,
+	the reduction works for the problems \ST and \SFS.
+	Thus these problems are \LOGSPACE-hard even for $|\Sigma| = 1$
+	by \cref{prelim:thm:complexities:ORD} from \cref{prelim:thm:complexities}.
+		
+	Next, we show membership in \LOGSPACE.	
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be a partially ordered commutative automaton
+	with~$n$ states.
+		
+	\underline{\SFS}: Let $v = a_1^{n-1}\cdots a_k^{n-1}$. By \cref{prelim:classes:comm:cor:words-SIS-SFS},
+	there exists $u \in \Sigma^*$ such that $|\delta(S,u)| = 1$ if and only if
+	$|\delta(S,v)| = 1$.
+	
+	To test whether $|\delta(S,v)| = 1$, we iterate through the states
+	$S=\{s_1,\ldots,s_m\}$. For each state $s_i$, we compute $\delta(s_i,v)$
+	by processing the letters of $v$ one by one and, for each letter $a_j$,
+	applying it repeatedly $n-1$ times. We then check whether all
+	computed values $\delta(s_i,v)$ are equal.
+	
+	This procedure requires three counters: one to iterate over the states of
+	$S$, one to iterate over the letters $a_1,\ldots,a_k$, and one to count the
+	repetitions $0,\ldots,n-1$ for each letter. In addition, two memory cells
+	suffice: one for the current state reached during the computation of
+	$\delta(s_i,v)$, and one for storing the result of the previous iteration in
+	order to compare $\delta(s_i,v)$ with $\delta(s_{i-1},v)$ for $i>1$.
+	
+	Using binary encodings for the counters and for the stored states, the total
+	space needed is logarithmic.
+	
+	\underline{\ST}: Let $S,T \subseteq Q$ and suppose, unlike in the proof of \SFS,
+	that $\Sigma$ is fixed.
+	We iterate through all tuples $(n_1,\ldots,n_k)$ satisfying
+	$0 \le n_j < n$ for all $j \in \{1,\ldots,k\}$.
+	Each tuple can be stored using $k$ counters, which require
+	$k \cdot \log n$ space when encoded in binary.
+	
+	For each tuple $(n_1,\ldots,n_k)$, let
+	$
+	w = a_1^{n_1}\cdots a_k^{n_k}.
+	$
+	We then iterate through all states $q \in S$ and compute $\delta(q,w)$.
+	If $\delta(q,w)\in T$ for every $q \in S$, we return \rYES.
+	Otherwise, we continue with the next tuple.
+	If the tuple $(n-1,\ldots,n-1)$ is reached without finding a 
+	word $w$ such that $\delta(q,w)\in T$, we return \rNO.
+	
+	The computation of $\delta(q,w)$ can be done in logarithmic space.
+	Besides the~$k$ counters storing $(n_1,\ldots,n_k)$, we use a counter to
+	iterate through the states in $S$, a memory cell storing the current state,
+	a counter $j$ going from~$1$ to~$k$ to keep track fo the current letter~$a_j$, and a
+	counter $r$ to feed in the factor $a_j^{n_j}$
+	of $a_1^{n_1} \cdots a_k^{n_k}$.	
+	All of these require only $O(\log n)$ space.
+	
+	Correctness follows from Equation~\eqref{compl:eqn:com_pto_ST} of
+	Corollary~\ref{prelim:classes:cor:com-po}, which implies that whenever there
+	exists a word mapping $S$ into $T$, there also exists a word of the form
+	$a_1^{n_1}\cdots a_k^{n_k}$ with $0 \le n_j < n$ for all
+	$j \in \{1,\ldots,k\}$.
+\end{proof}
+
+\begin{theorem}\label{compl:thm:comm-syncshort}
+    \DFASWS is \NP-complete even for partially ordered commutative input automata.
+	For a fixed non-empty alphabet,
+	the problem is \LOGSPACE-complete for commutative input automata  even
+	for unary partially ordered automata.
+\end{theorem}
+\begin{proof}
+	\underline{\NP-completeness:} Martyugin~\cite[Prop.~5.3]{Mar2009b}
+	proved \NP-hardness for commutative automata over an unbounded alphabet,
+	where the reduction resulted in a partially ordered commutative automaton.
+	\DFASWS is in \NP\  
+	for general input automata. 
+	See also the discussion in \cref{compl:sec:subclasses:known-results} (page~\pageref{prelim:classes:intro:DFASWS}).
+	
+	\medskip\noindent\underline{\LOGSPACE-hardness for fixed unary alphabet:} By \cref{compl:prop:reductions_unary-SWS-SW},
+	we have $\DFASWS \eqACZEROm \DFASW$ where the reductions preserve the automaton.
+	Then, the claim follows as, by \cref{prelim:thm:finite_list_sync_word}, \DFASW
+	is \LOGSPACE-complete for unary partially ordered automata.
+		
+	\medskip\noindent\underline{\LOGSPACE-membership for fixed alphabet:}
+	Let $(\mathcal A, l)$ with $\mathcal A = (Q, \Sigma, \delta)$ 
+	be an input instance. By \cref{prelim:classes:comm:prop:set-sync-words:3} from \cref{prelim:classes:comm:prop:set-sync-words},
+	we can assume $l < |Q|$.
+	Using $k$ counters,
+	iterate through all tuples $(n_1, \ldots, n_k)$
+	with $n_1 + \cdots + n_k \le l$. By 
+	using a binary encoding, this can be done in $O(k \log l)$ space.
+	Then, for each tuple, compute 
+	$\applytrans{\delta}{q}{a_1^{n_1} \cdots a_k^{n_k}}$ for all $q \in Q$
+	and check whether always the same state results.
+	If this is the case, then
+	return~\rYES. Otherwise, continue with the next tuple. 
+	If the iteration through all tuples ends
+	and we have not found a synchronizing word, return \rNO.
+	
+	This algorithm can be made to run in deterministic log-space similarly 
+	as in the proof of \cref{thm:SF-ST-comm}.	
+\end{proof}
+
+\begin{theorem} \label{prelim:compl:reach-commm}
+	\REACH is \NP-complete even for partially ordered commutative automata.
+	For a fixed non-empty alphabet,
+	the problem is \LOGSPACE-complete even for unary partially ordered automata.
+\end{theorem}
+\begin{proof}
+	Since commutative automata are solvable, 
+	by \cref{prelim:compl:thm:reach-NP}, the problem is in \NP for commutative automata.	
+	
+	For hardness, we give a reduction from \DFASWS
+	for partially ordered commutative automata.
+	
+	Let $(\mathcal A, l)$ with $\mathcal A = (Q, \Sigma, \delta)$
+	be an input instance for \DFASWS 
+	where $\mathcal A$ is partially ordered and commutative.
+	By \cref{prelim:classes:comm:prop:set-sync-words:3} from \cref{prelim:classes:comm:prop:set-sync-words},
+	we can assume $l < |Q|$. we can assume $l < |Q| - 1$.
+	By \cref{prelim:classes:comm:cor:collections-of-facts:2} if~$\mathcal A$ is synchronizing, 
+	the synchronizing
+	state is a unique trap state~$t$. Existence of a unique trap state
+	and its computation if it exists can be done by an $\AC^0$-circuit
+	as in the proof of \cref{compl:prop:reductions:item:st-ss} of \cref{compl:prop:reductions}.
+	By \cref{prelim:thm:sync_words_is_ideal}, $\mathcal A$ has a synchronizing
+	word of length at most~$l$ if and only if it has one of length exactly~$l$.
+	Let $\mathcal A' = (Q', \Sigma, \delta')$
+	with $Q' = Q \cup \{q_1, \ldots, q_l, q_{l+1}\}$
+	and, for $x \in \Sigma$, we
+	set $\delta'(q_i,x) = q_{\min\{l+1,i+1\}}$ 
+	and $\delta'(q, x) = \delta(q, x)$ for $q \in Q$.
+	Then $\mathcal A$ has a synchronizing word of length~$l$
+	if and only if $\delta'(Q', u) = \{t, q_{l}, q_{l+1}\}$
+	for some $u \in \Sigma^*$.
+	Thus, we obtain a valid reduction to \REACH.
+	
+	Note that the alphabet is preserved
+	and that~$\mathcal A'$ is partially ordered and commutative.
+	Thus, by \cref{compl:thm:comm-syncshort},
+	for an unbounded alphabet we obtain \NP-hardness
+	and for a fixed non-empty alphabet we obtain \LOGSPACE-hardness
+	even for partially ordered commutative automata
+	and unary partially ordered automata, respectively.\footnote{For \LOGSPACE-hardness
+		the reduction from the proof of	 \cref{prelim:prop:finite_list_sync_word-hardness}
+		can also be used. In this construction, 
+		the set $S = \{ (1, v_j), \ldots, (n, v_j), v_i, (1, v_i), \ldots, (n, v_i) \}$
+		is only reachable (by the word $a^{n+j}$ in this case) from the whole state set if $j < i$
+		since $(n, v_1) \notin S$
+		and so each word reaching~$S$
+		has to have length at least~$n$.
+		But for $i < j$ this implies $(1, v_j) \notin S$
+		since the path  $v_{i+1}$ to $(1, v_j)$
+		has length $j - i < n$.}
+		
+	Next, let $\mathcal A = (Q, \Sigma, \delta)$ be a commutative $n$-state automaton.
+	By \cref{prelim:classes:comm:lem:words-SIS-SFS},
+	we obtain that all the sets of the form $\delta(Q, u)$ for $u \in \Sigma^*$
+	can be written as $\delta(Q, a_1^{i_1} \cdots a_k^{i_k})$
+	for $0 \le i_1, \ldots, i_k < n$.	
+	
+	Now, the subsets $\delta(Q, a_1^{i_1} \cdots a_k^{i_k})$
+	for $0 \le i_1, \ldots, i_k < n$	
+	can be iterated through and tested for equality
+	with a given target set $S$ in deterministic log-space
+	similarly as in the proof of Theorem~\ref{thm:SF-ST-comm} for \ST 
+	by iterating through the states, the letters, the numbers $i_j$, 
+	and using two memory cells. We also use, additionally, $|S|$ Boolean flags
+	that indicate for each state in~$S$ whether it has
+	been hit by some state when applying $a_1^{i_1} \cdots a_k^{i_k}$
+	to the state set. Then the algorithm
+	returns \rYES precisely if all these flags are set to true
+	for some $0 \le i_1, \ldots, i_k < n$.
+	For a fixed alphabet, 
+	this gives a deterministic algorithm using only logarithmic space.
+\end{proof}
+
+\begin{theorem}  \label{prelim:compl:reachf-commm}
+	\REACHF is \LOGSPACE-complete for  partially ordered commutative automata
+	over a fixed non-empty alphabet, even for an alphabet of size one.
+\end{theorem}
+\begin{proof}
+	By \crefitem{compl:prop:reductions}{compl:prop:reductions:item:REACH-REACHF},
+	we have $\REACH \leACZEROm \REACHF$ and the reduction
+	preserved the automaton type and the alphabet.
+	This yields \LOGSPACE-hardness by \cref{prelim:compl:reach-commm}.
+	
+	Next, the problem on commutative partially ordered automata can be solved 
+	with the same algorithm given in the proof
+	of Theorem~\ref{thm:SF-ST-comm} for \ST, but where we also have
+	to check for each tuple $(n_1, \ldots, n_k)$
+	not only that $\delta(q, a_1^{n_1}\cdots a_k^{n_k})$
+	is in~$T$, but that each state from~$T$
+	appears at least once for some~$q \in S$, i.e., the image equals precisely~$T$.
+\end{proof}
+
+\begin{theorem} \label{prelim:compl:thm:reach-comm-fixed}
+	\REACHF is solvable in polynomial time for commutative automata 
+	when the alphabet is fixed.	
+\end{theorem}
+\begin{proof}
+	In~\cite[Thm.~1.4]{DBLP:conf/soda/BabaiBCIL96}, for fixed~$h$ and~$r$,
+	commuting $n \times n$ matrices $A_1, \ldots, A_h$,
+	$B_1,\ldots, B_r$, and $n \times l$ matrices $A$ and $B$,
+	it was proved that it is decidable in polynomial time whether
+	there exist non-negative integers $x_i$ and $y_j$ such that
+	\begin{equation} \label{prelim:compl:eqn:reach-comm-fixed}
+		\left( \prod_{i=1}^h A_i^{x_i} \right)A 
+		= 
+		\left( \prod_{j=1}^r B_j^{y_j} \right)B.
+	\end{equation}
+	Suppose a commutative automaton $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	with $\Sigma = \{a_1, \ldots, a_h\}$
+	and $S, T \subseteq Q$ is given.
+	Let $A_i$ be the transition matrix of~$a_i$,
+	let $r = 1$ and $B_1$ be the identity matrix,
+	and let $A$ and $B$ be the $n \times 1$ matrices
+	resulting from the characteristic vectors
+	of $S$ and~$T$, respectively.
+	Then  \cref{prelim:compl:eqn:reach-comm-fixed}
+	with these matrices has a solution $x_1, \ldots, x_h \ge 0$ 
+	if and only if $\delta(S, a_1^{x_1} \cdots a_h^{x_h}) = T$.
+	Hence, 
+	we find that \REACH 
+	is solvable in polynomial time for fixed~$h$
+	and commutative~$\mathcal A$.
+\end{proof}

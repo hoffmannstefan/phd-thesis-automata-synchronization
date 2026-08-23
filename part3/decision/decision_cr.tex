@@ -1,0 +1,192 @@
+%!TEX root = ../../thesis-trier.tex
+
+\todo[inline]{viel auskommentiert}
+
+In \cref{sync_max:thm:sync_max_in_PSPACE} we show that deciding
+sync-maximality is in \PSPACE.
+Then, in \cref{prop:NL-hard}, we show
+that each of the problems to decide complete reachability
+and to decide sync-maximality are \NL-hard, even for those
+without permutational letters (the proof uses one construction to establish \NL-hardness for both problems).
+Then in \cref{sync_max:thm:SI-aut_compl_reach_NL-c},
+we derive that deciding complete reachability is \NL-complete
+for SI-automata.
+
+In~\cite{BondarV16} the question was posed
+whether complete reachability can be decided in polynomial time.
+This problem has been later solved by Ferens \& Szyku\l a~\cite{DBLP:conf/icalp/FerensS23}.
+Still, the precise computational complexity is unknown.
+
+\begin{theorem}[Ferens \& Szyku\l a~\cite{DBLP:conf/icalp/FerensS23}]
+	\label{sync_max:thm:complete_reach_in_P}
+	Complete reachabilty can be decided in polynomial time.
+\end{theorem}
+
+\begin{theorem} \label{sync_max:thm:sync_max_in_PSPACE}
+	Given $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	it can be decided in \PSPACE\  whether $\mathcal A$ is sync-maximal.
+\end{theorem}
+\begin{proof}
+	We can assume $|Q| \ge 3$.
+	First, guessing some $A \subseteq Q$
+	with $|A| \ge 2$
+	and testing whether it is reachable,
+	which can be done in \PSPACE, see page~\pageref{reach-pspace}.
+	So, we can decide in \NPSPACE
+	whether some subset of size at least two is not reachable.
+	Since \NPSPACE = \PSPACE 
+	by Savitch's theorem~\cite{DBLP:journals/jcss/Savitch70}
+	the complement of this problem, i.e., whether
+	all subsets of size at least two are reachable,
+	is in \PSPACE.
+	By \cref{sync_max:thm:decision:cd_PSPACE},
+	testing whether $\mathcal A$
+	is completely distinguishable 
+	is in \PSPACE.
+	Since both properties characterize
+	sync-maximality
+	for automata with at least three states
+	by \crefitem{sync_max:cor:char_sync_max_aut}{cha_sync_max:item:Q3},
+	we obtain the claim.
+	
+	Alternatively, we can also test whether the automaton
+	has the structure as in \cref{sync_maximal:thm:structure}
+	in \PSPACE\ by \cref{sync_max:thm:complete_reach_in_P,sync_max:thm:decision:cd_PSPACE}
+	since~$S$ (and~$q$, $\Gamma$, and $a \in \Sigma$ in  \crefitem{sync_maximal:thm:structure}{sync_maximal:thm:structure:item:2nd})
+	can be computed in polynomial time as is easily seen using \cref{prelim:cor:set_sync_words_in_P}.	
+\end{proof} 
+
+\begin{theorem}\label{prop:NL-hard} \label{thm:sync_max_NL-hard}
+	The two decision problems
+	to decide whether a given automaton is completely reachable
+	and whether a given automaton is sync-maximal
+	are each \NL-hard even for SI-automata without permutational letters as input.
+\end{theorem}
+\begin{proof}
+	We give a reduction from the problem
+	to decide whether a given digraph
+	is strongly connected, which is \NL-complete~\cite[Cor. 24]{Jones75}, see also \cref{prelim:thm:complexities}.
+	So, let $G = (V, E)$ be a digraph. We can assume $|V| \ge 2$.
+	Set $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	with $Q = V \times \{0,1\}$
+	and an alphabet of simple idempotent letters
+	\[
+	\Sigma = \{ a_{(p, i), (q, i)} \mid (p,q) \in E, i \in \{0,1\}\} \cup 
+	\{ a_{(p,0), (p,1)}, a_{(p,1), (p,0)} \mid p \in V \}
+	\]
+	where $a_{(p, i), (q, j)}$ maps $(p, i)$ to $(q, j)$
+	for distinct $(p,i), (q, j) \in Q$, $p,q \in V$, $i,j \in \{0,1\}$.
+	Intuitively, we have two copies of $G$
+	inside $\mathcal A$, where an edge $(p,q)$ in $G$ corresponds to the letters $ a_{(p, i), (q, i)}$, $i \in \{0,1\}$, and 
+	for every two states from $(p,i)$ and $(p,j)$ with $i \ne j$    
+	there exist two simple idempotent letters mapping 
+	them onto each other.	
+	Next, we prove that the following properties are equivalent, which shows that the construction gives a valid reduction for both decision problems: 
+	\begin{enumerate} 
+		\item \label{prop:NL-hard:1} $G$ is strongly connected, 
+		
+		\item \label{prop:NL-hard:2} $\mathcal A$ is strongly connected,
+		
+		\item \label{prop:NL-hard:3} $\mathcal A$ is completely reachable,
+		
+		%	\item $\mathcal A$ is completely distinguishable, \todo{falsch, compl dist und nicht SCC so bauen liefert compl dist, z.B. wenn alle auf einen zustand, "stern"-automat}
+		
+		\item \label{prop:NL-hard:4} $\mathcal A$ is sync-maximal. 
+	\end{enumerate}
+	
+	$\ref{prop:NL-hard:1} \Rightarrow \ref{prop:NL-hard:2}$: This is implied by construction.
+	
+	$\ref{prop:NL-hard:2} \Rightarrow \ref{prop:NL-hard:3}$: As $\mathcal A$ is an SI-automaton without permutational letters,
+	this follows from \cref{cor:SI_CR}. 
+	
+	$\ref{prop:NL-hard:3} \Rightarrow \ref{prop:NL-hard:4}$: Let $A \subseteq Q$ with distinct $(p_1, i), (p_2, j) \in A$ for $i,j\in \{0,1\}$ and, without loss of generality, $(q,0) \in Q \setminus A$.
+	There exist %$u_1, u_2 \in \Sigma^*$ with $u_1, u_2 \in \Sigma \cup \{\varepsilon\}$
+	$u_1, u_2 \in \Sigma \cup \{\varepsilon\}$ fixing $(q,0)$
+	such that $\delta((p_1, i), u_1) = (p_1, 1)$
+	and $\delta((p_2, j), u_2) = (p_2, 1)$.
+	As $\mathcal A$ is strongly connected by \cref{prelim:lem:compl_reach_implies_SCC_sync},
+	we can pick a shortest word  $u \in \Sigma^*$ 
+	mapping $(p_1, 1)$ to $(p_2, 1)$.	
+	By construction, this word traces a path 
+	using only states in $V \times \{1\}$, which gives
+	$\delta((q, 0), u) = (q, 0)$,
+	$(q, 0) \notin \delta(A, u)$,
+	and $\delta((p_1, 1), u) = \delta((p_2, 1), u) = (p_2, 1)$.
+	Then for $v = u_1 u_2 u$
+	we have $|\delta(A, v)| < |A|$ and $\delta((q, 0),v) \notin \delta(A, v)$.
+	So, by \crefitem{sync_max:thm:char_distinguishable}{dist:item:compress}, 
+	$\mathcal A$ is completely distinguishable.
+	Hence, by \crefitem{sync_maximal:thm:structure}{sync_maximal:thm:structure:1}
+	the automaton is sync-maximal.
+	
+	$\ref{prop:NL-hard:4} \Rightarrow \ref{prop:NL-hard:1}$:  Assume $G$ is not strongly connected.
+	Then there exist distinct $p,q \in V$ such that we have no path from $p$ to $q$.
+	By construction, there exists no path from $(p,0)$ to $(q,0)$
+	and no path from $(p,1)$ to $(q,1)$.
+	By \cref{sync_maximal:thm:structure}
+	a sync-maximal automaton has at most one state
+	that is not reachable from some other state.
+	So, $\mathcal A$ is not sync-maximal.   
+	\begin{comment} 
+		By construction, (1) implies (2).
+		As $\mathcal A$ is an SI-automaton without permutational letters,
+		(2) implies (3).
+		Next, suppose (3) is true.
+		Let $A \subseteq Q$ with distinct $(p_1, i), (p_2, j) \in A$ for $i,j\in \{0,1\}$ and, without loss of generality, $(q,0) \in Q \setminus A$.
+		There exist $u_1, u_2 \in \Sigma^*$ with $|u_1|, |u_2| \le 1$
+		such that $\delta((p_1, i), u_1) = (p_1, 1)$
+		and $\delta((p_2, j), u_2) = (p_2, 1)$.
+		As $\mathcal A$ is strongly connected by \cref{prelim:lem:compl_reach_implies_SCC_sync},
+		we can pick a shortest word  $u \in \Sigma^*$ 
+		mapping $(p_1, 1)$ to $(p_2, 1)$.	
+		By construction, this word traces a path 
+		using only states in $V \times \{1\}$, which gives
+		$\delta((q, 0), u) = (q, 0)$,
+		$(q, 0) \notin \delta(A, u)$,
+		and $\delta((p_1, 1), u) = \delta((p_2, 1), u) = (p_2, 1)$.
+		Then for $v = u_1 u_2 u$
+		we have $|\delta(A, v)| < |A|$ and $\delta((q, 0),v) \notin \delta(A, v)$
+		and, by \crefitem{sync_max:thm:char_distinguishable}{dist:item:compress}, 
+		$\mathcal A$ is completely distinguishable.
+		So, by \crefitem{sync_maximal:thm:structure}{sync_maximal:thm:structure:1}
+		the automaton is sync-maximal.
+		%	Now, assume (4) is true.
+		%    By \cref{sync_max:prop:dist_sync}, $\mathcal A$
+		%    is synchronizing.
+		%    Assume $\mathcal A$ is not strongly connected.
+		%    Then there exist distinct $p,q \in V$
+		%    such that between $(p,0)$, $(q, 0)$ and $(p, 1)$ and $(q,1)$
+		%    there is no path (recall that by construction there is an edge between $(p,0)$ and $(p,1)$),
+		%   % By construction a shortest word mapping two states $(p,0)$, $(q, 0)$
+		%  %  to the same state induces a path using 
+		%    which implies that there exists no word \todo{genauer?}
+		%    mapping them to a common word
+		%    and so $\mathcal A$ is not synchronizing. \todo{by theorem...}
+		%    Hence, $\mathcal A$ is strongly connected
+		%    and by \cref{thm:SI_CR} we obtain
+		%    that it is completely reachable.
+		%    So, by \cref{sync_maximal:thm:structure}, 
+		%    it follows that $\mathcal A$ is sync-maximal.
+		%    Next, suppose (5) is true.
+		%   Then $\mathcal A$ is synchronizing and, similarly as above, we obtain that
+		%   $\mathcal A$ must be strongly connected.
+		%	By construction $\mathcal A$ has no ``dangling'' state
+		%	as in \crefitem{sync_maximal:thm:structure}{sync_maximal:thm:structure:item:2nd}
+		%	so that it is completely reachable and so strongly connected by \cref{prelim:lem:compl_reach_implies_SCC_sync}.
+		%	By construction, this implies that $G$ 
+		%	is strongly connected. \todo{genauer?} 
+	\end{comment}
+\end{proof}
+
+\begin{theorem}\label{sync_max:thm:SI-aut_compl_reach_NL-c}
+	Deciding complete reachability is \NL-complete
+	for SI-automata.
+\end{theorem}
+\begin{proof}
+	By \cref{sync_max:cor:SIcr}, for SI-automata,
+	complete reachability is equivalent
+	to synchronizability and strong connectedness,
+	and each property can both be decided in~\NL\ by \cref{prelim:thm:complexities,prelim:complexity:general_aut_sync}.
+	By \cref{thm:cd_NL-hard}, deciding complete reachability
+	is \NL-hard even for SI-automata as input.
+\end{proof}

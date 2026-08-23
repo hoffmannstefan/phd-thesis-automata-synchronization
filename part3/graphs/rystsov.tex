@@ -1,0 +1,130 @@
+%!TEX root = ./../../springer-mono-format/book.tex
+%!TEX root = ./../../thesis-trier.tex
+
+\label{def:Rystsovgraph}
+\IN{Rystsov graph}
+Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be an SI-automaton. 
+For $i \ge 1$, Rystsov~\cite{Rystsov2000} introduced the following digraphs $I_i(\mathcal A) = (Q, E_i)$
+with vertex set~$Q$ and edge sets
+\[
+E_i = 
+\begin{cases}
+	\{ (p, q) \mid \exists a \in \Sigma_I : p \ne q \land \applytrans{\delta}{p}{a} = q\} & \text{ if } i = 1, \\
+	E_{i-1} \cup \{ (\applytrans{\delta}{p}{a}, \applytrans{\delta}{q}{a}) \mid a \in \Sigma_G \land (p,q) \in E_{i-1} \} & \text{ if } i \ge 2.
+\end{cases}
+\]
+The \emph{Rystsov graph} is $I(\mathcal A) = (Q, E)$ with $E = \bigcup_{i \ge 1} E_i$.
+Directly from the definition we get
+\begin{equation}\label{eqn:E-Rystsov-graph} 
+E = \{ (\applytrans{\delta}{p}{u}, \applytrans{\delta}{q}{u}) \mid (p,q) \in E_1 \land u \in \Sigma_G^* \}.
+\end{equation}
+So, for every $u \in \Sigma_G^*$ and $p,q \in Q$
+we have
+\begin{equation}\label{eqn:acts_automorphism}
+	(p,q) \in E \Rightarrow (\applytrans{\delta}{p}{u}, \applytrans{\delta}{q}{u}) \in E.
+\end{equation}
+Furthermore, we have $E_1 = \bigcup_{a \in \Sigma_I} \excl{a} \times \dupl{a}$
+and as, for $a \in \Sigma_I$ and $u \in \Sigma_G^*$,
+we have $\excl{au} = \applytrans{\delta}{\excl{a}}{u}$ and $\dupl{au} = \applytrans{\delta}{\dupl{a}}{u}$,
+\cref{eqn:E-Rystsov-graph} gives
+\begin{equation}\label{eqn:E-Rystsov-graph2} 
+	E = \bigcup_{a \in \Sigma_I} \bigcup_{u \in \Sigma_G^*} \excl{au} \times \dupl{au}.
+\end{equation}
+
+Rystsov~\cite{Rystsov2000} proved the following statement (we include a proof as well).
+
+\begin{theorem} \label{sync_max:thm:IA-SCC-augmentative}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be an SI-automaton.
+	Then $I(\mathcal A)$ is strongly connected if and only if $\Sigma_I\Sigma_G^*$ is augmentative.
+\end{theorem}
+\begin{proof}
+	For a proper subset $S \subsetneq Q$ with $S \ne \emptyset$ we have
+	\begin{align*}
+		& \exists a \in \Sigma_I \ \exists u \in \Sigma_G^* \colon |\applytrans{\delta^{-1}}{S}{au}| > |S| \\ 		
+		& \Leftrightarrow  \exists a \in \Sigma_I \ \exists u \in \Sigma_G^* \colon \excl{au} \cap S = \emptyset \land \dupl{au} \subseteq S & \tag{$au$ has defect one} \\
+		& \Leftrightarrow  \exists (p,q) \in E \colon p \notin S \land q \in S.  & \tag{Eqn.~\eqref{eqn:E-Rystsov-graph2}} 
+	\end{align*}
+	Then the claim follows from these equivalences and \cref{prelim:lem:partition_SCC}.	
+\end{proof}
+
+\begin{theorem}[Rystsov~\cite{Rystsov2000,Rystsov2022}]
+	\label{sync_max:thm:rystsov_SI}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be an SI-automaton. 
+	Then~$\mathcal A$ is strongly connected and synchronizing
+	if and only if~$I(\mathcal A)$ is strongly connected.
+\end{theorem}
+\begin{proof}
+	First, suppose $\mathcal A$ is strongly connected and synchronizing.
+	By \cref{sync_max:thm:augmentative}, $\mathcal A$
+	admits an augmentative set.
+	From \cref{sync_max:cor:augmentative_subset_IG} 
+	we get that some subset of $\Sigma_I\Sigma_G^*$
+	is augmentative. This implies that $\Sigma_I \Sigma_G^*$ is augmentative.
+	By \cref{sync_max:thm:IA-SCC-augmentative}, $I(\mathcal A)$ is strongly connected.
+	
+	Conversely,  if $I(\mathcal A)$ is strongly connected,
+	by \cref{sync_max:thm:IA-SCC-augmentative}, 
+	we find that $\Sigma_I\Sigma_G^*$ is augmentative.
+	Thus, by \cref{sync_max:thm:augmentative}, $\mathcal A$
+	is strongly connected and synchronizing. 
+\end{proof}
+
+\begin{theorem}  
+	\label{sync_max:thm:rystsov-edges-simple-idemp-conj} 
+	\label{sync_max:prop:SI}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be an SI-automaton
+	with $I(\mathcal A) = (Q, E)$.
+	Then $(q_1,q_2) \in E$ if and only if there exists 
+	a simple idempotent $t \in \TS{\mathcal A}$
+	such that $t(q_1) = q_2$ and
+	$t = \fword{\delta}{x}^g$	
+	for some $x \in \Sigma_I$
+	where $g$ is a permutation from the group of units of~$\TS{\mathcal A}$.	
+\end{theorem}
+\begin{proof}
+	First, suppose $(q_1, q_2) \in E$.
+	By the definition of the edge set of $I(\mathcal A)$,
+	there exist $x \in \Sigma_I$,
+	$u \in \Sigma_G^*$, and $p_1,p_2 \in Q$
+	such that $\applytrans{\delta}{p_1}{x} = p_2$,
+	$\applytrans{\delta}{p_1}{u} = q_1$,
+	and $\applytrans{\delta}{p_2}{u} = q_2$.		
+	By \cref{sync_max:prop:grp_of_units_TA},~$g = \fword{\delta}{u}$ is contained in the group of units of $\TS{\mathcal A}$.
+	By \cref{prelim:conj}, $t = \fword{\delta}{x}^g$
+	is a simple idempotent mapping $q_1 = g(p_1)$ to $q_2 = g(p_2)$.
+	Let $i > 0$ be such that $g^i = \operatorname{id}_Q$.
+	Then we have $t = \fword{\delta}{u^{i-1}x u}$
+	and therefore $t \in \TS{\mathcal A}$.
+	
+	Conversely, suppose $t \in \TS{\mathcal A}$ is a simple idempotent of the form $t = \fword{\delta}{x}^g$
+	for some $x \in \Sigma_I$
+	and $g$ a permutation from the group of units of~$\TS{\mathcal A}$
+	with $t(q_1) = q_2$.
+	By Equation~\eqref{prelim:conj}, $\fword{\delta}{x}$
+	maps $g^{-1}(q_1)$ to $g^{-1}(q_2)$.
+	Thus, by the definition of~$E$,
+	$(g^{-1}(q_1), g^{-1}(q_2)) \in E$.
+	By Proposition~\ref{sync_max:prop:grp_of_units_TA}
+	we have $g = \fword{\delta}{u}$ for some $u \in \Sigma_G^*$.
+	By \cref{eqn:acts_automorphism},
+	we have $(\delta(g^{-1}(q_1), u), \delta(g^{-1}(q_2), u)) \in E$.
+	Since $q_1 = \delta(g^{-1}(q_1), u)$
+	and $q_2 = \delta(g^{-1}(q_2), u)$
+	we obtain the claim.
+\end{proof}
+
+By \cref{sync_max:thm:rystsov-edges-simple-idemp-conj}, the edges in
+$I(\mathcal A)$ correspond to certain simple idempotents in the
+transformation semigroup. However, as we will see later, not every
+simple idempotent of the transformation semigroup corresponds to an
+edge of $I(\mathcal A)$. Note, however, that by
+\cref{sync_max:prop:factorization_KG}, every element of the
+transformation semigroup is a product of conjugates of simple
+idempotents together with an element of the group of units.
+
+Later, in Section~\ref{sync_max:chap:decision}, we will need the following property that follows readily. 
+
+\begin{proposition}
+	\label{sync_max:prop:SI-without-permletters}
+	If $\mathcal A$ is an SI-automaton without permutational letters, i.e., $\Sigma_G = \emptyset$, then the automaton graph $G(\mathcal A)$ with self-loops omitted equals the Rystsov graph $I(\mathcal A)$.
+\end{proposition}

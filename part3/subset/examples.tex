@@ -1,0 +1,250 @@
+%!TEX root = ../../springer-mono-format/book.tex
+%!TEX root = ../../thesis-trier.tex
+
+\Cref{sync_max:ex:2-sets,sync_max:ex:2-sets-binary} gave infinite families of automata that are not completely distinguishable (as they are not synchronizing and have more than three states), but in which all $2$-sets are pairwise distinguishable.
+Furthermore, in the synchronizing binary SI-automaton with trap state $t$ from \cref{prelim:fig:binarySI-sync-trap}, every pair of distinct $2$-sets is distinguishable, whereas any two subsets of the form $A$ and $A \cup \{t\}$, where $t \notin A$ and $|A| \ge 2$, are indistinguishable.
+Here, in \cref{sync_max:ex:2-sets-not-all-dist,sync_max:ex:2-sets-but-not-all-new}, we give further automata that are not completely distinguishable, but are synchronizing and have the property that all distinct pairs of $2$-sets are distinguishable.
+The automaton from \cref{sync_max:ex:2-sets-not-all-dist} 
+is even a completely reachable SI-automaton.
+
+\begin{example}\label{sync_max:ex:2-sets-not-all-dist}
+	\Cref{sync_max:fig:SCC_not_sufficient} gives a synchronizing and strongly connected SI-automaton
+	with the following properties.
+	\begin{enumerate}		
+		\item A set $\{q_1, \ldots, q_m\}$ with $q_1 < \cdots < q_m$
+		is indistinguishable from $\{q_1, q_m\}$.
+				
+		\item All distinct pairs of $2$-subsets of states are distinguishable.
+		
+		\item For $A, B \subseteq Q$ with $|A|,|B| \ge 2$ there exists $u \in \Sigma^*$
+		such that $|\applytrans{\delta}{A}{u}| + |\applytrans{\delta}{B}{u}| < |A| + |B|$.
+		
+		\item For $A, B \subseteq Q$ with $|A|,|B| \ge 2$ and $A \ne B$ there exists $u \in \Sigma^*$
+		such that $|\applytrans{\delta}{A}{u}| \ne |\applytrans{\delta}{B}{u}|$.
+	\end{enumerate}
+	The automaton shows that the latter two 
+	properties, which are similar to \crefitem{sync_max:thm:char_distinguishable}{dist:item:dcps},
+	are not sufficient for complete distinguishability.	
+	It is interesting to note that adding a simple idempotent letter mapping $1$ to $n$ to the automaton in \cref{sync_max:fig:sync-two-sets-dist} yields a completely distinguishable automaton,
+	which follows from \cref{sync_max:thm:IS_32SCC} since the resulting automaton graph 
+	is strongly $\frac{3}{2}$-connected.
+	We note that the automaton from \cref{sync_max:ex:2-sets} 
+	also has the property that two distinct subsets of size at least two can be mapped
+	to subsets of different sizes, but it is not even synchronizing.
+		
+	\begin{figure}[htb]
+		\centering
+		\begin{tikzpicture}[inner sep=1pt,outer sep=2pt] 
+			\node[state] (1) {$1$};
+			\node[state, right = of 1] (2) {$2$};
+			\node[state, right = of 2] (3) {$3$};
+			\node[state, right = of 3] (4) {$4$};	
+			\node[right = of 4] (dots) {$\cdots$};
+			\node[state, right = of dots] (n1) {$n-1$};
+			\node[state, right = of n1] (n) {$n$};
+			
+			\path[->] (1) edge [bend left, above] node {$a_1$} (2)
+			(2) edge [bend left, above] node {$a_2$} (3)
+			(3) edge [bend left, above] node {$a_3$} (4)
+			(4) edge [bend left, above] node {$a_4$} (dots);
+			
+			\path[->] (dots) edge [bend left, above] node {$a_{n-2}$} (n1)
+			(n1)   edge [bend left, above] node {$a_{n-1}$} (n);
+			
+			\path[->] (n) edge [bend left, below] node {$b_{n}$} (n1)
+			(n1) edge [bend left, below] node {$b_{n-1}$} (dots)
+			(dots) edge [bend left, below] node {$b_{n-2}$} (4)
+			(4) edge [bend left, below] node {$b_{4}$} (3)
+			(3) edge [bend left, below] node {$b_3$} (2)
+			(2) edge [bend left, below] node {$b_2$} (1);
+		\end{tikzpicture}
+		\caption[Pairs of $2$-sets distinguishable but not completely distinguishable]{Strongly connected and synchronizing SI-automata (self-loops omitted) where 
+			all pairs of $2$-sets are distinguishable
+			and a set $\{q_1, \ldots, q_m\}$ with $q_1 < \cdots < q_m$
+			is indistinguishable from $\{q_1, q_m\}$. See \cref{sync_max:ex:2-sets-not-all-dist}.}	
+		\label{sync_max:fig:sync-two-sets-dist}
+		\label{sync_max:fig:SCC_not_sufficient}
+	\end{figure}
+\end{example}
+
+\begin{example}\label{sync_max:ex:2-sets-but-not-all-new}
+	Let $\semiautomat{A}{\{1,2,3,4\}}{\{a,b,c,d,e\}}{\delta}$ 
+	be the automaton from \cref{sync_max:fig:2-sets-but-not-all:abcde}
+	over the alphabet $\{a,b,c,d,e\}$.
+	\Cref{sync_max:fig:2-sets-but-not-all:abcd} and \cref{sync_max:fig:2-sets-but-not-all:left} 
+	show $\mathcal A_{|\{a,b,c,d\}}$
+	and $\mathcal A_{|\{a,b,c\}}$, respectively.
+	
+	\begin{figure}[htb]
+		\centering 
+		\begin{subfigure}{0.33\textwidth}
+			\begin{center} 
+				\begin{tikzpicture}[node distance = 1.45cm and 1cm]
+					\node[state] (1) {$1$};
+					\node[state, right = of 1] (2) {$2$};
+					\node[state, below = of 2] (3) {$3$};
+					\node[state, below = of 1] (4) {$4$};
+					
+					\path[->] (1) edge [loop above] node {$a,c, d$} (1)
+					(3) edge [right, align=left]  node {$a, b$ \\ $c, d$} (2)
+					(4) edge [left, align=right] node {$a, b$ \\ $c, e$} (1)
+					(4) edge [below] node {$d$} (2);
+					
+					\path[->] (1) edge [bend left,above] node {$b, e$} (2)
+					(2) edge [bend left,above] node {$a,b$} (1)
+					(2) edge [loop above] node {$c,d, e$} (2);			
+					
+					\path[->] (3) edge [below] node {$e$} (4);	
+				\end{tikzpicture}
+			\end{center}
+			\caption{$\{1,2,3,4\}$ and $\{1,3,4\}$ are indistinguishable.}
+			\label{sync_max:fig:2-sets-but-not-all:abcde}
+		\end{subfigure}
+		\hfill 
+		\begin{subfigure}{0.3\textwidth}
+			\begin{center} 
+				\begin{tikzpicture}[node distance = 1.45cm and 1cm]
+					\node[state] (1) {$1$};
+					\node[state, right = of 1] (2) {$2$};
+					\node[state, below = of 2] (3) {$3$};
+					\node[state, below = of 1] (4) {$4$};
+					
+					\path[->] (1) edge [loop above] node {$a,c, d$} (1)
+					(3) edge [right, align=left]  node {$a, b$ \\ $c, d$} (2)
+					(4) edge [left, align=right] node {$a, b$ \\ $c$} (1)
+					(4) edge [below] node {$d$} (2);
+					
+					\path[->] (1) edge [bend left,above] node {$b$} (2)
+					(2) edge [bend left,above] node {$a,b$} (1)
+					(2) edge [loop above] node {$c,d$} (2);
+				\end{tikzpicture}
+			\end{center}
+			\caption{$\{1,2,3,4\}$ and $\{1,2,3\}$ are indistinguishable.}
+			\label{sync_max:fig:2-sets-but-not-all:abcd}
+		\end{subfigure}%
+		\hfill	
+		\begin{subfigure}{0.3\textwidth}
+			\begin{center} 
+				\begin{tikzpicture}[node distance = 1.45cm and 1cm]
+					\node[state] (1) {$1$};
+					\node[state, right = of 1] (2) {$2$};
+					\node[state, below  = of 2] (3) {$3$};
+					\node[state, below  = of 1] (4) {$4$};
+					
+					\path[->] (1) edge [loop above] node {$a,c$} (1)
+					(3) edge [right, align=left]  node {$a, b$ \\ $c$} (2)
+					(4) edge [left,  align=right] node {$a,b$ \\ $c$} (1);
+					
+					\path[->] (1) edge [bend left,above] node {$b$} (2)
+					(2) edge [bend left,above] node {$a,b$} (1)
+					(2) edge [loop above] node {$c$} (2);
+				\end{tikzpicture}
+			\end{center}
+			\caption{$\{1,2,3\}$ and $\{3,4\}$ are indistinguishable.}
+			\label{sync_max:fig:2-sets-but-not-all:left}
+		\end{subfigure}%
+		\caption[Non-completely distinguishable but pairs of $2$-sets distinguishable]{Automata that are not completely distinguishable, but in which all pairs of distinct $2$-sets are distinguishable; see \cref{sync_max:ex:2-sets-but-not-all-new}.}
+		\label{sync_max:fig:2-sets-but-not-all}
+	\end{figure}
+	
+	% https://www.reddit.com/r/LaTeX/comments/jwdp5y/table_too_wide_and_too_long_to_fit_in_one_page/
+	\begin{table}
+		\caption[Distinguishing words for pairs of subsets]{Pairs of subsets
+			in the automaton from \cref{sync_max:fig:2-sets-but-not-all:abcde}
+			that are distinguishable by the indicated word,
+			or indistinguishable as indicated by a hyphen.}
+		\resizebox{\textwidth}{!}{
+			$
+			\begin{array}{r|cccccccccccccccccc}
+				& \{1,2\} & \{1,3\} & \{1,4\} & \{2,3\} & \{2,4\} & \{3,4\} & \{1,2,3\} & \{1,2,4\} & \{1,3,4\} & \{2,3,4\}  \\ \hline
+				\{1,3\}     & a       & -       &         &         &         &         &           &           &           &            \\ 
+				\{1,4\}     & c       & a       & -       &         &         &         &           &           &           &            \\
+				\{2,3\}     & a       & b       & a       & -       &         &         &           &           &           &             \\
+				\{2,4\}     & b       & a       & c       & a       & -       &         &           &           &           &             \\
+				\{3,4\}     & a       & b       & a       & c       & a       & -       &  \\
+				\{1,2,3\}   & a       & b       & a       & c       & b       & d       & -         &           &           &   \\
+				\{1,2,4\}   & e       & b       & c       & c       & b       & d       & a         & -         &           &   \\ 
+				\{1,3,4\}   & a       & b       & a       & c       & b       & d       & ee        & a         & - \\
+				\{2,3,4\}   & a       & b       & a       & c       & b       & ec      & d         & a, d      & d         & -       \\
+				\{1,2,3,4\} & a       & b       & a       & c       & b       & d       & eee       & a         & -         & d
+			\end{array} 
+			$
+		}	
+		\label{syncmax:tab:2-set-but-not-all}
+	\end{table}	
+	
+	These automata are not completely distinguishable.\footnote{However, similarly
+		as in \cref{sync_max:ex:2-sets-not-all-dist}, for each pair of distinct $A,B$ with $|A|,|B| \ge 2$
+		there exists $u \in \Sigma^*$ such that $|\delta(A, u)| \ne |\delta(B, u)|$.}
+	\Cref{syncmax:tab:2-set-but-not-all}
+	shows distinguishing words for all distinguishable pairs in $\mathcal A$.	
+	We have the
+	following maximal classes of pairwise indistinguishable
+	subsets of states:
+	\begin{align*}
+		\mathcal A                & : \{\{1,3,4\}, \{1,2,3,4\}\}, \\ 
+		\mathcal A_{|\{a,b,c,d\}} & : \{\{1,2\},\{1,2,4\}\}, \{ \{3,4\}, \{2,3,4\}\}, \{ \{1,2,3\}, \{1,3,4\}, \{1,2,3,4\}\}, \\
+		\mathcal A_{|\{a,b,c\}}   & : \{\{1,2\},\{1,2,4\}\}, \{ \{3,4\},  \{2,3,4\}, \{1,2,3\}, \{1,3,4\}, \{1,2,3,4\}\}.  	
+	\end{align*}
+ 	For $\mathcal A_{|\{a,b,c\}}$ and $\mathcal A_{\{a,b,c,d\}}$ this follows from the following arguments:
+	\begin{enumerate} 
+	\item \label{sync_max:ex:2-sets-but-not-all-new:1} We have  $\delta^{-1}(1, a) = \{1,2,4\}$.
+	So, for two distinct $2$-sets $A, B$ of states
+	such that $A \subseteq \{1,2,4\}$ and $3 \in B$
+	the letter $a$ yields a distinguishing word.
+	As $\delta^{-1}(1, c) = \{1,4\}$
+	and $\delta^{-1}(1, b) = \{2,4\}$
+	every pair of distinct $2$-sets from $\{1,2,4\}$
+	is distinguishable
+	and as $\delta^{-1}(2,c) = \{2,3\}$
+	and $\delta^{-1}(2, b) = \{1,3\}$
+	every pair of distinct $2$-sets $A, B$ with $3 \in A \cap B$
+	is distinguishable.
+	So, we find that all pairs of distinct $2$-sets
+	are distinguishable in $\mathcal A_{\{a,b,c\}}$.
+	
+	We also obtain that every $2$-set not equal to $\{3,4\}$
+	is distinguishable from $\{1,2,3,4\}$, and that $\{1,2,4\}$
+	is distinguishable from every other $3$-set.
+		
+	\item \label{sync_max:ex:2-sets-but-not-all-new:2} Let $x \in \{a,b,c\}$. For each $A$ with $|A| \ge 3$ and $A \ne \{1,2,4\}$ 
+	we have 
+	\[ 
+	\delta(A, x) = \delta(\{3,4\}, x) = \{1,2\}.
+	\]
+	Therefore, any two sets $A,B$ with $|A|,|B|\ge 3$ and $A,B \ne \{1,2,3\}$
+	are indistinguishable in $\mathcal A_{|\{a,b,c\}}$.
+	Moreover, $\{3,4\}$ is indistinguishable
+	from every subsets $A$ with $|A| \ge 3$ and $A \ne \{1,2,4\}$.
+	Since $\delta(\{1,2\}, x) = \delta(\{1,2,4\}, x)$,
+	the sets $\{1,2\}$ and $\{1,2,4\}$ are also indistinguishable in $\mathcal A_{|\{a,b,c\}}$.
+	
+	\Cref{sync_max:ex:2-sets-but-not-all-new:1,sync_max:ex:2-sets-but-not-all-new:2} yield that
+	\[
+	\{\{1,2\},\{1,2,4\}\} \text{ and } \{ \{3,4\},  \{2,3,4\}, \{1,2,3\}, \{1,3,4\}, \{1,2,3,4\}\}
+	\]
+	are two maximal classes of pairwise indistinguishable subsets in $\mathcal A_{|\{a,b,c\}}$.	
+		
+	\item We have $\delta^{-1}(2, d) = \{2,3,4\}$.
+	Hence, every subset of $\{2,3,4\}$
+	is distinguishable in $\mathcal A_{|\{a,b,c,d\}}$
+	from every subset $A$ with $|A| \ge 2$
+	and $1 \in A$. Since $\delta(\{3,4\}, d) = \delta(\{2,3,4\}, d) = \{2\}$,
+	\[
+	\delta(\{1,2,3\}, d) = \delta(\{1,2,4\}, d) = \delta(\{1,3,4\}, d) = \delta(\{1,2,3,4\}, d) = \{1,2\},
+	\]
+	and $\{ \{3,4\},  \{2,3,4\}, \{1,2,3\}, \{1,3,4\}, \{1,2,3,4\}\}$
+	is a maximal set of pairwise indistinguishable subsets in $\mathcal A_{|\{a,b,c\}}$,
+	we find that 
+	\[
+	\{ \{3,4\}, \{2,3,4\}\} \text{ and }
+	\{ \{1,2,3\}, \{1,3,4\}, \{1,2,3,4\}\}
+	\]
+	are maximal sets of pairwise indistinguishable subsets in $\mathcal A_{|\{a,b,c,d\}}$.
+	\end{enumerate}
+\end{example}
+
+Recall that distinguishability of pairs of distinct $2$-sets
+does not imply synchronizability, see \cref{sync_max:fig:non-sync-two-sets-dist}.
+However, this implication holds for strongly connected
+automata by \cref{sync_max:prop:2-sets-dist-SCC-implies-sync}.

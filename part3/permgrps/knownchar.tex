@@ -1,0 +1,220 @@
+%!TEX root = ./../../thesis-trier.tex
+
+\IN{synchronizing!a non-permutation}
+\label{def:group-sync-trans}
+
+We say $G \le_G \mathcal S_n$ \emph{synchronizes}
+a non-permutation $t \colon [n] \to [n]$ if~$\langle G \cup \{t\} \rangle_S$
+contains a constant map.
+
+The following characterization of primitivity 
+appears implicitly in~\cite{Rystsov2000}.
+Explicitly, it was stated 
+for general transformations in~\cite[Thm.~1]{AraujoCameron2014}
+and for general and idempotent
+transformations in~\cite[Thm.~8.1]{ArCamSt2017}.\footnote{In~\cite[Thm.~8.1]{ArCamSt2017} the permutation group is assumed
+	to be transitive, but with \cref{sync_max:prop:prim_implies_transitive}
+	and as a defect one map on two points is constant this assumption can be omitted w.r.t.~our definition of primitivity.} 
+
+\begin{remark} \label{syncmax:rem:square-brackets}
+The square brackets (with ``idempotent'' written inside) 
+indicate that \crefitem{sync_max:thm:prim_rystsov}{sync_max:thm:prim_rystsov:2}  entails 
+two statements, the first statement
+universally quantifies over all transformations of defect one and the second statement universally quantifies only
+over all idempotent transformations of defect one.
+\end{remark} 
+
+\begin{theorem}[{Rystsov~\cite{Rystsov2000}, see also~\cite[Thm.~8.1]{ArCamSt2017} or~\cite[Thm.~1]{AraujoCameron2014}}]
+	\label{sync_max:thm:prim_rystsov}
+	Let $G$ be a permutation group on $[n]$.
+	Then the following are equivalent:
+	\begin{enumerate}
+		\item $G$ is primitive.
+		
+		\item \label{sync_max:thm:prim_rystsov:2} $G$ synchronizes every [idempotent] transformation $t \colon [n] \to [n]$ 
+		of defect one.
+	\end{enumerate}	
+\end{theorem} 
+
+Next, we list four closely related characterizations (with proofs).
+
+\begin{theorem}
+\label{sync_max:thm:prim_orbitals}
+Let $G \le_G \mathcal S_n$ be a permutation group and $n \ge 3$. 
+The following are equivalent.
+
+
+\begin{enumerate}
+\item \label{sync_max:thm:prim_char:prim}  
+$G$ is primitive.
+
+\item \label{sync_max:thm:prim_char:higman} For every distinct $a,b \in [n]$ the 
+undirected orbital graph of $\{ a,b \}$ is connected. 
+
+\item \label{sync_max:thm:prim_char:higman-directed} (Higman~\cite[(1.12)]{HIGMAN196722}) For every distinct $a,b \in [n]$ the 
+directed orbital graph of $(a,b)$ is strongly connected.
+
+\item \label{sync_max:thm:prim_char:partition} (Ara\'ujo, Bentz \& Cameron~\cite[Prop.~2.2]{ARAUJO2021a})
+For any disjoint and non-empty $A,B \subseteq [n]$ with $A \cup B = [n]$
+and distinct $a,b \in [n]$ there exists $g \in G$
+such that $g(a) \in A$ and $g(b) \in B$.
+
+\item \label{sync_max:thm:prim_char2:strongly_factorizable}  (Ara\'ujo, Bentz \& Cameron~\cite[Thm.~1.1]{ARAUJO2021a})
+For every $t \colon [n] \to [n]$ of rank two
+and $S = \langle G \cup \{t\} \rangle_S$
+we have $S = EG$ where~$E$ is the set of idempotents
+of~$S$.\footnote{As $ge = e^gg$ for $e \in E$ and $g \in G$ we have $EG = GE$.}
+\end{enumerate}	
+\end{theorem}
+\begin{proof} 
+$\ref{sync_max:thm:prim_char:prim}\Rightarrow \ref{sync_max:thm:prim_char:higman}$: 
+The group $G$ is contained in the automorphism group of the undirected orbital graph of $\{a,b\}$;
+so, its connected components form blocks. The points $a$ and $b$ are in the same connected component.
+As $a \ne b$, by primitivity, it follows that $[n]$ is a connected component.
+	
+$\ref{sync_max:thm:prim_char:higman}\Rightarrow \ref{sync_max:thm:prim_char:higman-directed}$:
+Let $a,b \in [n]$ be distinct.
+By~\cref{sync_max:thm:prim_char:higman},
+the directed orbital graph of $(a,b)$
+is weakly connected. So, as $n \ge 3$, the group $G$ must be non-trivial
+and we have $g(c) \ne c$ for some $c \in [n]$.
+By assumption, the undirected orbital graph of $\{c,g(c)\}$
+is connected. Since all edges of it have their endpoints
+in $\Orbit{c}{G}$,
+we find $\Orbit{c}{G} = [n]$.
+So, the directed orbital graph of $(a,b)$
+is vertex-transitive.
+By \cref{prelim:thm:vertex_transitive_finite_graph}
+it is strongly connected.
+
+$\ref{sync_max:thm:prim_char:higman-directed} \Rightarrow \ref{sync_max:thm:prim_char:partition}$: 
+By \cref{prelim:lem:partition_SCC}, \cref{sync_max:thm:prim_char:partition} 
+is equivalent to strong connectivity of the directed orbital graph of $(a,b)$.
+
+$\ref{sync_max:thm:prim_char:partition} \Rightarrow \ref{sync_max:thm:prim_char2:strongly_factorizable}$: 
+By \cref{sync_max:prop:factorization_KG}
+we have $S = \langle K \rangle_M G$ for $K = \{ t^g \mid g \in G\}$.	
+First, we show $\langle K \rangle_M \subseteq EG$.
+Let $h \in \langle K \rangle_M$ be a non-identity transformation.
+By \crefitem{prelim:prop:rank-defect}{prelim:prop:item:rank-eqn}
+we have $\rank{h} \le 2$.
+Transformations of rank one are idempotent and so in $EG$.
+Thus, suppose $h([n]) = \{a,b\}$ for distinct $a,b \in [n]$.
+As $\applyfunc{a}{h^{-1}}$
+and $\applyfunc{b}{h^{-1}}$
+partition $[n]$, by \cref{sync_max:thm:prim_char:partition} there exists $g \in G$
+such that $\applyfunc{a}{g} \in \applyfunc{a}{h^{-1}}$
+and $\applyfunc{b}{g} \in \applyfunc{b}{h^{-1}}$.
+Then $\applyfunc{a}{(\concat{g}{h})} = a$ 
+and $\applyfunc{b}{(\concat{g}{h})} = b$,
+which gives that $\concat{g}{h}$ is idempotent of rank two.
+Hence $h = \concat{g^{-1}}{(\concat{g}{h})} \in EG$.	
+So $S = \langle K \rangle_M G \subseteq EGG = EG \subseteq S$, which gives $S = EG$.
+
+$\ref{sync_max:thm:prim_char2:strongly_factorizable} \Rightarrow \ref{sync_max:thm:prim_char:prim}$:
+Suppose $G$ is not primitive and let $\Delta \subseteq [n]$ be a non-trivial block.
+Pick distinct $a,b \in \Delta$ and let $t \colon [n] \to [n]$
+be given by
+\[ 
+\applyfunc{x}{t} = \begin{cases} 
+	a  & x \in \Delta, \\
+	b  & x \notin \Delta.
+\end{cases}
+\] 
+For $g \in G$
+we have $t(g([n])) = t([n]) = \{a,b\}$.
+As $\Delta$ is a block, it is $\applyfunc{\{a,b\}}{g} \cap \Delta = \emptyset$
+or $\applyfunc{\{a,b\}}{g} \subseteq \Delta$.
+So  $\applyfunc{\applyfunc{a}{g}}{t} = \applyfunc{\applyfunc{b}{g}}{t}$.
+As $\concat{g}{t}$ moves a point of its image it is
+not idempotent, i.e., $\concat{g}{t} \notin E$.
+As $t \in EG$ is equivalent to $tg \in E$ for some $g \in G$
+we find $t \notin EG$.
+\end{proof}
+
+Camille Jordan~\cite{jordan1870} (see also~\cite[Lem.~6]{AraujoCameron2014} 
+or~\cite[Thm.~8.7]{isaacs2008}) gave the following sufficient condition for a group to be the whole symmetric group.
+
+\begin{theorem}[Jordan~\cite{jordan1870}]
+\label{sync_max:thm:prim_char:jordan} 
+	Let $G \le_G \mathcal S_n$ be primitive.
+	Then for every transposition $t \in \mathcal S_n$ we
+	have $\langle G \cup \{t\} \rangle_G = \mathcal S_n$.
+\end{theorem} 
+
+Next, we reformulate Jordan's theorem as a characterization of primitivity.\footnote{The is also another
+	statement in permutation group theory known as Jordan's theorem in the literature, namely the fact that every transitive permutation group
+	contains a permutation with no fixpoint~\cite{Serre03}.}
+Actually, Jordan
+proved, more generally, that every primitive permutation group $G \le \mathcal S_n$
+containing a $p$-cycle for some prime $p < n - 2$ equals~$\mathcal S_n$ or $\mathcal A_n$.
+Later, Neumann~\cite{neumann75} proved that containment of a $p^r$-cycle 
+with $p \ne 3$, $p^r < n - 2$ and $p$ prime is sufficient as well for this conclusion.
+
+\begin{corollary}
+		A group $G \le_G \mathcal S_n$ is primitive
+		if and only if for every transposition $t \in \mathcal S_n$ we
+		have $\langle G \cup \{t\} \rangle_G = \mathcal S_n$.
+\end{corollary}
+\begin{proof}
+	First, let $\sim$ be a non-trivial $G$-congruence with $a \sim b$ for $a \ne b$.
+	Consider the transposition $t = (a ~ b)$. 
+	For all $x,y \in [n]$ we have $x \sim y$ if and only if $\applyfunc{x}{t} \sim \applyfunc{y}{t}$. 
+	This yields that~$\sim$ is also a $\langle G \cup \{t\} \rangle_G$-congruence.
+	As $\mathcal S_n$ is primitive
+	and $\sim$ is a non-trivial $\langle G \cup \{t\} \rangle_G$-congruence,
+	we have $\langle G \cup \{t\} \rangle_G \ne \mathcal S_n$.	 
+	Conversely, for primitive $G$, 
+	the claim follows from \cref{sync_max:thm:prim_char:jordan}.
+\end{proof} 
+
+Lastly, we present a well-known characterization in terms of the maximality of point stabilizers.
+For the convenience of the reader, we include the proofs.
+
+\begin{theorem}
+	\label{sync_max:thm:prim_known_char}
+	A permutation group $G \le_G \mathcal S_n$
+	with $n \ge 3$ is primitive
+	if and only if $G$ is transitive and for each $a \in [n]$ (equivalently for some $a \in [n]$ by \cref{prelim:eqn:stab}) the point stabilizer subgroup $G_a$ 
+	is a maximal subgroup in $G$. 
+\end{theorem}
+\begin{proof}
+Suppose $G$ is primitive.
+As $n \ge 3$, by \cref{sync_max:prop:prim_implies_transitive}, $G$ is transitive.
+Let $a \in [n]$ and $H \le_G G$ with $G_a \le_G H \le_G G$. 
+By \crefitem{prelim:thm:blocks-stabs}{prelim:thm:blocks-stabs:2},
+$\Orbit{a}{H}$ is a block.
+So, it equals $\{a\}$ or $[n]$, where in the former
+case we have $H = \Stab{a}{G}$
+and in the latter case $H = G$
+by \crefitem{sync_max:cor:point_stabs}{sync_max:cor:point_stabs:Htrans}.
+
+Conversely, let $\Delta \subseteq [n]$ be a block and $a \in \Delta$.
+By \crefitem{prelim:thm:blocks-stabs}{prelim:thm:blocks-stabs:2},
+$H = \{ g \in G \mid g(\Delta) = \Delta \}$
+is a subgroup containing $\Stab{a}{G}$.
+So, by assumption, $H = \Stab{a}{G}$
+or $H = G$. Suppose $H = \Stab{a}{G}$. Assume $b \in \Delta$ with $a \ne b$. 
+We have $g(a) = b$ for some $g \in G$ by transitivity.
+Since $\Delta$ is a block, this gives $g(\Delta) = \Delta$
+and thus $g \in H$, contradicting the assumption that
+all element from~$H$ fix~$a$.
+Thus, in this case, we have  $\Delta = \{a\}$.
+Next, suppose $H = G$.
+By transitivity, the only only set permuted by all elements from~$G$
+is $[n]$. Thus, in this case, we have $\Delta = [n]$.\footnote{Alternatively,
+	Suppose $G$ is imprimitive. Let $\Delta \subseteq [n]$ 
+	be a non-trivial block.
+	Set $H = \{ g \in G \mid \applyfunc{\Delta}{g} = \Delta \}$
+	and let $a,b \in \Delta$ be distinct.	
+	As $G$ is transitive and $\Delta \ne [n]$,
+	we have $H \ne G$ and there exists $g \in G$ such
+	that $\applyfunc{a}{g} = b$.
+	The fact that $\Delta$ is a block yields $\Stab{a}{G} \subseteq H$ and $\applyfunc{\Delta}{g} = \Delta$
+	so that $g \in H \setminus \Stab{a}{G}$. Hence $\Stab{a}{G}$
+	is not a maximal subgroup.}
+\end{proof}
+
+We cannot omit transitivity in \cref{sync_max:thm:prim_known_char}.
+For example in $G = \langle \{ (1 ~ 2 ~ 3), (4 ~ 5 ~ 6) \} \rangle_G$ 
+all point stabilizers are maximal, but $G$ is not primitive.

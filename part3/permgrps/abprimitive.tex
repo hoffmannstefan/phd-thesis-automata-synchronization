@@ -1,0 +1,164 @@
+%!TEX root = ./../../thesis-trier.tex
+
+Next, we investigate how $A$-primitivity relates to transitivity
+and, more generally, possible decompositions of the permutation domain
+into orbits. Lastly, we introduce strongly $\{a,b\}$-primitive permutation groups.
+
+\begin{proposition}
+	\label{sync_max:prop:ab_non_congruent_then_two_orbits}
+	Let $G \le_G \mathcal S_n$
+	and	$A \subseteq [n]$ with $|A| \ge 2$.
+	If $G$ is $A$-primitive, then $[n] = \bigcup_{a \in A} \Orbit{a}{G}$.
+\end{proposition}
+\begin{proof}
+	The set $\bigcup_{a \in A} \Orbit{a}{G}$ forms a block containing
+	$A$. Hence it equals $[n]$. 
+\end{proof}
+
+The next example illustrates \cref{sync_max:prop:ab_non_congruent_then_two_orbits} 
+with an intransitive group that is $A$-primitive
+for a $2$-set $A$.
+
+\begin{example}\label{sync_max:ex:abprim_intransitive}
+	Let $G = \langle \{ g, h\} \rangle_G$
+	where $g = (0 ~ 1 ~ 2 ~ 3)$ and $h = (4 ~ 5 ~ 6~ 7)$.
+	This group is intransitive. Suppose $\Delta \subseteq [n]$
+	is a block with $\{0,4\} \subseteq \Delta$.
+	As $4$ is fixed by~$g$, we have $4 \in \applyfunc{\Delta}{g}$ 
+	and so we get $\applyfunc{\Delta}{g} = \Delta$.
+	Furthermore, we have $i \in \applyfunc{\Delta}{g^i} = \Delta$ for each $i \in \{1,2,3\}$
+	so that $\{0,1,2,3\} \subseteq \Delta$.
+	Similarly, we find $\{4,5,6,7\} \subseteq \Delta$.
+	Hence $\Delta = [n]$ and $G$ is $\{0,4\}$-primitive.
+\end{example}
+
+The condition $[n] = \bigcup_{a \in A} \Orbit{a}{G}$
+does not imply $A$-primitivity.
+For example, if $G \le_G \mathcal S_n$
+is transitive and imprimitive,
+then for each $a \in [n]$ we have $[n] = \Orbit{a}{G}$, but, by \cref{prim-a-primitive-trans},
+it is not $\{a\}$-primitive.
+The next example gives an intransitive group
+showing that the converse of \cref{sync_max:prop:ab_non_congruent_then_two_orbits}
+does not hold in general.
+
+\begin{example}
+	Let $G = \langle \{  (0 ~ 1 ~ 2 ~ 3) (4 ~ 5 ~ 6 ~ 7) \} \rangle_G$.
+	Then $[8] = \Orbit{0}{G} \cup \Orbit{4}{G}$,
+	$\Orbit{0}{G} \ne \Orbit{4}{G}$
+	and $\{0,4\}$ is a non-trivial block
+	so that $G$ is not $\{0,4\}$-primitive.
+\end{example}
+
+Next, we investigate sufficient conditions for transitivity
+in terms of $A$-primitivity.
+
+\begin{proposition}
+	\label{sync_max:prop:three_non_congruence_implies_transitive} 
+	Let $G \le \mathcal S_n$ with $n \ge 3$ and $k \ge 2$.
+	Suppose $G$ is $B$-primitive
+	for each $k$-subset $B \subseteq A$
+	for some $A \subseteq [n]$ with $|A| \ge k(k-1) + 1$.
+	Then $G$ is transitive.
+\end{proposition}
+\begin{proof}
+	Let $B \subseteq A$ be some $k$-subset.
+	As $G$ is $B$-primitive, by \cref{sync_max:prop:ab_non_congruent_then_two_orbits}, 
+	we have $[n] = \bigcup_{b \in B} \Orbit{b}{G}$. 
+	By the pigeonhole principle,
+	considering the points from $A$
+	distributed among the orbits $\Orbit{b}{G}$ for $b \in B$,
+	there exists $b \in B$
+	such that $| \Orbit{b}{G} \cap A | \ge k$.
+	Thus we find a $k$-set $C$ in $\Orbit{b}{G} \cap A$.
+	By assumption, $G$ is $C$-primitive.
+	Since the orbit $\Orbit{b}{G}$ 
+	is a block containing~$C$, we get $\Orbit{b}{G} = [n]$.
+\end{proof}
+
+\begin{corollary}
+	\label{sync_max:cor:three_non_congruence_implies_transitive} 
+	Let $a,b,c \in [n]$ be distinct	and $G \le_G \mathcal S_n$ be $\{a,b\}$-, $\{a,c\}$- and $\{b,c\}$-primitive.
+	Then $G$ is transitive.
+\end{corollary} 
+\begin{proof}
+	This follows from~\cref{sync_max:prop:three_non_congruence_implies_transitive} with
+	$A = \{a,b,c\}$ and $k = 2$.\footnote{Alternatively,
+		from \cref{sync_max:prop:ab_non_congruent_then_two_orbits}
+		we get $[n] = \Orbit{a}{G} \cup \Orbit{b}{G} = \Orbit{a}{G} \cup \Orbit{c}{G} = \Orbit{b}{G} \cup \Orbit{c}{G}$.
+		Thus, we have $a \in \Orbit{b}{G}$ or $a \in \Orbit{c}{G}$,
+		and each case yields $[n] = \Orbit{a}{G}$.}		
+\end{proof} 
+
+The next statements connect $A$-primitivity to transitivity.
+
+\begin{proposition} \label{sync_max:prop:ab-prim-transitive}
+	Let $G \le_G \mathcal S_n$ and $A \subseteq [n]$ with $|A| \ge 2$.
+	Suppose $G$ is $A$-primitive.
+	Then~$G$ is transitive if and only if $A \subseteq \Orbit{b}{G}$
+	for some $b \in [n]$.
+\end{proposition}
+\begin{proof}
+	First, suppose~$G$ is transitive.
+	Pick some $b \in [n]$. Then $\Orbit{b}{G} = [n]$
+	and so $A \subseteq \Orbit{b}{G}$.
+	
+	Next, suppose $A \subseteq \Orbit{b}{G}$.
+	Since~$G$ is $A$-primitive,
+	by \cref{sync_max:prop:ab_non_congruent_then_two_orbits},
+	we have $[n] = \bigcup_{a \in A} \Orbit{a}{G}$.
+	Now, $a \in \Orbit{b}{G}$
+	implies $\Orbit{a}{G} = \Orbit{b}{G}$.
+	Thus, we obtain $[n] = \Orbit{b}{G}$
+	and so~$G$ is transitive.	 	
+\end{proof}
+
+\begin{corollary}\label{sync_max:prop:ab-prim-transitive}
+	Let $G \le_G \mathcal S_n$ be $\{a,b\}$-primitive for distinct $a,b \in [n]$.
+	Then there exists $g \in G$
+	such that $\applyfunc{a}{g} = b$ if and only if $G$
+	is transitive.
+\end{corollary}
+\begin{proof}
+	This follows from \cref{sync_max:prop:ab-prim-transitive}
+	since $\{a,b\} \subseteq \Orbit{c}{G}$ for some $c \in [n]$
+	is equivalent to the existence of some $g \in G$ with $g(a) = b$.
+\end{proof}
+
+\IN{strongly $\{a,b\}$-primitive}
+For a $2$-set $\{a,b\}$,
+we call $G \le_G \mathcal S_n$ \emph{strongly $\{a,b\}$-primitive}
+if $G$ is $\{a,b\}$-primitive and there exists
+$g \in G$ such that $\applyfunc{a}{g} = b$ (or equivalently $G$
+is $\{a,b\}$-primitive and transitive).
+As 
+$\applyfunc{b}{g^{-1}} = a$, $G$ is strongly $\{a,b\}$-primitive
+if and only if it is strongly $\{b,a\}$-primitive,
+so the set notation ``$\{a,b\}$''
+is justified here.
+%The situation that $A$ is a $2$-set
+%and there exists an element mapping one element
+%to the other is the situation of interest to us.
+
+\begin{example}
+	The permutation group
+	from Example~\ref{sync_aut:permgrp:ex:Aprim} 
+	is strongly $\{a,b\}$-primitive
+	for all distinct $a,b \in [8]$
+	with $a \not\equiv b \pmod{2}$.
+	The permutation group from Example~\ref{syncaut:permgrp:ex:threesets}
+	is strongly $\{ (i,j), (i,j') \}$-primitive
+	for $(i,j), (i',j') \in [2] \times [n]$
+	with $j \ne j'$.
+\end{example} 
+
+As a primitive permutation group over a permutation domain with at least three
+points is transitive (\PROP~\ref{sync_max:prop:prim_implies_transitive}), by \PROP~\ref{sync_max:prop:primitive_Aprimitive}
+we get the following statement.
+
+\begin{proposition}
+	\label{sync_max:prop:prim_stronglyabprim}
+	Let $G \le \mathcal S_n$ with $n \ge 3$.
+	Then $G$ is primitive if and only if $G$ is strongly $\{a,b\}$-primitive
+	for all distinct $a,b \in [n]$.
+\end{proposition}

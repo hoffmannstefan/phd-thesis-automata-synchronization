@@ -1,0 +1,941 @@
+%!TEX root = ../../springer-mono-format/book.tex
+%!TEX root = ../../thesis-trier.tex
+
+
+\IN{commutative automaton}
+An automaton $\semiautomat{A}{Q}{\Sigma}{\delta}$ is \emph{commutative} 
+if $\applytrans{\delta}{q}{ab} = \applytrans{\delta}{q}{ba}$ for all $q \in Q$
+and $a,b \in \Sigma$.
+Said differently, the mapping $q \mapsto \applytrans{\delta}{q}{x}$ 
+is a morphism for $x \in \Sigma$ 
+and so an automaton is commutative precisely if its transformation
+semigroup is contained in its endomorphism semigroup.
+Thus, the letters fulfill
+the properties from \cref{prelim:sec:endo}.
+For example, by \cref{prelim:eqn:morph-reachability-order},		
+we find that \cref{constr_sync:eqn:reach_compatible}
+holds, and so commutative automata are $\rho$-automata, 
+$q = \delta(q, u)$ for some $q \in Q$
+and $u \in \Sigma^*$
+implies $\delta(q, v) = \delta(\delta(q, v), u)$
+for all $v \in \Sigma^*$,
+and, by \cref{prelim:automata:cor:SCC-disjoint-or-permutates},
+every strongly connected component is a block.
+Every unary automaton is commutative.
+See \cref{fig:ex_comm_aut} for two commutative example automata.
+Clearly, for commutative $\mathcal A$,
+$L(\mathcal A_{q,F})$ is commutative for each $q \in Q$
+and $F \subseteq Q$.
+
+First, \cref{prelim:classes:comm:subsec:rees} we characterize the commutativity of Rees quotient automata.
+Then in \cref{prelim:classes:comm:subsec:SCC} we investigate strongly connected commutative automata
+and give structural results on them and their endomorphisms. \Cref{prelim:classes:comm:subsec:subset} gives
+some results on subset mapping and synchronization properties in commutative automata.
+Lastly, \cref{prelim:classes:comm:subsec:extremal} characterizes those commutative
+automata with longest possible synchronizing words.
+
+\subsection{Commutativity of Rees Quotients}
+\label{prelim:classes:comm:subsec:rees}
+
+\begin{proposition} \label{prelim:subclasses::com:upper-sets:prop} 
+	Let  $\semiautomat{A}{Q}{\Sigma}{\delta}$ and $S \subseteq Q$ be an upper set.
+	Then the following are equivalent.
+	\begin{enumerate}
+		\item \label{prelim:subclasses::com:upper-sets:prop:1} $\mathcal A / {\sim_S}$ is commutative.
+		
+		\item \label{prelim:subclasses::com:upper-sets:prop:2} $\delta(q, ab) = \delta(q, ba)$ for each $q \in Q \setminus S$ and $a,b \in \Sigma$ with $\delta(q, ab) \in Q \setminus S$.
+		
+		\item \label{prelim:subclasses::com:upper-sets:prop:3} $\delta(q, ab) \ne \delta(q, ba)$
+		implies
+		$
+		\{ \delta(q, ab), \delta(q, ba) \} \subseteq S
+		$
+		for all $q \in Q$ and $a,b \in \Sigma$.
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+	$\ref{prelim:subclasses::com:upper-sets:prop:1} \Rightarrow \ref{prelim:subclasses::com:upper-sets:prop:2}$: This directly follows from \cref{prelim:rem:Rees}.
+	
+	$\ref{prelim:subclasses::com:upper-sets:prop:2} \Rightarrow \ref{prelim:subclasses::com:upper-sets:prop:3}$: By Item~\ref{prelim:subclasses::com:upper-sets:prop:1},
+	for $\{ \delta(q, ab), \delta(q, ba) \} \not\subseteq S$,
+	we have  $\delta(q, ab) = \delta(q, ba)$,
+	which gives the claim.
+	
+	$\ref{prelim:subclasses::com:upper-sets:prop:3} \Rightarrow \ref{prelim:subclasses::com:upper-sets:prop:1}$: Since~$S$ is a trap state in $\mathcal A / {\sim_S}$,
+	from Item~\ref{prelim:subclasses::com:upper-sets:prop:3} and \cref{prelim:rem:Rees} we obtain $\delta_{\sim_S}(\pi_{\sim_S}(p), ab) = \delta_{\sim_S}(\pi_{\sim_S}(q), ba)$
+	for all $q \in Q$ and $a,b \in \Sigma$, i.e., $\mathcal A / {\sim_S}$ is commutative.	
+\end{proof}
+
+\begin{corollary} \label{prelim:classes:comm:prop:perm-reset-comm}
+	Let  $\semiautomat{A}{Q}{\Sigma}{\delta}$ and $S \subseteq Q$ be an upper set.
+	Then $\mathcal A / {\sim_S}$ is a commutative permutation-reset automaton
+	if and only if
+	$\restrictAutGamS{\mathcal A}{\Gamma}{Q \setminus S}$
+	for  $\Gamma = \{ a \in \Sigma \mid \delta(Q \setminus S, a) = Q \setminus S \}$
+	is commutative and $\delta(Q \setminus S, a) \subseteq S$
+	for $a \in \Sigma \setminus \Gamma$.	
+\end{corollary}
+\begin{proof}
+	First, suppose $\mathcal A / {\sim_S}$ is a commutative permutation-reset automaton.
+	Then clearly $\restrictAutGamS{\mathcal A}{\Gamma}{Q \setminus S}$
+	is commutative. By \cref{prelim:perm-reset-Rees-factor} we have 
+	$\delta(Q \setminus S, a) \subseteq S$ for $a \in \Sigma \setminus \Gamma$.
+	Conversely, since each letter in $\Gamma$ permutes $Q \setminus S$,
+	$\restrictAutGamS{\mathcal A}{\Gamma}{Q \setminus S}$ is a permutation automaton.
+	Thus, with \cref{prelim:perm-reset-Rees-factor},
+	we find that $\mathcal A / {\sim_S}$ is a permutation-reset automaton.
+	Next, let $q \in Q \setminus S$ and $a,b \in \Sigma$.
+	For $a,b \in \Gamma$, we have $\delta(q, ab) = \delta(q, ba)$
+	since 	$\restrictAutGamS{\mathcal A}{\Gamma}{Q \setminus S}$
+	is commutative.
+	Next, without loss of generality, suppose $a \notin \Gamma$.
+	Then $\delta(Q, a) \subseteq S$
+	and this gives $\{ \delta(q, ab), \delta(q, ba) \}\subseteq S$.
+	Thus, by \cref{prelim:subclasses::com:upper-sets:prop}, 
+	$\mathcal A / {\sim_S}$ is commutative.	
+\end{proof}
+
+\begin{corollary} \label{cor:SCC_comm_permutation_automaton}
+	Let  $\semiautomat{A}{Q}{\Sigma}{\delta}$ and $S \subseteq Q$ be an upper set
+	such that  $\mathcal A / {\sim_S}$ is commutative and $Q \setminus S$ is strongly connected.
+	Then $\mathcal A / {\sim_S}$ is a permutation-reset automaton (resp.~permutation automaton for $S = \emptyset$).	
+\end{corollary}
+\begin{proof}
+	Since~$S$ is an upper set, $Q \setminus S$ is a strongly connected component.
+	By \cref{prelim:automata:Rees:prop:correspondence},
+	$\pi_{\sim_S}(Q \setminus S)$ is a strongly connected component in $\mathcal A / {\sim_S}$.
+	Thus, $\pi_{\sim_S}(Q \setminus S)$ is a block by 
+	\cref{prelim:automata:cor:SCC-disjoint-or-permutates}.
+	Now, a set $R \subseteq Q \setminus S$ is a block in $\mathcal A$ if and only if $\pi_{\sim_S}(R)$
+	is a block in $\mathcal A / {\sim_S}$. 
+	Thus, $Q \setminus S$ is also a block in $\mathcal A$. 
+	For $S = \emptyset$, this yields that~$\mathcal A / {\sim_S}$
+	is a permutation automaton
+	and, by \cref{prelim:perm-reset-Rees-factor}, we find that $\mathcal A / {\sim_S}$
+	is a permutation-reset automaton.	
+\end{proof}
+
+\subsection{Strongly Connected Automata}
+\label{prelim:classes:comm:subsec:SCC}
+
+\begin{proposition} \label{prelim:classes:comm:cor:collections-of-facts:7} 
+	A commutative automaton that is strongly connected (resp.~strongly trap-connected)
+	is a permutation automaton (resp.~permutation-reset automaton with a trap state). 
+\end{proposition}
+\begin{proof} 
+	This follows from \cref{cor:SCC_comm_permutation_automaton} applied with 
+	$S = \emptyset$ or with $S = \{t\}$ for a trap state.
+\end{proof} 
+
+\begin{corollary}
+	A strongly connected commutative automaton with at least two states is not synchronizing.	
+\end{corollary}
+\begin{proof}
+	This follows from \cref{prelim:classes:comm:cor:collections-of-facts:7} 
+	since a synchronizing permutation automaton has a single state.
+\end{proof}
+
+\begin{proposition} \label{prelim:classes:com:prop:endos}
+	In a cyclic commutative automaton $\semiautomat{A}{Q}{\Sigma}{\delta}$,
+	the endomorphism semigroup of $\mathcal A$ equals
+	$\TM{\mathcal A}$.
+\end{proposition}
+\begin{proof}
+	In a commutative automaton, every element of its transformation monoid
+	is an endomorphism.
+	By assumption, we have $Q = \upperset{\{q\}}$ for some $q \in Q$.
+	Now, let $\varphi \colon Q \to Q$ be an endomorphism.
+	Then $\varphi(q) = \delta(q, u)$ for some $u \in \Sigma^*$.
+	Consider some state $p \in Q$. We have $p = \delta(q, v)$
+	for some $v \in \Sigma^*$.
+	This gives $\varphi(p) = \varphi(\delta(q, v)) = \delta(\varphi(q), v) = \delta(q, uv) = \delta(\delta(q, v), u) = \delta(p, u)$
+	and so $\varphi = \fword{\delta}{u}$.
+\end{proof}
+
+\begin{corollary} \label{prelim:classes:comm:prop:permSCC-regular}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be a strongly connected commutative automaton.
+	Then $\TM{\mathcal A}$ is a regular permutation group and thus has size~$|Q|$.
+\end{corollary}
+\begin{proof}
+	Since~$\mathcal A$ is strongly connected,
+	its endomorphism semigroup
+	equals it automorphism group by	\cref{prelim:automata:morphism:prop:endo-SCC-is-iso}.
+	By \cref{prelim:automata:morphism:prop:endo-SCC-is-iso-b}
+	the automorphism group is semiregular.
+	By \cref{prelim:classes:com:prop:endos} 
+	it equals $\TM{\mathcal A}$.
+	Since $\mathcal A$ is strongly connected, $\TM{\mathcal A}$
+	is transitive. Thus, $\TM{\mathcal A}$ is regular. 
+\end{proof}
+
+Next, we give examples of commutative automata 
+where the transformation monoid is properly contained in its endomorphism monoid. 
+
+\begin{example}
+	Let $\semiautomat{A}{Q}{\{a_1,a_2\}}{\delta}$ 
+	with $Q = \{ q_{1,1}, q_{1,2}, q_{2,1}, q_{2,2} \}$
+	where, for $i \in \{1,2\}$, we
+	set $\delta(q_{i,1}, a_i) = \delta(q_{i,2}, a_i) = q_{i,2}$
+	and the remaining transitions are self-loops.
+	Then $\mathcal A$ is commutative and 
+	$\varphi \colon Q \to Q$ with $\varphi(q_{i,1}) = \varphi(q_{i,2}) = q_{i,2}$
+	for $i \in \{1,2\}$ is a morphism that is not contained
+	in $\TM{\mathcal A}$.	
+\end{example}
+
+\begin{example}
+	Let $\semiautomat{A}{\{ q_{i,j} \mid i \in \{0,1\},\, j \in [n] \}}{\{a\}}{\delta}$
+	be the semiautomaton with
+	\[
+	\delta(q_{i,j}, a) = q_{i,(j+1)\bmod n}
+	\]
+	for $i \in \{0,1\}$ and $j \in [n]$.
+	For every $0 \le s,t < n$, the map $\varphi$ defined by
+	\[
+	\varphi(q_{0,j}) = q_{1,(j+s)\bmod n},
+	\qquad
+	\varphi(q_{1,j}) = q_{0,(j+t)\bmod n}
+	\]
+	is an endomorphism since
+	\[
+	\delta(\varphi(q_{0,j}),a)
+	= q_{1,(j+s+1)\bmod n}
+	= \varphi(q_{0,(j+1)\bmod n})
+	= \varphi(\delta(q_{0,j},a)),
+	\]
+	and similarly for the states $q_{1,j}$.
+	None of these endomorphisms is induced by a word and thus
+	none belongs to the transformation monoid.
+\end{example}
+
+\label{def:grid-aut}
+Next, we determine the structure of binary commutative strongly connected automata.
+Let $n,m \ge 1$ and $r \in [n]$.
+Define automata $\semiautomat{B_{n,m, r}}{[n] \times [m]}{\{a,b\}}{\mu_{n,m,r}}$
+where $\mu_{n,m, r}((i,j), a) = ( (i+1) \bmod{n}, j )$
+and 
+\[
+\mu_{n,m, r}((i,j), b)
+= \begin{cases}
+	(i, j + 1) & \text{if } 0 \le j \le m - 2, \\
+	((i + r) \bmod n, 0) & \text{if } j = m - 1. 		
+\end{cases}
+\]	
+for $(i,j) \in [n] \times [m]$. These automata are commutative. See \cref{prelim:fig:Bnmr} for some examples.
+
+\begin{remark}
+	For $n,m \ge 2$, the automaton $\mathcal B_{n,m,1}$ looks like
+	a grid where each component counts modulo~$n$
+	and~$m$ the number of~$a$'s and~$b$'s, respectively,
+	and each state is uniquely determined by these numbers.
+\end{remark}
+
+\begin{remark}	
+	In $\mathcal B_{n,1,r}$ the letter $a$ induces a single $n$-cycle and we have
+	\[
+	\mu_{n,1,r}((i, 1), b) = \mu_{n,1,r}((i, 1), a^r), \quad i \in [n],
+	\]
+	i.e., the letter $b$ ``wraps'' around this cycle by skipping $r$ steps on the cycle.
+\end{remark}
+
+\begin{figure}[htbp]
+	\centering
+	\begin{minipage}[b]{0.3\textwidth}
+		\centering
+		
+		\begin{tikzpicture}[>=Stealth, on grid, auto]
+			
+			\tikzset{
+				state/.style={
+					circle,
+					draw,
+					minimum size=6mm,
+					inner sep=1pt,
+					font=\small
+				}
+			}
+			
+			\node[state] (q0) at (90:5em) {$(0,0)$};
+			\node[state] (q1) at (30:5em) {$(1,0)$};
+			\node[state] (q2) at (-30:5em) {$(2,0)$};
+			\node[state] (q3) at (-90:5em) {$(3,0)$};
+			\node[state] (q4) at (-150:5em) {$(4,0)$};
+			\node[state] (q5) at (150:5em) {$(5,0)$};
+			
+			\path
+			(q0) edge[dashed, bend left=12] (q1)
+			(q1) edge[dashed, bend left=12] (q2)
+			(q2) edge[dashed, bend left=12] (q3)
+			(q3) edge[dashed, bend left=12] (q4)
+			(q4) edge[dashed, bend left=12] (q5)
+			(q5) edge[dashed, bend left=12] (q0);
+			
+			\path
+			(q0) edge (q2)
+			(q1) edge (q3)
+			(q2) edge (q4)
+			(q3) edge (q5)
+			(q4) edge (q0)
+			(q5) edge (q1);	
+		\end{tikzpicture}
+		\caption*{$\mathcal B_{6,1,2}$}
+	\end{minipage}%
+	\hfill
+	\begin{minipage}[b]{0.3\textwidth}
+		\centering
+		\begin{tikzpicture}[>=Stealth]
+			
+			\tikzset{
+				state/.style={
+					circle,
+					draw,
+					minimum size=6mm,
+					inner sep=1pt,
+					font=\small
+				}
+			}
+			
+			\matrix (m) [matrix of nodes,
+			nodes={state},
+			row sep=2.2em,
+			column sep=4.5em
+			]{
+				$(0,0)$ & $(0,1)$ \\
+				$(1,0)$ & $(1,1)$ \\
+				$(2,0)$ & $(2,1)$ \\
+				$(3,0)$ & $(3,1)$ \\
+			};
+			
+			\path
+			(m-1-1) edge[dashed] (m-2-1)
+			(m-2-1) edge[dashed] (m-3-1)
+			(m-3-1) edge[dashed] (m-4-1)
+			(m-4-1) edge[dashed,bend left=25] (m-1-1)
+			
+			(m-1-2) edge[dashed] (m-2-2)
+			(m-2-2) edge[dashed] (m-3-2)
+			(m-3-2) edge[dashed] (m-4-2)
+			(m-4-2) edge[dashed,bend right=25] (m-1-2);
+			
+			\path
+			(m-1-1) edge[bend left=25] (m-1-2)
+			(m-2-1) edge[bend left=25] (m-2-2)
+			(m-3-1) edge[bend right=25] (m-3-2)
+			(m-4-1) edge[bend right=25] (m-4-2)
+			
+			(m-1-2) edge[bend left=10] (m-3-1)
+			(m-2-2) edge[bend right=10] (m-4-1)
+			(m-3-2) edge[bend left=10] (m-1-1)
+			(m-4-2) edge[bend right=10] (m-2-1);
+			
+		\end{tikzpicture}	
+		\caption*{$\mathcal B_{4,2,2}$}
+	\end{minipage}%
+	\hfill
+	\begin{minipage}[b]{0.3\textwidth}
+		\centering
+		\begin{tikzpicture}[>=Stealth, auto]
+			
+			\tikzset{
+				state/.style={
+					circle,
+					draw,
+					minimum size=6mm,
+					inner sep=1pt,
+					font=\small
+				}
+			}
+			
+			\node[state] (q0) at (90:5em)  {(0,0)};
+			\node[state] (q1) at (30:5em)  {(0,1)};
+			\node[state] (q2) at (-30:5em) {(2,0)};
+			\node[state] (q3) at (-90:5em) {(2,1)};
+			\node[state] (q4) at (-150:5em){(1,0)};
+			\node[state] (q5) at (150:5em) {(1,1)};
+			
+			\draw (q0) to[bend left=15] (q1);
+			\draw (q1) to[bend left=15] (q2);
+			\draw (q2) to[bend left=15] (q3);
+			\draw (q3) to[bend left=15] (q4);
+			\draw (q4) to[bend left=15] (q5);
+			\draw (q5) to[bend left=15] (q0);
+			
+			\draw[dashed] (q0) to (q4);
+			\draw[dashed] (q1) to (q5);
+			\draw[dashed] (q2) to (q0);
+			\draw[dashed] (q3) to (q1);
+			\draw[dashed] (q4) to (q2);
+			\draw[dashed] (q5) to (q3);	
+		\end{tikzpicture}
+		\caption*{$\mathcal B_{3,2,2}$}
+	\end{minipage}
+	\caption[Example automata $\mathcal B_{n,m,r}$]{Automata $\mathcal B_{n,m,r}$ with $a$-transitions drawn dashed and $b$-transitions solid.}
+	\label{prelim:fig:Bnmr}
+\end{figure}
+
+\begin{remark}	
+	Suppose $r$ is coprime to $n$, and let $q=(0,0)$.
+	Then there exists an integer $l$ with $1 \le l < n$ such that
+	$rl \equiv 1 \pmod n$, i.e., $l$ is the multiplicative inverse of $r$
+	modulo $n$.
+	We have the following properties:
+	
+	\begin{enumerate}
+		\item The states
+		\[
+		q,\delta(q,b),\ldots,\delta(q,b^{nm})
+		\]
+		are pairwise distinct and form a single cycle.
+		
+		\item Since $\delta(q,b^m)=\delta(q,a^r)$, we obtain
+		\[
+		\delta(q,a)
+		= \delta(q,a^{rl})
+		= \delta(q,b^{ml}).
+		\]
+		Consequently, we have
+		\[
+		\delta(q,b^i a)
+		= \delta(q,a b^i)
+		= \delta(q,b^{i+ml})
+		\]
+		for all $i \ge 0$. In other words, the letter $a$ acts on the $b$-cycle
+		as a shift by $ml$ positions.
+	\end{enumerate}
+	
+	By these properties, the automaton has the same structure as
+	$\mathcal B_{nm,1,ml}$, with the roles of $a$ and $b$ interchanged.	
+\end{remark}
+
+\begin{proposition} \label{prelim:classes:com:prop:comm-perm-classifiy0}
+	Let $\mathcal A = (Q, \{a,b\}, \delta)$ be a commutative and strongly connected.
+	Then $\mathcal A$ is isomorphic to 
+	$\mathcal B_{n,m,r}$ for some $n,m \ge 1$
+	and $r \in [n]$.
+\end{proposition}
+\begin{proof}
+	By \cref{prelim:classes:comm:cor:collections-of-facts:7}, $\mathcal A$
+	is a permutation automaton.
+	Let $q \in Q$
+	and $n \ge 0$ be minimal
+	such that $\delta(q, a^n) = q$.
+	Then the set 
+	\begin{equation}\label{prelim:classes:com:eqn:Bnm}
+	S = \{q, \delta(q, a), \ldots, \delta(q, a^{n-1})\}
+	\end{equation}
+	forms a strongly connected component in $\mathcal A_{\{a\}}$.
+	The letter~$b$ acts as an isomorphism on this automaton.
+	By \cref{prelim:automata:morphism:prop:injective:SCC-to-SCC} from \cref{prelim:automata:morphism:prop:injective}
+	it permutes the strongly connected components of $\mathcal A_{\{a\}}$.
+	Thus, we have $\delta(S, b^m) = S$ for some minimal $m \ge 1$.  
+        
+    Next, we show that
+    \begin{equation}\label{prelim:classes:com:eqn:Bnm-S}
+    Q = S \cup \delta(S, b) \cup \cdots \cup \delta(S, b^{m-1}).
+    \end{equation}
+    Let $p \in Q$.
+    Since~$\mathcal A$ is commutative and strongly connected,
+	every state is reachable from~$q$ by some word from~$a^* b^*$.
+	Thus $p = \delta(q, a^i b^j)$ for some $i,j \ge 0$
+	where these numbers are picked such that~$j$ is minimal.
+	Assume $j > m$.
+	We have $\delta(q, a^i b^m) \in S$.
+	By \cref{prelim:classes:com:eqn:Bnm}, this yields $\delta(q, a^i b^m) = \delta(q, a^l)$ for some $0 \le l < n$.
+	Hence $p = \delta(q, a^l b^{j - m})$, contradicting the minimal choice of~$j$.
+	Thus, we have $j < m$. So, $p \in \delta(S, b^j)$ with $0 \le j < m$.
+
+	Now, consider $\varphi \colon [n] \times [m] \to Q$
+	given by $\varphi(i,j) = \delta(q, a^i b^j)$
+	for $(i,j) \in [n] \times [m]$. By \cref{prelim:classes:com:eqn:Bnm,prelim:classes:com:eqn:Bnm-S}
+	this map is surjective.	Next, let
+	$\varphi(i,j) = \varphi(i', j')$ for $(i,j), (i',j') \in [n] \times [m]$.
+	Then $\varphi(i',j') \in \delta(S, b^j)$.
+	Since the sets $S, \delta(S, b), \ldots, \delta(S, b^{m-1})$
+	are pairwise disjoint,
+	we must have $j' = j$.
+	Since~$b^j$ induces a permutation on the state set,
+	we get $\delta(q, a^i) = \delta(q, a^{i'})$.
+	Since $i,i' \in [n]$ and $q, \delta(q,a), \ldots, \delta(q,a^{n-1})$
+	are pairwise distinct, we find $i = i'$.
+	Thus, $\varphi$ is also injective.
+	
+	Since $\delta(S, b^m) = S$ and $q \in S$, 
+	by \cref{prelim:classes:com:eqn:Bnm} there exists $r \in [n]$ such that
+	\begin{equation} \label{prelim:classes:com:eqn:Bnm-r}
+	\delta(q, b^m) = \delta(q, a^r).
+	\end{equation}
+	Next, we show that $\varphi$ is a morphism
+	of $\mathcal A$ and $\mathcal B_{n,m,r} = ([n] \times [m], \{a,b\}, \mu_{n,m,r})$.	
+	Let $(i,j) \in [n] \times [m]$.
+	We have 
+	\begin{align*}
+	\delta(\varphi(i,j), a)
+	& = \delta(\delta(q, a^i b^j), a)  
+	  = \delta(q, a^{i+1}b) \tag{Def.~$\varphi$ and $\delta$} \\
+	& = \varphi((i+1)\bmod n, j) \tag{Eqn.~\eqref{prelim:classes:com:eqn:Bnm} and Def.~$\varphi$} \\ 
+	& = \varphi(\mu_{n,m,r}((i,j), a)). \tag{Def.~$\mu_{n,m,r}$}
+	\end{align*}
+	For $j \le m - 2$, we similarly get $\delta(\varphi(i,j), b) = \varphi(\mu_{n,m,r}((i,j), b))$.
+	Lastly, we have
+	\begin{align*}
+	\delta(\varphi(i,m-1), b) 
+    & = \delta(q, a^i b^m) = \delta(q, b^m a^i) \tag{Def.~$\varphi$ and $\mathcal A$ comm.} \\ 
+	& = \delta(q, a^{i + r}) \tag{Eqn.~\eqref{prelim:classes:com:eqn:Bnm-r}} \\
+	& = \varphi((i+r) \bmod{n}, 0)  \tag{Eqn.~\eqref{prelim:classes:com:eqn:Bnm} and Def.~$\varphi$} \\
+	& = \varphi(\mu_{n,m,r}((i,m-1), b)). \tag{Def.~$\mu_{n,m,r}$}	
+	\end{align*}
+	Thus $\varphi$ is an isomorphism between $\mathcal A$ and $\mathcal B_{n,m,r}$.
+\end{proof}
+
+\begin{corollary}
+	\label{prelim:classes:com:prop:comm-perm-classifiy}
+	Let $\mathcal A = (Q, \{a,b\}, \delta)$ be a commutative permutation automaton
+	and $S \subseteq Q$ be a strongly connected component.
+	Then~$S$ is a sink component
+	and $\mathcal A_{|S} \cong \mathcal B_{n,m,r}$
+	for some $n,m \ge 1$ and $r \in [n]$.
+\end{corollary}
+\begin{proof}
+	By \cref{prelim:subclasses:perm:reach:cor}, $S$ is a sink component.
+	By \cref{prelim:classes:com:prop:comm-perm-classifiy0}, $\mathcal A_{|S}$
+	isomorphic to $\mathcal B_{n,m,r}$ for some $n,m \ge 1$
+	and $r \in [n]$.	
+\end{proof}
+
+\begin{remark} \label{prelim:classes:com:rem:comm-perm-classify}
+	Let $\varphi \colon [n] \times [m] \to [n] \times [m]$
+	be an automorphism of $\mathcal B_{n,m,r}$.
+	Then $\varphi((0,0)) = (s,t) = \mu_{n,m,r}((0,0), a^sb^t)$
+	for some $(s,t) \in [n] \times [m]$
+	and this value determines $\varphi$ uniquely
+	by \cref{prelim:automata:morphism:prop:principal-upper-set}.
+	Thus, the automorphism group of $\mathcal B_{n,m,r}$
+	consists of all mappings $(i,j) \mapsto \mu((i,j), a^s b^t)$
+	for $(s,t) \in [n] \times [m]$.
+	We see that this group equals $\TM{\mathcal B_{n,m,r}}$
+	and is regular.
+	With \cref{prelim:classes:com:prop:comm-perm-classifiy0} this gives another proof of
+	\cref{prelim:classes:comm:prop:permSCC-regular} 
+\end{remark}
+
+\subsection{Subset Mapping Properties}
+\label{prelim:classes:comm:subsec:subset}
+
+We begin with some statements on synchronizing commutative automata.
+
+\begin{proposition}[{Fernau and Hoffmann~\cite[Lem.~20]{FernauHoffmann19}}] \label{prelim:classes:comm:cor:collections-of-facts:2}
+ In a commutative automaton, a synchronizing state is a trap state.
+\end{proposition} 
+\begin{proof}
+	This follows from \cref{constr_sync:prop:sink-blocks-sync-trap} since the sink components are blocks.	
+\end{proof}
+
+\begin{corollary} \label{prelim:classes:comm:cor:sync-trap}
+	Let $\mathcal A = (Q, \Sigma, \delta)$ be a commutative permutation-reset automaton
+	that is not a permutation automaton.
+	Then there exists a trap state~$t \in Q$
+	such that for each $a \in \Sigma$ that is not a permutational letter
+	we have $\delta(Q, a) = \{t\}$.	
+\end{corollary}
+\begin{proof}
+	By assumption, $\mathcal A$ has a letter mapping all states
+	to the same state~$t$.
+	By \cref{prelim:classes:comm:cor:collections-of-facts:2}, $t$ is a trap state.
+	Let $a \in \Sigma$ be some state that is not a permutational letter.
+	Then $|\delta(Q, a)| = 1$ and, since~$t$ is a trap state,
+	$t \in \delta(Q, a)$. This gives $\delta(Q, a) = \{t\}$.
+\end{proof}
+
+\begin{proposition}  \label{prelim:classes:comm:cor:collections-of-facts:6}
+	$\mathcal A = (Q, \Sigma, \delta)$ with $|Q| \ge 2$ is a synchronizing commutative permutation-reset
+	automaton if and only if there exists a non-permutational letter, a trap state $t \in Q$,
+	and $S = Q \setminus \{t\}$ is a block
+	such that $\delta(q, ab) = \delta(q, ba)$ for all $q \in S$ and $a,b\in \Sigma$
+	with $\delta(q,ab) \in S$.
+\end{proposition}
+\begin{proof}	
+	First, suppose~$\mathcal A$
+	is a synchronizing commutative permutation-reset automaton.
+	By \cref{prelim:classes:comm:cor:sync-trap}
+	we have a trap state $t$, a non-permutational letter, and for the upper set $S = \{t\}$
+	we have $\delta(Q, a) = Q$ or $\delta(Q, a) = \{t\}$
+	for each $a \in \Sigma$. Thus, $S$ is a block.
+	Since~$\mathcal A$ is commutative, we have 
+	$\delta(q, ab) = \delta(q, ba)$ for all $q \in S$ and $a,b\in \Sigma$.
+		
+	Conversely, by considering $\mathcal A / {\sim_{\{t\}}}$, which is isomorphic to~$\mathcal A$,
+	from \cref{prelim:perm-reset-Rees-factor,prelim:subclasses::com:upper-sets:prop}
+	we find that it is a commutative permutation-reset automaton,
+	which is synchronizing since it has a non-permutational letter
+	mapping everything to~$t$. 
+\end{proof}
+
+\begin{proposition} \label{prelim:classes:comm:cor:collections-of-facts:5} 
+	A two-state automaton is commutative and synchronizing 
+	if and only if it has a trap state~$t$,
+	some non-identity letter, and every letter acts as the identity
+	or maps both states to~$t$.
+\end{proposition}
+\begin{proof}
+	A synchronizing and commutative automaton
+	has a trap state~$t$ by \cref{prelim:classes:comm:cor:collections-of-facts:2}.
+	Thus, each letter either fixes both states or maps both states to~$t$.
+	Conversely, an automaton of this form is easily seen to be synchronizing and commutative.	
+\end{proof}
+
+\begin{proposition} \label{prelim:classes:comm:lem:words-SIS-SFS}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	be a commutative $n$-state automaton and $u \in \Sigma^*$.
+	\begin{enumerate}
+		\item \label{prelim:classes:comm:lem:words-SIS-SFS:1} We have $\delta(Q, u) = \delta(Q, v)$
+		for all $v \in \Sigma^*$
+		with $|v|_a = \min\{ n - 1, |u|_a \}$
+		for $a \in \Sigma$.
+		
+		\item \label{prelim:classes:comm:lem:words-SIS-SFS:2} For $S \subseteq Q$, $|\delta(S, u)| = |\delta(S, v)|$ for all $v \in \Sigma^*$
+		with $|v|_a = \min\{ n - 1, |u|_a \}$ for $a \in \Sigma$.
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+	\ref{prelim:classes:comm:lem:words-SIS-SFS:1} 
+	Let  $\Gamma \subseteq \Sigma$ be a largest alphabet
+	such that, for all $v \in \Sigma^*$
+	with $|v|_a = \min\{ n - 1, |u|_a\}$
+	for $a \in \Gamma$
+	and $|v|_a = |u|_a$
+	for $a \in \Sigma \setminus \Gamma$,
+	we have $\delta(Q, u) = \delta(Q, v)$.
+	Since, by commutativity, $\Gamma = \emptyset$ 
+	fulfills this condition, such a set~$\Gamma$
+	exists.	
+	
+	Assume there exist $a \in \Sigma \setminus \Gamma$.
+	Let $w \in \Sigma^*$
+	with $|w|_b = \min\{n-1, |u|_b\}$ for $b \in \Gamma$,
+	$|w|_b = |u|_b$ for $b \in \Sigma \setminus \Gamma$
+	with $b \ne a$,
+	and $|w|_a = 0$.
+	By choice of~$\Gamma$,
+	we have $\delta(Q, u) = \delta(Q, a^{|u|_a} w)$.
+	By \cref{prelim:automata:cor:power:P} 
+	we find $\delta(Q, a^{|u|_a} w) = \delta(Q, a^{\min\{n - 1, |u|_a\}} w)$.
+	Set $w' = a^{\min\{n - 1, |u|_a\}} w$.
+	By commutativity,
+	we have $\delta(Q, w') = \delta(Q, v)$
+	for all $v \in \Sigma^*$
+	with $|v|_b = | w' |_b$
+	for $b \in \Sigma$.
+	Since $|w|_a = \min\{n-1,|u|_a\}$, $|w|_b = \min\{n-1,|u|_b\}$ for $b \in \Gamma$,
+	and $|w|_b = |u|_b$ otherwise,
+	and $\delta(Q, u) = \delta(Q, v)$,
+	this contradicts the maximal choice of~$\Gamma$
+	since the condition by which we selected it 
+	is also fulfilled for $\Gamma \cup \{a\}$.
+	Thus, we must have $\Sigma = \Gamma$, which gives the claim.
+		
+	\ref{prelim:classes:comm:lem:words-SIS-SFS:2}: Let $S \subseteq Q$. We show, by induction,
+	that for each $\Gamma \subseteq \Sigma$ 
+	we have $|\delta(S, u)| = |\delta(S, v)|$ for all $v \in \Sigma^*$
+	with $|v|_a = \min\{n - 1, |u|_a\}$ for $a \in \Gamma$
+	and $|v|_a = |u|_a$ for $a \in \Sigma \setminus \Gamma$.
+	Then picking $\Gamma = \Sigma$ gives the statement we want to prove.
+	The claim clearly holds for $\Gamma = \emptyset$. 
+	
+	Next, consider $a \in \Sigma \setminus \Gamma$.
+	Let $v \in \Sigma^*$ with $|v|_b = \min\{ n - 1, |u|_b \}$
+	for $b \in \Gamma \cup \{a\}$ and $|v|_b = |u|_b$ for $b \in \Sigma \setminus \Gamma$ with $b \ne a$.
+	Choose $w \in \Sigma^*$ 
+	such that $|w|_b = \min\{n - 1, |u|_b\}$ for $b \in \Gamma$,
+	$|w|_b = |u|_b$ for $b \in \Sigma \setminus \Gamma$ with $b \ne a$
+	and $|w|_a = 0$.
+	Then, by induction hypothesis, we have
+	$
+	|\delta(S, u)| = |\delta(S, w a^{|u|_a})|.
+	$
+	From \cref{prelim:automata:power:prop:S:3} of \cref{prelim:word_in_PA},
+	for $v' = w a^{\min\{n-1,|u|_a\}}$ we get
+	\[
+	|\delta(S, w a^{|u|_a})| = |\delta(S, v')|.
+	\]
+	We have $|v|_b = |v'|_b$ for all $b \in \Sigma$. 
+	Thus, by commutativity, $\delta(S, v) = \delta(S, v')$
+	and so $|\delta(S, u)| = |\delta(S, v)|$.  This concludes
+	the induction step.
+\end{proof}
+
+\begin{corollary}
+	In a commutative $n$-state automaton, a shortest word reaching
+	a given subset 
+	has length at most $|\Sigma|(n-1)$.	The same bound holds
+	for shortest words synchronizing a given subset in commutative automata.
+\end{corollary}
+
+Note that \cref{prelim:classes:block:prop:sync-into-bound} gives 
+a better bound than $|\Sigma|(n-1)$ in commutative automata 
+for words mapping the whole state set into a given subset.
+
+
+\begin{corollary} \label{prelim:classes:comm:cor:words-SIS-SFS}
+	Let $\Sigma = \{a_1, \ldots, a_k\}$.
+	Suppose $\mathcal A = (Q, \Sigma,\delta)$ is a commutative $n$-state automaton
+	and $u \in \Sigma^*$.
+	Then we have
+	\begin{enumerate}
+	\item $\delta(Q, a_1^{n-1} \cdots a_k^{n-1}) \subseteq \delta(Q, u)$ and 
+		
+	\item $|\delta(S, a_1^{n-1} \cdots a_k^{n-1})| \le |\delta(S, u)|$ for $S \subseteq Q$.
+	\end{enumerate}
+\end{corollary}
+\begin{proof}
+	Set $v = a_1^{\min\{n-1, |u|_{a_1}\}} \cdots a_k^{\min\{n-1, |u|_{a_k}\}}$
+	and $w = a_1^{n - 1 - |v|_{a_1}} \cdots a_k^{n-1 - |v|_{a_k}}$.
+	By \cref{prelim:classes:comm:lem:words-SIS-SFS} 
+	we have $\delta(Q, u) = \delta(Q, v)$
+	and $|\delta(S, u)| = |\delta(S, v)|$.
+	Since $\delta(Q, w) \subseteq Q$
+	we have $\delta(Q, wv) \subseteq \delta(Q, v)$
+	and $|\delta(S, vw)| \le |\delta(S, v)|$.
+	By commutativity,
+	we find $\delta(Q, wv) = \delta(Q, a_1^{n-1} \cdots a_k^{n-1})$
+	and $\delta(S, vw) = \delta(S, a_1^{n-1} \cdots a_k^{n-1})$,
+	and this yields the claim.	
+\end{proof}
+
+By \cref{prelim:classes:comm:cor:words-SIS-SFS},
+in a commutative $n$-state automaton we have $\delta(Q, u) \subseteq S$ (resp.~$|\delta(S, u)| = 1$)
+for some $u \in \Sigma^*$
+if and only if $\delta(Q, a_1^{n-1} \cdots a_k^{n-1}) \subseteq S$ 
+(resp.~$|\delta(S, a_1^{n-1} \cdots a_k^{n-1})| = 1$).
+
+Because it easily follows from other results,
+we state a tight bound for shortest synchronizing words 
+that was first obtained by Rystsov~\cite[Thm.~3.5]{Rys96} and~\cite[Thm.~3.2]{Rystsov97} 
+(see also~\cite[Cor.~19]{FernauHoffmann19} for another proof).
+
+\begin{proposition} \label{prelim:classes:comm:prop:set-sync-words}
+	Let $\mathcal A = (Q, \Sigma,\delta)$ be commutative and $n = |Q|$.
+	\begin{enumerate}
+		\item \label{prelim:classes:comm:prop:set-sync-words:1} $\Syn(\mathcal A)$ is commutative.
+		
+		\item \label{prelim:classes:comm:prop:set-sync-words:2} $uwv \in \Syn(\mathcal A)$ for all $u,v,w \in \Sigma^*$ with $uv \in \Syn(\mathcal A)$.
+		
+		\item \label{prelim:classes:comm:prop:set-sync-words:3} (Rystsov~\cite{Rys96,Rystsov97}) A shortest word in $\Syn(\mathcal A)$ has length at most $n - 1$ and this bound is tight.		
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+	$\ref{prelim:classes:comm:prop:set-sync-words:1}$: By commutativity, $\delta(Q, uabv) = \{q\} = \delta(Q, ubav)$
+	for all $u,v \in \Sigma^*$ and $a,b \in \Sigma$,
+	which yields that $\Syn(\mathcal A)$ is commutative.
+	
+	$\ref{prelim:classes:comm:prop:set-sync-words:2}$: Since~$\Syn(\mathcal A)$ is an ideal by \cref{prelim:thm:sync_words_is_ideal},
+	we have $uvw \in \Syn(\mathcal A)$. By Item~\ref{prelim:classes:comm:prop:set-sync-words:1},
+	we get $uwv \in \Syn(\mathcal A)$.
+	
+	$\ref{prelim:classes:comm:prop:set-sync-words:3}$: Since in a commutative automaton
+	the strongly connected components are blocks,
+	this follows from \cref{prelim:thm:SCCblocks-rank_r} with $r = 1$,
+	or from  \cref{prelim:classes:block:prop:sync-into-bound} applied $S = \{t\}$
+	where $t$ is the synchronizing state, which must be a trap state
+	so that~$S$ is an upper set.
+\end{proof}
+
+Next, in \cref{syncmax:classes:comm:charsync}, 
+we show that weak connectivity and existence of a trap state is sufficient
+for synchronizability in commutative automata. This follows from a couple of statements
+we give next.
+
+\begin{lemma} \label{lem:comm:inv-images-letter-upper-set}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be a commutative automaton
+	with sink component $S \subseteq Q$ and $\Gamma \subseteq \Sigma$.
+	Then the set $T = \{ q \in Q \mid \exists u \in \Gamma^* \colon \delta(q, u) \in S \}$
+	is an upper set
+	such that $S$ is the only sink component having non-empty intersection with~$T$.
+\end{lemma}
+\begin{proof}
+	Let $q \in T$ and $b \in \Sigma$.
+	We have $\delta(q, u) \in S$ for some $u \in \Gamma^*$.
+	By commutativity, we find $\delta(q, b u) = \delta(q, u b)$.
+	Since $\delta(q, u) \in S$ and~$S$ is a sink component
+	we have $\delta(q, ub) \in S$.	
+	Thus, $\delta(q, b u) \in S$ and so $\delta(q, b) \in T$. Hence, $T$ is an upper set.
+	
+	Next, let $R \subseteq Q$ be a sink component with $R \cap T \ne \emptyset$.
+	By the definition of~$T$, 
+	we have $\delta(R, u) \cap S \ne \emptyset$ for some $u \in \Gamma^*$.
+	Since~$R$ is a sink component, we have $\delta(R, u) \subseteq R$.
+	Thus $R \cap S \ne \emptyset$.
+	Since distinct sink components are disjoint, this gives $R = S$.	
+\end{proof}
+
+\begin{corollary} \label{cor:comm:inv-images-letter-upper-set-T-weakly}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be commutative
+	with sink component $S \subseteq Q$.
+	Set $T = \{  q \in Q \mid \exists u \in \Sigma^* \colon \delta(q, u) \in S \}$.
+	Then $T$ is a weakly connected component of the automaton graph of~$\mathcal A$.
+\end{corollary}
+\begin{proof}
+	Since the states in~$T$ are precisely those having a path leading into~$S$,
+	and~$S$ is strongly connected, $T$ is weakly connected
+	and thus contained in some weakly connected component.
+	By the definition of~$T$, there are no transitions leading into~$T$
+	since $\delta(q, a) \in T$ implies $q \in T$.
+	Since~$T$ is an upper set by \cref{lem:comm:inv-images-letter-upper-set}
+	there are also no transitions leading out of~$T$ since $\delta(q, a)$
+	with $q \in T$ implies $\delta(q, a) \in T$.
+	Thus~$T$ equals the weakly connected component
+	containing it, since otherwise there would either exist a transition
+	going out of~$T$ or into~$T$.
+\end{proof}
+
+\begin{corollary}  \label{cor:comm:inv-images-letter-upper-set}
+	A commutative automaton $\semiautomat{A}{Q}{\Sigma}{\delta}$ whose automaton graph is weakly connected
+	has a unique sink component.
+\end{corollary}
+\begin{proof}
+	Let $S \subseteq Q$ be a sink component
+	and consider $T = \{  q \in Q \mid \exists u \in \Sigma^* \colon \delta(q, u) \in S \}$.
+	Since~$\mathcal A$ is weakly connected, by \cref{cor:comm:inv-images-letter-upper-set-T-weakly},
+	we find $Q = T$.
+	From \cref{lem:comm:inv-images-letter-upper-set} 
+	we get that~$S$ is the only sink component in $\mathcal A$.
+\end{proof}
+
+\begin{proposition} \label{syncmax:classes:comm:charsync}	
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be a commutative automaton.
+	Then the following are equivalent.
+	\begin{enumerate}
+		\item \label{syncmax:classes:comm:charsync:1} $\mathcal A$ has a trap state and its automaton graph is weakly connected.
+		
+		\item \label{syncmax:classes:comm:charsync:2} $\mathcal A$ has a trap state reachable from every other state.
+		
+		\item \label{syncmax:classes:comm:charsync:3} $\mathcal A$ is synchronizing.
+	\end{enumerate}	
+\end{proposition}
+\begin{proof}
+	$\ref{syncmax:classes:comm:charsync:1}\Rightarrow \ref{syncmax:classes:comm:charsync:2}$: By \cref{cor:comm:inv-images-letter-upper-set}
+	the trap state forms a unique sink component.
+	Thus, it is reachable from every other state.
+	
+	$\ref{syncmax:classes:comm:charsync:2}\Rightarrow \ref{syncmax:classes:comm:charsync:3}$: By \cref{prelim:thm:sync_trap_state}, $\mathcal A$
+	is synchronizing.
+	
+	$\ref{syncmax:classes:comm:charsync:3}\Rightarrow \ref{syncmax:classes:comm:charsync:1}$: By \cref{constr_sync:prop:solvable_sync_iff_reach_trap},
+	a synchronizing state is a trap state. Clearly, a synchronizing
+	automaton has an automaton graph that is weakly connected.
+\end{proof}
+
+\Cref{syncmax:classes:comm:charsync} was stated in~\cite[Lem.~5.1]{DBLP:conf/fun/FernauH022}.
+
+\subsection{Extremal Synchronizing Automata}
+\label{prelim:classes:comm:subsec:extremal}
+
+Since commutative automata are $\rho$-automata, and every synchronizing commutative automaton has a trap state, \cref{constr_input:prop:rho_extremal_sync_then_pto} implies that every synchronizing commutative $n$-state automaton with reset length $n-1$ is partially ordered. We now determine the structure of those commutative automata that are extremal w.r.t.~the reset length. Such automata were first classified in~\cite[Thm.~23]{FernauHoffmann19}. \Cref{fig:ex_extremal} shows a commutative automaton with the largest possible reset length.
+
+\begin{figure}[ht]
+	\centering
+	\begin{tikzpicture}[>=latex',shorten >=1pt,node distance=4.5em, auto]
+		
+		\tikzset{
+			state/.append style={
+				inner sep=2pt, 
+				minimum size=3pt,
+			}
+		}
+		
+		\node[state] (1) {$1$};
+		\node[state] (2) [above right of=1] {$2$};
+		\node[state] (3) [above right of=2] {$3$};
+		\node[state] (4) [above right of=3] {$4$};
+		\node[state] (5) [above left of=1] {$5$};
+		\node[state] (6) [above left of=5] {$6$};
+		
+		\path[->] (1) edge [loop below] node {$a,b, c$} (1);
+		\path[->] (2) edge  node {$b,c$} (1);
+		\path[->] (3) edge  node {$b,c$} (2);
+		\path[->] (4) edge  node {$b,c$} (3);
+		\path[->] (2) edge [loop above] node {$a$} (2);
+		\path[->] (3) edge [loop above] node {$a$} (3);
+		\path[->] (4) edge [loop above] node {$a$} (4);
+		
+		\path[->] (5) edge [swap] node {$a$} (1);
+		\path[->] (6) edge [swap] node {$a$} (5);
+		\path[->] (5) edge [loop above] node {$b,c$} (5);
+		\path[->] (6) edge [loop above] node {$b,c$} (6);
+	\end{tikzpicture}	
+	\caption[Extremal synchronizing commutative automaton]{Commutative six-state automaton with shortest synchronizing word $aabbb$.}
+	\label{fig:ex_extremal}
+\end{figure}
+
+\begin{theorem}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be a synchronizing commutative automaton
+	with trap state~$t$.
+	Then the reset length of~$\mathcal A$ equals $|Q| - 1$ if and only if 
+	we have a partition $\Gamma_1, \ldots, \Gamma_m$ of $\Sigma$
+	and sets $T_{\Gamma_i} \subseteq Q$ such that
+	\begin{enumerate}
+	\item $T_{\Gamma_i} \cap T_{\Gamma_j} = \{t\}$ for $i \ne j$ and $Q = T_1 \cup \cdots \cup T_m$,
+	
+	\item $T_{\Gamma_i} = \{ q_{i,0}, \ldots, q_{i, m_i}\}$ for some $m_i \ge 0$, % m_I = |T_{Gamma}|, mit zustand s_i?
+	
+	\item $\delta(q_{i,j}, x) = q_{i, \min\{j+1,m_i\}}$	for $x \in \Gamma_i$, and
+	
+	\item $\delta(q_{i,j}, x) = q_{i,j}$ for $x \in \Sigma \setminus \Gamma_i$.	
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+That automata of this form have reset length $|Q| - 1$ is clear.	
+	
+Conversely, we do the proof only for a binary alphabet $\Sigma = \{a_1,a_2\}$, since for larger alphabets
+the arguments are essentially the same, but involve more indices and more complicated notation.
+% oder zwei die von q verzweigen q.a und q.b betrachten und erzeugtes upper set von {q.a,q.b} betrachten
+% und die Fälle unterscheiden für beliebiges Alphabet
+
+By \cref{constr_input:prop:rho_extremal_sync_then_pto}, $\mathcal A$ is partially ordered.
+By \cref{prelim:general:order:cor:seq-upper-sets} there exists a sequence of upper sets
+\[
+S_1 \subsetneq S_2 \subsetneq \cdots \subsetneq S_m
+\]
+such that $S_1 = \{t\}$ and $S_i \setminus S_{i-1}$ for $i \in \{2,\ldots,m\}$ is a singleton set since~$\mathcal A$ is partially ordered. We show that the claim 
+holds for each $\mathcal A_{|\mathcal S_i}$ by induction.
+
+For $i = 1$, the claim clearly holds for the single-state automaton $\mathcal A_{|S_1}$.
+
+Next, let $i \ge 2$. We have $S_i \setminus S_{i-1} = \{q\}$ for some $q \in Q$.
+Without loss of generality, let $\delta(q, a_1) \ne q$.
+By \cref{lem:sub-quotient-extremal-linear}, $\mathcal A_{|S_{i-1}}$
+and $\mathcal A_{|S_i}$ have reset lengths $|S_{i-1}| - 1$ and $|S_i|-1$, respectively.
+Thus, by induction hypothesis,
+we either have $S_{i-1} = \{ q_0, \ldots, q_{l} \}$
+with $q_l = t$ and $\delta(q_j, x) = q_{\min\{j+1,l\}}$ for $j \in \{0,1,\ldots,l\}$
+for $x \in \Sigma$,
+or $S_i = \{ q_{1, 0}, \ldots, q_{1, l_1}, q_{2, 0}, \ldots, q_{2, l_2}\}$
+such that
+\begin{enumerate}
+\item $q_{l_1} = q_{l_2} = t$,
+
+\item $\delta(q_{j,r}, a_j) = q_{j, \min\{r+1, l_j\}}$ for $j \in \{1,2\}$ and $r \in \{0,1,\ldots,l_j\}$,
+
+\item $\delta(q_{j,r}, x) = q_{j,r}$ for $x \in \Sigma \setminus \{a_j\}$, $j \in \{1,2\}$ and $r \in \{0,1,\ldots,l_j\}$.
+\end{enumerate}
+
+First, suppose the case $S_{i-1} = \{ q_0, \ldots, q_{l} \}$ applies.
+If $\delta(q, a_1) \in \{q_1, \ldots, q_l\}$, then $a_1^{l}$ synchronizes $\mathcal A_{|S_i}$,
+which is not possible since $l = |S_{i-1}| - 1 < |S_i| - 1$.
+Thus, $\delta(q, a_1) = q_0$. We also have $\delta(q, a_2) \notin \{q_1, \ldots, q_l\}$
+since otherwise $a_2^l$ synchronizes~$\mathcal A_{|S_i}$.
+Next, $\delta(q, a_2) = q$ is excluded, since then $a_2 a_1^{l}$ ends at the state $q_{l-1}$
+and $a_1^la_2$ ends at $q_l$, which contradicts commutativity of $\mathcal A$.
+Thus also $\delta(q, a_2) = q_0$. Then $\mathcal A_{|S_i}$ has the form as claimed.
+
+Now, suppose the case $S_i = \{ q_{1, 0}, \ldots, q_{1, l_1}, q_{2, 0}, \ldots, q_{2, l_2}\}$
+applies. Assume $\delta(q, a_1) \in \{q_{2,0},\ldots, q_{2,l_2}\}$
+or $\delta(q, a_1) \in \{q_{1,1},\ldots,q_{1,l_1}\}$.
+Then the word $a_1^{l_1} a_2^{l_2}$ also synchronizes $\mathcal A_{|S_i}$.
+Thus, we must have $\delta(q, a_1) = q_{1,0}$.
+Assume $\delta(q, a_2) \ne q$.
+Then $\delta(q, a_2 a_1) \ne \delta(q, a_1a_2) = \delta(q, a_1)$,
+contradicting the commutativity of~$\mathcal A$. Thus $\delta(q, a_2) = q$
+and $\mathcal A_{|S_i}$ has the form as claimed.
+
+Thus, we obtain the statement by induction.
+\end{proof}

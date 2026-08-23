@@ -1,0 +1,125 @@
+%!TEX root = ./../../springer-mono-format/book.tex
+%!TEX root = ./../../thesis-trier.tex
+
+%Further automata-theoretical notions are introduced in \cref{prelim:sec:automata},
+%in particular various constructions and automata as language acceptors.
+%%most of this section is devoted to introducing various constructions
+%%as sub-, (Rees) factor, product, power, and pair automata. We also introduces automata as language acceptors 
+%%and regular languages.
+
+%\Cref{prelim:remarks_trans_semigrp_semiautomata,prelim:sec:remarks-reduction,prelim:sec:remarks_func_comp} 
+%discusses conventions and notational choices.
+
+Recall the definition of a (semi-)automaton and the set of synchronizing words
+from \cref{intro:sec:basic,intro:sec:defsyncaut}.
+Here, we give additional background on automata. %introduce additional notions. 
+\cref{prelim:subsec:morenotions} 
+collects more basic notions. The reachability quasiorder and related
+notions are introduced in~\cref{prelim:subsec:reachorder}.
+\Cref{prelim:subsec:transsemigrp} introduces
+the transformation semigroup of an automaton
+and a representation by transition matrices.
+\Cref{prelim:subsubsec:endo_aut} investigates morphisms
+on automata. We introduce endo-, iso- and automorphisms, 
+and collect several properties, facts, and formulas; in particular
+how morphisms act w.r.t.~the reachability order, strongly connected
+components, and upper sets.
+% The following sections are devoted
+Then a sequence of sections follows
+devoted to various constructions. 
+Specifically, \SEC~\ref{prelim:sec:aut:sub}, \ref{prelim:sec:aut:factor}, \ref{prelim:sec:rees}, \ref{prelim:sec:productaut},
+\ref{prelim:sec:aut:power}, and \ref{sec:pair_aut}
+introduce the sub- and restricted, quotient, Rees quotient, product, power, and pair automaton, respectively.
+\Cref{prelim:sec:aut:sequppersets} discusses
+the set of maximal states and shows ways to decompose an automaton
+into a sequence of upper sets. In~\cref{prelim:sec:autacceptors} 
+we connect automata to formal languages.
+We introduce regular languages
+as languages accepted by automata when adjoined with a start state
+and a set of final states (which we then call automata
+as language acceptors).
+\Cref{prelim:subsubsec:min_aut} investigates the minimal automaton
+accepting a given regular language.
+
+\section{More Basic Notions}
+\label{prelim:subsec:morenotions}
+
+\input{../part2/automata/basic}
+
+\section{The Transformation Semigroup of an Automaton}
+\label{prelim:subsec:transsemigrp}
+
+\input{../part2/automata/transform}
+
+\section{The Reachability Order}
+\label{prelim:sec:reach} 
+\label{prelim:subsec:reachorder}
+
+\input{../part2/automata/reach}
+
+\section{Morphisms} 
+\label{prelim:subsubsec:endo_aut}
+
+\input{../part2/automata//morphism}
+
+%\section{Automata Constructions}
+%\section{More Operations on Automata}
+\section{Operations on Automata}
+
+\subsection{Subautomata and Restricted Automata}
+\label{prelim:sec:aut:sub}
+
+\input{../part2/automata/subautomata}
+
+\subsection{The Quotient Automaton}
+\label{prelim:sec:aut:factor}
+
+\input{../part2/automata/factor}
+
+\subsection{The Rees Quotient Automaton}
+\label{prelim:sec:rees} 
+
+\input{../part2/automata/rees}
+
+\subsection{The Product Automaton} 
+\label{prelim:sec:productaut} 
+
+\input{../part2/automata/product}
+
+\subsection{The Power Automaton} 
+\label{prelim:sec:aut:power}
+
+\input{../part2/automata/power}
+
+\subsection{The Pair Automaton}
+\label{sec:pair_aut}
+
+\input{../part2/automata/pair}
+
+\section{Sequences of Upper Sets and Maximal States}
+\label{prelim:sec:aut:sequppersets}
+
+\input{../part2/automata/seq}
+
+\section{Automata as Language Acceptors} 
+\label{prelim:sec:autacceptors}
+
+\subsection{Regular Languages}
+\label{prelim:sec:regularlang}
+
+\input{../part2/automata/acceptor}
+
+\subsection{The Minimal Automaton}
+\label{prelim:subsubsec:min_aut}
+
+\input{../part2/automata/minimal}
+
+\section{Remarks on Transformation Semigroups and Automata}
+\label{prelim:remarks_trans_semigrp_semiautomata}
+
+\input{../part2/automata/remark_transsemigrp}
+
+\section{Discussion} 
+\label{prelim:automata:discussion}
+
+\input{../part2/automata/discussion-aut} 

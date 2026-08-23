@@ -1,0 +1,432 @@
+%!TEX root = ../../thesis-trier.tex
+
+Here, in \cref{sync_maximal:thm:structure}, 
+we show that an automaton is sync-maximal if and only if it contains a completely reachable
+and completely distinguishable subautomaton
+that misses at most one ``dangling'' state.
+Before stating this result, we give a lemma needed in its proof.
+
+\begin{lemma}
+	\label{sync_maximal:lem:n-1-upperset}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$.
+	Suppose $S \subseteq Q$
+	is an upper set, $|S| = |Q| - 1$,
+	and $u \in \Sigma^*$
+	is a word of shortest length such that $\delta(Q, u) = S$.
+	Then $u \in \Sigma$, i.e., $|u| = 1$.
+\end{lemma}
+\begin{proof}
+	We can write $u = av$ for some $a \in \Sigma$ and $v \in \Sigma^*$
+	where we must have $\delta(Q, a) \ne Q$
+	by the choice of~$u$ as a shortest word.
+	Since $|\delta(Q, u)| = |Q| - 1$
+	we also have $|\delta(Q, a)| = |Q| - 1$.
+	Write $\delta(Q, a) = Q \setminus \{p\}$ for some $p \in Q$.
+	Assume $p \in S$.
+	Then $\delta(p, v) \in S$.
+	With $\delta(Q \setminus \{p\}, v) = S$
+	this gives $\delta(Q, v) = S$, contradicting the minimal
+	choice of~$u$. Thus, we have $Q = S \cup \{p\}$
+	and so $\delta(Q, a) = S$.
+\end{proof}
+
+\begin{remark}
+	\Cref{sync_maximal:lem:n-1-upperset} does not generalize
+	in the sense that upper sets of size $|Q| - k$
+	for some $1 \le k < |Q|$ are reachable
+	by a word of length~$k$.
+	For example, let $\semiautomat{A}{Q}{\{a,b,c\}}{\delta}$
+	with $Q = \{0,1,2,3\}$,
+	$a$ and~$b$ being simple idempotents
+	mapping~$0$ to~$1$ and~$2$ to~$3$,
+	and~$c$ being a permutational letter
+	that swaps~$1$ and~$2$ and fixes
+	every other state.
+	Then a shortest word mapping~$Q$
+	to the upper set $\{3\}$
+    is, for example, $abcb$.
+\end{remark}
+
+By \cref{sync_max:cor:SCC}, complete reachability and complete distinguishability imply sync-maximality. By \cref{sync_max:thm:char_sync_max_aut}, every sync-maximal automaton is completely distinguishable. However, 
+there exists sync-maximal automata that are not completely reachable, see \cref{sync_max:sec:examples}.
+
+The next result also characterizes sync-maximal automata that are not completely reachable. It turns out that in every such automaton, exactly one singleton subset is unreachable.
+
+\begin{theorem}
+\label{sync_maximal:thm:structure}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	be an automaton with at least three states
+	and let
+	\[
+	S = \{ q \in Q \mid \exists u \in \Sigma^* : \applytrans{\delta}{Q}{u} = \{q\}\}
+	\]
+	be the set of synchronizing states (which forms a sink component by \cref{prelim:thm:SCC_sync_words}).
+	Then $\mathcal A$ is sync-maximal if and only if 
+	one of the following is true:
+	\begin{enumerate}
+		\item \label{sync_maximal:thm:structure:1} $\mathcal A$ is completely reachable and completely distinguishable or
+		
+		\item \label{sync_maximal:thm:structure:item:2nd} $Q = S \cup \{q\}$ for some $q \notin S$
+		and, with $\Gamma = \{ x \in \Sigma \mid \applytrans{\delta}{q}{x} = q\}$, we have	
+		\begin{enumerate}
+			\item \label{sync_maximal:thm:structure:item:defone}
+			$\applytrans{\delta}{Q}{a} = S$ for some $a \in \Sigma \setminus \Gamma$,
+					
+            \item \label{sync_maximal:thm:structure:item:AB} \label{sync_maximal:thm:structure:item:dupl-set} 
+            for each $p \in Q$, all pairs of non-empty, non-singleton subsets
+            of $\delta^{-1}(\dupl{a}, a) \cup \{p\}$ that are both distinct from
+            $\delta^{-1}(\dupl{a}, a)$ and contain~$q$ are distinguishable,\footnote{Let $\{s,t\} = \delta^{-1}(\dupl{a}, a)$. This condition is equivalent
+            	to distinguishability of $\{s,t,p\}$
+            	and $\{p,q\}$ if $q \in \{s,t\}$;
+            	and to pairwise 
+            	distinguishability
+            	of $\{s,t, q\}$, $\{s, q\}$,
+            	and $\{t, q\}$ 
+            	if $q \notin \delta^{-1}(\dupl{a}, a)$.
+            	Note that for $q \notin \{s,t\}$
+            	we can assume $p = q$ since otherwise no
+            	subset of $\{s,t,p\}$ contains~$q$.}
+                     				
+			\item \label{sync_maximal:thm:structure:item:complreach} $\restrictAutGamS{\mathcal A}{\Gamma}{S}$ is completely reachable,
+			
+			\item \label{sync_maximal:thm:structure:item:compldist} $\mathcal A_{|S}$ is completely distinguishable.			
+		\end{enumerate}
+	\end{enumerate}
+\end{theorem} 
+\begin{proof}	
+	First, suppose $\mathcal A$ is sync-maximal.
+	By \cref{prelim:thm:SCC_sync_words}, $S$ is a sink component.
+	By \crefitem{sync_max:cor:char_sync_max_aut}{cha_sync_max:item:Q3},
+	every $2$-set is reachable in $\mathcal A$.
+	So, we have $|Q \setminus S| \le 1$ by \cref{syncmax:prop:uppersets-num-sinks-size-Q}.
+	If $Q = S$, then~$\mathcal A$ is strongly connected.
+	So, by \cref{sync_max:cor:SCC}, it is completely reachable
+	and completely distinguishable.
+	Otherwise, let $q \in Q \setminus S$ and set $\Gamma = \{ x \in \Sigma \mid \delta(q, x) = q \}$.
+	We have $Q = S \cup \{q\}$.
+	As $S$ is reachable in~$\mathcal A$, by \cref{sync_maximal:lem:n-1-upperset} there
+	exists $a \in \Sigma$ such that $\delta(Q, a) = S$
+	and as $q \notin S$ we have $a \notin \Gamma$.
+	Let $A \subseteq S$ be a non-empty
+	subset. By \crefitem{sync_max:cor:char_sync_max_aut}{cha_sync_max:item:Q3}
+	there exists $u \in \Sigma^*$ such that
+	$\applytrans{\delta}{Q}{u} = A \cup \{q\}$.
+	We have $\applytrans{\delta}{S}{u} \subseteq S$.
+	Thus $\applytrans{\delta}{q}{u} \ne q$
+	would give $\applytrans{\delta}{q}{u} \in S$
+	and then $\delta(Q, u) \subseteq S$
+	so that $q \notin \delta(Q, u)$.
+	Hence, since $q \in \delta(Q, u)$, we must have $\applytrans{\delta}{q}{u} = q$ and 
+	thus $u \in \Gamma^*$.
+	This gives $\applytrans{\delta}{S}{u} = A$, and so 
+	$\mathcal A_{|S, \Gamma}$ is completely reachable. 
+	Complete distinguishability transfers from~$\mathcal A$
+	to~$\mathcal A_{|S}$.
+	Furthermore, all pairs of distinct subsets sharing the common state $q$
+	are distinguishable, in particular those mentioned in Item~\ref{sync_maximal:thm:structure:item:dupl-set}.
+		
+	Conversely, if $\mathcal A$ is completely reachable and completely
+	distinguishable, then it is sync-maximal by \cref{sync_max:cor:SCC}.
+	Next, suppose $Q = S \cup \{q\}$ with $q \notin S$ and that,
+	for $\Gamma = \{ x \in \Sigma \mid \delta(q, x) = q \}$, we have
+	\begin{enumerate}
+	\item $\delta(Q, a) = S$ for some $a \in \Sigma \setminus \Gamma$,
+	
+	\item for each $p \in Q$, all pairs of non-empty, non-singleton subsets
+	of $\delta^{-1}(\dupl{a}, a) \cup \{p\}$ that are both distinct from
+	$\delta^{-1}(\dupl{a}, a)$ and contain~$q$ are distinguishable,
+	
+	\item $\mathcal A_{|S}$ is completely
+	distinguishable and~$\restrictAutGamS{\mathcal A}{\Gamma}{S}$ is completely reachable.
+	\end{enumerate}
+	Let $A \subseteq Q$ with $|A| \ge 2$.
+	As $\restrictAutGamS{\mathcal A}{\Gamma}{S}$ is completely reachable,
+	there exists $u \in \Gamma^*$ such that $\applytrans{\delta}{S}{u} = A \setminus \{q\}$.
+	Then we have
+	\[
+	A = \begin{cases}
+		\delta(Q, au) & \text{if } q \notin A, \\
+		\delta(Q, u)  & \text{if } q \in A.		
+	\end{cases}
+	\]	
+	So, every subset of size at least two is reachable in $\mathcal A$.    
+    
+    Now, let $A, B \subseteq Q$ be distinct with $|A|,|B| \ge 2$.    
+    We can suppose $|A \cap S| \le 1$ or $|B \cap S| \le 1$,
+    for if this is not the case,
+    then, since $\mathcal A_{|S}$ is completely distinguishable,
+    there exists a word $u$ mapping precisely one 
+    of $A\cap S$ or $B \cap S$ to a singleton set.   
+    In this case, if 
+    $u$ does not distinguish $A$ and $B$, 
+    we may argue instead with $\delta(A, u)$ and~$\delta(B, u)$ in what follows.
+    So, without loss of generality, suppose $A = \{p, q\}$ for some $p \in S$.
+    Then we have the following two cases.
+    
+    \begin{description}
+    \item[$q \notin B$:] Then $B \subseteq S$. 
+    Since $\restrictAutGamS{\mathcal A}{\Gamma}{S}$ is synchronizing,
+    there exists $u \in \Sigma^*$ such that $|\delta(B, u)| = 1$.
+        Then  $\delta(A, u) = \{\delta(p, u), q\}$
+        with $\delta(p, u) \in S$ since $p \in S$.
+        We have $q \notin S$ and so $u$ distinguishes $A$ and~$B$.
+        
+    \item[$q \in B$:] Suppose $\delta(A, a) = \delta(B, a)$.
+    Since $A \ne B$ and $|B| \ge 2$,
+    we have $\delta(s, a) \in \{\delta(p, a), \delta(q, a)\}$
+    for some $s \in B \setminus A$. 
+    The letter~$a$ has defect one and so there exists
+    a unique pair of states that is mapped to the same state.
+    This pair must be $s$ and $p$, or $s$ and~$q$,
+    and with $A = \{p,q\}$ we conclude that $B \subseteq \{s, p, q\}$.
+    Since $q \in B$ and $B \ne \{p,q\}$,
+    we have $B = \{s,p,q\}$ or $B = \{s, q\}$.
+    In the latter case, since $a$ does not map~$B$ to a singleton,
+    we have $\delta(s, a) \ne \delta(q, a)$.    
+    In all cases, neither $A$ nor $B$ equal $\delta^{-1}(\dupl{a}, a)$
+    and both sets contain~$q$. By assumption, $A$ and~$B$ are distinguishable.    
+        
+    Next, suppose $\delta(A, a) \ne \delta(B, a)$.
+    Since~$a$ has defect one, it cannot map both
+    subsets to a singleton. Since $\mathcal A_{|S}$ is completely distinguishable,
+    there exists a word $v$ distinguishing $\delta(A, a)$
+    and~$\delta(B, a)$. Then $av$ distinguishes $A$ and~$B$.
+    \end{description}
+    
+    Thus, $\mathcal A$ is completely distinguishable.    
+    By \crefitem{sync_max:cor:char_sync_max_aut}{cha_sync_max:item:Q3}
+    $\mathcal A$ is sync-maximal.
+\end{proof}
+
+The condition \crefitem{sync_maximal:thm:structure}{sync_maximal:thm:structure:item:AB} 
+is rather technical. Next, \cref{sync_maximal:cor:structure,syncmax:prop:sufficient-dist-condition} 
+give conditions that imply it.
+
+\begin{corollary} \label{sync_maximal:cor:structure}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ and $S \subseteq Q$
+	be a proper upper set such that $Q = S \cup \{q\}$ for some $q \in Q$.
+	Set $\Gamma = \{ x \in \Sigma \mid \delta(q, x) = q \}$.
+	Suppose the following holds:
+	\begin{enumerate}
+	\item We have $\delta(Q,a) = S$ for some $a \in \Sigma$, and
+	
+    \item \label{sync_maximal:cor:structure:2} for distinct $A,B \subseteq Q$ with $2 \le |A| \le 3$, $|B| = 2$
+    and $q \in A \cap B$
+    there exists $u \in \Sigma^*$ such that  $\delta(A, u) \ne \delta(B, u)$,
+    $|\delta(A, u)| \ge 2$ or $|\delta(B, u)| \ge 2$,
+    and $\delta(A, u) \subseteq S$
+    or $\delta(B, u) \subseteq S$.	
+	\end{enumerate}
+	Then $\mathcal A$ is sync-maximal if and only if 
+	$\mathcal A_{|S}$ is completely distinguishable
+	and $\restrictAutGamS{\mathcal A}{\Gamma}{S}$ is completely reachable.
+\end{corollary}
+\begin{proof}
+	By \cref{sync_max:cor:char_sync_max_aut} we can assume $|Q| \ge 3$.
+	The set~$S$ is the unique sink component in $\mathcal A$.
+	Thus, it equals the set of maximal states.
+	
+	First, suppose $\mathcal A$ is sync-maximal.
+	By \cref{prelim:thm:SCC_sync_words}, $S$ equals the set of synchronizing states.
+	By \cref{sync_maximal:thm:structure}, $\mathcal A_{|S}$ is completely distinguishable
+	and $\restrictAutGamS{\mathcal A}{\Gamma}{S}$ is completely reachable.
+	
+	Conversely, suppose $\mathcal A_{|S}$ is completely distinguishable
+	and $\restrictAutGamS{\mathcal A}{\Gamma}{S}$ is completely reachable.
+	Then~$\mathcal A$ is synchronizing and, by \cref{prelim:thm:SCC_sync_words}, $S$
+	is the set of synchronizing states.	
+	Let $p \in S$ and $A,B \subseteq \delta^{-1}(\dupl{a}, a) \cup \{p\}$
+	be distinct with $|A|, |B| \ge 2$ and $q \in A \cap B$.
+	By assumption, we have $\delta(A, u) \ne \delta(B, u)$
+	such that, without loss of generality, $\delta(A, u) \subseteq S$
+	for some $u \in \Sigma^*$.
+	If $|\delta(A, u)| = 1$ or $|\delta(B, u)| = 1$, 
+	then $u$ distinguishes $A$ and~$B$.
+	Otherwise, for $\delta(B, u) \subseteq S$ there exists a distinguishing word $v \in \Sigma^*$
+	for $\delta(A, u)$ and $\delta(B, u)$. Then $uv$ distinguishes $A$ and~$B$.
+	For $q \in \delta(B, u)$, we find $w \in \Gamma^*$
+	such that $|\delta(A, uw)| = 1$ since $\restrictAutGamS{\mathcal A}{\Gamma}{S}$ is completely reachable.
+	We have $\delta(q, w) = q$
+	and $\delta(\delta(B, u) \cap S, w) \ne \emptyset$.
+	This yields $|\delta(B, uw)| \ge 2$.
+	Then, $uw$ distinguishes $A$ and~$B$.
+	Thus, \crefitem{sync_maximal:thm:structure}{sync_maximal:thm:structure:item:AB} 
+	holds and so we conclude that $\mathcal A$ is sync-maximal.
+\end{proof}
+
+Next, we list conditions that imply \cref{sync_maximal:cor:structure:2}
+from \cref{sync_maximal:cor:structure} for specific sets.
+
+\begin{proposition} \label{syncmax:prop:sufficient-dist-condition}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$. Suppose $S \subseteq Q$
+	is a proper upper set such that $\delta(Q,a) = S$ and 
+	$Q = S \cup \{q\}$ for some $a \in \Sigma$ and some $q \in Q$.
+    Set $\Gamma = \{ x \in \Sigma \mid \delta(q, x) = q \}$.
+	
+	\begin{enumerate}
+	\item \label{syncmax:prop:sufficient-dist-condition:1} Let $A,B \subseteq Q$ be distinct with $|A|,|B| \ge 2$
+	and $q \in A \cap B$.
+	If $\delta(A, ua) \ne \delta(B, ua)$ for some $u \in \Gamma^*$,
+	then $|\delta(A, ua)| \ge 2$ or $|\delta(B, ua)| \ge 2$.	
+	
+	\item \label{syncmax:prop:sufficient-dist-condition:2} If $\delta(S, a) = S$, then $\delta(A, a) \ne \delta(B, a)$
+	for all distinct $A,B \subseteq Q$ with $|A|,|B| \ge 2$ 
+	and $q \in A \cap B$.
+	\end{enumerate}	
+\end{proposition}
+\begin{proof}
+\ref{syncmax:prop:sufficient-dist-condition:1}: The set~$S$ is an upper set and 
+ the sets $A \cap S$ and $B\cap S$ are non-empty. Thus, we have that $\delta(A, u) \cap S$
+ and $\delta(B, u) \cap S$ are non-empty.
+ We also have $q \in \delta(A, u) \cap \delta(B, u)$
+ since $\delta(q, u) = q$.
+ Thus $|\delta(A, u)| \ge 2$ and $|\delta(B, u)| \ge 2$.
+ We have $\delta(A, u) \ne \delta(B, u)$ since $\delta(A, ua) \ne \delta(B, ua)$.
+ Let $p \in \delta(A, u) \cap S$
+ and $r \in \delta(B, u) \cap S$ with $p \ne r$.
+ If $|\delta(A, ua)| = |\delta(B, ua)| = 1$,
+ then $\delta(p, a) = \delta(q, a)$
+ and $\delta(r, a) = \delta(q, a)$, 
+ which is not possible as $a$ has defect one.
+ Thus, $a$ can map at most one
+ of both subsets $\delta(A, u)$
+ or $\delta(B, u)$ to a singleton set, i.e.,
+ we have $|\delta(A, ua)| \ge 2$ or $|\delta(B, ua)| \ge 2$.	
+
+\ref{syncmax:prop:sufficient-dist-condition:2}: The letter~$a$ acts injectively on~$S$. Thus, we must have $q \in \delta^{-1}(\dupl{a}, a)$
+and $\delta(A \cap S, a) \ne \delta(B \cap S, a)$
+where $A\cap S$ and $B \cap S$ are non-empty.
+In either case, whether $\delta(q, a) \in \delta(A\cap S, a) \cup \delta(B \cap S, a)$
+or not, we find $\delta(A, a) \ne \delta(B, a)$.
+\end{proof}
+
+\begin{corollary}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	be an SI-automaton.
+	Then $\mathcal A$ is sync-maximal if and only if
+	it is completely reachable and completely distinguishable
+	or we have $Q = S \cup \{q\}$ for some upper set $S \subseteq Q$
+	and $q \in Q \setminus S$ such that
+	$\delta(Q, a) = S$ for some $a \in \Sigma$
+	and~$\restrictAutGamS{\mathcal A}{\Gamma}{S}$ is completely reachable and completely
+	distinguishable for $\Gamma = \{ x \in \Sigma \mid \delta(q, x) = q \}$.
+\end{corollary}
+\begin{proof}
+	First, note that $\mathcal A_{|S}$
+	is completely distinguishable
+	if and only if $\restrictAutGamS{\mathcal A}{\Gamma}{S}$ is completely
+	distinguishable since those letters in $\Sigma \setminus \Gamma$
+	only move $q$ and fix all other states.	
+	
+	The letter~$a$ is a simple idempotent with $\delta(q, a) \ne q$.
+	Thus $\delta(S, a) = S$.
+	Then the claim follows 
+	from \cref{sync_maximal:thm:structure,sync_maximal:cor:structure,syncmax:prop:sufficient-dist-condition}.
+\end{proof}
+
+\begin{corollary}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ with at least five states and $S \subseteq Q$
+	be a proper upper set such that $\delta(Q, a) = S$ and $Q = S \cup \{q\}$ for 
+	some $a \in \Sigma$ and some $q \in Q$.
+	Suppose the set $S$ is cyclically permuted by some letter $b \in \Gamma$.
+	Set $\Gamma = \{ x \in \Sigma \mid \delta(q, x) = q \}$.
+	Then $\mathcal A$ is sync-maximal if and only if 
+	$\mathcal A_{|S}$ is completely distinguishable
+	and $\restrictAutGamS{\mathcal A}{\Gamma}{S}$ is completely reachable.
+\end{corollary}
+\begin{proof}
+	Let $A, B \subseteq Q$ be distinct
+	with $2 \le |A| \le 3$, $|B| = 2$,
+	and $q \in A \cap B$.
+	Set $T = \delta^{-1}(\dupl{a}, a)$.
+	Suppose $\delta(A, a) = \delta(B, a)$.
+	Then $A \setminus T = B \setminus T$
+	and, since $A \ne B$, 
+	we also have $A \cap T \ne \emptyset$ and $B \cap T \ne \emptyset$
+	where $A \cap T \ne B \cap T$.		
+	Set $n = |Q|$.
+	Suppose $q \in T$. Let $T = \{p, q\}$.
+	Then $A = \{s, p, q\}$ for some $s \in Q \setminus T$
+	and $B = \{s, q\}$.
+	Let $\delta(s, b^i) = p$ for some $0 < i < n$.
+	If $i > 1$, set $u = b$
+	and, otherwise, set $u = bb$.
+	We have $\delta(A, u) \cap T = \{q\}$
+	and $\delta(A, u) \setminus T \ne \delta(B, u) \setminus T$.
+	Thus $\delta(A, ua) \ne \delta(B, ua)$.	
+	Next, suppose $q \notin T$.
+	Then $B = \{p, q\}$ for some $p \in T$.
+	Let $u = b$ if $\delta(B, b) \cap T = \emptyset$
+	or $u = bb$ otherwise. 
+	Then $\delta(B, u) \cap T = \emptyset$.
+	We have $\delta(A, u) \setminus T \ne \delta(B, u) \setminus T$.
+	Thus $\delta(A, ua) \ne \delta(B, ua)$.	
+	Since the image of~$a$ is~$S$,
+	by \cref{sync_maximal:cor:structure,syncmax:prop:sufficient-dist-condition}
+	we obtain the claim.
+\end{proof}
+
+Next, we list three corollaries to \cref{sync_maximal:thm:structure}. The first three follow readily,
+the last one uses \cref{sync_max:cor:single-non-permutation}.
+
+\begin{corollary}
+	In a sync-maximal automaton $\mathcal A$
+	with set of synchronizing states $S$,
+	we have $|Q \setminus S| \le 1$
+	and $\mathcal A_{|S}$
+	is completely reachable
+	and completely distinguishable.
+\end{corollary}
+
+\begin{corollary} \label{syncmax:cor:three-states-trap-not-syncmax}
+A sync-maximal automaton with at least
+three states has no trap state.
+\end{corollary} 
+
+\begin{corollary}
+	A sync-maximal automaton is a $\rho$-automaton.
+\end{corollary}
+
+\begin{corollary}
+	\label{sync_max:cor:structure_letters}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be sync-maximal with $|Q| \ge 3$.
+	If $\mathcal A$ is strongly connected, then $|\Sigma| \ge 2$
+	where $\Sigma$ contains a letter of defect one
+	and for $|\Sigma| = 2$ the other letter cyclically permutes the states. 
+	If $\mathcal A$ is not strongly connected,
+	then there exists a non-synchronizing state $q \in Q$
+	such that $Q = S \cup \{q\}$ for the set of synchronizing states~$S$
+	and with $\Gamma = \{ x \in \Sigma \mid \delta(q, x) = q \}$ we have:
+	\begin{enumerate}
+		\item \label{sync_max:cor:structure_letters:1} 
+		each of the sets $\Sigma \setminus \Gamma$ and $\Gamma$ contains a letter of defect one,
+				
+		\item $|\Gamma| \ge 2$, $|\Sigma| \ge 3$,
+		
+		\item \label{sync_max:cor:structure_letters:3} if $|\Gamma| = 2$ and $|Q| \ge 4$, then
+		$\Gamma$ also contains a permutational letter
+		that cyclically permutes the states in~$S$ (this might not hold for $|Q| \le 3$, see \cref{sync_max:fig:ternary}). 
+	\end{enumerate}
+\end{corollary}
+\begin{proof}
+	First, assume $\mathcal A$ is strongly connected.
+	By \cref{sync_max:cor:SCC}, $\mathcal A$
+	is completely reachable.
+	So, \cref{sync_max:cor2:single-non-permutation},
+	we find that $|\Sigma| \ge 2$, $\Sigma$ contains a letter
+	of defect one, and for $|\Sigma| = 2$ another letter cyclically permuting the states.
+	Now, assume~$\mathcal A$ is not strongly connected.
+	By \crefitem{sync_maximal:thm:structure}{sync_maximal:thm:structure:item:2nd}, 
+	we have $Q = S \cup \{q\}$ for some state $q \in Q \setminus S$ where~$S$
+	is the set of synchronizing states,
+	that  $\Sigma \setminus \Gamma$ contains a letter of defect one,
+	and that for $\Gamma = \{x\in \Sigma \mid \delta(q, x) = q \}$
+	the automaton $\restrictAutGamS{\mathcal A}{\Gamma}{S}$
+	is completely reachable.
+	Applying \cref{sync_max:cor2:single-non-permutation}
+	to the completely reachable automaton $\restrictAutGamS{\mathcal A}{\Gamma}{S}$
+	yields the existence of a letter %$b \in \Gamma$ 
+	in~$\Gamma$
+	of defect one, $|\Gamma| \ge 2$, and so $|\Sigma| \ge 3$,
+	and that for $|\Gamma| = 2$ and $|S| \ge 3$ the other letter in $\Gamma$ cyclically permutes~$S$.
+\end{proof}

@@ -1,0 +1,370 @@
+%!TEX root = ./../../thesis-trier.tex
+
+\IN{$A$-primitive permutation group}
+Let $A \subseteq [n]$. A permutation group $G \le_G \mathcal S_n$
+is called \emph{$A$-primitive} 
+if there does not exist
+a non-trivial $G$-congruence on $[n]$
+such that all elements in $A$ are congruent.
+Equivalently, if $\Delta \subseteq [n]$ is a block with $A \subseteq \Delta$,
+then $|\Delta| = 1$ or $\Delta = [n]$. 
+Every group is $[n]$-primitive.
+So, only the case $|A| < n$ is of interest.
+For $|A| \ge 2$ and $A$-primitive $G \le_G \mathcal S_n$ we have that
+$A \subseteq \Delta$ implies $\Delta = [n]$.
+
+\begin{proposition} \label{syncmax:primitive:prop:superset}
+	Let $G \le_G \mathcal S_n$ and $A \subseteq [n]$. 
+	If $G$ is $A$-primitive,
+	then $G$ is $B$-primitive
+	for every $B \subseteq [n]$ with $A \subseteq B$.	
+	Furthermore, if $G \le_G H$ for some $H \le_G \mathcal S_n$
+	and $G$ is $A$-primitive, then $H$ is $A$-primitive.
+\end{proposition}
+\begin{proof}
+	First, suppose $G$ is $A$-primitive. If $B \subseteq \Delta$ for some block,
+	then $A \subseteq \Delta$.
+	So, $|\Delta|=1$ or $\Delta = [n]$.	
+	Next, assume $G \le_G H$ for some $H \le_G \mathcal S_n$.
+	If $\Delta$ is a block for~$H$
+	and $A \subseteq \Delta$,
+	then, as $\Delta$ is also a block for $G$,
+	we get $|\Delta| = 1$ or $\Delta = [n]$.
+\end{proof}
+
+Obviously, a permutation group is $A$-primitive for all $k$-subsets $A \subseteq [n]$
+if and only if it has no non-trivial block of size at least $k$.
+
+\begin{example}
+	\label{sync_aut:permgrp:ex:Aprim}
+	Let $G = \langle \{  (0 ~ 1 ~ 2 ~ 3 ~ 4 ~ 5 ~ 6 ~ 7) \} \rangle_G$.
+	The only non-trivial blocks are $\{ 0, 2, 4, 6\}$
+	and $\{ 1, 3, 5, 7 \}$.
+	So $G$ is $A$-primitive
+	for all subsets $A$ that contain 
+	at least one even and at least one odd number. 
+\end{example}
+
+\begin{example} \label{sync_aut:permgrp:ex:cyclicAprim}
+	Generalizing the previous example, let $G = \langle \{  (0 ~ 1 ~ \cdots ~ n - 1) \} \rangle_G$ and
+	$A = \{ a_1 < \cdots < a_m \}$ be some subset of~$[n]$
+	with $m \ge 2$.
+	Then~$G$ is $A$-primitive if and only if the greatest common divisor~$d$
+	of the numbers $a_{i+1} - a_{i}$ for $i \in \{1,\ldots,m-1\}$
+	and~$n$ is one.	
+	For suppose $d > 1$. Then for $a_i, a_j \in A$
+	with $i < j$ we have $a_j - a_i = \sum_{k=i}^{j-1} (a_{k+1} - a_k)$.
+	Thus, the difference of any two numbers from~$A$
+	is divisible by~$d$ and so~$A$ is contained in the residue class modulo~$d$,
+	which forms a block by~\cref{lem:congruence_on_cyclic_group}.
+	Next, suppose $d = 1$.
+	Suppose $\Delta$ is a block with $A \subseteq \Delta$.
+	By \cref{lem:congruence_on_cyclic_group}, $\Delta$
+	is a residue class modulo some divisor~$r$ of~$n$.
+	Now $A \subseteq \Delta$
+	implies that all differences of numbers from~$A$
+	are divisible by~$r$. Thus, we find $r = 1$, which gives $\Delta = [n]$.	
+\end{example}
+
+A set $A$ of minimal size such that $G$ is $A$-primitive is not necessarily unique.
+For example, in \cref{sync_aut:permgrp:ex:Aprim,sync_aut:permgrp:ex:cyclicAprim},
+there are different sets of minimal size for which the groups are A-primitive.
+
+Next, we give two other examples. \Cref{syncaut:permgrp:ex:transitive} is 
+rather straightforward, \cref{syncaut:permgrp:ex:threesets} constructs an imprimitive group on $[n]$
+whose only non-trivial blocks have size two; and so the group is $A$-primitive
+for $A \subseteq [n]$ with~$|A| \ge 3$.
+
+\begin{example}
+	\label{syncaut:permgrp:ex:transitive}
+	Let $G \le_G \mathcal S_n$ be transitive
+	and $\Delta \subseteq [n]$ be a block.
+	By \cref{prelim:ex:trans-block}, $|\Delta|$
+	divides $n$.
+	So, transitive permutation groups are $A$-primitive
+	for each set $A \subseteq [n]$ with $\frac{n}{2} < |A| \le n$.
+\end{example}
+
+\begin{example}
+	Consider $G = \langle \{ (0 ~ 1)(2 ~ 3), (0 ~ 2)(1 ~ 3)\} \rangle_G$.
+	Then the partitions $\{0,1\}, \{2,3\}$,
+	$\{0,2\},\{1,3\}$, and $\{0,3\}, \{1,2\}$
+	each induce $G$-congruences.
+	Thus, with \cref{syncaut:permgrp:ex:transitive},
+	$G$ is only $A$-primitive for $A$
+	with $|A| \ge 3$.
+\end{example}
+
+\IN{wreath product construction}
+\IN{imprimitive action}
+\begin{example} 
+	\label{syncaut:permgrp:ex:threesets}
+	Let $n \ge 2$.  
+	Here, we construct\footnote{The construction  
+		is actually a special case
+		of a variant of the so-called \emph{wreath product construction} 
+		with the \emph{imprimitive action}.
+		We refer to~\cite{cameron_1999,dixon1996permutation}
+		for details.} a transitive imprimitive group on~$[n]$ that is $A$-primitive for each $|A| \ge 3$
+	(so, by imprimitivity, there must exist a block of size two).
+	Set $W = \{ (g_1, \ldots, g_n, h) \mid g_1, \ldots, g_n \in \mathcal S_2, h \in \mathcal S_n \}$
+	and define an operation on $W$ by
+	\[
+	(g_1', \ldots, g_n', h') (g_1, \ldots, g_n, h)
+	= (g'_{h(1)} g_{1}, 
+	\ldots, 
+	g_{h(n)}' g_{n}, h'h)
+	\]
+	for $(g_1, \ldots, g_n, h), (g_1', \ldots, g_n', h') \in W$. 
+	Then $W$ together with this operation 
+	forms an abstract group with identity element $(\operatorname{id}_{[2]}, \ldots, \operatorname{id}_{[2]}, \operatorname{id}_{[n]})$ 
+	and inversion given by
+	\[
+	(g_1, \ldots, g_n, h)^{-1}
+	= (g_{h^{-1}(1)}^{-1}, \ldots, g_{h^{-1}(n)}^{-1}, h^{-1}).
+	\]  
+	The map that sends
+	$(g_1, \ldots, g_n, h) \in W$ to the permutation 
+	$(i,j) \mapsto (\applyfunc{i}{g_j}, \applyfunc{j}{h})$
+	for $(i,j) \in [2] \times [n]$
+	is an injective morphism from~$W$ into $\mathcal S_{[2] \times [n]}$,
+	which yields that $W$
+	can be seen as a permutation group on $[2] \times [n]$.
+	This permutation group is transitive
+	and the sets
+	$
+	\{1,2\} \times \{j\}
+	$
+	for $j \in [n]$ form a system of blocks.  
+	Next, suppose $\Delta \subseteq [2] \times [n]$
+	is a block with $(i, j), (i', j') \in \Delta$
+	for $j \ne j'$. Consider $(i'', j'') \in [2] \times [n]$.
+	Without loss of generality, assume $j' \ne j''$.
+	Let $h \in \mathcal S_n$ and $g \in \mathcal S_2$ be
+	such that  $\applyfunc{j}{h} = j''$, $\applyfunc{j'}{h} = j'$
+	and $\applyfunc{i}{g} = i''$.
+	Then
+	$(\operatorname{id}_{[n]}, \ldots, \operatorname{id}_{[n]}, g, \operatorname{id}_{[n]}, \ldots, \operatorname{id}_{[n]}, h) \in W$, where $g$ is put into the $j$-th position, maps $(i,j)$ to $(i'',j'')$
+	and $(i',j')$ to itself.
+	As $\Delta$ is a block, the element  permutes $\Delta$ and we get $(i'', j'') \in \Delta$.
+	So, as $(i'',j'')$ was chosen arbitrarily, we have $\Delta = [2] \times [n]$.
+	This implies that there exist no non-trivial
+	blocks besides those of the form $\{1,2\} \times \{j\}$
+	for some $j \in [n]$.  
+\end{example}
+
+Next, we express primitivity with the notion of $A$-primitivity. 
+
+\begin{proposition}
+	\label{sync_max:prop:primitive_Aprimitive}
+	Let $G \le_G \mathcal S_n$. Then the following are equivalent.
+	\begin{enumerate}
+		\item \label{syncaut:Aprim:item:prim} $G$ is primitive.
+		
+		\item \label{syncaut:Aprim:item:Aprim} $G$ is $A$-primitive for all subsets $A \subseteq [n]$.
+		
+		\item \label{syncaut:Aprim:item:abprim} $G$ is $\{a,b\}$-primitive for all distinct $a,b \in [n]$.
+		
+		
+		\item \label{syncaut:Aprim:item:aprim} $G$ is $\{a\}$-primitive for all $a \in [n]$.
+		
+		\item \label{syncaut:Aprim:item:emptyprim} $G$ is $\emptyset$-primitive.
+		
+	\end{enumerate}	
+\end{proposition}  
+\begin{proof} We can assume $n \ge 2$.
+	
+$\ref{syncaut:Aprim:item:prim} \Rightarrow \ref{syncaut:Aprim:item:Aprim}$: By primitivity, $G$
+only admits the trivial blocks, giving the implication.
+	
+$\ref{syncaut:Aprim:item:Aprim} \Rightarrow \ref{syncaut:Aprim:item:abprim}$: This is obvious.
+	
+$\ref{syncaut:Aprim:item:abprim} \Rightarrow \ref{syncaut:Aprim:item:aprim}$: 
+Suppose $a \in [n]$ and that $\Delta \subseteq [n]$
+is a block with $|\Delta| > 1$ and $a \in \Delta$.
+Pick $b \in \Delta \setminus \{a\}$. As, by assumption, $G$ is $\{a,b\}$-primitive, we find $\Delta = [n]$.	
+	
+$\ref{syncaut:Aprim:item:aprim} \Rightarrow \ref{syncaut:Aprim:item:emptyprim}$: Let $\Delta \subseteq [n]$
+be a block. 
+Pick some $a \in \Delta$. By assumption~$G$
+is $\{a\}$-primitive so that $|\Delta| = 1$
+or $\Delta = [n]$.
+This yields that $G$ is $\emptyset$-primitive as~$\Delta$ contains the empty set.
+	
+$\ref{syncaut:Aprim:item:emptyprim} \Rightarrow \ref{syncaut:Aprim:item:prim}$: 
+Let $\Delta \subseteq [n]$ be a block.
+As $\emptyset \subseteq \Delta$, we have $|\Delta| = 1$ or $\Delta = [n]$.
+So $G$ has no non-trivial blocks and is primitive.	
+\end{proof}
+
+Primitivity, $A$-primitivity for all $2$-sets $A$,
+and $A$-primitivity for all singletons $A$ are equivalent properties
+by \cref{sync_max:prop:primitive_Aprimitive}.
+This equivalence cannot be extended to $k$-sets for some $k \ge 3$
+as shown by the imprimitive groups from \cref{syncaut:permgrp:ex:threesets},
+which are $A$-primitive for each $k$-set~$A$ with $k \ge 3$.
+Further examples are given by the Klein four-group from Example~\ref{prelim:permgrp:ex:Kleinfourgroup}
+or the permutation group $\langle \{ (0 ~ 1 ~ 2 ~ 3) \}\rangle_G$,
+which are both imprimitive and, as they are transitive,~$A$-primitive for each $3$-set by \cref{syncaut:permgrp:ex:transitive}.
+
+Next, we characterize groups that are $\{a\}$-primitive for some $a \in [n]$.
+
+\begin{proposition}
+	\label{prop:a-primitive}
+	Let $G \le_G \mathcal S_n$ and $a \in [n]$.
+	Then $G$ is $\{a\}$-primitive
+	if and only if~$G$ is primitive,
+	or~$a$ is a fixpoint of $G$, i.e., $G = \Stab{a}{G}$,
+	and $\Orbit{b}{G} = [n] \setminus \{a\}$
+	for some $b \in [n] \setminus \{a\}$.
+\end{proposition}	
+\begin{proof}
+	We can assume $n \ge 2$.
+	Suppose $G$ is $\{a\}$-primitive. 
+	First, assume $a$ is not a fixpoint of~$G$.
+	Then we have $|\Orbit{a}{G}| > 1$.
+	As $\Orbit{a}{G}$
+	is a block, this implies $\Orbit{a}{G} = [n]$
+	and so $G$ is transitive.
+	Now, let $\Delta \subseteq [n]$ be a block
+	with $|\Delta| > 1$.
+	There exists $g \in G$
+	such that $a \in \applyfunc{\Delta}{g}$.
+	As $\applyfunc{\Delta}{g}$ is also a block,
+	we get $\applyfunc{\Delta}{g} = [n]$
+	and so $\Delta = [n]$.
+	Hence $G$ is primitive.
+	Next, assume $a$ is a fixpoint of~$G$.
+	Consider $\Delta = \{a\} \cup \Orbit{b}{G}$ for some $b \in [n] \setminus \{a\}$.	
+	Then $\Delta$ is a block containing~$a$
+	with $|\Delta| \ge 2$. So $\Delta = [n]$. 
+	As $\Orbit{a}{G} = \{a\}$
+	we get $\Orbit{b}{G} = [n] \setminus \{a\}$.
+	
+	Conversely, if $G$ is primitive,
+	then $G$ is $\{a\}$-primitive by~\cref{sync_max:prop:primitive_Aprimitive}.
+	Next, suppose $a$ is a fixpoint of $G$
+	and $\Orbit{b}{G} = [n] \setminus \{a\}$
+	for some $b \in [n] \setminus \{a\}$.
+	Let $\Delta \subseteq [n]$ be a block with $|\Delta| \ge 2$
+	and $a \in \Delta$.
+	Then there exists $c \in \Orbit{b}{G} \cap \Delta$. Let $g \in G$.
+	As $a$ is a fixpoint, we have $a \in g(\Delta)$, which
+	gives $g(\Delta) = \Delta$ as~$\Delta$ is a block.
+	Further, $g(c) \in g(\Delta) = \Delta$.
+	As $g$ was chosen arbitrarily, we find $\Orbit{c}{G} \subseteq \Delta$.
+	Hence, $[n] \setminus \{a\} = \Orbit{b}{G} = \Orbit{c}{G} \subseteq \Delta$
+	and so~$\Delta = [n]$. 
+\end{proof}
+
+The group $\langle (1 ~ 2 ~ 3)(4) \rangle_G$ is $\{4\}$-primitive and intransitive.
+\Cref{sync_max:prop:prim_implies_transitive,prop:a-primitive}
+imply, as stated next, that transitivity and $\{a\}$-primitivity
+for a single point~$a$ are equivalent to primitivity for $n \ge 3$. This was noted as a lemma (without the notion of~$A$-primitivity) in~\cite[p.~735]{IsaacsZ95}.
+
+\begin{corollary}\label{prim-a-primitive-trans}
+	Let $G \le \mathcal S_n$ with $n \ge 3$.
+	Then $G$ is primitive
+	if and only if it is transitive and $\{a\}$-primitive for some $a \in [n]$.
+\end{corollary}
+\begin{proof} 
+	If $G$ is primitive and $n \ge 3$,  
+	then it follows that $G$ is transitive (\cref{sync_max:prop:prim_implies_transitive} )
+	and $\{a\}$-primitive for all $a \in [n]$ (\cref{sync_max:prop:primitive_Aprimitive}).
+	
+	Conversely, suppose $G$ is transitive and $\{a\}$-primitive.
+	Then by transitivity~$a$ is not a fixpoint.	So, by \cref{prop:a-primitive}, $G$ is primitive.	
+\end{proof}
+
+\begin{corollary}
+	\label{syncaut:cor:Aprim:prim}
+	Let $G \le \mathcal S_n$ with $n \ge 2$.
+	Then $G$ is primitive if and only if there exist two  distinct $a,b \in [n]$
+	such that $G$
+	is $\{a\}$-primitive and $\{b\}$-primitive.	
+\end{corollary}
+\begin{proof}
+	We can assume $n \ge 3$.
+	First, suppose $G$ is $\{a\}$- and $\{b\}$-primitive
+	for distinct $a,b \in [n]$.
+	By \cref{prop:a-primitive},
+	if $G$ were imprimitive, then $a$
+	and $b$ would be fixed points and $[n] = \{a,b\}$.
+	So, as $n \ge 3$, $G$ must 
+	be primitive.
+	Conversely, if $G$ is primitive, then $G$ is $\{a\}$- and $\{b\}$-primitive
+	for all distinct $a,b \in [n]$ by \cref{sync_max:prop:primitive_Aprimitive}.
+\end{proof}
+
+\begin{remark}
+	Let $G \le_G \mathcal S_n$ be $A$-primitive and transitive for some $A \subseteq [n]$.
+	For $a \in A$, by \cref{prelim:thm:blocks-stabs}, either $\Stab{a}{G}$ is maximal
+	or, if there exists a proper subgroup $H \le_G G$ that properly contains $\Stab{a}{G}$,
+	then $A$ is not a subset of $\Orbit{a}{H}$ and so $b \notin \Orbit{a}{H}$ for some $b \in A$.
+	Furthemore, if $G$ is $\{a,b\}$-primitive for $a \ne b$, then
+	$H = \langle \Stab{a}{G} \cup \Stab{b}{G} \rangle_G$
+	equals the trivial group or it equals~$G$, or $\Orbit{a}{H}$ and $\Orbit{b}{H}$
+	are disjoint $H$-orbits.
+\end{remark}
+
+In an automaton $\semiautomat{A}{Q}{\Sigma}{\delta}$ whose transformation monoid contains an $A$-primitive permutation
+group for $A \subseteq Q$, by \cref{prelim:thm:homtheorem}, for every morphism $\varphi$ the map $\varphi_{|A}$ is injective.
+
+Lastly, we characterize the $\{a,b\}$-primitive cyclic permutation groups.
+
+\begin{proposition}\label{syncmax:prop:cyclic-group-abprim}
+	Let $g \in \mathcal S_n$ with distinct $a,b \in [n]$.
+	Then $G = \langle \{g\} \rangle_G$
+	is $\{a,b\}$-primitive
+	if and only if 
+	(1) $g$ induces two cycles of coprime length, one cycle moving~$a$ and the other~$b$,
+	(2) or $g$ cyclically permutes $[n]$ and  $g^i(a) = b$
+	for some $i \ge 0$ coprime to $n$.\footnote{When assuming $a < b$, coprimality of~$i$ and~$n$ is equivalent
+		to the fact that $b - a$ is coprime to~$n$.}
+\end{proposition}
+\begin{proof}
+	We can assume $n \ge 3$. First, suppose $G$ is $\{a,b\}$-primitive.
+	By \cref{sync_max:prop:ab_non_congruent_then_two_orbits},
+	we have $[n] = \Orbit{a}{G} \cup \Orbit{b}{G}$.
+	Now, assume $G$ is intransitive.
+	Then we can write 
+	\[ 
+	g = (a_0 ~ a_1 ~ \cdots ~ a_{r-1})(b_0 ~ b_1 ~ \cdots ~ b_{s-1})
+	\]
+	for $\Orbit{a}{G} = \{a_0, a_1, \ldots, a_r\}$
+	and $\Orbit{b}{G} = \{b_0, b_1,\ldots, b_s\}$ with $n = r + s$ where $a = a_0$ and $b = b_0$.
+	Let $k$ be a common divisor of $r$ and $s$.
+	Then $\Delta = \{ a_{i} \mid i \equiv 0 \pmod{k}, i \in \{0,1,\ldots,r-1\} \} \cup 
+	\{ b_i \mid i \equiv 0 \pmod{k}, i \in \{0,1,\ldots,s-1\} \}$
+	is a block with $a,b \in \Delta$.	
+	So, $\Delta = [n]$.
+	As $r \ge 2$ or $s \ge 2$,
+	we obtain $1 \equiv 0 \pmod{k}$,
+	which gives $k = 1$, i.e.,
+	the cycle lengths are coprime.
+	Next, assume~$G$ is transitive.
+	Then $g$ must cyclically permute $[n]$.
+	Without loss of generality, assume $g = (0 ~ 1 ~ \cdots ~ n - 1)$ and $a < b$.
+	By \cref{lem:congruence_on_cyclic_group}
+	there exists a block containing $a$
+	and $b$ if and only if $a \equiv b \pmod{r}$
+	for some divisor $r$ of $n$.
+	This is equivalent to $b - a \equiv 0 \pmod{r}$, or
+	that $r$ is a common divisor of $b - a$ and $n$.
+	So, as there does not exist a non-trivial block
+	containing $a$ and $b$, $b - a$ and $n$ must be coprime.    
+	
+	Conversely, assume $g = (a_0 ~ a_1 ~ \cdots ~ a_{r-1})(b_0 ~ b_1 ~ \cdots ~ b_{s-1})$
+	for $r$ and $s$ being coprime and $a = a_0$, $b = b_0$.
+	Then $kr \equiv 1 \pmod{s}$ for some $k \ge 1$.
+	For a block $\Delta$ with $a,b \in \Delta$,
+	we then obtain $g^{kr}(b_i) \equiv b_i + 1 \pmod{s}$
+	for $i \in \{0,1,\ldots,s-1\}$.
+	As $b \in \Delta$, inductively, we obtain $\{b_0,b_1,\ldots,b_{s-1}\} \subseteq \Delta$.
+	Similarly, we find $\{a_0, a_1, \ldots, a_{r-1}\} \subseteq \Delta$.
+	So, $\Delta = [n]$. Hence, $G$ is $\{a,b\}$-primitive.
+	Next, if $g$ cyclically permutes the states and $g^i(a) = b$
+	for some $i$ coprime to $n$,
+	by \cref{lem:congruence_on_cyclic_group} 
+	we obtain, as before, that $G$ is $\{a,b\}$-primitive.		
+\end{proof}

@@ -1,0 +1,197 @@
+%!TEX root = ./../../springer-mono-format/book.tex
+%!TEX root = ./../../thesis-trier.tex
+
+Here, \cref{thm:defectatmostone}
+shows that for automata where every letter has defect at most one
+and whose transformation monoid contains
+a transitive permutation group, synchronizability implies complete distinguishability.
+\Cref{cor:defectatmostone-weaker} lists some equivalences that follow
+from \cref{thm:defectatmostone}.
+Lastly, in \cref{cor:single-perm,cor:char-bin-compl-reach,cor:bin-compl-reach-sync-maximal},
+we conclude that in automata with a single non-permutational letter	
+and for binary automata, complete reachability
+and sync-maximality are equivalent properties,
+and that every binary completely reachable is sync-maximal.
+The latter statement answers the open question
+from~\cite{HoffmannCircularExtended} whether there exist 
+binary completely reachable automata that are not sync-maximal.
+
+\begin{theorem}\label{thm:defectatmostone}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	be an automaton such that the group of units of~$\TM{\mathcal A}$
+	is transitive and every letter has defect at most one.
+	If $\mathcal A$ is synchronizing, then it is completely distinguishable.	
+\end{theorem}
+\begin{proof}
+	Since all automata with at most two states are completely distinguishable by \cref{syncmax:rem:two-state-compl-dist},
+	we can assume $|Q| \ge 3$.
+	Let $u \in \Sigma^*$ be a shortest word such that
+	$\applytrans{\delta}{Q}{u} = \{q\}$ for some $q \in Q$.
+	Then we can write $u = xv$  with  $x \in \Sigma$ and $v \in \Sigma^*$.
+	By the minimal choice of~$u$, we have $|\applytrans{\delta}{Q}{v}| \ge 2$
+	and $\delta(Q, x) \ne Q$.
+	By assumption,~$x$ has defect one,
+	so that $\applytrans{\delta}{Q}{x} = Q \setminus \{p\}$
+	for some state $p \in Q$.
+	Hence, as $\delta(Q \setminus \{p\}, v) = \{q\}$, we get
+	\begin{align*}
+		\applytrans{\delta}{Q}{v}  = \{\applytrans{\delta}{p}{v} \} \cup \applytrans{\delta}{Q \setminus \{p\}}{v} 
+		= \{ \applytrans{\delta}{p}{v}, q \}
+	\end{align*}
+	where $\applytrans{\delta}{p}{v} \ne q$.    
+	Now, let $r \in Q$.	
+	As $\TM{\mathcal A}$ contains a transitive permutation group, 
+	there exists $w \in \Sigma^*$ inducing a permutation on $Q$
+	such that $\delta(r, w) = p$.
+	Then 
+	$\applytrans{\delta}{Q \setminus \{r\}}{wv} = \applytrans{\delta}{Q\setminus\{p\}}{v} = \{q\}$
+	and $\applytrans{\delta}{r}{wv} = \applytrans{\delta}{p}{v}$.
+	As $\applytrans{\delta}{r}{wv} \notin \applytrans{\delta}{Q \setminus\{r\}}{wv}$
+	and $|\applytrans{\delta}{Q\setminus \{r\}}{wv}| = 1$,
+	by~\crefitem{sync_max:thm:char_distinguishable}{dist:item:single_point},
+	it follows that $\mathcal A$ is completely distinguishable.
+\end{proof}
+
+\begin{remark}
+	The automaton from \cref{sync_max:ex:2-sets-not-all-dist},
+	and those from \cref{sync_max:fig:sync-two-sets-dist}
+	given later, only have simple idempotent letters (and so of defect one),
+	are completely reachable, but they are not completely distinguishable.
+	Thus, strong connectivity and synchronizability
+	do not imply complete distinguishability for these automata.
+\end{remark}
+
+
+\begin{corollary} \label{cor:defectatmostone-weaker}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	be an automaton such that the group of units of~$\TM{\mathcal A}$
+	is transitive (equivalently $\restrictAutGamS{\mathcal A}{\Gamma}{Q}$
+	for $\Gamma = \{ x \in \Sigma \mid \text{$x$ is a permutational letter } \}$ is strongly connected) and every letter has defect at most one with $|Q| \ge 5$.
+	Then the following are equivalent.
+	\begin{enumerate}
+	\item \label{defone:item:sync} $\mathcal A$ is synchronizing.
+	
+	\item \label{defone:item:cd} $\mathcal A$ is completely distinguishable.
+	
+	\item \label{defone:item:k-sets} 	
+	Every $k$-sets of states is distinguishable from every distinct $l$-set of states for some $2 \le k, l \le |Q|$ with $|Q| > k$ or $|Q| > l$.
+		
+	\item \label{defone:item:dist-card} For two distinct non-empty and non-singleton subsets $A, B \subseteq Q$
+	we have $|\delta(A, u)| \ne |\delta(B, u)|$ for some $u \in \Sigma^*$.		
+	
+	\item \label{defone:item:disjoint-kl-sets} 
+	Every $k$-set of states is distinguishable from every disjoint $l$-set
+	of states for some $k, l \ge 2$ with $kl < |Q|$.
+	\end{enumerate}
+\end{corollary}
+\begin{proof}
+$\ref{defone:item:sync} \Rightarrow \ref{defone:item:cd}$:
+	This follows from \cref{thm:defectatmostone}.\footnote{For SI-automata, this also follows from the graph-theoretical methods from \cref{sync_max:chap:graphs}.
+For consider the Rystsov graph $I(\TM{\mathcal A})$.
+By the assumption the group of units of $\TM{\mathcal A}$
+is transitive.
+As the group of units is part of the automorphism group 
+of $I(\TM{\mathcal A})$ (Proposition~\ref{sync_max:prop:G_automorhism_on_graphs}) 
+the graph $I(\TM{\mathcal A})$
+is vertex-transitive.
+As the completely reachable automaton $\mathcal A$ 
+is synchronizing (Lemma~\ref{prelim:lem:compl_reach_implies_SCC_sync}),
+by \cref{sync_max:thm:rystsov_SI} and \crefitem{sync_max:prop:Rystsov_graph_vs_SI_graph}{sync_max:prop:item:IAsubgraphIS} 
+the graph $I(\TM{\mathcal A})$ is strongly connected.
+By \cref{prelim:prop:vertex-transitive-SCC-32-connected} 
+it is strongly $\frac{3}{2}$-connected.
+So Theorem~\ref{sync_max:thm:IS_32SCC} yields that $\mathcal A$ is 
+completely distinguishable.}
+
+$\ref{defone:item:cd} \Rightarrow \ref{defone:item:k-sets}$: This is obvious.
+
+$\ref{defone:item:k-sets} \Rightarrow \ref{defone:item:sync}$:
+For $k \ge 3$ or $l \ge 3$, by \cref{sync_max:cor:k-ge-3-sync} the automaton $\mathcal A$ is synchronizing.
+For $k = l = 2$, since by assumption $\mathcal A$ is strongly connected it follows from \cref{sync_max:prop:2-sets-dist-SCC-implies-sync} that $\mathcal A$ is synchronizing. 
+
+\ref{defone:item:cd} $\Leftrightarrow$ \ref{defone:item:dist-card}: If~$\mathcal A$
+is completely distinguishable, then precisely one subset from $A$ or $B$
+is mapped to a singleton while the other is mapped to a set of size at least two.
+Thus, \cref{defone:item:dist-card} holds. Conversely,
+if \cref{defone:item:dist-card}, then distinct pairs of $2$-sets
+are distinguishable and since the equivalence of \cref{defone:item:k-sets} 
+and \cref{defone:item:cd} has already been established,
+we obtain that the automaton is completely distinguishable.
+
+\ref{defone:item:disjoint-kl-sets} $\Leftrightarrow$ \ref{defone:item:sync}: 
+First, suppose Item~\ref{defone:item:disjoint-kl-sets} holds.
+Then, \cref{sync_max:prop:disjointklsets} applied to $\TM{\mathcal A$} yields that~$\mathcal A$ is synchronizing.
+Conversely, if~$\mathcal A$ is synchronizing, then since the other equivalences
+have already been established it is completely distinguishable,
+in particular the pairs of sets as stated are distinguishable.
+\end{proof}
+
+In general, distinguishability of pairs of distinct $2$-sets does not imply
+synchronizability even for SI-automata, see \cref{sync_max:ex:2-sets}. For strongly connected 
+automata, distinguishability of pairs of distinct $2$-sets does imply
+synchronizability by \cref{sync_max:prop:2-sets-dist-SCC-implies-sync},
+but it does not imply complete distinguishability even for strongly connected SI-automata,
+see the examples from~\cref{sync_max:sec:furtherexamples}.
+\Cref{sync_max:ex:2-sets-but-not-all-new,sync_max:ex:2-sets-not-all-dist} showed that, in general, the
+ability to map two distinct non-singleton subsets to subsets of different cardinality
+is not sufficient for complete distinguishability.
+
+\begin{corollary} \label{cor:single-perm}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	be an automaton 
+	with at least three states and a single non-permutational letter.
+	Then $\mathcal A$ is completely reachable
+	if and only if it is sync-maximal.		
+\end{corollary}
+\begin{proof}
+	First, suppose~$\mathcal A$ is completely reachable.
+	By \cref{sync_max:cor:single-non-permutation}
+	the group of units of $\TM{\mathcal A}$	is transitive
+	and the single non-permutational letter has defect one.
+	So, by \cref{thm:defectatmostone}, since $\mathcal A$ is synchronizing
+	we find that it is completely distinguishable.
+	From \crefitem{sync_maximal:thm:structure}{sync_maximal:thm:structure:1}
+	we get that $\mathcal A$ is sync-maximal.
+		
+	Conversely, suppose~$\mathcal A$ is sync-maximal.
+	If $\mathcal A$ is not completely reachable,
+	then, by \cref{sync_maximal:thm:structure}, it is not strongly connected,
+	and so, by \crefitem{sync_max:cor:structure_letters}{sync_max:cor:structure_letters:1},
+	has two distinct non-permutational letters.
+	Hence, as $\mathcal A$ has only one non-permutational letter, it must be completely reachable.		
+\end{proof}
+
+\begin{corollary} \label{cor:char-bin-compl-reach}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	be a binary automaton 
+	with at least three states.
+	Then $\mathcal A$ is completely reachable
+	if and only if it is sync-maximal.		
+\end{corollary}
+\begin{proof}
+	First, suppose $\mathcal A$ is completely reachable. By \cref{sync_max:cor3:single-non-permutation}, $\mathcal A$
+	has precisely one non-permutational letter.
+	So, by \cref{cor:single-perm}{cor:single-perm:1}, it is sync-maximal.
+	Conversely, by \cref{sync_maximal:thm:structure} and \cref{sync_max:cor:structure_letters}, 
+	a binary sync-maximal
+	automaton with at least three states
+	is completely reachable.	
+\end{proof}
+
+\begin{corollary} \label{cor:bin-compl-reach-sync-maximal}
+	Every binary completely reachable automaton is sync-maximal.
+\end{corollary}
+\begin{proof}
+	This follows from \cref{cor:char-bin-compl-reach} 
+	since by \cref{sync_max:cor:char_sync_max_aut} 
+	synchronizing automata with at most two states are sync-maximal.
+\end{proof}
+
+\cref{cor:single-perm,cor:char-bin-compl-reach}
+do not hold for two-state automata,
+as by \crefitem{sync_max:cor:char_sync_max_aut}{cha_sync_max:item:Q2} 
+every two-state synchronizing automaton is sync-maximal,
+but there exist two-state synchronizing automata that are not strongly
+connected, and so not completely reachable.
+
+As complete reachability is decidable in polynomial time~\cite{DBLP:conf/icalp/FerensS23}, it follows from \cref{cor:char-bin-compl-reach} that, for binary automata, sync-maximality is also decidable in polynomial time. We note that Casas and Volkov~\cite{DBLP:conf/latin/CasasV22} gave a characterization of binary completely reachable automata (see also the discussion in~\cref{sync_max:sec:subclasses:discussion}), as well as a faster polynomial-time algorithm than the general one from~\cite{DBLP:conf/icalp/FerensS23} for deciding complete reachability in the binary case.

@@ -1,0 +1,315 @@
+%!TEX root = ./../../thesis-trier.tex
+
+% nochmal mit abgabeversion vergleich dass alles da
+
+Here,  we give examples showing that all these graphs can be different.
+Note that $I(\mathcal A)$
+is only defined for SI-automata, whereas $I(\TS{\mathcal A})$ and $\Gamma_1(\mathcal A)$
+are defined for any automaton~$\mathcal A$.
+
+Example~\ref{sync_max:ex:Cernygraphs} computes $I(\mathcal C_n)$,
+$I(\TS{\mathcal C_n})$ and $\Gamma_1(\mathcal A)$ for the \v{C}ern\'y automata~$\mathcal C_n$.
+Example~\ref{sync_max:ex:IAvsGamma}
+gives an SI-automaton~$\mathcal A$
+such that $I(\mathcal A) = I(\TS{\mathcal A})$
+and $I(\TS{\mathcal A}) \ne \Gamma_1(\mathcal A)$.
+Example~\ref{ex:I_vs_Gamma1} 
+gives an automaton $\mathcal A$ with $I(\TS{\mathcal A}) \ne \Gamma_1(\mathcal A)$ and such that in~$\Gamma_1(\mathcal A)$ all pairs of distinct 
+vertices are connected by an edge, but where this is not implied
+by \cref{sync_max:prop:Gamma1alledges} as $I(\TS{\mathcal A})$
+is not strongly connected. 
+
+\begin{example}
+	\label{sync_max:ex:Cernygraphs}
+	\Cref{sync_max:fig:Cernygraphs} shows $I(\mathcal C_n)$ and $I(\TS{\mathcal C_n})$,
+	where $I(\mathcal C_n)$ equals the orbital digraph of $\langle \fword{\delta}{b} \rangle_G$
+	on $(0,1)$.	
+	By \cref{sync_max:prop:transitiveIS}, $I(\TS{\mathcal C_n})$ also includes 
+	the edges from~$I(\mathcal C_n)$
+	going in the other direction.
+	Next, we show that these are the only edges in~$I(\TS{\mathcal C_n})$.
+	Let $(p,q)$ be an edge in~$I(\TS{\mathcal C_n})$.
+	Then $\applyfunc{p}{t} = \applyfunc{q}{t} = q$ for some simple idempotent $t \in \TS{\mathcal C_n}$.
+	Recall the definition of an interval from the  proof of \cref{intro:cerny_rt}.	
+	We have $\{p,q\} = \applyfunc{q}{t^{-1}}$ 
+	and as $\{q\}$ is an interval, $\{p,q\}$ must be an interval.
+	This implies 
+	$\applytrans{\delta_n}{p}{b} = q$
+	or $\applytrans{\delta_n}{q}{b} = p$, and so $(p,q)$
+	is one of the edges shown in \cref{sync_max:fig:Cernygraphs}
+	for the graph~$I(\TS{\mathcal C_n})$.
+	Lastly, as  $I(\TS{\mathcal C_n})$ is strongly connected, by \cref{sync_max:prop:Gamma1alledges}, 
+	in~$\Gamma_1(\mathcal C_n)$ all pairs of distinct vertices are connected by an edge.
+	Thus for each distinct pair $p,q$ of states, there exists a word of defect one
+	with excluded state~$p$ and duplicate state~$q$,
+	but there exists no simple idempotent mapping $p$ to $q$.
+	Since the group of units is transitive,
+	by \cref{prelim:lem:2sets-and-botha-transitive}, 
+	there even exists no word mapping~$p$ and~$q$
+	to a common state.
+\end{example}
+
+	
+\begin{figure}[ht]
+	\centering
+	\begin{subfigure}[t]{0.45\textwidth} 	\centering
+		\captionsetup{justification=centering,margin=1cm}
+		\scalebox{0.8}{\begin{tikzpicture}[shorten >=1pt,->,node distance=3cm]
+				%\tikzstyle{vertex}=[circle,color=red!60,fill=black!10,minimum size=25pt,inner sep=1pt,very thick]
+				%\tikzstyle{vertex}=[circle,draw,minimum size=5pt,inner sep=1pt]
+				
+				\foreach \name/\angle/\text in {P-n-2/234/n-2, P-n-1/162/n-1, 
+					P-0/90/0, P-1/18/1, P-2/-54/2}
+				\node[state,blur shadow, fill={rgb:black,0.4;white,10}, inner sep=0pt, minimum size=35pt] (\name) at (\angle:2.0cm) {$\text$};  %{\small $\text$};
+				
+				% \node at (0, -1.5) {$\ldots$};
+				
+				\path[->] (P-n-2) edge (P-n-1);
+				\path[->] (P-n-1) edge (P-0);
+				\path[->] (P-0) edge   (P-1);
+				\path[->] (P-1) edge  (P-2);			
+				
+				\node at (0, -1.8) {\large $\ldots$};
+		\end{tikzpicture}}
+		\caption{The graph $I(\mathcal C_n)$.}
+	\end{subfigure}%\hfill
+	\begin{subfigure}[t]{0.45\textwidth} 	\centering
+		\captionsetup{justification=centering,margin=1cm}
+		\scalebox{0.8}{\begin{tikzpicture}[shorten >=1pt,->,node distance=3cm]
+				%\tikzstyle{vertex}=[circle,color=red!60,fill=black!10,minimum size=25pt,inner sep=1pt,very thick]
+				%\tikzstyle{vertex}=[circle,draw,minimum size=5pt,inner sep=1pt]
+				
+				\foreach \name/\angle/\text in {P-n-2/234/n-2, P-n-1/162/n-1, 
+					P-0/90/0, P-1/18/1, P-2/-54/2}
+				\node[state,blur shadow, fill={rgb:black,0.4;white,10}, inner sep=0pt, minimum size=35pt] (\name) at (\angle:2cm) {$\text$};  %{\small $\text$};
+				
+				% \node at (0, -1.5) {$\ldots$};
+				
+				\path[->] (P-n-2) edge [bend left] (P-n-1); \path[->] (P-n-1) edge [bend left] (P-n-2);
+				\path[->] (P-n-1) edge [bend left] (P-0); \path[->] (P-0) edge [bend left]  (P-n-1);
+				\path[->] (P-0) edge  [bend left]  (P-1); \path[->] (P-1) edge [bend left] (P-0);
+				\path[->] (P-1) edge [bend left]  (P-2); \path[->] (P-2) edge [bend left] (P-1);
+				
+				\node at (0, -1.8) {\large $\ldots$};
+		\end{tikzpicture}}
+		\caption{The graph $I(\TS{\mathcal C_n})$}
+	\end{subfigure}
+	\caption[The graphs $I(\mathcal C_n)$ and $I(\TS{\mathcal C_n})$]{The graphs $I(\mathcal C_n)$ and $I(\TS{\mathcal C_n})$
+		for the \v{C}ern\'y automata $\mathcal C_n$. 
+		By \PROP~\ref{sync_max:prop:Gamma1alledges}
+		in $\Gamma_1(\mathcal C_n)$ all pairs of distinct vertices are connected by an edge.
+		Compare Example~\ref{sync_max:ex:Cernygraphs}.}
+	\label{sync_max:fig:Cernygraphs}
+\end{figure}
+
+\begin{remark} 
+	By \cref{sync_max:thm:rystsov-edges-simple-idemp-conj}
+	words in $I(\mathcal C_n)$ correspond to simple idempotent words of a 
+	form as stated in \cref{sync_max:rem:Rystsov-edges-and-words}.
+	However, not every simple idempotent in $\TS{\mathcal A}$ for an SI-automaton $\mathcal A$
+	might be representable by such a word
+	since there exist SI-automata where
+	$I(\mathcal A)$ is a proper subgraph of $I(\TS{\mathcal A})$,
+	as, for example, the \v{C}ern\'y automata, see \cref{sync_max:ex:Cernygraphs}.
+\end{remark}
+
+\begin{example}\label{sync_max:ex:IAvsGamma}
+	\Cref{sync_max:fig:IAvsGamma} shows an SI-automaton $\mathcal A$ (without permutational letters)
+	with $I(\mathcal A)$, $I(\TS{\mathcal A})$,
+	and $\Gamma_1(\mathcal A)$ where $I(\mathcal A) = I(\TS{\mathcal A})$
+	and $I(\TS{\mathcal A}) \ne \Gamma_1(\mathcal A)$.	
+	
+	\begin{figure}[ht]
+		\centering 
+		\begin{subfigure}[t]{0.325\textwidth}
+			\centering
+			\captionsetup{justification=centering,margin=0cm}
+			\begin{tikzpicture}[node distance = 1cm and 0.5cm]
+				\node[state,blur shadow, fill={rgb:black,0.4;white,10}] (0) {$0$};
+				\node[state, blur shadow, fill={rgb:black,0.4;white,10}, below right = of 0] (1) {$1$};
+				\node[state, blur shadow, fill={rgb:black,0.4;white,10},below left  = of 0] (2) {$2$};
+				
+				\path[->] (0) edge [right] node {$a$} (1)
+				(2) edge [left]  node {$b$}  (0);
+			\end{tikzpicture}
+			\caption{Automaton $\mathcal A$. Self-loops omitted.}
+		\end{subfigure}
+		\begin{subfigure}[t]{0.325\textwidth}
+			\centering
+			\captionsetup{justification=centering,margin=0cm}
+			\begin{tikzpicture}[node distance = 1cm and 0.5cm]
+				\node[state, blur shadow, fill={rgb:black,0.4;white,10}] (0) {$0$};
+				\node[state, blur shadow, fill={rgb:black,0.4;white,10}, below right = of 0] (1) {$1$};
+				\node[state, blur shadow, fill={rgb:black,0.4;white,10}, below left  = of 0] (2) {$2$};
+				
+				\path[->] (0) edge   (1)
+				(2) edge   (0);
+			\end{tikzpicture}
+			\caption{The graph $I(\TS{\mathcal A})$ (which equals $I(\mathcal A)$ here).}
+		\end{subfigure}
+		\begin{subfigure}[t]{0.325\textwidth}
+			\centering
+			\captionsetup{justification=centering,margin=0cm}
+			\begin{tikzpicture}[node distance = 1cm and 0.5cm, bend angle=10]
+				\node[state, blur shadow, fill={rgb:black,0.4;white,10}] (0) {$0$};
+				\node[state, blur shadow, fill={rgb:black,0.4;white,10}, below right = of 0] (1) {$1$};
+				\node[state, blur shadow, fill={rgb:black,0.4;white,10}, below left  = of 0] (2) {$2$};
+				
+				\path[->] (0) edge   (1)
+				(2) edge  (0)
+				(2) edge (1);
+			\end{tikzpicture}
+			\caption{The graph $\Gamma_1(\mathcal A)$.}
+		\end{subfigure}
+		\caption[The graphs $I(\TS{\mathcal A})$ and $\Gamma_1(\mathcal A)$
+		for a given SI-automaton $\mathcal A$]{The graphs $I(\TS{\mathcal A})$ and $\Gamma_1(\mathcal A)$
+			for a given SI-automaton $\mathcal A$.
+			The additional edge in $\Gamma_1(\mathcal A)$
+			is induced by the word $ab$ of defect one.
+		}
+		\label{sync_max:fig:IAvsGamma}
+	\end{figure}
+\end{example}
+
+\begin{example}
+	\label{ex:I_vs_Gamma1}
+	Let $\semiautomat{A}{[4]}{\{a,b\}}{\delta}$ be the automaton from \cref{fig:thm_not_usable},
+	formally given by
+	$\delta(i, b) = (i+1) \bmod 4$
+	and %\todo{tupel notation für transformationen einführen?}
+	\[
+	\delta(0, a) = 1, \quad \delta(1, a) = 2, \quad \delta(2, a) = 1, \quad \delta(3, a) = 3.
+	\] 
+	The graph $I(\TS{\mathcal A})$ has only the edges $\{ (0,2), (2,0), (1,3), (3,1)\}$
+	induced by four simple idempotent words, see \cref{tab:rank_3_words}.\footnote{Taken from~\cite{DBLP:conf/lata/Hoffmann21a} but with some mistakes fixed.}
+	In $\Gamma_1(\mathcal A)$
+	all pairs of distinct states are connected by an edge,
+	the additional edges $(0,1)$, $(3,0)$, $(2,3)$, and $(1,2)$
+	are induced by the words $a$, $bab^3$, $ab^2$, and $b^2ab$, respectively. 
+	%By \cref{sync_max:prop:transitiveIS}
+	%the edges $(1,0)$, $(0,3)$, $(3,2)$, and $(2,1)$ are also in $\Gamma_1(\mathcal A)$.
+	The edges $(1,0)$, $(0,3)$, $(3,2)$, and $(2,1)$  in $\Gamma_1(\mathcal A)$
+	are induced by the words $ab^2ab$, $ab^2a$, $bab^2ab^3$,
+	and $ab^2a^2b^2$, respectively.
+	Later, in \cref{ex:thm_not_usable}, we will also show that $\mathcal A$
+	is completely reachable and completely distinguishable.
+		
+	\todo[inline]{$i-1$ in IandC paper vergessen, typo.}
+	\begin{table}[ht]
+		\centering
+		\caption[All Defect one words of example automaton]{Defect one words of the automaton from \cref{ex:I_vs_Gamma1} (see \cref{fig:thm_not_usable}).
+			To the right of each word $w$  the induced
+			transformation on the states is written, where $j \in [4]$ appears at position $i$
+			iff $\applytrans{\delta}{i-1}{w} = j$. For words $u,v$
+			in the same row it is $\delta(i, u) = \delta(j, u)$ iff $\delta(i, v) = \delta(j, v)$ for $i,j\in [4]$
+		%	 \todo{hier $i \in [4]$, in paper $j$ vergessen.}
+		%	and $u,v$ appear in the same column iff $\applytrans{\delta}{Q}{u} = \applytrans{\delta}{Q}{v}$. Simple idempotent words appear gray.
+		} 
+		{%\small
+			\[
+			\begin{array}{|ll|ll|ll|ll|} 
+				\hline
+				\mbox{Word}        & \mbox{Mapping} & \mbox{Word} & \mbox{Mapping} & \mbox{Word} & \mbox{Mapping} & \mbox{Word}   & \mbox{Mapping} \\ \hline
+				\cellcolor{gray!20} \textcolor{black}{b^2 a^2 b^2} & \cellcolor{gray!20} \textcolor{black}{[0, 1, 0, 3]}   & a & [1,2,1,3]  & ab^3        & [0,1,0,2]  & ab^2ab    & [0,2,0,3]  \\  
+				a^2 b^2     & [0, 3, 0, 1]   & b^2a     & [1,3,1,2]      & b^2ab^3     & [0,2,0,1]  & ab^2a^2b  & [0,3,0,2]  \\
+				ab^2a^2b^2  & [1, 0, 1, 3]   & \cellcolor{gray!20} \textcolor{black}{a^2}      & \cellcolor{gray!20} \textcolor{black}{[2,1,2,3]}      & a^2b^3      & [1,0,1,2]  & b^2ab     & [2,0,2,3]  \\
+				ab^2ab^2    & [1, 3, 1, 0]   & b^2a^2   & [2,3,2,1]      & b^2a^2b^3   & [1,2,1,0]  & ab        & [2,3,2,0]  \\
+				ab^2        & [3, 0, 3, 1]   & ab^2a    & [3,1,3,2]      & ab^2ab^2    & [2,0,2,1]  & b^2a^2b   & [3,0,3,2]  \\ 
+				b^2ab^2     & [3, 1, 3, 0]   & ab^2a^2  & [3,2,3,1]      & ab^2a^2b^3  & [2,1,2,0]  & a^2b      & [3,2,3,0]  \\ \hline
+				bab^2a^2b^2 & [0,1,3,1]      & ba^2     & [1,2,3,2]      & \cellcolor{gray!20} \textcolor{black}{ba^2b^3}     & \cellcolor{gray!20} \textcolor{black}{[0,1,2,1]}  & b^3ab     & [0,2,3,2]  \\
+				bab^2       & [0,3,1,3]      & bab^2a   & [1,3,2,3]      & bab^2ab^3   & [0,2,1,2]  & \cellcolor{gray!20} \textcolor{black}{b^3a^2b}   & \cellcolor{gray!20} \textcolor{black}{[0,3,2,3]}  \\
+				b^3a^2b^2   & [1,0,3,0]      & ba       & [2,1,3,1]      & bab^3       & [1,0,2,0]  & bab^2ab   & [2,0,3,0]  \\
+				b^3ab^2     & [1,3,0,3]      & bab^2a^2 & [2,3,1,3]      & bab^2a^2b^3 & [1,2,0,2]  & ba^2b     & [2,3,0,3]  \\
+				ba^2b^2     & [3,0,1,0]      & b^3a     & [3,1,2,1]      & b^3ab^3     & [2,0,1,0]  & bab^2a^2b & [3,0,2,0]  \\
+				bab^2ab^2   & [3,1,0,1]      & b^3a^2   & [3,2,1,2]      & b^3a^2b^3   & [2,1,0,1]  & bab       & [3,2,0,2] \\ \hline
+			\end{array}
+			\]
+		}
+		\label{tab:rank_3_words}
+	\end{table}
+\end{example}
+
+
+
+\begin{comment}
+	\todo{concat} 
+	\todo{notation a->b oder so für simple idempotents mappings?}
+	\begin{lemma}
+		\label{sync_max:lem:concat_SI_defect_one}
+		Let $f, h \colon [n]\to [n]$ be two simple idempotents.
+		if $\concat{f}{h}$ has defect one, then $\concat{f}{h} = h$ or $\concat{f}{h} = f$.
+	\end{lemma}
+	\begin{proof}
+		Let $a,b \in [n]$ be distinct with $\applyfunc{a}{f} = b$
+		and $c,d \in [n]$ be distinct with $\applyfunc{c}{h} = d$.
+		We cannot have $\{c,d\} \subseteq \applyfunc{[n]}{f}$, as then
+		$\concat{f}{h}$ would have a defect strictly larger than one.
+		So, $c = a$ or $c = b$.
+		In the first case $\concat{f}{h} = f$ as $h$ acts as the identity on the image
+		of $f$.
+		In the seconc case $\concat{f}{h} = h$.\todo{genauer}
+	\end{proof} 
+	
+	\begin{lemma}
+		Let $f_1, \cdots f_k \colon [n] \to [n]$ be simple idempotents.
+		If $f = f_k \cdots f_1$ has defect one, then
+		$f = f_i$ for some $i \in \{1,\ldots,k\}$.
+	\end{lemma}
+	\begin{proof}
+		Lemma~\ref{sync_max:lem:concat_SI_defect_one} shows this for $k = 2$.
+		Now, suppose $k > 2$. The map $f_{k} f_{k-1}$
+		must have defect one. So with Lemma~\ref{sync_max:lem:concat_SI_defect_one} 
+		it equals $f_k$ or $f_{k-1}$.
+		In the latter case, as $f_{k-1} \cdots f_1$ must have defect one,
+		inductively the claim follows.
+		
+		
+	\end{proof}
+	
+	\todo{concat!}
+	\begin{lemma} \todo{auch mit g auf anderer seite, oder zwei permutationen?}
+		Let $f_1, \ldots, f_k \colon [n] \to [n]$ be simple idempotents
+		and $g \colon [n] \to [n]$ be a permutation.
+		If $f = g f_k \cdots f_1$ is a simple idempotent,
+		then $f = f_i$ for some $i \in \{1,\ldots,k\}$.
+	\end{lemma} % und dann noch, dass jedes im erzeugnis so geschrieben werden kann, und zu konjugierten es wort gibt
+	\begin{proof}
+		The mapping $f_{k}f_{k-1}$ must have defect
+		
+		Using Lemma~\ref{sync_max:lem:concat_SI_defect_one}.
+		
+		
+		
+		must have defect one.
+		
+	\end{proof}
+	
+	
+	\begin{proposition}
+		Let $\mathcal A$ be an SI-automaton. Then $I(\mathcal A) = I(\mathcal T_{\mathcal A})$.
+	\end{proposition}  
+	\begin{proof}
+		The vertex sets equal the state set by definition.
+		
+		
+		Next, we show that the edge sets are equal. Let $(a,b)$ be an edge in $I(\mathcal A)$.
+		% mit konjugierten
+		
+		
+		Let $(a,b)$ be an edge in $I(\mathcal T_{\mathcal A})$.
+		Then there exists a simple idempotent $f_u \in \mathcal A$ with $u \in \Sigma^*$.	
+		As idempotent mappings have the same effect when applied once as when applied multiple times,	 
+		we can assume that $f_u$ is represented by a word $u \in \Sigma^* \setminus (\Sigma^* \Sigma_I \Sigma_I \Sigma^*)$.
+		Write $u = v_0 u_1 v_1 \cdots v_{n-1} u_n v_n$
+		with $v_i \in \Sigma_G^*$ for $i \in \{0,1,\ldots,n\}$
+		and $u_i \in \Sigma_I$ for $i \in \{1,\ldots,n\}$.
+		
+		
+		
+	\end{proof}
+\end{comment} 
+
+
+
+
+

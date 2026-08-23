@@ -1,0 +1,286 @@
+%!TEX root = ./../../springer-mono-format/book.tex
+%!TEX root = ./../../thesis-trier.tex
+
+Here, we introduce a special kind of quotient automata
+whose construction resembles a similar one from the theory of semigroups
+introduced by Rees~\cite{Rees40}.
+
+\IN{Rees congruence}
+\IN{Rees quotient automaton|quotient automaton}
+Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ and $S \subseteq Q$ be an upper set. 
+The \emph{Rees congruence} is the  $\TS{\mathcal A}$-congruence on $Q$
+given, for $p, q \in Q$, by \label{def:Rees_congruence}
+\[ 
+p \sim_S q \Leftrightarrow p,q \in S \lor (p = q).
+\]
+We call $\mathcal A / {\sim_S}$
+the \emph{Rees quotient (semi-)automaton}
+w.r.t.~the upper set $S \subseteq Q$.  For $S \ne \emptyset$, intuitively, 
+$\mathcal A / {\sim_S}$
+results from $\mathcal A$ by collapsing the states in $S$
+to a single trap state in~$\mathcal A / {\sim_S}$.
+
+\begin{remark}\label{prelim:rem:Rees}
+	For $S \ne \emptyset$, unraveling the definition, $\mathcal A / {\sim_S}$ 
+	has the state set $\{ \{p\} \mid p \in Q \setminus S \} \cup \{ S \}$,
+	the transition function fulfills $\applytrans{\delta_{\sim_S}}{S}{x} = S$ and, 
+	for all $p \notin S$ and all $x \in \Sigma$, 
+	\begin{equation}\label{prelim:eqn:reestrans}
+		\applytrans{\delta_{\sim_S}}{\{p\}}{x} = \begin{cases}
+			\{ \applytrans{\delta}{p}{x} \} & \text{if } \applytrans{\delta}{p}{x} \notin S, \\ 
+			S                               & \text{otherwise}.
+		\end{cases}
+	\end{equation}	
+    So, $\mathcal A / {\sim_S}$ has $|Q| - |S| + 1$ states.
+    By \cref{prelim:general:order:subset-in-equiv}, 
+    as a strongly connected component
+    is either contained in~$S$ or disjoint from~$S$, for $p,q \in Q$ and $x \in \Sigma$ with $p \eqreach q$
+    we have
+    \begin{equation}\label{prelim:eqn:reestransS}
+    p = \delta(q, x) \Leftrightarrow 
+    \begin{cases}
+    p = \delta_{|S}(q, x) & \text{if } p \in S, \\
+    \pi_{\sim_S}(p) = \delta_{\sim_S}(\pi_{\sim_S}(q), x) & \text{if } p \notin S.
+    \end{cases}
+    \end{equation}  	
+	For $T \subseteq Q$,
+    we have 
+    \begin{equation}\label{prelim:eqn:Reesproj}
+    \pi_{\sim_S}(T) = 
+    \begin{cases}
+    \{ S \} \cup \{ \{q\} \mid q\in T \setminus S \} & \text{if } S \cap T \ne \emptyset, \\
+    \{ \{q\} \mid q \in T \}                         & \text{if } S \cap T = \emptyset.    	
+    \end{cases}
+\end{equation}
+\end{remark}
+
+As stated next, the projection maps induce bijections between 
+certain strongly connected components and upper sets
+in $\mathcal A$ and $\mathcal A / {\sim_S}$
+
+\begin{proposition}\label{prelim:automata:Rees:prop:correspondence}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ and let $S\subseteq Q$ be an upper set.
+	
+	\begin{enumerate}
+		\item Let $P$ be a strongly connected component of $\mathcal A/{\sim_S}$,
+		distinct from $\{S\}$.
+		Then $\pi_{\sim_S}^{-1}(P)$ is a strongly connected component of
+		$\mathcal A$ contained in $Q\setminus S$, and
+		\[
+		\pi_{\sim_S}\bigl(\pi_{\sim_S}^{-1}(P)\bigr)=P.
+		\]
+		
+		Conversely, let $R\subseteq Q\setminus S$ be a strongly connected component
+		of $\mathcal A$.
+		Then $\pi_{\sim_S}(R)$ is a strongly connected component of
+		$\mathcal A/{\sim_S}$ distinct from $\{S\}$, and
+		\[
+		\pi_{\sim_S}^{-1}\bigl(\pi_{\sim_S}(R)\bigr)=R.
+		\]
+		
+		\item Let $P$ be an upper set of $\mathcal A/{\sim_S}$ containing $S$.
+		Then $\pi_{\sim_S}^{-1}(P)$ is an upper set of $\mathcal A$
+		containing $S$, and
+		\[
+		\pi_{\sim_S}\bigl(\pi_{\sim_S}^{-1}(P)\bigr)=P.
+		\]
+		
+		Conversely, let $R$ be an upper set of $\mathcal A$ containing $S$.
+		Then $\pi_{\sim_S}(R)$ is an upper set of
+		$\mathcal A/{\sim_S}$ containing $S$, and
+		\[
+		\pi_{\sim_S}^{-1}\bigl(\pi_{\sim_S}(R)\bigr)=R.
+		\]
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+	This follows from \cref{prelim:rem:Rees},
+	in particular \cref{prelim:eqn:reestrans}, 
+	which yield that for $p,q \in Q \setminus S$ and $u \in \Sigma^*$
+	we have $\delta(p, u) = q$
+	if and only if $\delta_{\sim_S}(\pi_{\sim_S}(p), u) = \pi_{\sim_S}(q)$.
+\end{proof}
+
+\begin{corollary}
+	The number of strongly connected components in $\mathcal A /{\sim_S}$
+	is precisely the number of strongly connected components not in $S$
+	plus one accounting for $\{S\}$.
+\end{corollary}
+
+\begin{corollary}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ and $S \subseteq Q$ be a proper upper set.
+	Then $Q \setminus S$ is a strongly connected component in $\mathcal A$
+	if and only if
+	$( Q / {\sim_S} ) \setminus \{S\}$ is a strongly connected component in~$\mathcal A / {\sim_S}$.	
+\end{corollary}
+
+\begin{corollary}  \label{prelim:fact:factor-strongly-trap}
+	For $S \ne \emptyset$ and $S\ne Q$,
+	$\mathcal A / {\sim_S}$ is strongly trap-connected 
+	if and only if $Q\setminus S$ is strongly connected
+	and $\delta(Q \setminus S, x) \cap S \ne \emptyset$ for some $x \in \Sigma$.
+\end{corollary}
+\begin{proof}
+	By \cref{prelim:automata:Rees:prop:correspondence},
+	$Q \setminus S$ is strongly connected
+	if and only if $\pi_{\sim_S}(Q \setminus S)$
+	and $\pi_{\sim_S}(S)$ are the only strongly connected components in $\mathcal A / {\sim_S}$.
+	Since~$\pi_{\sim_S}(Q \setminus S)$
+	is not a sink component,
+	the claim follows from \cref{prelim:automata:prop:char-strongly-trap:1b} of \cref{prelim:automata:prop:char-strongly-trap}.		
+\end{proof}
+
+Next, we state isomorphisms between Rees quotient automata.
+
+\begin{proposition} \label{prelim:autmoata:Rees:prop:iso-eqns}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ and $S, T \subseteq Q$ be upper sets.	
+	Then we have:
+	\begin{align}
+		\mathcal A & \cong \mathcal A / {\sim_S} & \text{ for } |S| \le 1  
+		\label{prelim:Rees:S-at-most-one} \\
+		 ( \mathcal A_{|S} ) / {\sim_{S\cap T}}
+		& \cong  ( \mathcal A / {\sim_{T}} )_{|\pi_{\sim_{T}}(S)} 
+		\label{prelim:eqn:Rees:ScapT} \\
+		(\mathcal A_{|S\cup T}) / {\sim_T} & \cong  ( \mathcal A / {\sim_{T}} )_{|\pi_{\sim_{T}}(S)}  & \text{ for } S \cap T \ne \emptyset \label{prelim:eqn:Rees:ScapTScupT} \\
+%		( \mathcal A_{|S} ) / {\sim_T} & \cong ( \mathcal A / {\sim_T} )_{|\pi_{\sim_T}(S)} & \text{ for } T \subseteq S
+%		\label{prelim:automata:Rees:eqn:ScupT-T} \\
+%		(\mathcal A / {\sim_T})_{|\pi_{\sim_T}(S)} 
+%		& \cong 
+%		\mathcal A_{|S} & \text{ for } |S \cap T| \le 1 \\
+		( \mathcal A / {\sim_S} ) / {\sim_{\pi_{\sim_S}(T)}} & \cong \mathcal A / {\sim_{S \cup T}} 
+		\label{prelim:aut:Rees:eqn:quot-ScupT} \\
+%		( \mathcal A / {\sim_S} ) / {\sim_{\pi_{\sim_S}(T)}} & \cong \mathcal A / {\sim_T} & \text{ for } S \subseteq T \label{prelim:Rees:doublequotient} \\	
+		( \mathcal A / {\sim_S} ) / {\sim_{\pi_{\sim_S}(T)}} & \cong ( \mathcal A / {\sim_T} ) / {\sim_{\pi_{\sim_T}(S)}} \label{prelim:aut:Rees:eqn:quotients-commute}	
+	\end{align} 
+\end{proposition}
+\begin{proof}
+\noindent\underline{\cref{prelim:Rees:S-at-most-one}}: For $|S| \le 1$
+the Rees congruence $\sim_S$ equals the equality relation
+and thus $\mathcal A \cong \mathcal A / {\sim_S}$.
+
+\noindent\underline{\cref{prelim:eqn:Rees:ScapT}}: The map $( \pi_{\sim_T} )_{|S} \colon S \to Q / {\sim_T}$
+is a morphism from $\mathcal A_{|S}$ to $\mathcal A / {\sim_T}$
+with kernel $\sim_{S\cap T}$.
+Thus the stated isomorphism follows from \cref{prelim:thm:homtheorem}.\footnote{Alternatively, 
+	by \cref{prelim:thm:homsfactorthrough}, the map
+	$
+	\pi_{\sim_{S\cap T}}(q)\mapsto \pi_{\sim_T}(q)
+	$
+	for $q \in S$ is a well-defined surjective morphism from
+	$(\mathcal A_{|S})/{\sim_{S\cap T}}$
+	onto
+	$(\mathcal A/{\sim_T})_{|\pi_{\sim_T}(S)}$.
+	Since
+	\[
+	\pi_{\sim_{S\cap T}}(p)=\pi_{\sim_{S\cap T}}(q)
+	\iff
+	\pi_{\sim_T}(p)=\pi_{\sim_T}(q)
+	\]
+	for all $p,q\in S$, this morphism is an isomorphism.
+	Thus we have $( \mathcal A_{|S} ) / {\sim_{S\cap T}} \cong  ( \mathcal A / {\sim_{T}} )_{|\pi_{\sim_{T}}(S)}$.}
+
+\noindent\underline{\cref{prelim:eqn:Rees:ScapTScupT}}: Set $S' = S \cup T$.
+Then $S'$ is an upper set and, by \cref{prelim:eqn:Rees:ScapT},
+we find
+\[
+(\mathcal A_{|S'}) / {\sim_{S' \cap T}}  \cong  ( \mathcal A / {\sim_{T}} )_{|\pi_{\sim_{T}}(S')}.
+\]
+Then the claim follows
+since $S' \cap T = T$
+and for $S \cap T \ne \emptyset$ we have 
+$\pi_{\sim_T}(S) = \pi_{\sim_T}(S')$.
+
+\noindent\underline{\cref{prelim:aut:Rees:eqn:quot-ScupT}}: The map 
+$\concat{\pi_{\sim_S}}{\pi_{\sim_R}} \colon Q \to ( Q / {\sim_S} ) / {\sim_R}$ with $R = \pi_{\sim_S}(T)$
+is a morphism with kernel $\sim_{S\cup T}$.
+Thus the stated isomorphism follows from \cref{prelim:thm:homtheorem}.\footnote{Alternatively,
+since $\sim_{S}$ refines $\sim_{S\cup T}$,
+the map $\pi_{\sim_S}(p) \mapsto \pi_{\sim_{S\cup T}}(p)$ for $q \in Q$
+is a well-defined surjective morphism
+by \cref{prelim:thm:homsfactorthrough}.
+Since it has kernel $\pi_{\sim_S}(T)$
+the stated isomorphism follows from \cref{prelim:thm:homtheorem}.}
+
+\noindent\underline{\cref{prelim:aut:Rees:eqn:quotients-commute}}: 
+By \cref{prelim:aut:Rees:eqn:quot-ScupT} both automata involving two Rees quotients
+are isomorphic to $\mathcal A / {\sim_{S\cup T}}$. Thus they are isomorphic
+to each other.
+\end{proof}
+
+Note that \cref{prelim:eqn:Rees:ScapT}
+also implies 
+$( \mathcal A_{|S} ) / {\sim_{S\cap T}} \cong ( \mathcal A / {\sim_{S\cap T}} )_{|\pi_{\sim_{S\cap T}}(S)}$
+by applying it to the upper sets $S$ and $S \cap T$ instead of~$S$ and~$T$.
+
+
+For a morphism and an upper set, we obtain
+a morphism between corresponding Rees quotient automata.
+
+\begin{proposition} \label{prelim:prop:Rees-homsfactorthrough}
+	Let $\varphi \colon Q \to S$ be a morphism
+	from $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	to $\semiautomat{B}{S}{\Sigma}{\mu}$ and  $T \subseteq Q$ be an upper set.
+	Then $\varphi(T)$ is an upper set %in~$\mathcal B$
+	and 
+	\[ [q]_{\sim_T} \mapsto [\varphi(q)]_{\sim_{\varphi(T)}}
+	\]
+	for $q \in Q$ is a well-defined surjective morphism from 
+	$\mathcal A / {\sim_T}$ onto $( \mathcal B / {\sim_{\varphi(T)}} )_{|\pi_{\sim_{\varphi(T)}}(\varphi(Q))}$.
+\end{proposition}
+\begin{proof}
+	For $p,q \in Q$, we have 
+	\begin{align*}
+		p \sim_T q & \Rightarrow p = q \lor \{p,q\} \subseteq T \\ 
+		           & \Rightarrow \varphi(p) = \varphi(q) \lor \{\varphi(p), \varphi(q)\} \subseteq \varphi(T) \\ 
+                   & \Rightarrow \varphi(p) \sim_{\varphi(T)} \varphi(q).
+	\end{align*}
+	Hence, \cref{prelim:thm:homsfactorthrough}
+	gives the claim. In fact, we have $\varphi([q]_{\sim_T}) = [\varphi(q)]_{\sim_{\varphi(T)}}$
+	and so $\varphi$ induces this morphism on the equivalence classes of $\sim_T$.
+\end{proof}
+
+Lastly, using the Rees quotient automaton construction
+we can derive a necessary condition, originally due to Thierrin~\cite[Prop.~8]{DBLP:journals/kybernetika/Thierrin70},
+for primitivity of automata (see also \cite[Cor.~3]{DBLP:journals/actaC/Babcsanyi07}
+or, in a more algebraic context, \cite[Prop.~5.1]{Steinberg2010}).
+
+\begin{proposition}[{Thierrin~\cite[Prop.~8]{DBLP:journals/kybernetika/Thierrin70}}]
+	\label{prelim:cor:simpleaut}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be a primivite automaton with $|Q| \ge 3$. 
+    Then $\mathcal A$ is strongly connected
+    or strongly trap-connected with trap state $t \in Q$
+    such that 	$\delta(p, a) = t$ and $\delta(q, a) \ne t$
+    for some $p,q \in Q$ and $a \in \Sigma$.
+\end{proposition}
+\begin{proof}	
+	There exists no proper upper set $S \subseteq Q$ of size at least two,
+	as otherwise~$\sim_S$ would be a non-trivial $\TS{\mathcal A}$-congruence.
+	Hence, by \cref{prelim:fact:no-proper-upper-sets-size-two},
+	$\mathcal A$ is either strongly connected or strongly trap-connected
+	with a trap state $t \in Q$.
+	In the latter case, since $Q \setminus \{t\}$ and $\{t\}$ form a partition
+	that does not induce a $\TS{\mathcal A}$-congruence,
+	there exist $p,q \in Q$ and $a \in \Sigma$
+	such that $\delta(p, a) = t$ and $\delta(q, a) \ne t$.
+\end{proof}
+
+The following corollary has been noted in~\cite[Sect.~5.1]{RystsovSzykula2023}
+and~\cite[Prop.~3.1]{Volkov24}.
+
+\begin{corollary}
+	A primitive automaton $\mathcal A$ with at least three states is either strongly connected or synchronizing.	
+\end{corollary}
+\begin{proof}
+	This follows from \cref{prelim:cor:simpleaut} since a strongly trap-connected automaton
+	is synchronizing.
+\end{proof}
+
+\begin{remark}
+	\Cref{prelim:cor:simpleaut} generalizes 
+	\cref{sync_max:prop:prim_implies_transitive} (via the correspondence from \cref{prelim:remarks_trans_semigrp_semiautomata}),
+	since a trap state in a permutation automaton
+	is not reachable from any other state.
+	Thus, by \cref{prelim:cor:simpleaut}, a permutation automata
+	whose transformation monoid is a primitive group $G$
+	is strongly connected and so~$G$ is transitive.	
+\end{remark}

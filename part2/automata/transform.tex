@@ -1,0 +1,150 @@
+%!TEX root = ./../../thesis-trier.tex
+
+\label{def:rankword}
+\label{def:defectword}
+\label{def:exclword}
+\label{def:duplword}
+\label{def:transitionmtx} 
+\label{def:fwordu}
+\IN{Boolean transition matrix!automaton}
+\IN{duplicate set!of a word}
+\IN{permutational letter/word}
+\IN{simple idempotent letter/word} 
+\IN{idempotent letter/word}
+\IN{rank!of a word}
+\IN{defect!of a word}
+\IN{excluded set!of a word}
+\IN{function induced by word}
+
+Let $\semiautomat{A}{Q}{\Sigma}{\delta}$. Each word $u \in \Sigma^*$  \emph{induces a transformation} 
+$\fword{\delta}{u} \colon Q \to Q$ by $\applyfunc{q}{\fword{\delta}{u}} = \applytrans{\delta}{q}{u}$ for all $q \in Q$. 
+For $u, v \in \Sigma^*$ we have $\fword{\delta}{uv} = \concat{\fword{\delta}{u}}{\fword{\delta}{v}}$
+and $\fword{\delta}{{uv}}^{-1} = \concat{\fword{\delta}{v}^{-1}}{\fword{\delta}{u}^{-1}}$.
+Compare the latter equation with Equation~\eqref{prelim:eqn:delta_inverse}
+wheres $u$ and $v$ are ``swapped'' in the expression on the right hand side.
+This follows as in the $\delta$-notation the left-most word 
+is applied first whereas in the composition of two functions, by our definition,
+the right-most function is applied first.
+
+We call a letter $x \in \Sigma$ (resp.~a word $u \in \Sigma^*$)
+a \emph{permutational / idempotent / simple idempotent} letter (resp.~word) 
+if $\fword{\delta}{x}$ (resp.~$\fword{\delta}{u}$) is a permutation/idempotent/simple idempotent.
+The \emph{rank} (resp.~\emph{defect}, \emph{excluded set}, \emph{duplicate set}) of a word $u \in \Sigma^*$, denoted by $\rank{u}$ (resp.~$\defect{u}$, $\excl{u}$, $\dupl{u}$) 
+is the rank (resp.~defect, excluded set, duplicate set) of~$\fword{\delta}{u}$. 
+Furthermore, when using terminology from functions, transformations, and permutations, as cyclically permuting the states, the image of a set, transition matrix,
+being a cycle, having a fixed point etc., in the context of a word (or letter) $u \in \Sigma^*$,
+we refer to the induced transformation~$\fword{\delta}{u}$.
+We also say that~$\fword{\delta}{u}$ is the \emph{action of $u$} on the states
+or that~$u$ \emph{acts as $\fword{\delta}{u}$}. The same terminology transfers when speaking about properties of $\fword{\delta}{u}$,
+for example, we say that~$u$ acts as a cycle if~$\fword{\delta}{u}$ is a cycle.
+
+For $u \in \Sigma^*$, we write $[u]_{\mathcal A}$ (or just $[u]$ when there is no ambiguity to which automaton we refer)
+for the transition matrix of $\fword{\delta}{u}$.
+\Cref{prelim:fig:transitionmtxCerny} depicts transition matrices for the \Cerny automata $\mathcal C_n$
+from \cref{intro:sec:cerny} w.r.t.~the natural order of its state set~$[n]$.
+When  the specific ordering of the states is not important, we
+assume some order to be taken without explicitly mentioning it.\footnote{The maps $u \mapsto \fword{\delta}{u}$
+	and $u \mapsto [u]$ are morphisms from $\Sigma^*$ into $\mathcal T_Q$ and the set of $|Q| \times |Q|$ matrices, respectively.
+	Thus, by \cref{prelim:prop:UMP}, they
+	are uniquely determined by their images on the letters~$\Sigma$.}
+
+\begin{figure}[th]
+	\centering
+	\[
+	[b]_{\mathcal C_n} =
+	\left( {\begin{array}{ccccc}
+			0 & 1 &  0 & \cdots & 0\\
+			0 & 0 &  1 & \cdots & 0\\
+			\vdots & \vdots & \vdots & \ddots & \vdots\\
+			0 & 0 & 0 & \cdots & 1 \\
+			1 & 0 & 0 & \cdots & 0
+	\end{array} } \right)
+	\qquad 
+	[a]_{\mathcal C_n} =
+	\left( {\begin{array}{cccccc}
+			0 & 1 &  0 & \cdots & 0 & 0 \\
+			0 & 1 &  0 & \cdots & 0 & 0 \\
+			\vdots & \vdots & \vdots & \ddots & \vdots\\
+			0 & 0 & 0 & \cdots & 1 & 0 \\
+			0 & 0 & 0 & \cdots & 0 & 1
+	\end{array} } \right)
+	\]
+	\caption[The transition matrices for the \Cerny automata $\mathcal C_n$]{
+		The transition matrices for the \Cerny automata $\mathcal C_n$
+		from \cref{intro:sec:cerny} (\cref{intro:fig:cerny})
+		where the states are ordered w.r.t.~the natural order on $[n]$.
+	}
+	\label{prelim:fig:transitionmtxCerny}
+\end{figure} 
+
+\label{def:transformation_semigroup}
+The \emph{transformation semigroup of $\mathcal A$} is 
+\[ \TS{\mathcal A} = \{ \fword{\delta}{u} \mid u \in \Sigma^+ \}
+\] 
+and the \emph{transformation monoid} is $\TM{\mathcal A} =  \{ \fword{\delta}{u} \mid u \in \Sigma^* \}$. 
+\label{def:transformation_monoid}
+\index{transformation semigroup!of automaton}
+\index{transformation monoid!of automaton}
+
+\begin{proposition}
+	\label{sync_max:prop:grp_of_units_inv}	
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	and $\fword{\delta}{u}$ be a permutation for $u \in \Sigma^*$.
+	Then $\fword{\delta}{u}^{-1} \in \TM{\mathcal A}$,
+	i.e., the inverse permutation
+	is induced by some word over $\Sigma^*$.
+\end{proposition}
+\begin{proof}
+	By finiteness, 
+    we have $\fword{\delta}{u^i} = \operatorname{id}_Q$ for some $i > 0$.
+	Then $\fword{\delta}{u}^{-1} = \fword{\delta}{u^{i-1}} \in \TM{\mathcal A}$.	
+\end{proof}
+
+Next, we determine the group of units in $\TM{\mathcal A}$.
+
+\begin{proposition}
+	\label{sync_max:prop:grp_of_units_TA}	
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ and 
+	$\Gamma = \{ x \in \Sigma \mid x \text{ is a permutational letter } \}$.
+	Then for the group of units $G$ of $\TM{\mathcal A}$ we have
+	\[
+	G = \{ \delta_u \mid \text{$\delta_u$ is a permutation and $u \in \Sigma^*$} \}
+	= \{ \fword{\delta}{u} \mid u \in \Gamma^* \},
+	\]
+	and if~$G$ is non-trivial, equivalently $\Gamma \ne \emptyset$,
+	we also have $G =  \{ \fword{\delta}{u} \mid u \in \Gamma^+ \}$.
+\end{proposition}
+\begin{proof}
+	We have	$G \subseteq \{ \delta_u \mid \text{$\delta_u$ is a permutation and $u \in \Sigma^*$} \}$ 
+	as every transformation in $G$, having an inverse, is a permutation.
+	Next, by~\crefitem{prelim:prop:rank-defect}{prelim:prop:item:rank-eqn} 
+	the composition of a non-permutation with a transformation
+	gives a non-permutation.  So, for $u \in \Sigma^*$,
+	$\fword{\delta}{u}$ is a permutation if and only if $u \in \Gamma^*$, i.e.,
+	\[ 
+	\{ \delta_u \mid \text{$\delta_u$ is a permutation and $u \in \Sigma^*$} \}
+	= \{ \fword{\delta}{u} \mid u \in \Gamma^* \}.
+	\]	
+	By \cref{sync_max:prop:grp_of_units_inv},
+	for $u \in \Gamma^*$
+	we have $\fword{\delta}{u}^{-1} = \fword{\delta}{v}$ for some $v \in \Sigma^*$, i.e.,
+	$\fword{\delta}{u}$ has an inverse in $\TM{\mathcal A}$
+	and so $\fword{\delta}{u} \in G$.
+	This gives $\{ \fword{\delta}{u} \mid u \in \Gamma^* \} \subseteq G$.
+	Combining everything,
+	we find $G = \{ \delta_u \mid \text{$\delta_u$ is a permutation and $u \in \Sigma^*$} \}
+	= \{ \fword{\delta}{u} \mid u \in \Gamma^* \}$.
+	
+	Lastly, if $\Gamma \ne \emptyset$,
+	then $\fword{\delta}{u}$ equals the identity transformation
+	for some $u \in \Gamma^+$.
+	This gives $\{ \fword{\delta}{u} \mid u \in \Gamma^* \}
+	= \{ \fword{\delta}{u} \mid u \in \Gamma^+ \}$.
+\end{proof}
+
+Thus the group of units of $\TM{\mathcal A}$ is precisely the set of permutations in~$\TM{\mathcal A}$
+and every permutation group in $\TS{\mathcal A}$ is contained in the group of units of $\TS{\mathcal A}$ (but not every
+subset $S \subseteq \TM{\mathcal A}$ that forms a group in itself; for example
+for every non-permutational word $u$ permuting its image $\delta(Q, u)$ 
+the set $\{ \fword{\delta}{u^i} \mid i \ge 1 \}$
+forms a group, but contains no permutation).

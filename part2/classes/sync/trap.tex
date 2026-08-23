@@ -1,0 +1,178 @@
+%!TEX root = ../../../springer-mono-format/book.tex
+%!TEX root = ../../../thesis-trier.tex
+
+Several classes of automata we investigate later have the property that a
+synchronizing state must be a trap state. Here, we collect statements about
+synchronizing automata with a trap state.
+First, \cref{prelim:thm:sync_trap_state} characterizes synchronizability for
+automata with a trap state. It also yields a sharp bound on the reset length of
+synchronizing automata with a trap state, first stated by Rystsov~\cite{Rys77}
+(see also~\cite[Thm.~6.1]{Rystsov97}) and
+Babcs{\'{a}}nyi~\cite[Cor.~3]{DBLP:conf/birthday/Babcsanyi09}; we state this
+bound, together with a family of automata attaining it, in
+\cref{prelim:rem:trap_reset_length}.
+Then, in \cref{prelim:cor:sync_trap_state}, we state some consequences. For
+example, we characterize the synchronizing automata with a trap state as those
+automata possessing a unique maximal state with respect to the reachability order.
+
+
+\begin{theorem}
+	\label{prelim:thm:sync_trap_state}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be an $n$-state automaton with a trap state $t \in Q$.
+	Then the following are equivalent.
+	
+	\begin{enumerate}
+		\item \label{prelim:subclasses:thm:trap:item:sync} $\mathcal A$ is synchronizing.
+		
+		\item \label{prelim:subclasses:thm:trap:item:syncunique} $\mathcal A$ is synchronizing with unique synchronizing state $t$.
+		
+		\item \label{prelim:subclasses:thm:trap:item:unique-max} $\forall q \in Q \  \exists u \in \Sigma^* \colon \applytrans{\delta}{q}{u} = t$, i.e., $q \lereach t$ for all $q \in Q$.
+		
+		\item \label{prelim:subclasses:thm:trap:item:bound} $\exists u \in \Sigma^* \colon |u| \le \frac{n(n-1)}{2} \land ( \forall q \in Q \colon \applytrans{\delta}{q}{u} = t )$. 
+	\end{enumerate}	
+\end{theorem}
+\begin{proof}
+	$\ref{prelim:subclasses:thm:trap:item:sync} \Rightarrow
+\ref{prelim:subclasses:thm:trap:item:syncunique}$:
+Let $\applytrans{\delta}{Q}{u} = \{q\}$ for some $u \in \Sigma^*$ and
+$q \in Q$. As $t$ is a trap state, $t \in \applytrans{\delta}{Q}{u}$, so
+$t = q$. Hence $\{t\}$ is the set of synchronizing states.
+	
+	$\ref{prelim:subclasses:thm:trap:item:syncunique} \Rightarrow \ref{prelim:subclasses:thm:trap:item:unique-max}$: By assumption there exists $u \in \Sigma^*$ 
+	such that $\applytrans{\delta}{q}{u} = t$ for all $q \in Q$, i.e., $q \lereach t$
+	for all $q \in Q$.	
+	
+	$\ref{prelim:subclasses:thm:trap:item:unique-max} \Rightarrow \ref{prelim:subclasses:thm:trap:item:bound}$: 	
+	For $n = 1$ we have $Q = \{t\}$ and $\varepsilon$ is a synchronizing word.
+	Thus, assume $n > 1$ in the following.
+	
+	We construct words $u_i$ and sets $Q = Q_0, Q_1, \ldots$
+	containing~$t$ with strictly decreasing cardinalities as follows. Set $Q_0 = Q$.
+	Given $Q_i$ with $t \in Q_i$, stop if $Q_i = \{t\}$.
+	Otherwise, since $t$ is reachable from each state by \cref{prelim:subclasses:thm:trap:item:unique-max},
+	we can pick a shortest word $u_{i+1}$ with $\delta(q_i, u_{i+1}) = t$
+	for some $q_i \in Q_i \setminus \{t\}$. Then set $Q_{i+1} = \delta(Q_i, u_{i+1})$.
+	
+	Since~$t$ is a trap state, we have $\delta(t, u_{i+1}) = t = \delta(q_i, u_{i+1})$.
+	So $t \in Q_{i+1}$ and $|Q_{i+1}| < |Q_i|$.
+	Thus there exists $m \le n - 1$ such that $Q_m = \{t\}$.
+	
+	Let $i \in \{0,1,\ldots,m-1\}$ and 
+	let $q_i = p_0, p_1, \ldots, p_\ell = t$ be the path induced by $u_{i+1}$,
+	where $\ell = |u_{i+1}|$. By the minimal choice of~$u_{i+1}$, no $p_r$ with
+	$r \ge 1$ lies in $Q_i \setminus \{t\}$ and no $p_r$ with $r < \ell$
+	equals~$t$, and the $p_r$ are pairwise distinct; otherwise a proper suffix,
+	a proper prefix, or the word obtained by deleting a factor of~$u_{i+1}$
+	would take a state of $Q_i \setminus \{t\}$ to~$t$. As
+	$p_1, \ldots, p_{\ell-1}$ are thus $\ell - 1$ distinct states outside~$Q_i$,
+	of which there are exactly $n - |Q_i|$, we get
+	$|u_{i+1}| \le n - |Q_i| + 1$.
+	
+	Set $u = u_1 \cdots u_m$. We have $\delta(Q, u) = \{t\}$.
+	As $n = |Q_0| > |Q_1| > \cdots > |Q_{m-1}| \ge 2$, the numbers
+	$n - |Q_{i-1}| + 1$ for $i \in \{1, \ldots, m\}$ are pairwise distinct and
+	lie in $\{1, \ldots, n-1\}$.
+	Thus, we have	
+	\[
+	|u| = |u_1| + \cdots + |u_m| \le \sum_{i=1}^m \bigl( n - |Q_{i-1}| + 1 \bigr)
+	\le \sum_{i=1}^{n-1} i = \frac{n(n-1)}{2}.
+	\]
+	
+		
+	$\ref{prelim:subclasses:thm:trap:item:bound} \Rightarrow \ref{prelim:subclasses:thm:trap:item:sync}$: This is obvious.
+\end{proof}
+
+\begin{remark} \label{prelim:rem:trap_reset_length}
+	By \cref{prelim:thm:sync_trap_state}, every synchronizing $n$-state automaton with a trap state has reset length
+	at most $\frac{n(n-1)}{2}$, and this bound is sharp: the automata
+	from \cref{prelim:fig:trap_state_tight} have reset length
+	exactly $\frac{n(n-1)}{2}$.
+\end{remark}
+
+\begin{figure}[htb]
+	\centering
+	\begin{tikzpicture}[node distance = 4em and 4em]
+		\node[state]                  (0)     {$1$};
+		\node[state, right = of 0]    (1)     {$2$};
+		\node[state, right = of 1]    (2)     {$3$};
+		\node[right = of 2]           (dots)  {$\cdots$};
+		\node[state, right = of dots] (n2)    {$n$};
+		
+		\path[->] (1) edge [above] node {$a_1$} (0)
+		(1)    edge [bend left, above] node {$a_2$}     (2)
+		(2)    edge [bend left, below] node {$a_2$}     (1)
+		(2)    edge [bend left, above] node {$a_3$}     (dots)
+		(dots) edge [bend left, below] node {$a_3$}     (2)
+		(dots) edge [bend left, above] node {$a_{n-1}$} (n2)
+		(n2)   edge [bend left, below] node {$a_{n-1}$} (dots);
+	\end{tikzpicture}
+	\caption[Automata with a trap state attaining the maximal reset length]{Trap-state automata
+		from~\cite{Rystsov97} with reset
+		length $\frac{n(n-1)}{2}$. The letter $a_1$ maps $2$ to the trap state~$1$,
+		and $a_i$ interchanges $i$ and $i+1$ for $i \ge 2$; self-loops are omitted.
+		A shortest synchronizing word is	
+		$u = w_1 w_2 \cdots w_{n-1}$
+		where $w_i = a_i a_{i-1} \cdots a_1$ for $i \in \{1, \ldots, n-1\}$.		
+		Note that $\Sigma = \{a_1, a_2, \ldots, a_{n-1}\}$ grows with~$n$.}
+	\label{prelim:fig:trap_state_tight}
+\end{figure}
+
+\Cref{prelim:subclasses:thm:trap:item:syncunique} of
+\cref{prelim:thm:sync_trap_state} states that in a synchronizing automaton, a
+trap state is the unique synchronizing state.
+
+\begin{corollary}
+	\label{prelim:classes:sync:cor:sync-implies-at-most-one-trap}
+	In a synchronizing automaton, there exists at most one trap state.
+\end{corollary}
+\begin{proof}
+	Let $t, t'$ be trap states. By \cref{prelim:subclasses:thm:trap:item:syncunique}
+	of \cref{prelim:thm:sync_trap_state},
+	each of them is the unique synchronizing state, so $t = t'$.
+\end{proof}
+
+Thus, by \cref{prelim:thm:sync_trap_state}, an automaton with a trap state is
+synchronizing if and only if that trap state is reachable from every state. The
+trap state is then unique by
+\cref{prelim:classes:sync:cor:sync-implies-at-most-one-trap}. Note, however,
+that it is easy to find automata with a unique trap state that are not
+synchronizing.
+
+
+\begin{corollary} \label{prelim:cor:sync_trap_state}
+	\label{prelim:classes:sync:cor:sync-trap-state}
+Let $\semiautomat{A}{Q}{\Sigma}{\delta}$. Then the following are equivalent.
+\begin{enumerate}
+\item \label{prelim:cor:sync_trap_state:item:sync} $\mathcal A$ is synchronizing with a trap state.
+	
+\item \label{prelim:cor:sync_trap_state:item:trapreach} There exists a trap state $t \in Q$ such that $q \lereach t$ for all $q \in Q$.
+
+\item \label{prelim:cor:sync_trap_state:item:uniquemaxclass} $Q / \eqreach$ has a maximum, and this maximum is a singleton $\{t\}$ for some $t \in Q$.
+
+\item  \label{prelim:cor:sync_trap_state:item:uniquemax} $\mathcal A$ has a unique maximal state.
+
+\item \label{prelim:cor:sync_trap_state:item:uniquesync} $\mathcal A$ has a unique synchronizing state.
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+$\ref{prelim:cor:sync_trap_state:item:sync}\Rightarrow \ref{prelim:cor:sync_trap_state:item:trapreach}$: This follows from \cref{prelim:subclasses:thm:trap:item:unique-max} of \cref{prelim:thm:sync_trap_state}.
+
+$\ref{prelim:cor:sync_trap_state:item:trapreach}\Rightarrow \ref{prelim:cor:sync_trap_state:item:uniquemaxclass}$: Since $t$ is a maximum, $[t]_{\eqreach}$ is a maximum in $Q / {\eqreach}$.
+ Since~$t$ is a trap state, we have $[t]_{\eqreach} = \{t\}$.
+
+$\ref{prelim:cor:sync_trap_state:item:uniquemaxclass}\Rightarrow \ref{prelim:cor:sync_trap_state:item:uniquemax}$: Since~$\{t\}$
+is a maximum in $Q / {\eqreach}$, $t$ is maximal.
+Let $q \in Q$ be a maximal state. By assumption, $q \lereach t$.
+ By maximality, $t \lereach q$. Thus $q \eqreach t$, which gives $q = t$ by assumption.
+ 
+$\ref{prelim:cor:sync_trap_state:item:uniquemax}\Rightarrow \ref{prelim:cor:sync_trap_state:item:uniquesync}$: Let $t$ be the unique maximal state. By \cref{prelim:order:maximal-elements-upper-set},
+ the set of maximal states $\{t\}$ is an upper set. Thus, $t$ is a trap state.
+ Since every state is below some maximal state by finiteness, and there is only one maximal
+ state, we have $q \lereach t$ for each $q \in Q$.
+ Thus, by \cref{prelim:thm:sync_trap_state}, $t$ is a unique synchronizing state.
+ 
+$\ref{prelim:cor:sync_trap_state:item:uniquesync}\Rightarrow \ref{prelim:cor:sync_trap_state:item:sync}$: Let $t$ be the unique synchronizing state. Then $\delta(Q, u) = \{t\}$
+for some $u \in \Sigma^*$. Let $a \in \Sigma$. We have $|\delta(Q, ua)| = 1$.
+By assumption, $\delta(Q, ua) = \{t\}$.
+Thus $\delta(t, a) \in \delta(Q, ua) = \{t\}$, and so $t$ is a trap state. 
+\end{proof}

@@ -1,0 +1,48 @@
+%!TEX root = ./../../thesis-trier.tex
+
+Here, in \cref{sync_max:sec:compl_reach}, we introduce completely reachable automata.
+This section contains only results from the literature and no new results.
+\Cref{sync_max:sec:reach_k-sets} 
+investigates automata in which all $k$-sets
+are reachable for some $k \ge 1$.
+We give a sufficient condition for synchronizability
+in terms of reachability of $k$-sets
+and state structural limitations
+in $n$-state automata where all $(n-1)$-sets are reachable
+or where all $(n - 2)$-set are reachable. 
+%For example, 
+%\cref{sync_max:prop:single-non-perm-und-n2sets} 
+%states that the transformation monoid of an $n$-state automaton
+%having a single non-permutational
+%letter and in which every $(n-2)$-set is reachable contains
+%a transitive permutation group.
+Lastly, in \cref{sync_max:sec:upper-sets} we investigate
+how the reachability of all $k$-sets for some $k \ge 1$
+affects the possible upper sets, sink components,
+and the number of states.
+
+
+%how the reachability of certain subsets affects the possible upper sets
+%and strongly connected components in an automaton.
+%For example, as stated in the previous paragraph, an automaton with more than $k(k-1)$ states
+%and where every $k$-set is reachable is synchronizing and 
+%this implies these automata have a unique maximal strongly connected component.
+%In \COR~\ref{sync_max:cor:upper_sets_allk-sets} we make this more precise by showing that 
+%automata where every $k$-set is reachable with more than $2(k-1)$ states 
+%have a unique maximal strongly connected component and this lower bound is best possible.
+
+
+\subsection{Completely Reachable Automata}
+\label{sync_max:sec:compl_reach}
+
+\input{../part3/subset/complreach}
+
+\subsection{Reachability of \texorpdfstring{$k$}{k}-Sets}
+\label{sync_max:sec:reach_k-sets}
+
+\input{../part3/subset/reachksets}
+
+\subsection{Upper Sets and the Reachability Order} % and Maximal States}
+\label{sync_max:sec:upper-sets}
+
+\input{../part3/subset/uppersets}

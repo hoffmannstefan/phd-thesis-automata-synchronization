@@ -1,0 +1,67 @@
+%!TEX root = ./../../springer-mono-format/book.tex
+%!TEX root = ./../../thesis-trier.tex
+
+Here, we list the automata-theoretical decision problems of interest to us.
+
+Recall that in \cref{prelim:sec:encodings} we discussed how we encode automata as inputs,
+and that here, automata have a totally defined transition function.
+
+\IN{\DFAS}
+\decisionproblem{\DFAS (\v{C}ern\'y~\cite{Cer64})}
+{Automaton $\semiautomat{A}{Q}{\Sigma}{\delta}$.}
+{Is $\Syn(\mathcal A) \ne \emptyset$?}
+
+\IN{\DFAST}
+\decisionproblem{\DFAST}
+{Automaton $\semiautomat{A}{Q}{\Sigma}{\delta}$ with trap state.}
+{Is $\Syn(\mathcal A) \ne \emptyset$?}
+
+\IN{\DFASS}
+\decisionproblem{\DFASS}
+{Automaton $\semiautomat{A}{Q}{\Sigma}{\delta}$ and state $q \in Q$.}
+{Does there exist $u \in \Sigma^*$ such that $\applytrans{\delta}{Q}{u} = \{q\}$?}
+
+\IN{\DFASW}
+\decisionproblem{\DFASW}
+{Automaton $\semiautomat{A}{Q}{\Sigma}{\delta}$ and finite list of words $u_1, \ldots, u_k \in \Sigma^*$.}
+{$\exists i \in \{1,\ldots, k\} : |\applytrans{\delta}{Q}{u_i}| = 1$?}
+
+\IN{\DFASWS}
+\decisionproblem{\DFASWS (Rystsov~\cite{Rys80}, Eppstein~\cite{Eppstein90})}
+{Automaton $\semiautomat{A}{Q}{\Sigma}{\delta}$ and $l \ge 0$.}
+{Is $\Syn(\mathcal A) \cap \Sigma^{\le l} \ne \emptyset$?}
+
+\IN{\SFS}
+\decisionproblem{\SFS (Rystsov~\cite{Rys83})\footnote{Called \emph{(global) inclusion problem for weakly-initial automata with a single final state} in~\cite{Rys83}.}}
+{Automaton $\semiautomat{A}{Q}{\Sigma}{\delta}$ and $S \subseteq Q$.}
+{Does there exist $u \in \Sigma^*$ such that $|\applytrans{\delta}{S}{u}| = 1$?}
+
+\IN{\SIS}
+\decisionproblem{\SIS (Rystsov~\cite{Rys83})\footnote{Called \emph{(global) inclusion problem for non-initial automata} in~\cite{Rys83}.}}
+{Automaton $\semiautomat{A}{Q}{\Sigma}{\delta}$ and $S \subseteq Q$.}
+{Does there exist $u \in \Sigma^*$ such that $\applytrans{\delta}{Q}{u} \subseteq S$?}
+
+\IN{\ST}
+\decisionproblem{\ST (Rystsov~\cite{Rys83}, Luks and McKenzie~\cite{LuksM88}, Blondin et al.~\cite{BlondinKM16})\footnote{Called \emph{(global) inclusion problem for weakly initial automata} in~\cite{Rys83}.}}
+{Automaton $\semiautomat{A}{Q}{\Sigma}{\delta}$ and $S, T \subseteq Q$.}
+{Does there exist $u \in \Sigma^*$ such that $\applytrans{\delta}{S}{u} \subseteq T$?}
+
+\IN{\DST}
+\decisionproblem{\DST}
+{Automaton $\semiautomat{A}{Q}{\Sigma}{\delta}$ and $S, T \subseteq Q$ with $S \cap T = \emptyset$.}
+{Does there exist $u \in \Sigma^*$ such that $\applytrans{\delta}{S}{u} \subseteq T$?}
+
+\IN{\DFAINT}
+\decisionproblem{\DFAINT (Kozen~\cite{Kozen77})}
+{List of automata $\mathcal A_1, \ldots, \mathcal A_k$ as language acceptors.}
+{Do we have $\bigcap_{i=1}^k L(\mathcal A_i) \ne \emptyset$?}
+
+\IN{\REACH}
+\decisionproblem{\REACH (Rystsov~\cite{Rys83}, Bondar and Volkov~\cite{BondarV16})}
+{Automaton $\mathcal A = (Q, \Sigma, \delta)$ and $S \subseteq Q$.}
+{Does there exist $u \in \Sigma^*$ such that $\delta(Q, u) = S$?}
+
+\IN{\REACHF}
+\decisionproblem{\REACHF (Rystsov~\cite{Rys83})}
+{Automaton $\mathcal A = (Q, \Sigma, \delta)$ and $S,T \subseteq Q$.}
+{Does there exist $u \in \Sigma^*$ such that $\delta(S, u) = T$?}

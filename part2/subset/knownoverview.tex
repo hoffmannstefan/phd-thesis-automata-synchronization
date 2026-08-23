@@ -1,0 +1,259 @@
+%!TEX root = ./../../springer-mono-format/book.tex
+%!TEX root = ./../../thesis-trier.tex
+
+The following problems were proved to be \PSPACE-complete
+for  $\lelogm$-reductions in the literature:
+\begin{enumerate}
+	\item \DFAINT (Kozen~\cite{Kozen77}), 
+	
+	\item \ST (Rystsov~\cite{Rys83}),
+	
+	\item \label{prelim:thm:complexities:SFS}	\SFS (Rystsov~\cite{Rys83}),		
+	
+	\item \label{prelim:thm:complexities:SIS} \SIS (Rystsov~\cite{Rys83}, Berlinkov et al.~\cite{BerlinkovFS21}),\footnote{Berlinkov et al.~\cite{BerlinkovFS21} 
+		investigated the problem of totally extending a given subset and showed this problem to be \PSPACE-complete.
+		In fact, this problem is equivalent to \SIS, see the discussion section (\SEC~\ref{prelim:compl:sec:discussion}).}
+	
+	\item \REACH (Rystsov~\cite{Rys83}, Bondar and Volkov~\cite{BondarV16}), \label{reach-pspace}
+	
+	\item \REACHF (Rystsov~\cite{Rys83}).
+\end{enumerate}
+
+Recall that, by \cref{compl:prop:reductions}, \DFAINT and \ST are equivalent
+w.r.t.~our notion of $\AC^0$-reduction.
+
+Besides these results, the following
+results on classes of input automata investigated in the present thesis were obtained in the literature: 
+
+\begin{description}
+	\item[\DFAINT:] \label{prelim:classes:intro:INT}  Kozen~\cite[p.~261]{Kozen77} introduced this problem and proved 
+	that it is \PSPACE-complete for an unbounded alphabet;  Fernau and Krebs~\cite[p.~2]{FerKre2017} mentioned \PSPACE-\-com\-plete\-ness for a fixed binary alphabet.		
+	\NP-completeness was proved for the following classes: 
+	\begin{enumerate}
+	\item  partially ordered automata
+	even for a binary alphabet by Ryzhikov~\cite[Prop.~9]{Ryzhikov19a},\footnote{He stated the result only for a fixed binary alphabets, but the given proof for containment in \NP\  also works when the alphabet
+		is part of the input.}
+	
+	\item ternary partially ordered monotonic automata by Ryzhikov and Shemyakov~\cite[Thm.~4.1]{RyzhikovS18},
+	
+	\item unary automata by Martens and Neven~\cite[Lem.~27]{MartensN07} (using arguments that are implicitly
+	used in~\cite[Thm.~2]{Galil76} and~\cite[Thm.~6.1]{Stockmeyer73}),
+	Beaudry~\cite{Beaudry88thesis}, and Fernau et al.~\cite[Thm.~4.1]{DBLP:journals/corr/abs-2108-05244},
+	where in the latter work also containment in \NP\
+	was shown for commutative automata~\cite[Thm~4.3]{DBLP:journals/corr/abs-2108-05244},
+
+	\item partially ordered commutative automata
+	over an unbounded alphabet by Arrighi et al.~\cite[Lem.~17]{Arrighi2021} 
+	(by a similar reduction
+	as used by Martyugin~\cite[Prop.~5.3.]{Mar2009b} for \DFASWS).\footnote{\NP-hardness can be seen by the following reduction from \SAT. 
+		A \SAT-instance with clauses $C_1, \ldots, C_m$ over the variables $\{ x_1, \ldots, x_n\}$
+		admits a satisfying assignment
+		if and only if the following intersection of languages acceptable
+		by partially ordered commutative automata is non-empty:
+		\[
+		\left( \bigcap_{j=1}^m \bigcup_{y \in C_j} \Sigma^* y \Sigma^* \right) 
+		\cap 
+		\left(
+		\bigcap_{i=1}^n \Sigma^* \setminus ( \Sigma^* x_i \Sigma^* \overline x_i \Sigma^* \cup \Sigma^* x_i \Sigma^* \overline x_i \Sigma^* )
+		\right)
+		\]}
+	\end{enumerate}
+	
+	\item[\SFS:] \label{prelim:classes:intro:SFS} Vorel~\cite[Thm.~12]{DBLP:journals/ijfcs/Vorel16} 
+	proved \PSPACE-completeness for binary strongly connected automata.
+	Ryzhikov~\cite[Thm.~4]{Ryzhikov19a} proved the problem to be \NP-complete
+	for binary partially ordered  automata,
+	where the proof for \NP-membership  
+	also works for an unbounded alphabet.
+	
+	\item[\SIS:] \label{prelim:classes:intro:SFS} Berlinkov et al.~\cite[Thm.~3~\&~4]{BerlinkovFS21}
+	proved \PSPACE-completeness for binary strongly connected automata.\footnote{They formulated the problem
+		differently in terms of totally extending a subset,
+		see the discussion section, \cref{prelim:compl:sec:discussion}.}
+	
+	\item[\DFASWS:] \label{prelim:classes:intro:DFASWS} Eppstein~\cite[Thm.~8]{Eppstein90} and Rystsov~\cite{Rys80} proved
+	\NP-completeness on binary partially ordered automata, Martyugin~\cite[Prop.~5.3]{Mar2009b} for partially ordered commutative automata over an unbounded alphabet
+	by a reduction from \SAT.	
+	Fernau, Heggernes and Villanger~\cite[Thm.~3]{DBLP:journals/jcss/FernauHV15}
+	gave a reduction from {\sc HittingSet} to \DFASS
+	that results in a partially ordered commutative automaton
+	to show $\W[2]$-hardness w.r.t.~the length-bound parameter,
+	but the reduction also yields \NP-hardness for this class.
+	Salomaa~\cite{DBLP:journals/tcs/Salomaa03} and Goral\v{c}\'yk and Koubek~\cite{GorKou95}
+	investigated more general problems and obtained \NP-completeness for \DFASWS as a special case.
+	For related problems and more information, see the discussion in~\cref{prelim:compl:sec:discussion}.		
+		
+	\item[\DFAS:] \label{prelim:classes:intro:SYNC} Holzer \& Jacobi~\cite[Lem.~14]{HolzerJ18}
+	proved \NL-completeness
+	even for a ternary alphabet and trap-state automata. Sreejith (see Volkov~\cite[Prop.~2.2]{Volkov22})\footnote{As written
+		by Volkov~\cite{Volkov22} the proof
+		presented by him is originally due to the Indian computer scientist Sreejith, but
+		was not published before and presented courtesy of the author.}
+	and Hoffmann~\cite[Thm.~5]{DBLP:journals/tcs/Hoffmann21}
+	gave proofs yielding \NL-hardness even for a binary alphabet and trap-state automata (\cref{prelim:prop:sync_NL_complete,prelim:complexity:general_aut_sync}
+	present a simplified version of the proof from~\cite[Thm.~5]{DBLP:journals/tcs/Hoffmann21}, 
+	which is similar to the proof from~\cite[Prop.~2.2]{Volkov22});
+	Fernau, Haase and Hoffmann~\cite[Thm.~5.4]{DBLP:conf/fun/FernauH022}
+	stated (without proof) that \DFAS is \LOGSPACE-complete for commutative automata (we will prove in \cref{thm:SYNC-solv} 
+	that it remains \LOGSPACE-complete for solvable automata); \LOGSPACE-membership was also proved in~\cite[Thm.~5]{DBLP:journals/tcs/Hoffmann21}
+	for unary automata.
+\end{description}
+
+\Cerny~\cite[Thm.~2]{Cer64} remarked that the pair automaton, via \cref{prelim:thm:pair_sync_condition},
+can be used to decide~\DFAS. Natarajan~\cite{DBLP:conf/focs/Natarajan86} and Eppstein~\cite{Eppstein90} explicitly gave polynomial time algorithms running in cubic time, see \cref{prelim:thm:compute_sync_word}.
+
+We prove further results for solvable automata and some of their subclasses in \cref{compl:sec:general,compl:sec:pto,comp:sec:comm}. These results were first presented by the author in~\cite{DBLP:journals/tcs/Hoffmann21,DBLP:conf/fun/FernauH022,DBLP:journals/jalc/000124}. Recall that, by \cref{compl:prop:reductions:item:DFAINT_DST,compl:prop:reductions:item:DST_ST} from \cref{compl:prop:reductions}, the problems \DFAINT, \ST, and \DST are equivalent under $\leACZEROm$-reductions. Moreover, these reductions preserve commutativity, the property of being partially ordered, and the alphabet.
+
+\Cref{compl:tab:overview} summarizes our results and those from the literature. We say that the alphabet is unbounded (or arbitrary) if it is part of the input. Note that every unary automaton is commutative. Moreover, hardness for a unary alphabet implies hardness for any non-empty alphabet, since additional letters can either be added as self-loops or made to act identically to the single letter.
+
+\begin{table}[htb]
+	\centering
+	\caption[Overview complexities on classes of automata]{
+	Complexity landscape for general, partially ordered (PO),
+	commutative, and partially ordered commutative automata (POC).
+	It is indicated whether the result holds
+	for an unbounded (U), any fixed (F), including a unary,
+	or any fixed alphabet containing at least two letters ($\text{F}^{\ge 2}$).
+	Gray cells indicate
+	known results, see \cref{compl:sec:subclasses:known-results}. %for details on the known results.
+	%Light gray cell indicate results from~\cite{DBLP:journals/tcs/Hoffmann21,DBLP:conf/fun/FernauH022} (first row)
+	%and~\cite{DBLP:journals/jalc/000124} (remaining rows).
+	}
+
+	\setlength{\tabcolsep}{5pt}
+	%\small
+	
+	\begin{tabular}{l|c|c|c|cc|cc|}
+		& \multicolumn{7}{c|}{Automata Class} \\ \hline
+		& General & Solvable & PO & \multicolumn{2}{c|}{Commutative}  &  \multicolumn{2}{c|}{POC} \\ \hline
+		Alphabet $\Sigma$ & $\mathrm{F}^{\ge2}$ \& U
+		& $\mathrm{F}^{\ge2}$ \& U
+		& $\mathrm{F}^{\ge2}$ \& U
+		& F & U & F & U
+		\\ \hline
+		
+		\DFAS
+		& \cg\NL-c [A]
+		& \cd\LOGSPACE-c [B]
+		& \cd$\AC^0$ [C]
+		& \cd\LOGSPACE-c [B]
+		& \cd\LOGSPACE-c [B]
+		& \cd$\AC^0$ [C]
+		& \cd$\AC^0$ [C]
+		\\
+		
+		\DFASS
+		& \NL-c [A]
+		& \LOGSPACE-c [B]
+		& $\AC^0$ [C]
+		& \LOGSPACE-c [B]
+		& \LOGSPACE-c [B]
+		& $\AC^0$ [C]
+		& $\AC^0$ [C]
+		\\
+		
+		\DFAST
+		& \cg\NL-c [A]
+		& \LOGSPACE-c [B]
+		& $\AC^0$ [C]
+		& \LOGSPACE-c [B]
+		& \LOGSPACE-c [B]
+		& $\AC^0$ [C]
+		& $\AC^0$ [C]
+		\\
+		
+		\DFASW
+		& \cd\LOGSPACE-c [D]
+		& \cd\LOGSPACE-c [D]
+		& \cd\LOGSPACE-c [D]
+		& \cd\LOGSPACE-c [D]
+		& \cd\LOGSPACE-c [D]
+		& \cd\LOGSPACE-c [D]
+		& \cd\LOGSPACE-c [D]
+		\\
+		
+		\DFASWS
+		& \cg\NP-c [E]
+		& \NP-c [E]
+		& \cg\NP-c %\cite{Eppstein90,Rys80}
+		& \LOGSPACE-c [E]
+		& \cg\NP-c [E]
+		& \LOGSPACE-c [E]
+		& \cg\NP-c [E]
+		\\
+		
+		\SFS
+		& \cg\PSPACE-c
+		& \cd\NP-c [F]
+		& \cg\NP-c [F]
+		& \cd\LOGSPACE-c [G]
+		& \cd\LOGSPACE-c [G]
+		& \cd\LOGSPACE-c [G]
+		& \cd\LOGSPACE-c [G]
+		\\
+		
+		\SIS
+		& \cg\PSPACE-c
+		& \cd\LOGSPACE-c [B]
+		& \cd$\AC^0$ [H]
+		& \cd\LOGSPACE-c [B]
+		& \cd\LOGSPACE-c [B]
+		& \cd$\AC^0$ [H]
+		& \cd$\AC^0$ [H]
+		\\
+		
+		\ST
+		& \cg\PSPACE-c
+		& \cd\NP-c [I]
+		& \cg\NP-c [I]
+		& \cg\NP-c [I]
+		& \cg\NP-c [I]
+		& \cd\LOGSPACE-c [G]
+		& \cg\NP-c [I]
+		\\
+		
+		\REACH
+		& \cg\PSPACE-c
+		& \cd\NP-c [J]
+		& \cg\NP-c [J]
+		& \cd\LOGSPACE-c [K]
+		& \cd\NP-c [K]
+		& \cd\LOGSPACE-c [K]
+		& \cd\LOGSPACE-c [K]
+		\\
+		
+		\REACHF
+		& \cg\PSPACE-c
+		& \cd\NP-c [L]
+		& \cd\NP-c [L]
+		& \cd\PTIME [M]
+		& \cd\NP-c [L]
+		& \cd\LOGSPACE-c [N]
+		& \cd\NP-c [L]
+		\\ \hline
+		
+	\end{tabular}
+	
+	\vspace{0.5em}
+	
+	\begin{minipage}{0.98\linewidth}
+		\footnotesize
+		\textbf{References.}
+		[A] Thm.~\ref{prelim:complexity:general_aut_sync};
+		[B] Thm.~\ref{thm:SYNC-solv};
+		[C] Thm.~\ref{compl:thm:pto_sync_in_AC0};
+		[D] Thm.~\ref{prelim:thm:finite_list_sync_word};
+		[E] Thm.~\ref{compl:thm:comm-syncshort};
+		[F] Thm.~\ref{thm:SF-solvable};
+		[G] Thm.~\ref{thm:SF-ST-comm};
+		[H] Thm.~\ref{compl:thm:sync_into_pto};
+		[I] Thm.~\ref{thm:solvable};
+		[J] Thm.~\ref{prelim:compl:thm:reach-NP};
+		[K] Thm.~\ref{prelim:compl:reach-commm};
+		[L] Thm.~\ref{prelim:compl:thm:reachf-NP};
+		[M] Thm.~\ref{prelim:compl:thm:reach-comm-fixed};
+		[N] Thm.~\ref{prelim:compl:reachf-commm}.
+	\end{minipage}
+	
+	\label{compl:tab:overview}
+\end{table}

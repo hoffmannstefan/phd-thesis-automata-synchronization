@@ -1,0 +1,81 @@
+
+\paragraph{Literature.} Polynomial-time solvability  of the problem of constrained syn\-chro\-ni\-za\-tion for commutative input automata
+was stated in~\cite{DBLP:journals/tcs/Hoffmann21}. Here, we improved that result
+to containment in \NL.
+Partially ordered input automata were investigated in~\cite{DBLP:conf/dlt/Hoffmann21a}
+and a complexity classification for two-state constraint PDFAs over a ternary alphabet
+was given, which we extended in the present work to an arbitrary alphabet and
+refined it by differentiating the polynomial-time solvable cases into~$\AC^0$ and~$\LOGSPACE$-completeness. Monotonic, solvable and SI-automata
+were firstly investigated  in~\cite{DBLP:conf/wia/Hoffmann22}. However, the paper~\cite{DBLP:conf/wia/Hoffmann22} contained
+the following two mistakes that were fixed in the present work: 
+\begin{enumerate}	
+	\item It claimed the bound $|P| \cdot n$
+	for $n$-state monotonic automata, but the argument was wrong and here we were only able to obtain 
+	the bound $|P|\cdot \binom{n}{2}$ (Proposition~\ref{constr_sync:prop:monotonic_bound}). However, we do not know
+	whether this bound is tight, and the linear bound might be correct after all,
+	as it is known that a shortest synchronizing word (without a constraint) has length at most $n-1$
+	for monotonic $n$-state automata~\cite{DBLP:journals/tcs/AnanichevV04}.
+	
+	\item The proof of the 
+	bound stated for solvable automata involving various parameters (one related to the cycle lengths)
+	contained a mistake, were a synchronizing word was commutatively reordered
+	without considering whether this is permissible w.r.t.~the constraint language.\footnote{Quite a blatant mistake in hindsight, but the overall
+	argument was quite involved.} In the present work in \THM~\ref{constr_input:prop:bound_solvable} we obtained a better bound
+	for the restricted class of solvable $\rho$-automata, but have no general bound.
+	The claim in~\cite{DBLP:conf/dlt/Hoffmann21a} that the constrained synchronization problem is in \NP\ 
+	for solvable input automata used this erroneous result, and so it is no longer
+	certain whether this is true.
+	Here, we have shown containment in \NP\ for the proper subclass of solvable $\rho$-automata.
+\end{enumerate} 
+
+\paragraph{Open Problems.} We present various open problems suggested by the obtained results.
+
+\begin{enumerate}
+	\item For monotonic input automata it was shown (Theorem~\ref{constr_sync:thm:monotonic_in_NL}) that the constrained synchronization problem is solvable in \NL. However, it is an \emph{open problem} whether the problem is \NL-hard. 
+	Also, as discussed above, can the quadratic bound from 
+	Proposition~\ref{constr_sync:prop:monotonic_bound} be improved to a linear bound?
+	
+	\item We have shown containment in \NP\ for solvable $\rho$-automata. We do not know whether
+	the problem remains in \NP\  for arbitrary solvable automata as input.
+	Furthermore, we do not know a bound on shortest synchronizing words
+	in a given constraint language for general solvable automata (compare
+	also the discussion above with respect to the bound claimed in~\cite{DBLP:conf/wia/Hoffmann22}).
+	
+	\item For commutative input automata, the problem was shown to be in~\NL\  (Theorem~\ref{thm:main_theorem_comm_input_NL}). We do not know whether there exist constraint languages giving \NL-hard constrained problems.
+		
+    \item A partially ordered automaton with at least three states is not sync-maximal
+	by \cref{sync_maximal:thm:structure}, since
+	a synchronizing partially ordered automaton has a trap state 
+	by \cref{constr_sync:prop:solvable_sync_iff_reach_trap}. Polynomial time constructability
+	of an automaton for the set of synchronizing words implies that the constrained synchronization
+	problem is in~\PTIME. As we have found constraint languages giving \NP-hard
+	constrained synchronization problems for partially ordered input automata,
+	it follows that automata for the sets of synchronizing words of partially ordered automata are not 
+	constructible in polynomial time.	
+    This suggests to broaden the investigation
+	of the set of synchronizing words further by not only investigating the property of sync-maximality,
+	but under what circumstances a minimal automaton for the set of synchronizing words
+	has size superpolynomial in the size of the original automaton (see also the results
+	from \SEC~\ref{sync_max:sec:slowly_sync} and the discussion in Section~\ref{sync_max:sec:slowly_sync_discussion}).
+	
+	\item Lastly, the study of SI-automata as input is still in its beginnings. Here, 
+	we only considered certain monoid languages, certain
+	bounded languages, and languages accepted by binary constraint automata with at most three states
+	as constraints. 
+	We always obtained that the corresponding constrained 
+	problem is in \NL.
+	%Studying more general constraint languages 
+	%is reserved for future research.
+	We do not know if this is the case for any constraint
+	language, or whether there exist constraint languages giving \PSPACE-hard (or \NP-hard) problems for 
+	SI-automata as input. As there exist sync-maximal SI-automata 
+	(for example, the \v{C}ern\'y family, see Figure~\ref{intro:fig:cerny} and \cref{sync_max:thm:cerny_sync_maximal}),
+    the set of synchronizing
+	words might be ``complex'' enough to admit hard instances of the constrained synchronization problem.
+	However, the \NP-hardness reductions for the problem to find shortest synchronizing words
+	in SI-automata from~\cite{Mar2009b,DBLP:journals/corr/abs-2409-06971} 
+	all used an unbounded alphabet, but a fixed constraint languages essentially fixes the
+	alphabet as well.
+	Lastly, we do not know whether there exist constraint languages
+	giving an \NL-hard constrained synchronization problem for SI-automata as input.	
+\end{enumerate}

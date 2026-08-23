@@ -1,0 +1,21 @@
+%!TEX root = ./../../thesis-trier.tex
+
+\begin{theorem}
+	\label{constr_sync:thm:infinite}
+	For every infinite regular $L \subseteq \Sigma^*$,
+	\constrsync{L} is $\LOGSPACE$-hard
+	even for $|\Sigma| = 1$.
+\end{theorem}
+\begin{proof} 
+	Let $L \subseteq \Sigma^*$
+	be infinite. Then there exists
+	a letter $a \in \Sigma$
+	such that $\pi_{\{a\}}(L)$ is infinite.
+	So $\fact{\pi_{\{a\}}(L)} = a^*$.
+	By \crefitem{constr_sync:thm:introductory_examples}{constrsync:ex:item:bstar} and \cref{gen_results:cor:factors_etc_complexity}
+	we find that $\constrsync{\pi_{\{a\}}(L)}$
+	is \LOGSPACE-complete.
+	By \cref{thm:hom_lower_bound_complexity},
+	we have $\constrsync{\pi_{\{a\}}(L)} \le_m^{\AC^0} \constrsync{L}$,
+	which gives the claim.
+\end{proof}

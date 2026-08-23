@@ -1,0 +1,144 @@
+%!TEX root = ./../../thesis-trier.tex
+
+\todo[inline]{Hier an einigen Stellen nicht die Makros für semiautomaton und automaton benutzt.}
+\IN{start state!of an automaton} 
+\index{initial state|see{start state}}
+\IN{final state set!of an automaton}
+\IN{regular language}
+\IN{accepted!language!by automaton}
+\IN{accepted!word!by automaton}
+\IN{automaton!as language acceptor}
+\index{language acceptor automaton|see{automaton!as language acceptor}}
+\index{recognized language|see{accepted language}}
+\label{def:automaton-acceptor}
+\Cref{intro:chap:short_intro_sync_aut} introduced semiautomata as mere finite-state transition systems.
+Here we associate languages with automata.
+A \emph{(deterministic and complete) finite automaton\footnote{In the literature, most of the time, automata are meant to be language
+		acceptors without a special term and automata without
+		a start state and a final state are called semiautomata.		
+	} (as a language acceptor)} 
+is a $5$-tuple $\automat{A}{Q}{\Sigma}{\delta}{q_0}{F}$ 
+where $(Q, \Sigma, \delta)$ is a semiautomaton as defined before, $q_0$
+is the \emph{start} (or \emph{initial) state} and $F \subseteq Q$ is the \emph{set of final states}. 
+The language \emph{accepted}, or \emph{recognized}, by $\mathcal A$
+is
+\[
+L(\mathcal A) = \{ u \in \Sigma^* \mid \applytrans{\delta}{q_0}{u} \in F \}, \label{def:accepted_lang_aut}
+\]
+i.e., the set of labels of paths going from the start state to some final state.
+We also say a word $u \in \Sigma^*$ is \emph{accepted} by $\mathcal A$ if $u \in L(\mathcal A)$.\footnote{There should be no problem with using the modifier ``regular'' in the context of languages and in the context of permutation groups since both domains are sufficiently different
+so that no confusion should arise.}	
+A language $L \subseteq \Sigma^*$ is called \emph{regular} if there exists an automaton $\mathcal A$ 
+such that $L = L(\mathcal A)$.\footnote{Eilenberg~\cite{Eilenberg1974} called
+	languages acceptable by automata recognizable,
+	which makes sense when considering more general monoids
+	than the free monoid. Since we do not consider the more general case,
+	we do not use this terminology here.	
+	See also the related footnote on page~\pageref{def:RegSigma}.}	
+
+Kleene~\cite{Kleene56} has shown that regular expressions denote precisely
+the set of regular languages. A proof (in contemporary notation)
+can be found in any textbook on formal language theory, e.g.~\cite{HopUll79,Pin2022}.
+
+\begin{theorem}[Kleene's theorem~\cite{Kleene56}]
+	% For every regular language $L \subseteq \Sigma^*$ there exists a regular
+	% expression $R$ such that $
+	The set of regular languages is precisely the set of languages
+	describable by regular expressions, i.e., 
+	for every $\automat{A}{Q}{\Sigma}{\delta}{q}{F}$
+	there exists a regular expression $R$ such that $L(\mathcal A) = L(R)$
+	and vice versa.
+\end{theorem}
+
+
+\IN{accessible!state!in automaton} 
+\IN{accessible!automaton} 
+\IN{coaccessible state!in automaton}
+\index{initially connected|see{accessible automaton}}
+Let $\automat{A}{Q}{\Sigma}{\delta}{q_0}{F}$
+and $q \in Q$. The state $q$ is called \emph{accessible} if it is reachable from the start state, i.e.,  there exists a word $u \in \Sigma^*$
+such that $\applytrans{\delta}{q_0}{u} = q$. 
+It is called \emph{coaccessible} if there exists a word $u \in \Sigma^*$
+such that $\applytrans{\delta}{q}{u} \in F$. We call $\mathcal A$ \emph{accessible} (or \emph{initially connected}) if all states are accessible. 
+Obviously, for every regular language there exists an accessible automaton accepting it.
+
+
+%Observe that a permutation automaton
+%as a language acceptor is accessible if and only if it is strongly connected. \todo{im minimalaut teil sagen perm aut mit einem finalzsutand immer minimal}
+
+For a semiautomaton $\semiautomat{A}{Q}{\Sigma}{\delta}$, $q \in Q$
+and $S \subseteq Q$, by 
+\[\mathcal A_{q,S} = (Q, \Sigma, \delta, q, S) \label{def:add_start_final}
+\]
+we denote the language acceptor automaton that results from $\mathcal A$ 
+by choosing $q$ as a start state and $S$ as a set of final states.
+
+There should be no confusion by calling both types of automata simply automata, as it should be clear
+from the context whether we mean automata as language acceptors, or whether we are talking about 
+semiautomata. Furthermore, both types are specified by a different sets of data, a $3$-tuple versus a $5$-tuple, which distinguishes them notation-wise. 
+In case any ambiguity might arise, and it is necessary to differentiate between both notions,
+we revert to using the proper names semiautomaton and automaton as language acceptor.
+% or by specifying them explicitly  
+%either as a $3$-tuple or a $5$-tuple. \todo{daraus kann man es ableiten.}
+%However, if there might arise confusion because both notions appear in a single statement, 
+%we use the more specific terminology.
+
+Every automaton as a language acceptor is also a semiautomaton when forgetting about the start state
+and the set of final states. So, all semiautomata notions transfer to automata as language acceptors
+and we use them also for language acceptor automata in this sense.
+%In this sense, all notions that we define and that do not involve a
+%start state and a set of final state are to be regarded as definitions for both types of automata.\todo{english.}
+
+Given automata $\automat{A_i}{Q_i}{\Sigma}{\delta_i}{q_i}{F_i}$
+where $i \in \{1,\ldots,m\}$ and $m \ge 2$, 
+for the product automaton $\mathcal A_1 \times \ldots \times \mathcal A_m$
+we have the following:
+\begingroup
+\allowdisplaybreaks 
+\begin{align}
+	L(\mathcal A_1) \setminus L(\mathcal A_2) & = L((\mathcal A_1 \times \mathcal A_2)_{(q_1, q_2), ( F_1 \times Q )\setminus (Q \times F_2)}), \\
+	\bigcap_{i=1}^m L(\mathcal A_i) & = L((\mathcal A_1 \times \cdots \times \mathcal A_m)_{(q_1,\ldots,q_m), F_1 \times \cdots \times F_m}), \label{prelim:eqn:product-intersection}	\\
+	\bigcup_{i=1}^m L(\mathcal A_i) & = L((\mathcal A_1 \times \cdots \times \mathcal A_m)_{(q_1,\ldots,q_m), E}), 
+\end{align}
+\endgroup%
+where $E = \bigcup_{i=1}^n Q \times \cdots \times \underbracket[0.4pt]{F_i}_{\clap{\scriptsize$i$-th position}} \times \cdots \times Q$.
+
+Next, we state two results that relate the accepted language to morphic images and congruences.
+
+\begin{proposition}
+\label{prelim:prop:acceptor-morphism}
+	Let $\varphi \colon Q \to S$ be a morphism between $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	and $\semiautomat{B}{S}{\Sigma}{\mu}$.
+	Then $L(\mathcal A_{q_0,F}) \subseteq L(\mathcal B_{\applyfunc{q_0}{\varphi}, \applyfunc{F}{\varphi}})$
+	for $q_0 \in Q$ and $F \subseteq Q$.
+	Furthermore, if $\applyfunc{\applyfunc{F}{\varphi}}{\varphi^{-1}} = F$,
+	then $L(\mathcal B_{\applyfunc{q_0}{\varphi}, \applyfunc{F}{\varphi}}) \subseteq L(\mathcal A_{q_0,F})$.
+\end{proposition}
+\begin{proof}
+	Let $u \in \Sigma^*$.
+	For $\applytrans{\delta}{q_0}{u} \in F$,
+	we have $\applytrans{\mu}{\applyfunc{q_0}{\varphi}}{u} = \applyfunc{\applytrans{\delta}{q_0}{u}}{\varphi} \in \applyfunc{F}{\varphi}$ and so $u \in L(\mathcal B_{\applyfunc{q_0}{\varphi}, \applyfunc{F}{\varphi}})$.
+	Next, if $\applyfunc{\applyfunc{F}{\varphi}}{\varphi^{-1}} = F$
+	and $u \in L(\mathcal B_{\applyfunc{q_0}{\varphi}, \applyfunc{F}{\varphi}})$,
+	then we get $\applyfunc{\applytrans{\delta}{q_0}{u}}{\varphi} = \applytrans{\mu}{\applyfunc{q_0}{\varphi}}{u} \in  \applyfunc{F}{\varphi}$
+	and so $\applytrans{\delta}{q_0}{u} \in F$.
+\end{proof}
+
+\Cref{prelim:prop:congruence_induces_morphism} 
+gives the following corollary to \cref{prelim:prop:acceptor-morphism}.
+
+\begin{corollary}
+\label{prelim:cor:acceptor-congruence}
+  Let $\semiautomat{A}{Q}{\Sigma}{\delta}$
+  be an automaton and $\sim$ be a $\TS{\mathcal A}$-congruence.
+  Then for each $q \in Q$ and $F \subseteq Q$
+  we have $L(\mathcal A_{q,F}) \subseteq L(( \mathcal A / {\sim} )_{[q]_{\sim}, [F]_{\sim}})$
+  and if $F$ saturates~$\sim$, then
+  $L(\mathcal A_{q,F}) = L(( \mathcal A / {\sim} )_{[q]_{\sim}, [F]_{\sim}})$ (note that $[F]_{\sim} = \{ [q]_{\sim} \mid q \in F\}$).  
+\end{corollary}
+
+Morphisms as introduced here are a concept defined for semiautomata. \Cref{prelim:prop:acceptor-morphism}
+gives a way to extend this notions to morphisms for automata as language acceptors
+by also stipulating that the start state is preserved
+and the final state set saturates the kernel relation. We do not use such an extended notion of morphisms
+for automata as language acceptors and thus can use the term morphism alone without any ambiguity here.

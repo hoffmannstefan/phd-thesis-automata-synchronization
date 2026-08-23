@@ -1,0 +1,143 @@
+%!TEX root = ./../../springer-mono-format/book.tex
+%!TEX root = ./../../thesis-trier.tex
+
+Here, we discuss the following classes of automata
+that appear throughout the present work
+and collect results of relevance to us:
+
+\begin{enumerate}
+	\item synchronizing automata (\cref{prelim:sec:sync_aut}) and synchronizing automata with a trap state (\SEC~\ref{prelim:sync:trap}),
+	
+	\item unary automata (\cref{prelim:subclasses:ternarybinaryunary}),
+				
+	\item automata with one-point singular idempotents (OI-automata) and automata with simple idempotents (SI-automata) (\cref{prelim:subclasses:SI}),
+	
+	\item permutation-reset automata (\cref{prelim:subclasses:permutation-reset}),
+		
+	\item monotonic automata (\cref{prelim:subclasses:monotonic}),
+	
+	\item automata whose strongly connected components are blocks (\cref{prelim:subclasses:block}),
+		
+	\item partially ordered automata (\cref{prelim:sec:pto}), 
+	
+	\item $\rho$-automata (\cref{prelim:subclasses:rho-automata}),
+	
+	\item commutative automata (\cref{prelim:subclasses:commutative}),
+	    
+	\item solvable automata (\cref{prelim:subclasses:solvable}),
+	 which generalize commutative and partially ordered automata.
+\end{enumerate}
+
+See \cref{prelim:classes:fig:inclusions} for a Hasse diagram of the inclusions that hold among these classes.
+
+\begin{figure}[ht]
+	\centering
+	\begin{tikzpicture}
+		\matrix (A) [matrix of nodes, row sep=0.8cm, nodes={minimum width=2cm}]
+		{
+			OI-Aut. &                  & Str.~Conn.~Comp.~Blocks & Monotonic & Synchronizing \\
+			SI-Aut. & Perm.-Reset Aut. & Solvable & & Sync.~with trap state \\
+			&                  & $\rho$-Automata. \\
+			&  Perm.~Aut       & Commutative & Part.~Ordered Aut. & \\
+			&                  & Unary \\
+		};
+		\path (A-1-1)--(A-1-3) node[above=1.25cm] (link) {All Automata};
+		
+		\foreach \i in {1,3,4,5}
+		\path (link.south) edge[-] (A-1-\i.north);
+		
+		\path (A-2-1.north) edge[-] (A-1-1.south)
+		(A-2-2.north) edge[-] (A-1-3.south)
+		(A-2-3) edge[-] (A-1-3.south);       
+		
+		\path (A-3-3.north) edge[-] (A-2-3.south);
+		
+		\path (A-4-2.north) edge[-] (A-3-3.south)
+		(A-4-2.north) edge[-] (A-2-2.south)
+		(A-4-2.north) edge[-] (A-2-1.south)
+		(A-4-3.north) edge[-] (A-3-3.south)
+		(A-4-4.north) edge[-] (A-3-3.south);
+		
+		\path (A-5-3.north) edge[-] (A-4-3.south);
+		
+		\path (A-2-5.north) edge[-] (A-1-5.south);
+	\end{tikzpicture} 
+	\caption[Relations among classes of automata]{Inclusion relations among the classes of automata from the present section.}
+	\label{prelim:classes:fig:inclusions}
+\end{figure}
+
+The following content is new and did not appear before in the literature:
+
+\begin{enumerate}
+\item the novel class of $\rho$-automata,
+
+\item the results on automata whose strongly connected components are blocks,
+
+\item the structural results on solvable automata and the result that a solvable automaton admitting
+a word of rank $r$ has a word of rank at most 
+$r$ and of length at most $n - r$ and 
+
+\item new structural results on solvable automata.
+\end{enumerate}
+
+The remaining results presented are known and taken from the literature (maybe presented a little differently).
+
+Other classes of automata, for example circular automata, completely
+reachable, completely distinguishable or
+sync-maximal automata are only used in Part~\ref{part:aut} and so not introduced
+here but separately in Part~\ref{part:aut}.
+
+\section{Synchronizing Automata}
+\label{prelim:sec:sync_aut} 
+
+\input{../part2/classes/synchronizing}
+
+\section{Unary Automata}
+\label{prelim:subclasses:ternarybinaryunary}
+
+\input{../part2/classes/ternarybinaryunary}
+
+\section{OI- and SI-Automata}
+\label{prelim:subclasses:SI}
+	
+\input{../part2/classes/SI}
+
+\section{Permutation-Reset Automata}
+\label{prelim:subclasses:permutation-reset} 
+
+\input{../part2/classes/permutation}
+
+\section{Monotonic Automata} 
+\label{prelim:subclasses:monotonic}
+
+\input{../part2/classes/monotonic}
+
+\section{Automata Whose Strongly Connected Components are Blocks}
+\label{prelim:subclasses:block} 
+
+\input{../part2/classes/block}
+
+\section{Partially Ordered Automata}
+\label{prelim:sec:pto} 
+
+\input{../part2/classes/pto}
+
+\section{\texorpdfstring{$\rho$}{rho}-Automata}
+\label{prelim:subclasses:rho-automata} 
+
+\input{../part2/classes/rho}
+
+\section{Commutative Automata}
+\label{prelim:subclasses:commutative}
+
+\input{../part2/classes/commutative}
+
+\section{Solvable Automata}
+\label{prelim:subclasses:solvable} 
+
+\input{../part2/classes/solvable}
+
+\section{Discussion}
+\label{prelim:subclasses:discussion}
+
+\input{../part2/classes/discussion}

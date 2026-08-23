@@ -1,0 +1,339 @@
+%!TEX root = ../../springer-mono-format/book.tex
+%!TEX root = ../../thesis-trier.tex
+
+
+\Cref{sync_max:prop:ksets} shows that distinguishability of $k$-sets for $k \ge 3$
+in automata with at least $k+1$ states implies distinguishability of all $(k-1)$-sets.
+Then \cref{aut-sync-words:dist-sets:prop:intersection-k-sets} 
+investigates conditions equivalent to the distinguishability
+of $(k+1)$-sets whose intersection has size~$k$.
+\Cref{aut-syncw:subset:prop:kplusone} investigates
+conditions when we can map, from two distinct subsets, one specific
+set to a singleton, but not the other;
+a property that implies distinguishability, but, in general, is stronger
+since we can choose which subset is mapped to a singleton.
+\Cref{sync_max:ex:2-3-sets-not-implying-2-sets-pre} 
+gave an automaton having indistinguishable pairs
+of disjoint $2$-sets, but where all $2$-sets
+are distinguishable from sets of size at least three (this also implies distinguishability
+of non-disjoint pairs of distinct $2$-sets by \cref{aut-syncw:subset:prop:kplusone}).
+In \cref{syncmax:ex:disj-non-disj-two-sets} we give
+two automata in which all disjoint $2$-sets are distinguishable,
+but not all non-disjoint $2$-sets, and vice versa.
+Thus, both properties are logically independent.
+Our results use \cref{sync_max:lem:largersetsdist,sync_max:lem:sets-differ-one} stated first.
+
+\begin{lemma} \label{sync_max:lem:largersetsdist}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	be an automaton and $A, B, C \subseteq Q$ with $A \cap B \ne \emptyset$.
+	Then, for a word~$u$
+	with $\delta(A \cup C, u) = \{q\}$ for some $q \in Q$
+	and $|\delta(B \cup C, u)| \ge 2$
+	we have $|\delta(B, u)| \ge 2$.
+\end{lemma}
+\begin{proof}
+	Since $A \cap B \ne \emptyset$
+	we find $q \in \delta(B \cup C, u)$.
+	We have $q \ne \delta(p, u)$ for some $p \in B \cup C$.
+	Since $\delta(C, u) \subseteq \{q\}$
+	we must have $p \in B$
+	and so $\{q, \delta(p, u)\} \subseteq \delta(B, u)$.
+\end{proof}
+
+\begin{lemma} \label{sync_max:lem:sets-differ-one}
+	Let $A,B \subseteq X$ and $p,q \in X$ such that $p \in A \setminus B$ and $q \in B \setminus A$.
+	Then the following are equivalent.
+ \begin{enumerate}
+	\item \label{sync_max:lem:sets-differ-one:3a} $A \setminus \{p\} = B \setminus \{q\}$.
+		
+	\item \label{sync_max:lem:sets-differ-one:1a} $A \cup \{q\} = B \cup \{p\}$.
+	
+	\item \label{sync_max:lem:sets-differ-one:4a} $A \setminus B = \{p\}$ and $B \setminus A = \{q\}$.
+	
+	\item \label{sync_max:lem:sets-differ-one:5a} $A \cup B = A \cup \{q\}$ and $A \cap B = A \setminus \{p\}$.
+		
+	\item \label{sync_max:lem:sets-differ-one:2b} $A = (A \cap B) \cup \{p\}$
+	and $B = (A \cap B)\cup \{q\}$.
+	
+	\item \label{sync_max:lem:sets-differ-one:2a} $A = ( B \setminus \{q\} ) \cup \{p\}$.	
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+$\ref{sync_max:lem:sets-differ-one:3a}\Rightarrow\ref{sync_max:lem:sets-differ-one:1a}$: 
+With $A \setminus \{p\} = B \setminus \{q\}$ we find
+$
+A \cup \{q\} = ( A \setminus \{p\} ) \cup \{p,q\}
+= (B \setminus \{q\} ) \cup \{p,q\}
+=  B \cup \{p\}.
+$
+
+$\ref{sync_max:lem:sets-differ-one:1a}\Rightarrow\ref{sync_max:lem:sets-differ-one:4a}$: 
+Since $q \in B$ and $p \notin B$
+we have $A \setminus B = (A \cup {q}) \setminus B = (B \cup \{p\}) \setminus B = \{p\}$.
+Similarly, we find $B \setminus A = \{q\}$.
+
+$\ref{sync_max:lem:sets-differ-one:4a}\Rightarrow\ref{sync_max:lem:sets-differ-one:5a}$: This follows since
+$A \cup B = A \cup (B \setminus A) = A \cup \{q\}$
+and $A \cap B = A \setminus (A \setminus B) = A \setminus \{p\}$.
+
+$\ref{sync_max:lem:sets-differ-one:5a} \Rightarrow\ref{sync_max:lem:sets-differ-one:2b}$:
+Since $A \cap B = A \setminus \{p\}$
+we have $A = ( A \setminus \{p\} ) \cup \{p\} = (A \cap B) \cup \{p\}$.
+Since $B \subseteq A \cup \{q\}$ and $q \in B \setminus A$,
+we have $B \setminus A = \{q\}$.
+This gives $B = (A \cap B) \cup (B \setminus A) = (A \cap B)\cup \{q\}$.
+
+$\ref{sync_max:lem:sets-differ-one:2b} \Rightarrow\ref{sync_max:lem:sets-differ-one:2a}$:
+Since $B = (A \cap B) \cup \{q\}$ and $q \notin A$ 
+we have $B \setminus\{q\} = A \cap B$.
+Thus $A = (A \cap B) \cup \{p\} = (B \setminus \{q\}) \cup \{p\}$.
+
+$\ref{sync_max:lem:sets-differ-one:2a}\Rightarrow\ref{sync_max:lem:sets-differ-one:3a}$:
+Since $p \notin B$, $A = ( B \setminus \{q\} ) \cup \{p\}$
+implies $A \setminus \{p\} = B \setminus \{q\}$.
+\end{proof}
+
+
+\begin{proposition} \label{sync_max:prop:ksets}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	be an automaton with at least $k+1$ 
+	states for $k \ge 3$
+	in which all pairs of distinct $k$-sets are distinguishable.
+	Then pairs of distinct $(k-1)$-sets
+	are distinguishable.
+\end{proposition}
+\begin{proof}
+	Let $A,B \subseteq Q$ be two distinct
+	$(k-1)$-sets. Then there exist
+	$p \in A \setminus B$ and $q \in B \setminus A$.
+	
+	First, suppose $A \cup \{q\} = B \cup \{p\}$.
+	In this case, by \cref{sync_max:lem:sets-differ-one},
+	we find $A \cap B \ne \emptyset$
+	and $|A \cup B| = k$.
+	Since $|Q| \ge k + 1$
+	there exists $s \in Q \setminus (A \cup B)$.
+	Then $A \ne B$
+	gives $A \cup \{s\} \ne B \cup \{s\}$
+	and so, by assumption, there exists $u \in \Sigma^*$
+	distinguishing these two $k$-sets.
+	By \cref{sync_max:lem:largersetsdist}, $u$
+	distinguishes also $A$ and~$B$.
+	
+	Next, suppose $A \cup \{q\} \ne B \cup \{p\}$.
+	By assumption, there exists a word $u$ distinguishing
+	$A  \cup \{q\}$ and $B  \cup \{p\}$.
+	Without loss of generality, suppose $\delta(A \cup \{q\}, u) = \{s\}$
+	for some $s \in Q$.
+	Thus $\delta(q, u) = \delta(p, u) = s$
+	and since $|\delta(B \cup \{p\}, u)| \ge 2$ 
+	we have $\delta(r, u) \ne s$ for some $r \in B \setminus \{q\}$.
+	Now, $q \in B$ and $r \in B$ 
+	give $\{\delta(q, u), \delta(r, u) \} \subseteq \delta(B, u)$
+	and so $|\delta(B, u)| \ge 2$.
+\end{proof}
+
+In automata with at most $k$ states, it is vacuously true
+that all pairs of distinct $k$-sets are distinguishable.
+Next, there exist automata (for example permutation automata)
+with $k$ states for $k \ge 3$ where pairs of distinct $(k-1)$-sets
+are indistinguishable.
+Thus, we have to assume $|Q| \ge k + 1$ in \cref{sync_max:prop:ksets}.
+Also, since two singleton sets are indistinguishable,
+a similar statement as \cref{sync_max:prop:ksets} is false for $k = 2$.
+
+\begin{proposition} \label{aut-sync-words:dist-sets:prop:intersection-k-sets}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ with 
+	$|Q| \ge k+2$ for $k \ge 2$. Then the following are equivalent.
+	
+	\begin{enumerate}	
+		\item \label{aut-sync-words:dist-sets:prop:intersection-k-sets:2} All pairs of $(k+1)$-sets
+		whose intersection has size~$k$	are distinguishable.		
+	
+	\item \label{aut-sync-words:dist-sets:prop:intersection-k-sets:1} All pairs of $(l+1)$-sets
+	whose intersection has size $1 \le l \le k$ are distinguishable.	
+		
+		\item \label{aut-sync-words:dist-sets:prop:intersection-k-sets:4} For distinct $A,B \subseteq Q$
+		with $2 \le |A| \le k$ and $|B \setminus A| \ge 2$
+		we have $|\delta(A, u)| = 1$ and $|\delta(B, u)| \ge 2$ for some $u \in \Sigma^*$,
+		and pairs of distinct $2$-sets with non-empty intersection are distinguishable.
+		
+		\item \label{aut-sync-words:dist-sets:prop:intersection-k-sets:5} For a $k$-set $A$ and $2$-set $B$
+		with $A\cap B = \emptyset$ there exists a word mapping $A$ to a singleton and~$B$ to a $2$-set,
+		and all pairs of distinct $2$-sets with non-empty intersection are distinguishable.
+		
+		\item \label{aut-sync-words:dist-sets:prop:intersection-k-sets:3} For distinct $p_1, \ldots, p_{k+2} \in Q$
+		there exists $u \in \Sigma^*$ such that $\delta(p_1, u) \ne \delta(p_{k+2}, u)$,
+		and $\delta(p_1, u) = \cdots = \delta(p_{k+1})$	or $\delta(p_2, u) = \cdots = \delta(p_{k+2}, u)$.		
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+$\ref{aut-sync-words:dist-sets:prop:intersection-k-sets:2} \Rightarrow \ref{aut-sync-words:dist-sets:prop:intersection-k-sets:1}$: 
+ Let $A,B \subseteq Q$ 
+ be two $(l+1)$-sets with $|A \cap B| = l$
+ for some $1 \le l \le k$.
+ Then $A = (A \cap B) \cup \{p\}$ 
+ and $B = (A \cap B) \cup \{q\}$
+ for some $p \in A \setminus B$
+ and some $q \in B \setminus A$.
+ Thus we have $A \cup B = (A \cap B) \cup \{p,q\}$,
+ which gives $|A\cup B| = l + 2$.
+ Since $|Q| \ge k + 2$
+ we can pick a $(k - l)$-set $C \subseteq Q \setminus ( A \cup B )$.
+ Then $A \cup C$ and $B \cup C$ are two distinct $(k+1)$-sets
+ whose intersection has size $k$.
+ Since these sets are distinguishable by assumption, 
+ by \cref{sync_max:lem:largersetsdist} we find that~$A$ and~$B$ are distinguishable.
+
+$\ref{aut-sync-words:dist-sets:prop:intersection-k-sets:1} \Rightarrow \ref{aut-sync-words:dist-sets:prop:intersection-k-sets:4}$: For $l = 1$
+ we find distinguishability of
+ distinct $2$-sets with non-empty intersection.
+ Next, let~$A,B \subseteq Q$ be as in the statement and $p,q \in B \setminus A$ be distinct.
+ The sets $A \cup \{p\}$
+ and $A \cup \{q\}$ are distinct with intersection~$A$
+ of size at most~$k$.
+ So, by assumption, distinguishable by some word~$u \in \Sigma^*$.
+ This yields $|\delta(A, u)| = 1$
+ and $\delta(p, u) \ne \delta(q, u)$
+ and so $|\delta(B, u)| \ge 2$.
+
+$\ref{aut-sync-words:dist-sets:prop:intersection-k-sets:4} \Rightarrow \ref{aut-sync-words:dist-sets:prop:intersection-k-sets:5}$: This is clear.
+
+$\ref{aut-sync-words:dist-sets:prop:intersection-k-sets:5} \Rightarrow \ref{aut-sync-words:dist-sets:prop:intersection-k-sets:3}$: Let $p_1, \ldots, p_{k+2} \in Q$ be distinct.
+ By considering $A = \{p_2, \ldots, p_{k+1}\}$ and $B = \{p_1, p_{k+2}\}$
+ we find that there exists $u \in \Sigma^*$
+ such that $\delta(p_2, u) = \cdots = \delta(p_{k+1}, u)$
+ and $\delta(p_1, u) \ne \delta(p_{k+2}, u)$.
+ For $\delta(p_2, u) \in \delta(B, u)$
+ we obtain the claim.
+ Otherwise, for $\delta(p_2, u) \notin \delta(B, u)$
+ we have distinct $2$-sets $\{\delta(p_1, u), \delta(p_2, u)\}$
+ and $\{\delta(p_{k+2}, u), \delta(p_2, u)\}$, which
+ are distinguishable by some word~$v \in \Sigma^*$.
+ In this case the word $uv$ fulfills the claim.	
+ 
+$\ref{aut-sync-words:dist-sets:prop:intersection-k-sets:3} \Rightarrow \ref{aut-sync-words:dist-sets:prop:intersection-k-sets:2}$: Given two distinct $(k+1)$-sets $A,B \subseteq Q$
+with $|A \cap B| = k$,
+we can apply the assumption to $A \cap B = \{p_2, \ldots, p_{k+1}\}$, $p_1 \in A \setminus (A \cap B)$,
+and $p_{k+2} \in B \setminus (A \cap B)$
+and obtain that $A$ and~$B$ are distinguishable.
+\end{proof}
+
+\begin{proposition} \label{aut-syncw:subset:prop:kplusone}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ with $|Q| > k \ge 2$. Then the following are equivalent.	
+	\begin{enumerate}		
+		\item  \label{aut-syncw:subset:prop:kplusone:1}  Two distinct $A,B \subseteq Q$ with $2 \le |A| \le k$ and $A \cap B \ne \emptyset$ are distinguishable.		
+		
+		\item  \label{aut-syncw:subset:prop:kplusone:2} Two distinct $A,B \subseteq Q$ with $|A| = k$ and $A \cap B \ne \emptyset$ are distinguishable.
+		
+		\item  \label{aut-syncw:subset:prop:kplusone:3} For a $k$-set $A \subseteq Q$ and $p \notin Q \setminus A$ the sets $A$ and $A \cup \{p\}$ are distinguishable.
+		
+		\item  \label{aut-syncw:subset:prop:kplusone:4} For distinct $k$-sets $A,B \subseteq Q$ with $A \cap B \ne \emptyset$ we have $|\delta(A, u)| = 1$ and $|\delta(B, u)| \ge 2$ for some $u \in \Sigma^*$.
+		
+		\item  \label{aut-syncw:subset:prop:kplusone:5} For $A \subseteq Q$ with $2 \le |A| \le k$ and $p \notin Q \setminus A$ the sets $A$ and $A \cup \{p\}$ are distinguishable.
+				
+		\item  \label{aut-syncw:subset:prop:kplusone:6} For $A,B \subseteq Q$ with $|A|,|B| \ge 2$ and $B\not\subseteq A$
+		where $|A| \le k$ and $|A| = k$ implies $A \cap B \ne \emptyset$
+		we have $|\delta(A, u)| = 1$ and $|\delta(B, u)| \ge 2$ for some $u \in \Sigma^*$.		
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+	$\ref{aut-syncw:subset:prop:kplusone:1} \Rightarrow \ref{aut-syncw:subset:prop:kplusone:2}$: This is clear.	
+	
+	$\ref{aut-syncw:subset:prop:kplusone:2} \Rightarrow \ref{aut-syncw:subset:prop:kplusone:3}$: This follows from the assumption with $A \cup \{p\}$ in the role of~$B$.
+	
+	$\ref{aut-syncw:subset:prop:kplusone:3} \Rightarrow \ref{aut-syncw:subset:prop:kplusone:4}$: Since $|A| = |B|$
+	there exists $p \in B \setminus A$.
+	Then a word distinguishing $A$ and $A \cup \{p\}$
+	maps $A$ to a singleton and $B$ to a set of size at least two
+	since $A \cap B \ne \emptyset$ and $p \in B$.
+	
+	$\ref{aut-syncw:subset:prop:kplusone:4} \Rightarrow \ref{aut-syncw:subset:prop:kplusone:5}$: Since $|Q| > k$
+	there exists $C \subseteq Q \setminus \{p\}$ such that $A \cup C$ is a $k$-set.
+	Set $D = ( ( A \cup C ) \setminus \{q\} ) \cup \{p\}$ for some $q \in A \cup C$.	
+	By assumption, there exists $u$ such that $\delta(A \cup C, u) = \{s\}$
+	and $|\delta(D, u)| \ge 2$. Then we must have $\delta(D, u) = \{s, \delta(p, u)\}$.
+	Since $A \cap D \ne \emptyset$,
+	this gives $\delta(A \cup \{p\}, u) = \{s, \delta(p, u)\}$.
+		
+	$\ref{aut-syncw:subset:prop:kplusone:5} \Rightarrow \ref{aut-syncw:subset:prop:kplusone:6}$: By assumption, 
+	there exist $p \in B \setminus A$ and $q \in B$ with $p \ne q$
+	such that $|A \cup\{q\}| \le k$.	
+	We find $u$ distinguishing $A \cup \{q\}$ and $A \cup \{q,p\}$.
+	This word must map~$A \cup \{q\}$ to a singleton and $p$ to a different state than those in~$A \cup \{q\}$.
+	Since $p,q \in B$, it maps $B$ to a set of size at least two.	
+	
+	$\ref{aut-syncw:subset:prop:kplusone:6} \Rightarrow \ref{aut-syncw:subset:prop:kplusone:1}$: By assumption, 
+	there exists $u$ mapping $A$ to a singleton and $A \cup B$ to a set of size at least two.
+	Since $A \cap B \ne \emptyset$, this word also maps~$B$ to a set of size at least two.
+\end{proof}
+
+Note that \crefitem{aut-syncw:subset:prop:kplusone}{aut-syncw:subset:prop:kplusone:3}
+implies that for non-disjoint $2$-sets $A,B$
+there exist two distinguishing words, one mapping $A$ to a singleton
+and another mapping~$B$ to a singleton, and for $k \ge 3$
+by \crefitem{aut-syncw:subset:prop:kplusone}{aut-syncw:subset:prop:kplusone:2},
+that for every pair of distinct $2$-sets $A,B$
+there exist two distinguishing words, each mapping a different
+set to a singleton.
+
+For the automaton from \cref{sync_max:ex:2-3-sets-not-implying-2-sets-pre},
+the conditions from \cref{aut-syncw:subset:prop:kplusone} hold
+for $k = 2$.
+
+\begin{example} \label{syncmax:ex:disj-non-disj-two-sets} \Cref{sync_max:fig:2-sets-disjoint-vs-nondisjoint} 
+	gives two examples showing that neither distinguishability of disjoint pairs of $2$-subsets
+	nor distinguishable of distinct non-disjoints pairs of $2$-subsets 
+	is sufficient for distinguishability of all pairs of $2$-subsets.
+	\Cref{sync_max:fig:2-3-sets-not-implying-2-sets} gives
+	another example where non-disjoint pairs of $2$-sets are distinguishable
+	but disjoint pairs of $2$-sets are indistinguishable.
+\end{example} 
+
+\begin{figure}[ht]
+	\centering
+	\begin{subfigure}[t]{0.5\textwidth}
+		\centering
+		\begin{tikzpicture}[node distance = 1cm and 1cm]
+			\node[state] (0) {$0$};
+			\node[state, below left  = of 0] (1) {$1$};
+			\node[state, below right = of 0] (2) {$2$};
+			\node[state, right       = of 0] (3) {$3$};
+			
+			\path[->] (1) edge [left] node {$a$} (0)
+			(2) edge [right] node {$a$} (0)
+			(0) edge [loop left] node {$a$} (0)
+			(3) edge [loop right] node {$a$} (3);
+		\end{tikzpicture}	
+		\caption{All disjoint pairs of $2$-sets are distinguishable, but $\{0,1\}$ is not distinguishable from $\{0,2\}$.}
+	\end{subfigure}%
+	\hfill
+	\begin{subfigure}[t]{0.45\textwidth}
+		\centering
+		\begin{tikzpicture}[node distance = 1.1cm and 1.5cm]
+			\node[state] (0) {$0$};
+			\node[state, right = of 0] (1) {$1$};
+			\node[state, below = of 1] (2) {$2$};
+			\node[state, left  = of 2] (3) {$3$};
+			
+			\path[->] (1) edge [bend left,above] node {$a$} (0)
+			(0) edge [loop left] node {$a$} (0)
+			(2) edge [above] node {$a,b$} (3)
+			(3) edge [loop left] node {$a$} (3);
+			
+			\path[->] (0) edge [bend left,above] node {$b$} (1)
+			(1) edge [right] node {$b$} (2)
+			(3) edge [left]  node {$b$} (0);
+		\end{tikzpicture}	
+		\caption{Pairs of distinct non-disjoint $2$-sets are distinguishable and pairs of
+			disjoint~$2$-sets are indistinguishable.}
+	\end{subfigure}		
+	\caption[Relations between disjoint and non-disjoint pairs of subsets w.r.t.~distinguishability]{Two 
+		automata showing that the properties 
+		of distinguishability of disjoint and non-disjoint $2$-sets do not imply each other, see \cref{syncmax:ex:disj-non-disj-two-sets}.		
+		
+	}	
+	\label{sync_max:fig:2-sets-disjoint-vs-nondisjoint}
+\end{figure}
+%
+% Noch Fall disjointer k-sets. Was dazu äquivalent?

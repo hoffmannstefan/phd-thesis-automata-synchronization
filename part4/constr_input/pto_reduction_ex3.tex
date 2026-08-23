@@ -1,0 +1,176 @@
+\begin{figure}[ht]
+\centering
+%	\begin{adjustbox}{center}
+		    \begin{tikzpicture}[transform shape,scale=0.65,shorten >=1pt,node distance=2cm and 3.5cm,on grid,auto, state/.style={circle, draw, minimum size=1.3cm, fill=black!5, thick}] % alternative: adding "minimum size=1.5" as option to each node
+			
+				% formula above the automaton
+				\node (clause_1) {\large$(x_1 \vee x_2)$};
+				\node[right=of clause_1] (clause_2) {\large $(x_1 \vee \neg x_2)$};
+				\node[right=of clause_2] (clause_dots) {$\wedge$};%{\small \dots};
+				\node[right=of clause_dots] (clause_{m-1}) {\large $(\neg x_1)$}; % \vee x_3)$};
+				\node[right=of clause_{m-1}] (clause_m) {\large $(x_1 \vee x_2)$};
+				% "Logical Or"-labeling-nodes of the formula over the automaton
+				\node (label_wedge_1) at ($(clause_1)!0.48!(clause_2)$) {$\wedge$}; % measurement of the length seems so start at the outermost points of the nodes, not from the mids => check it manually, especially if the node diameter changes
+				\node (label_wedge_2) at ($(clause_2)!0.52!(clause_dots)$) {};%{$\wedge$};
+				\node (label_wedge_{m-2}) at ($(clause_dots)!0.46!(clause_{m-1})$) {};%{$\wedge$};
+				\node (label_wedge_{m-1}) at ($(clause_{m-1})!0.535!(clause_m)$) {$\wedge$};
+				
+				% q_s
+				%\node[state, below=of clause_dots](q_s) {$q_s$};
+				
+				% column 3ff (node order has to be this way, because only known nodes can be referenced correctly - otherwise the positioning breaks)
+				%\node[below=of q_s] (q_{3ff,1}) {$\dots$};
+				\node[below=of clause_dots] (q_{3ff,0}) {};%{$\dots$};
+				\node[below=of q_{3ff,0}] (q_{3ff,1}) {};%{$\dots$};
+				\node[below=of q_{3ff,1}] (q_{3ff,2}) {};%{$\dots$};
+				\node[below=of q_{3ff,2}] (q_{3ff,3}) {};% {$\dots$};
+				
+				
+				% column 2
+				\node[state, left=of q_{3ff,0}] (q_{2,0}) {$q_{2,0}$};
+				\node[state, below=of q_{2,0}] (q_{2,1}) {$q_{2,1}$};
+				\node[state, below=of q_{2,1}] (q_{2,2}) {$q_{2,2}$};
+				\node[state, below=of q_{2,2}] (q_{2,3}) {$q_{2,3}$};
+			
+				
+				% column 1
+				\node[state, left=of q_{2,0}] (q_{1,0}) {$q_{1,0}$};
+				\node[state, left=of q_{2,1}] (q_{1,1}) {$q_{1,1}$};
+				\node[state, below=of q_{1,1}] (q_{1,2}) {$q_{1,2}$};
+				\node[state, below=of q_{1,2}] (q_{1,3}) {$q_{1,3}$};
+				
+				
+				% column n-1
+				\node[state, right=of q_{3ff,0}] (q_{m-1,0}) {$q_{3,1}$};
+				\node[state, below=of q_{m-1,0}] (q_{m-1,1}) {$q_{3,1}$};
+				\node[state, below=of q_{m-1,1}] (q_{m-1,2}) {$q_{3,2}$};
+				\node[state, below=of q_{m-1,2}] (q_{m-1,3}) {$q_{3,3}$};
+				
+				
+				% column n
+				\node[state, right=of q_{m-1,0}] (q_{m,0}) {$q_{4,0}$};
+				\node[state, below=of q_{m,0}] (q_{m,1}) {$q_{4,1}$};
+				\node[state, below=of q_{m,1}] (q_{m,2}) {$q_{4,2}$};
+				\node[state, below=of q_{m,2}] (q_{m,3}) {$q_{4,3}$};
+				
+				
+				% q_t 
+				%\node[state, below=of q_{3ff,n+1}](q_t) {$q_t$};
+				\node[state, below=of q_{3ff,3}](q_t) {$q_f$};
+			
+				
+				\path[use as bounding box] (0, 0) rectangle (0, 0); % (remove the border that arises through the invisible nodes, which are needed for the curves)
+				
+			
+				
+				% edges of column 2 (come first, so that the edges are drawn below the loops of column 1)
+				\path[->, every loop/.style={looseness=3}]
+				(q_{2,0}) edge (q_{2,1})
+				(q_{1,0}) edge (q_{1,1})
+				(q_{m-1,0}) edge (q_{m-1,1})
+				(q_{m,0}) edge (q_{m,1})
+				;
+				\path[->, every loop/.style={looseness=3}]
+				(q_{2,1})
+					edge[out=0, in=190, controls=+(180:1.2cm) and +(205:7.5cm)] (q_t)
+					edge[densely dashed] (q_{2,2})
+					%edge[-,draw=white,line width=7pt,loop right] node[line width = 3pt,draw=white,fill=white, text=white, ultra thin] {$\sigma_{k'}$} ()
+					edge[loop right,very thick,dotted] ()
+				(q_{2,2})
+					edge[densely dashed, out=0, in=180, controls=+(180:1.2cm) and +(205:6.85cm)] (q_t)
+					edge (q_{2,3})
+					%edge[-,draw=white,line width=7pt,loop right] node[line width = 3pt,draw=white,fill=white, text=white, ultra thin] {$\sigma_{k'}$} ()
+					%edge[loop right,gray,draw=black!25] node[] {$\sigma_{k'}$} ()
+					edge[very thick,dotted,out=0,in=140] (q_t)
+				(q_{2,3}) edge[very thick,dotted,out=330,in=200] (q_t)
+					;
+				
+				% edges of column 1 (loops go over the edges of column 2)
+				\path[->, every loop/.style={looseness=3}] % "text=gray"/usage of different grayscales to emphasize the text optically
+				(q_{1,1})
+					edge[out=0, in=240, controls=+(180:2cm) and +(200:12.5cm)] (q_t) % this notation works too
+					edge[densely dashed] (q_{1,2})
+				% 	edge[-,draw=white,line width=7pt,loop right] node[line width = 3pt,draw=white,fill=white, text=white, ultra thin] {$\sigma_{k'}$} () % the edge is drawn in white first to get a border around it, ...
+					edge[loop right,very thick,dotted] () % ... then the edge is drawn
+				(q_{1,2})
+					edge[out=0, in=230, controls=+(180:2cm) and +(200:11.25cm)] (q_t)
+					edge[densely dashed] (q_{1,3})
+				% 	edge[-,draw=white,line width=7pt,loop right] node[line width = 3pt,draw=white,fill=white, text=white, ultra thin] {$\sigma_{k'}$} ()
+				 %	edge[loop right,gray,draw=black!25] node[] {$\sigma_{k'}$} ()
+				%edge [very thick,dotted, out=0, in=240, controls=+(180:2cm) and +(200:12.5cm)] (q_t)
+				edge [very thick,dotted, out=320, in=200] (q_t)
+				(q_{1,3}) edge[very thick,dotted,out=330,in=200] (q_t)
+					;
+				
+				
+				% edges of column n-1
+				\path[->, every loop/.style={looseness=3}]
+				(q_{m-1,1})
+					edge[densely dashed, out=180, in=350, controls=+(0:1.2cm) and +(335:7.5cm)] (q_t)
+					edge (q_{m-1,2})
+					edge[-,draw=white,line width=7pt,loop left] node[line width = 3pt,draw=white,fill=white, text=white, ultra thin] {$\sigma_{k'}$} ()
+					edge[loop left,very thick,dotted] ()
+				(q_{m-1,2})
+					edge[bend right=10] (q_{m-1,3})
+					edge[densely dashed, bend left=10] (q_{m-1,3})
+				% 	edge[-,draw=white,line width=7pt,loop left] node[line width = 3pt,draw=white,fill=white, text=white, ultra thin] {$\sigma_{k'}$} ()
+				% 	edge[loop left,gray,draw=black!25] node[] {$\sigma_{k'}$} ()
+				    edge[very thick,dotted,out=180,in=35] (q_t)
+				(q_{m-1,3}) edge[very thick,dotted,out=180,in=35] (q_t)
+					;
+				
+				% edges of column n
+				\path[->, every loop/.style={looseness=3}]		
+				(q_{m,1})
+					edge[out=180,in=300, controls=+(0:2cm) and +(340:12.5cm)] (q_t)
+					edge[densely dashed] (q_{m,2})
+					edge[-,draw=white,line width=7pt,loop left] node[line width = 3pt,draw=white,fill=white, text=white, ultra thin] {$\sigma_{k'}$} ()
+				    edge[loop left,very thick,dotted] ()
+				(q_{m,2})
+					edge[out=180,in=310, controls=+(0:2cm) and +(340:11.25cm)] (q_t)
+					edge[densely dashed] (q_{m,3})
+					%edge[-,draw=white,line width=7pt,loop left] node[line width = 3pt,draw=white,fill=white, text=white, ultra thin] {$\sigma_{k'}$} ()
+					%edge[loop left,gray,draw=black!25] node[] {$\sigma_{k'}$} ()
+					edge[very thick,dotted,out=220,in=340] (q_t)
+				(q_{m,3}) edge[very thick,dotted,out=200,in=340] (q_t)
+				;
+				
+				
+				% edges emerging q_t
+				\path[->, every loop/.style={in=45, out=75}] (q_t) edge[densely dashed, loop above] ();
+				\path[->, every loop/.style={in=105, out=135}] (q_t) edge[loop above] ();
+				\path[->, every loop/.style={very thick,dotted}] (q_t) edge[loop below] ();
+				
+				\path[->, every loop/.style={in=225, out=255}] (q_{1,3}) edge[densely dashed, loop below] ();
+				\path[->, every loop/.style={in=225, out=255}] (q_{2,3}) edge[densely dashed, loop below] ();
+				\path[->, every loop/.style={in=225, out=255}] (q_{m-1,3}) edge[densely dashed, loop below] ();
+				\path[->, every loop/.style={in=225, out=255}] (q_{m,3}) edge[densely dashed, loop below] ();
+				
+				\path[->, every loop/.style={in=285, out=315}] (q_{1,3}) edge[loop above] ();
+				\path[->, every loop/.style={in=285, out=315}] (q_{2,3}) edge[loop above] ();
+				\path[->, every loop/.style={in=285, out=315}] (q_{m-1,3}) edge[loop above] ();
+				\path[->, every loop/.style={in=285, out=315}] (q_{m,3}) edge[loop above] ();
+				
+			    \path[->, every loop/.style={in=110, out=140}] (q_{1,0}) edge[very thick,dotted, loop below] ();
+				\path[->, every loop/.style={in=110, out=140}] (q_{2,0}) edge[very thick,dotted, loop below] ();
+				\path[->, every loop/.style={in=110, out=140}] (q_{m-1,0}) edge[very thick,dotted, loop below] ();
+				\path[->, every loop/.style={in=110, out=140}] (q_{m,0}) edge[very thick,dotted, loop below] ();
+				
+				\path[->, every loop/.style={in=40, out=70}] (q_{1,0}) edge[densely dashed,loop above] ();
+				\path[->, every loop/.style={in=40, out=70}] (q_{2,0}) edge[densely dashed,loop above] ();
+				\path[->, every loop/.style={in=40, out=70}] (q_{m-1,0}) edge[densely dashed,loop above] ();
+				\path[->, every loop/.style={in=40, out=70}] (q_{m,0}) edge[densely dashed,loop above] ();
+			\end{tikzpicture}
+		%	\end{adjustbox}
+		\vspace{11pt} 
+	\caption{Example for 
+	$(x_1 \lor x_2) \land (x_1 \lor \neg x_2)
+	\land (\neg x_1) \land (x_1 \lor x_2)$
+	of the reduction used in the proof
+	of Proposition~\ref{prop:np_complete_cases}
+	for $(a+b)^*c(b+c)^*$.
+	The $a$-transitions are drawn with dotted lines,
+	the $b$-transitions by solid lines and
+	the $c$-transitions by dashed lines. The self-loops at the $q_{i,1}$'s could also be changed to transitions ending in $q_f$.}
+	\label{fig:a_plus_b_c_b_plus_c}	
+\end{figure}

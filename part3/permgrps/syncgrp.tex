@@ -1,0 +1,289 @@
+%!TEX root = ./../../springer-mono-format/book.tex
+%!TEX root = ./../../thesis-trier.tex
+
+\IN{synchronizing!group}
+\IN{section-regular partition}
+\IN{trivial section-regular partitions}
+
+Let $G \le_G \mathcal S_n$.
+We call $G$ \emph{synchronizing}~\cite{ArnoldS06} 
+if it synchronizes every non-permutation. 
+A partition $P_1, \ldots, P_m$ of $[n]$ is called
+\emph{section-regular}~\cite{Neumann09} 
+for~$G$ if there exists a subset $S\subseteq [n]$
+that is a section for each partition of the form
+ $\applyfunc{P_1}{g}, \ldots, \applyfunc{P_m}{g}$
+where $g \in G$. Equivalently
+for each $g \in G$ the set $\applyfunc{S}{g}$ 
+is a section of $P_1, \ldots, P_m$.
+
+\begin{theorem}[{Neumann~\cite[Note 6.1]{Neumann09}}]
+\label{sync_max:thm:sync_equals_no_sect_regular}
+	A permutation group $G \le_G \mathcal S_n$ is synchronizing
+	if and only if there exists no non-trivial section-regular
+	partition for $G$. 
+\end{theorem}
+
+Next, we show that synchronizing groups lie between the $2$-homogeneous and primitive groups.
+
+\begin{proposition}
+\label{sync_max:prop:sync-between}
+\begin{enumerate}
+\item \label{sync_max:prop:sync-between:1} (Arnold and Steinberg~\cite{ArnoldS06}) A synchronizing group is primitive.
+
+\item \label{sync_max:prop:sync-between:2} Every $2$-homogeneous group 
+is synchronizing.
+
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+\ref{sync_max:prop:sync-between:1}:	This follows since a system of blocks is a section-regular partition
+(for every section).
+
+\ref{sync_max:prop:sync-between:2}:  Let $t \colon [n] \to [n]$
+ be a transformation such that $t(a) = t(b)$ for distinct $a,b \in [n]$.
+ As $G$ is $2$-homogeneous, for distinct $c,d \in [n]$
+ there exists $g \in G$
+ such that $\applyfunc{\{c,d\}}{g} = \{a,b\}$.
+ So,  $\concat{g}{t}$ maps $\{c,d\}$ to a singleton set.
+ Thus, every pair of states can be mapped to a singleton set.
+ By the transformation semigroup version
+ of the pair criterion (\cref{prelim:thm:pair_sync_condition} and \cref{prelim:remarks_trans_semigrp_semiautomata})
+ we find that every $2$-homogeneous group 
+ is synchronizing.
+\end{proof}
+
+\begin{example}
+	Let $n \ge 4$
+	and  $G = \langle (0 ~ 1 ~ \ldots ~ n - 1) \rangle_G$.
+    Then $G$ is synchronizing if and only if~$n$ is prime.
+	For assume~$n$ is prime
+	and suppose $P_1, \ldots, P_m$ is a section-regular partition
+	witnessed by $S \subseteq [n]$.
+	Let $i \in \{1,\ldots,m\}$.
+	For $y \in P_i$ 
+	set 
+	\[
+	 R_y = \{ g \in G \mid \exists s \in S \colon \applyfunc{s}{g} = y \}.
+	\]
+	Then $G = \bigcup_{y \in P_i} R_y$
+	and $R_y \cap R_{y'} = \emptyset$
+	for distinct $y, y' \in P_i$.
+	As $G$ is a regular permutation group, for $s \in S$ and $y \in P_i$
+	there exists precisely one $g \in G$
+	with $g(s) = y$.
+	So, $|R_y| = |S|$, which
+	gives $n = |G| = |S||P_i|$.
+	As~$n$ is prime, $|P_i| \in \{1,n\}$.
+	Hence, the partition is trivial.
+	By \cref{sync_max:thm:sync_equals_no_sect_regular}, $G$ is synchronizing.
+	Conversely, assume $n = rm$ for $0 < r,m < n$.
+	Then $\Delta = \{ a \in [n] \mid a \equiv 0 \pmod{r} \}$
+	is a non-trivial block.
+	So, by \cref{sync_max:prop:sync-between:1} of \cref{sync_max:prop:sync-between}, $G$ 
+	is not synchronizing.
+\end{example}
+
+Ara\'{u}jo asked whether the synchronizing groups are properly contained
+inside the primitive groups (see the introduction of~\cite{Neumann09}).
+This was answered affirmatively
+by Neumann~\cite{Neumann09}.
+The next example giving a non-synchronizing primitive group is due to Neumann~\cite[Ex.~3.3]{Neumann09}.
+
+\begin{example}[{Neumann~\cite[Ex.~3.3]{Neumann09}}]
+\label{sync_max:ex:prim_not_sync}
+ Set $G = \mathcal A_5 \times \mathcal A_5$.
+ It is well-known~\cite{cameron_1999,dixon1996permutation}
+ that~$\mathcal A_5$ is simple and $Z(\mathcal A_5) = \{ \operatorname{id}_{[5]} \}$
+ (recall that 
+ $Z(G) = \{ g \in G \mid \forall h \in G \colon hg = gh \}$
+ for a group~$G$, see page~\pageref{def:center}).
+ By \cref{prelim:prop:diagonal_action},
+ the representation of~$G$ by the diagonal action $G^D$
+ as a permutation group on~$\mathcal A_5$ is primitive.
+ Let~ $U$ be the point stabilizer subgroup of~$5$ in~$\mathcal A_5$, which
+ is isomorphic to $\mathcal A_4$.
+ Set $g = (0 ~ 1 ~ 2 ~ 3 ~ 4)$.
+ 
+ Let $y \in G$. By \cref{prelim:eqn:stab}, $U^y$ is the point stabilizer of $y(5)$.
+ By \cref{prelim:coset-point-stab}, 
+ the sets $g^i U^y$ for $i \in \{0,1,2,3,4\}$ are all the left cosets of $U^y$.
+ Thus, the set $S = \{\operatorname{id}_{[5]}, g, g^2, g^3, g^4 \}$
+ is a section for the partition induced by all these cosets.
+ Since for $i \in \{0,1,2,3,4\}$ and $(x,y) \in G$ we have
+ $xg^iUy^{-1} = xy^{-1} (g^y)^i U^y$, the sets
+ \[
+ x U y^{-1}, x gU y^{-1}, x g^2 U y^{-1}, x g^3 U y^{-1}, x g^4 U y^{-1}
+ \]
+ are all the left cosets of $U^y$.
+ So, the partition into left cosets of~$U$
+ is section-regular for $G^D$. Thus, $G^D$ is not synchronizing.
+\end{example}
+
+McAlister~\cite{mcalister1998semigroups} (see also \cite[Thm. 8.2]{ArCamSt2017})
+proved that a permutation group $G$
+is $2$-homogenous if and only 
+if $\langle G \cup \{t\}\rangle_S$
+contains every non-permutation
+for any $t \colon [n]\to [n]$ of defect one.
+Next, we give a different characterization for $k$-homogeneity in \cref{lem:k_hom_char}.
+This characterization was given in~\cite[Lem.~4.1]{HoffmannLATAextended2}.
+Then, in \cref{thm:all-n-minus-k-sets-reachable}, 
+we characterize those groups on domains of size~$n$
+in which all subsets of size $n - i\cdot k$ are reachable
+when adjoining a transformation of defect~$k$.
+As a sufficient condition for subset reachability in the special case $k = 2$
+this was proved in~\cite[Prop.~4.2]{HoffmannLATAextended2}.
+
+\begin{proposition} \label{lem:k_hom_char}
+	Let $G \le_G \mathcal S_n$ and $1 \le k \le n - 1$. Then the following are equivalent.
+	\begin{enumerate}
+		\item \label{cond:hom} $G$ is $k$-homogeneous.
+		
+		\item \label{cond:any_f} Every $(n-k)$-set is reachable in $\langle G \cup \{t\} \rangle_S$ for every $t \colon [n] \to [n]$ of defect $k$.
+		
+		\item \label{cond:some_f} Every $(n-k)$-set	is reachable in $\langle G \cup \{t\} \rangle_S$ for some $t \colon [n] \to [n]$ of defect $k$.
+		
+		\item \label{cond:any_f_k} Every $k$-set is reachable in $\langle G \cup \{t\} \rangle_S$ for every $t \colon [n] \to [n]$ of rank $k$.
+		
+		\item \label{cond:some_f_k} Every $k$-set is reachable in $\langle G \cup \{t\} \rangle_S$ for some $t \colon [n] \to [n]$ of rank $k$.
+	\end{enumerate}		
+\end{proposition}
+\begin{proof}	
+	We first show that \cref{cond:hom,cond:any_f,cond:some_f} are equivalent.
+	Since $k$-homogeneity is equivalent to $(n-k)$-homogeneity, and $t$ has defect~$n-k$
+	if and only if it has rank~$k$, it then follows that
+	\cref{cond:hom,cond:any_f_k,cond:some_f_k} are also equivalent.
+	
+	$\ref{cond:hom} \Rightarrow \ref{cond:any_f}$:
+	Let $A \subseteq [n]$ be of size $n-k$.
+	Since $G$ is $k$-homogeneous, there exists $g \in G$ such that
+	$
+	[n] \setminus A = g\bigl([n] \setminus t([n])\bigr).
+	$
+	Consequently,
+	$
+	A = g(t([n])).
+	$
+	
+	$\ref{cond:any_f} \Rightarrow \ref{cond:some_f}$:
+	This is clear.
+	
+	$\ref{cond:some_f} \Rightarrow \ref{cond:hom}$:
+	Let $A \subseteq [n]$ be of size $n-k$.
+	By assumption, and since $|A| < n$, there exist
+	$h \in \langle G \cup \{t\} \rangle_S$ and $g \in G$ such that
+	\[
+	A = g(t(h([n]))).
+	\]
+	Hence,
+	$
+	|t(h([n]))| = n-k.
+	$
+	Since $t(h([n])) \subseteq t([n])$ and $|t([n])| = n-k$, we must have
+	$
+	t(h([n])) = t([n]).
+	$
+	Therefore, every $(n-k)$-subset of $[n]$ is the image of $t([n])$ under an element
+	of~$G$. Thus $G$ is $(n-k)$-homogeneous, and hence $k$-homogeneous.
+\end{proof}
+
+\begin{corollary} \label{cor:k_hom_char}
+	Let $G \le_G \mathcal S_n$ be a permutation group and $2 \le k < n$.	
+	Suppose for each  $t \colon [n] \to [n]$ of defect $k$,
+	all subsets of size at most $n - k$ are reachable
+	in $\langle G \cup \{t\} \rangle_S$.
+	Then $G$ is $k$-homogeneous.
+\end{corollary}
+
+\begin{theorem}\label{thm:all-n-minus-k-sets-reachable}
+	Let $G \le_G \mathcal S_n$ be a permutation group and let $1 \le k < n$.
+	Then the following are equivalent:
+	\begin{enumerate}
+		\item
+		For every [idempotent] one-point singular
+		$t \colon [n] \to [n]$ of defect~$k$,
+		all subsets of size $n-ik$ for
+		$1 \le i < \frac{n}{k}$ are reachable in
+		$\langle G \cup \{t\} \rangle_S$.
+		
+		\item
+		For distinct
+		$a_1,\ldots,a_{k+1}\in[n]$
+		and every subset $A\subseteq[n]$ of size
+		$n-ik$ for $1 \le i < \frac{n}{k}$,
+		there exists $g\in G$ such that
+		$a_1\in g(A)$ and
+		$\{a_2,\ldots,a_{k+1}\}\cap g(A)=\emptyset$.
+	\end{enumerate}
+\end{theorem}
+\begin{proof}	
+	Let $t \colon [n] \to [n]$ be a one-point singular of defect $k$.
+	Consider $A \subseteq [n]$ with $|A| = n - ik$ for some $1 \le i < \frac{n}{k}$.
+	We proceed by induction on~$i$.
+		
+	Suppose first that $i = 1$.
+	Since $\excl{t}$ is a $k$-set,
+	by assumption, we have $\excl{t} \cap g(A) = \emptyset$ for some $g \in G$.
+	As $|A| = n - k$, this gives $g(A) = t([n])$.
+	Thus $A = g^{-1}(t([n]))$.
+	
+	Next, suppose $i > 1$. Let $\dupl{t} = \{c\}$.
+	By assumption, there exists $g \in G$ such that
+	\[
+	c \in g(A)
+	\quad\text{and}\quad
+	\excl{t} \cap g(A) = \emptyset.
+	\]
+	Observe the following.
+    
+    \begin{enumerate}
+    \item By \cref{prop:char-one-attractor}, since~$t$ is a one-point singular of defect~$k$,
+    we have $c = t(a_1) = \cdots = t(a_{k})$ for $k$ distinct points $a_1, \ldots, a_k \in [n]$.
+      
+    \item 
+    Since $g(A)$ contains no point of $\excl{t}$,
+    every point of $g(A)$ lies in $t([n])$.
+    Hence, for every $a \in A$ with $g(a) \neq c$,
+    there exists $b \in [n]$ such that
+    $g(a) = t(b)$.
+    \end{enumerate}
+    Both conditions yield that $B = t^{-1}(g(A))$ has size $|A| + k$
+	and satisfies $t(B) = g(A)$.
+	By the induction hypothesis, we have $B = h([n])$
+	for some $h \in \langle G \cup \{t\} \rangle_S$.
+	Hence, we find $A = g^{-1}(t(h([n])))$.		
+	
+	Conversely, let $a_1, \ldots, a_{k+1} \in [n]$ be distinct and 
+	$A \subseteq [n]$ with $|A| = n - ik$ for some $1 \le i < \frac{n}{k}$.
+	Consider the idempotent one-point singular of defect~$k$
+	such that
+	\[
+	t(a_1)=t(a_2)=\cdots=t(a_{k+1})=a_1.
+	\]
+	Since~$A$ is reachable in $\langle G \cup \{t\} \rangle_S$
+	and $A \ne [n]$,
+	we have $A = g(t(h([n])))$
+	for some $g \in G$ and $h \in \langle G \cup \{t\} \rangle_S$.
+ 	Since a permutation maps $[n]$ to itself, 	
+ 	we may assume $h = g_1 t \cdots t g_m t$
+	for some $g_1, \ldots, g_m \in G$, where $m \ge 0$ is minimal.	
+	We have $a_1 \in t(h([n]))$, since otherwise, none
+	of the points $a_1, \ldots, a_{k+1}$ is in $h([n])$
+	and so $t$ acts as the identity on the remaining points.
+	In this case, $A = g(h([n]))$, contradicting the minimal
+	choice of~$m$.
+	Since $\excl{t} = \{a_2, \ldots, a_{k+1}\}$,
+	none of these points belongs to $t(h([n]))$.
+	Therefore,
+	\[
+	a_1\in g^{-1}(A)
+	\quad\text{and}\quad
+	\{a_2,\ldots,a_{k+1}\}\cap g^{-1}(A)=\emptyset,
+	\]
+	as required.
+\end{proof}
+
+Note that for $k=1$, \cref{thm:all-n-minus-k-sets-reachable}
+reduces to \cref{sync_max:thm:prim_char:partition}
+of \cref{sync_max:thm:prim_orbitals}.

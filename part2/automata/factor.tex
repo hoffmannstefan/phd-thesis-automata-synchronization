@@ -1,0 +1,154 @@
+%!TEX root = ./../../thesis-trier.tex
+
+\IN{factor (semi-)automaton} \label{def:factor_aut}
+Let $\semiautomat{A}{Q}{\Sigma}{\delta}$. Suppose $\sim$ is a $\TS{\mathcal A}$-congruence. 
+Equivalently, for every $p,q \in Q$ and $x \in \Sigma$,
+we have
+\begin{equation}\label{prelim:eqn:TS-congruence}
+	p \sim q \Rightarrow \applytrans{\delta}{p}{x} \sim \applytrans{\delta}{q}{x}.
+\end{equation}
+The \emph{quotient automaton} is $\semiautomat{A / {\sim}}{Q / {\sim}}{\Sigma}{\delta_{\sim}}$ 
+with the well-defined transition function $\applytrans{\delta_{\sim}}{[q]_{\sim}}{x} = [\applytrans{\delta}{q}{x}]_{\sim}$
+for all $x \in \Sigma$ and~$q \in Q$.
+
+The next two statements connect $\TS{\mathcal A}$-congruences, quotient automata, the kernel relation, and morphisms
+in the following way: $\TS{\mathcal A}$-congruences
+correspond to surjective morphisms onto quotient automata
+via the canonical morphism (\cref{prelim:prop:congruence_induces_morphism}), and surjective morphisms
+correspond to $\TS{\mathcal A}$-congruences via the kernel relation (\cref{prelim:thm:homtheorem}).
+
+\IN{canonical morphism}
+In view of~\cref{prelim:prop:congruence_induces_morphism}, in this context we also call $\pi_{\sim}$
+the \emph{canonical morphism (for~$\sim$)} 
+from $\mathcal A$ onto $\mathcal A / {\sim}$. 
+
+\begin{theorem}
+	\label{prelim:prop:congruence_induces_morphism}
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	with $\TS{\mathcal A}$-congruence $\sim$ on $\mathcal A$.
+    Then the canonical projection map $\pi_{\sim} \colon Q \to Q / {\sim}$ from \cref{def:canprojmap}
+    is a surjective morphism whose kernel relation equals~$\sim$.
+\end{theorem}
+\begin{proof}
+	Clearly, $\pi_{\sim}$ is surjective and its kernel relation equals $\sim$.
+	It is a morphism since by definition of $\mathcal A / {\sim}$
+	we have $\delta_{\sim}(\pi_{\sim}(q), x) = \pi_{\sim}(\delta(q, x))$
+	for $q \in Q$ and $x \in \Sigma$.
+\end{proof}
+
+\begin{theorem} 
+	\label{prelim:thm:homtheorem}
+	Let $\varphi \colon Q \to S$ be a morphism
+	between the automata $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	and $\semiautomat{B}{S}{\Sigma}{\mu}$.
+	Then the following is true:
+	\begin{enumerate} 
+	\item \label{prelim:thm:homtheorem:1} $\applyfunc{Q}{\varphi}$ is an upper set in $\mathcal B$,
+	
+	\item \label{prelim:thm:homtheorem:2} the kernel relation $\sim_{\varphi}$
+	is a $\TS{\mathcal A}$-congruence,
+	
+	\item \label{prelim:thm:homtheorem:3} $[q]_{\sim_{\varphi}} \mapsto \applyfunc{q}{\varphi}$, $q \in Q$,
+	is a well-defined isomorphism between
+	$\mathcal A / {\sim_{\varphi}}$ and~$\mathcal B_{|\applyfunc{Q}{\varphi}}$.
+	\end{enumerate}
+\end{theorem}
+\begin{proof}
+\ref{prelim:thm:homtheorem:1}: This follows from \crefitem{prelim:automata:morpisms:reachability:prop:images}{prelim:automata:morpisms:reachability:prop:images:preservation}.
+
+\ref{prelim:thm:homtheorem:2}: Suppose $p \sim_{\varphi} q$ for $p,q \in Q$.
+ Then we have $\varphi(p) = \varphi(q)$.
+ Since $\varphi$ is a morphism,
+ we find $\varphi(\delta(p, x)) = \mu(\varphi(p), x) = \mu(\varphi(q), x) = \varphi(\delta(q, x))$,
+ and so $\delta(p, x) \sim_{\varphi} \delta(q, x)$, i.e., $\sim_{\varphi}$
+ is a $\TS{\mathcal A}$-congruence.
+ 
+\ref{prelim:thm:homtheorem:3}: Well-definedness follows from the definition of the kernel relation.
+ Now $\delta_{\sim_{\varphi}}([q]_{\sim_{\varphi}}, x) = [\delta(q, x)]_{\sim_{\varphi}}$ 
+ is mapped to $\varphi(\delta(q, x))$
+ and $[q]_{\sim_{\varphi}}$ is mapped to $\varphi(q)$.
+ Since $\mu(\varphi(q), x) = \varphi(\delta(q, x))$,
+ we obtain that the mapping is a morphism
+ as we arrive at the same result when applying first a letter and then the mapping,
+ or when first applying the mapping and then a letter.
+ The mapping clearly maps onto $\mathcal B_{|\varphi(Q)}$.
+\end{proof}
+
+A similar statement as \cref{prelim:thm:homtheorem} in the theory of groups is often called the 
+homomorphism theorem, for example, see~\cite[Sect.~1.2.5]{Kurzweil04}.
+\Cref{prelim:thm:homtheorem} states that morphisms composed along paths in the following diagram
+ending at the same point are equal.
+\[
+\begin{tikzcd}[row sep=1.3cm, column sep=2.5cm]
+	Q \arrow{r}{q \mapsto [q]_{\sim_{\varphi}}}
+	\arrow[swap,
+	start anchor={[shift={(-3pt,3pt)}]south east}, % fine tune start of arrow
+	end anchor={[shift={(2pt,-4pt)}]north west} % fine tune end of arrow
+	]{dr}{\varphi}
+	& Q / {\sim_{\varphi}} \arrow{d}{[q]_{\sim_{\varphi}} \mapsto \varphi(q)} \\
+	& \varphi(Q) 
+\end{tikzcd}
+\]
+
+\begin{corollary}	\label{prelim:cor:homtheorem}
+	Let $\varphi \colon Q \to S$ be a morphism
+	between the automata $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	and $\semiautomat{B}{S}{\Sigma}{\mu}$ with $Q \ne \emptyset$.
+	If $\mathcal B$ is strongly connected, 
+	then $\applyfunc{Q}{\varphi} = S$, i.e., $\varphi$ is surjective. So $\mathcal A / {\sim_{\varphi}} \cong \mathcal B$. 
+	In particular, for $\mathcal A = \mathcal B$,
+	by finiteness, $\varphi$ is an isomorphism.	
+\end{corollary}
+
+\begin{corollary}
+  Suppose $\semiautomat{A}{Q}{\Sigma}{\delta}$ admits
+  no non-trivial $\TS{\mathcal A}$-congruence.
+  Then every morphism from $\mathcal A$ into another automaton
+  is either injective or constant.  
+\end{corollary}
+\begin{proof}
+  For a morphism into another automaton, its kernel relation
+  is a $\TS{\mathcal A}$-congruence by \crefitem{prelim:thm:homtheorem}{prelim:thm:homtheorem:2}.
+  So it either equals the universal relation, and so the morphism
+  is a constant, or the equality relation, and so the morphism is injective.  
+\end{proof}
+
+Next, we show a condition to obtain a morphism from two morphisms
+from the same automaton. The proof is straightforward and omitted.
+
+\begin{theorem}
+	\label{prelim:thm:homsfactorthrough}
+	Let $\varphi \colon Q \to S$
+	and $\psi \colon Q \to T$
+	be morphisms
+	from $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	to $\semiautomat{B}{S}{\Sigma}{\mu}$
+	and $\semiautomat{C}{T}{\Sigma}{\xi}$, respectively.
+	Suppose $\sim_{\varphi}$ refines $\sim_{\psi}$.
+	Then $\varphi(q) \mapsto \psi(q)$
+	is a well-defined surjective morphisms
+	from $\mathcal B_{|\varphi(Q)}$
+	onto $\mathcal C_{|\psi(Q)}$.
+\end{theorem}
+
+By \crefitem{prelim:thm:homtheorem}{prelim:thm:homtheorem:3},
+$\mathcal A / {\sim_{\varphi}} \cong \mathcal B_{|\varphi(Q)}$
+and $\mathcal A / {\sim_{\psi}} \cong \mathcal C_{|\psi(Q)}$
+in \cref{prelim:thm:homsfactorthrough}. 
+In the same way as for \cref{prelim:thm:homtheorem}, the situation from \cref{prelim:thm:homsfactorthrough} is illustrated in the following diagram.
+\[
+\begin{tikzcd}[column sep=1.3cm, row sep=1.3cm]
+	& Q \arrow[dl, swap, "\varphi"] \arrow[dr, "\psi"] & \\
+	S \arrow{rr}{\varphi(q) \mapsto \varphi(q)} & & T
+\end{tikzcd}
+\]
+
+\begin{corollary}
+ Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ and $\semiautomat{B}{S}{\Sigma}{\mu}$
+ with $\sim_{\mathcal A}$ and $\sim_{\mathcal B}$
+ being $\TS{\mathcal A}$- and $\TS{\mathcal B}$-congruences, respectively.
+ If $\sim_{\mathcal A}$ refines $\sim_{\mathcal B}$,
+ then $[q]_{\sim_{\mathcal A}} \mapsto [q]_{\sim_{\mathcal B}}$
+ is a morphism from $\mathcal A / {\sim_{\mathcal A}}$
+ into $\mathcal B  / {\sim_{\mathcal B}}$.	
+\end{corollary}

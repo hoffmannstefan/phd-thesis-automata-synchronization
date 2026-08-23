@@ -1,0 +1,126 @@
+%!TEX root = ./springer-mono-format/book.tex
+%!TEX root = ./thesis-trier.tex
+
+
+\begin{figure}[htb]
+	\centering
+	
+	%--------------------------------------------------------------- row 1
+	\begin{subfigure}[t]{.48\textwidth}
+		\centering
+		\scalebox{0.8}{%
+			\begin{tikzpicture}[
+				baseline=(current bounding box.north),
+				node distance=2.4em
+				]
+				\node[state]              (1) {};
+				\node[state, right=of 1]  (2) {};
+				\node[state, right=of 2]  (3) {};
+				
+				\path
+				(1) edge node[above] {$a$} (2)
+				(2) edge node[above] {$b$} (3);
+			\end{tikzpicture}%
+		}
+		\caption{Three states, with a trap state.}
+		\label{prelim:fig:three-state-sync-binary-SI-a}
+	\end{subfigure}\hfill
+	\begin{subfigure}[t]{.48\textwidth}
+		\centering
+		\scalebox{0.8}{%
+			\begin{tikzpicture}[
+				baseline=(current bounding box.north),
+				node distance=2.4em
+				]
+				\node[state]              (1) {};
+				\node[state, left=of 1]   (2) {};
+				\node[state, right=of 1]  (3) {};
+				
+				\path
+				(2) edge node[above] {$a$} (1)
+				(3) edge node[above] {$b$} (1);
+			\end{tikzpicture}%
+		}
+		\caption{Three states, both letters merging.}
+		\label{prelim:fig:three-state-sync-binary-SI-b}
+	\end{subfigure}
+	
+	\medskip
+	
+	%--------------------------------------------------------------- row 2
+	\begin{subfigure}[t]{.48\textwidth}
+		\centering
+		\scalebox{0.8}{%
+			\begin{tikzpicture}[
+				%baseline=(current bounding box.north),
+				node distance=4.5em
+				]
+				\def\R{7em}
+				\useasboundingbox (-7.8em,-8.0em) rectangle (11.6em,8.0em);
+				
+				\foreach \name/\angle/\text in
+				{A1/0/s,A2/45/,A3/90/,A4/135/,A5/180/,A6/225/,A8/315/}
+				{
+					\node[state] (\name) at (\angle:\R) {$\text$};
+				}
+				
+				\node[state,right of=A1] (t) {$t$};
+				
+				
+				
+				\path
+				(A6) edge node[auto] {$b$} (A5)
+				(A5) edge node[auto] {$b$} (A4)
+				(A4) edge node[auto] {$b$} (A3)
+				(A3) edge node[auto] {$b$} (A2)
+				(A2) edge node[auto] {$b$} (A1)
+				(A1) edge node[auto] {$b$} (A8)
+				(A1) edge node[above] {$a$} (t);
+				%(t)  edge[loop above] node {$a,b$} (t);
+				
+				\node at (270:\R) {\large$\cdots$};
+			\end{tikzpicture}%
+		}
+		\caption{Binary synchronizing SI-automaton with a trap state.}
+		\label{prelim:fig:binarySI-sync-trap}
+	\end{subfigure}\hfill
+	\begin{subfigure}[t]{.48\textwidth}
+		\centering
+		\scalebox{0.8}{%
+			\begin{tikzpicture}[
+				%baseline=(current bounding box.north),
+				]
+				\useasboundingbox (-7.8em,-8.0em) rectangle (11.6em,8.0em);
+				\def\R{7em}
+				
+				\foreach \name/\angle/\text in
+				{A1/0/,A2/45/,A3/90/,A4/135/,A5/180/t,A6/225/,A7/270/,A8/315/s}
+				{
+					\node[state] (\name) at (\angle:\R) {$\text$};
+				}			
+				
+				\path
+				(A1) edge node[auto] {$b$} (A8)
+				(A7) edge node[auto] {$b$} (A6)
+				(A6) edge node[auto] {$b$} (A5)
+				(A5) edge node[auto] {$b$} (A4)
+				(A3) edge node[auto] {$b$} (A2)
+				(A2) edge node[auto] {$b$} (A1);
+				
+                \draw (A8) edge [auto] node {$a$} (A5);
+				
+				\node[rotate=22.5] at (292.5:\R) {\large$\cdots$};
+				\node[rotate=202.5] at (112.5:\R) {\large$\cdots$};
+			\end{tikzpicture}%
+		}
+		\caption{Strongly connected binary synchronizing SI-automaton where
+			$\applytrans{\delta}{s}{b^d}=t$.}
+		\label{prelim:fig:binarySI-sync-SCC}
+	\end{subfigure}
+	
+	\caption[Synchronizing binary SI-automata]{Synchronizing binary SI-automata (self-loops omitted)
+		as listed in \cref{prop:structure_simp_idem_binary}.
+		Note that, in \cref{prelim:fig:binarySI-sync-SCC}, for $d=1$ we obtain the \Cerny family.}
+	\label{prelim:fig:three-state-sync-binary-SI}
+	\label{fig:theorem}
+\end{figure}

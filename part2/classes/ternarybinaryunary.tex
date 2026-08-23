@@ -1,0 +1,70 @@
+%!TEX root = ./../../thesis-trier.tex
+
+The following tight bound on shortest words of rank $r$ in unary automata
+is probably folklore. For completeness, we give a short proof.
+
+\begin{proposition}
+	\label{prelim:prop:unary_bound}
+	Let $\semiautomat{A}{Q}{\{a\}}{\delta}$
+	be an $n$-state unary automaton.
+	If there exists a word of rank $r$ in $\mathcal A$,
+	then there exists a word of length at most $n - r$
+	with rank equal to~$r$,	and this bound is tight
+	even in unary automata where~$r$ is the minimal rank among all words. 
+\end{proposition}
+\begin{proof} 
+	Suppose we have $r = |\delta(Q, a^i)|$
+	for some $i \ge 0$.
+	Then, by \cref{prelim:word_in_PA},
+	there exists  $0 \le j \le  n - r$
+	such that $r = |\delta(Q, a^j)|$.
+	Tightness for $1 \le r < n$ is shown
+	by $\semiautomat{A_n}{\{q_1,\ldots,q_n\}}{\{a\}}{\delta}$
+	with $\applytrans{\delta}{q_i}{a} = q_{\min\{i+1,n-r\}}$
+	for $i \in \{1,\ldots,n-r\}$ and $\applytrans{\delta}{q_i}{a} = q_i$
+	for $i \in \{n-r+1,\ldots,n\}$ (see \cref{prelim:fig:unary_tight}).    
+    Alternatively, the automata family $\semiautomat{B_{n}}{\{1\ldots,n\}}{\{a\}}{\delta}$
+	with $\delta(i, a) = \min\{i+1,n\}$
+	has $a^{n-r}$ as the shortest word of rank at most~$r$
+	with $\delta(\{1,\ldots,n\}, a^{n-r}) = \{n - r + 1, n - r + 2, \ldots, n\}$.
+\end{proof}
+
+\begin{figure}[h]
+	\centering 
+	\begin{tikzpicture}
+		\tikzstyle{every state}=[blur shadow,fill={rgb:black,0.4;white,10},
+		inner sep=7pt, minimum size=0.5cm]
+		\node[state,label=below:$q_1$] (1)       {};
+		\node[state, right = of 1,label=below:$q_2$]    (2)     {};
+		\node[right = of 2]           (dots)  {$\cdots$};
+		\node[state, right = of dots,label=below:$q_{n-r-1}$] (nr1)   {};
+		\node[state, right = of nr1,label=below:$q_{n-r}$]  (nr)    {};
+		\node[state, right = of nr,label=below:$q_{n-r+1}$]   (r)     {};
+		\node[right = of r, xshift=-0.5cm]           (dots2) {$\cdots$};
+		\node[state, right = of dots2,label=below:$q_{n}$,xshift=-0.5cm]    (n)     {};	
+	
+	   \path[->] 
+	    (nr) edge [loop above] node {$a$} (nr)
+	    (r) edge [loop above] node {$a$} (r)
+	    (n) edge [loop above] node {$a$} (n);
+	    
+	    \path[->] 
+	    (1) edge [above] node {$a$} (2)
+	    (2) edge [above] node {$a$} (dots)
+	    (dots) edge [above] node {$a$} (nr1)
+	    (nr1) edge [above] node {$a$} (nr);	
+    \end{tikzpicture}	
+	\caption[Unary automaton for lower bound of rank $r$ words]{Unary automaton realizing the lower bound from \PROP~\ref{prelim:prop:unary_bound}.}
+	\label{prelim:fig:unary_tight}
+\end{figure}
+
+\begin{remark} \label{prelim:classes:rem:unary-seq-aut}
+	The unary automata $\semiautomat{C_{n}}{\{1\ldots,n\}}{\{a\}}{\delta}$
+	with $\delta(i, a) = \min\{i+1,n\}$
+	would also show tightness of the bound from \cref{prelim:prop:unary_bound} for general unary automata
+    since the shortest word of rank at most~$r$
+	in $\mathcal C_{n}$ is $a^{n - r}$
+	with $\delta(\{1,\ldots,n\}, a^{n-r}) = \{n - r + 1, n - r + 2, \ldots, n\}$.
+	Here $r$ is not the minimal rank among all words
+	for $r > 1$.		
+\end{remark}

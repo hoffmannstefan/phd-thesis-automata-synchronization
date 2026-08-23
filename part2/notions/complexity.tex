@@ -1,0 +1,1215 @@
+%!TEX root = ./../../springer-mono-format/book.tex
+%!TEX root = ./../../thesis-trier.tex
+
+Here, resource usage of computing processes and algorithms
+is measured in time and in space w.r.t.~some model of computation.
+We introduce three models, the random access machine (RAM) model in \cref{prelim:sec:RAM},
+classical sequential Turing machines and transducers in \cref{prelim:sec:TM}, and circuits in \cref{prelim:sec:circuits}.
+The RAM model is solely for practical purposes as a model close
+to existing computers in which to measure the runtime of algorithms.
+Turing machines and circuits serve a more theoretical purpose.
+Further cornerstones of our theoretical approach are decision problems, introduced
+in \cref{prelim:sec:decision_problems}, and reductions and complexity classes, 
+introduced in \cref{prelim:sec:compl_classes},
+which give a framework for the classification of problems based on their inherent computational complexity.
+ 
+When giving time or space upper bounds, to abstract from some implementation specific details, only the behavior up to some constant is of interest. To express this, we use the big $O$ notation~\cite{bachmann1894analytische} (see also~\cite{knuth76bigomicron}).
+For a function $g \colon \mathbb N_0 \to \mathbb R$ \label{def:bigO}
+we set
+\begin{align*} \label{def:littleO}
+	O(g) & = \{ f \colon \mathbb N_0 \to \mathbb R \mid \exists c > 0 \ \exists n_0 \in \mathbb N_0 \  \forall n \ge n_0 : |f(n)| \le c \cdot |g(n)| \}, \\
+	o(g) & = \{ f \colon \mathbb N_0 \to \mathbb R \mid \forall c > 0 \  \exists n_0 \in \mathbb N_0 \ \forall n \ge n_0 : |f(n)| \le c\cdot g(n))\}.
+\end{align*}
+
+As is usually done, we identify
+a function with a defining expression and write, for example, $O(n^2)$ 
+for %$O(n \mapsto n^2)$.
+$O(f)$ with $f \colon \mathbb N_0 \to \mathbb N_0$ given by $\applyfunc{n}{f} = n^2$.
+We also use $O(g)$ and $o(g)$ in equations with the meaning
+that there exists a function from these sets fulfilling the equation.
+For example, \cref{prelim:thm:PTN}
+is equivalent to $p_n = n\log(n)(1 + o(1))$.
+
+\subsection{The Random Access Machine Model}
+\label{prelim:sec:RAM} 
+
+\IN{random access machine}
+\IN{register}
+\index{RAM|see{random access machine}}
+\index{register machine|see{random access machine}}
+A \emph{random access machine (RAM)} (or \emph{register machine}) consists
+of a single generic processor having access to an (idealized) infinitely long memory indexed by natural numbers. 
+Each memory cell is called a \emph{register}.
+In this model, instructions are executed one after another, with no concurrent operations.
+The instruction set consists of arithmetic (such as add, subtract, multiply, divide, remainder, floor, ceiling), data movement (load, store, copy),
+and control operations (conditional branch, goto, subroutine call and return) each taking a constant amount of time.
+This model is most often used in textbooks on algorithms~\cite{cormen01introduction}.
+Hence, we do not go into more detail about 
+the syntax and semantics of these machines, but refer to the literature~\cite{cormen01introduction,DBLP:journals/jacm/ShepherdsonS63}.
+We assume our RAMs operate solely with non-negative integers. 
+
+When stating (asymptotic) runtime and space bounds and nothing else is said, we refer to the RAM model.
+
+\subsection{Turing Machines and Transducers}
+\label{prelim:sec:TM} 
+
+Here, we introduce Turing machines and transducers in an intuitive manner.
+For a more formal treatment of Turing machines, and also different but equivalent formalizations, 
+we refer to the literature, for example~\cite{HopUll79}.
+
+\IN{Turing machine!nondeterministic}
+\IN{Turing machine!deterministic}
+\IN{Turing transducer}
+A \emph{nondeterministic Turing machine} (just called \emph{Turing machine} for short) consists of a two-way read-only input tape
+and a two-way read/write work tape. 
+A Turing machine is said to be \emph{deterministic}, if in each configuration
+at most one configuration can follow in a single computational step.\footnote{This is the standard terminology, but it is somewhat unfortunate, since a deterministic Turing machine is also nondeterministic, i.e., the prefix ``non'' does not exclude
+it from being deterministic.}
+A \emph{(Turing) transducer} is a deterministic Turing machine that always halts and
+is additionally equipped with a write-only output tape on which the head never moves left. 
+We say that a Turing machine \emph{accepts} an input $u \in \Sigma^*$
+if there exists a computational run starting from~$u$ that ends in a final state.
+We say a Turing machine accepts a language $L \subseteq \Sigma^*$ if it accepts precisely the words from~$L$, i.e., for each input $u \in \Sigma^*$,
+$u$ is accepted if and only if $u \in L$.
+A Turing machine \emph{decides}
+a language if it accepts it and every computational run terminates.\footnote{
+	In the literature (see, for example,~\cite[Sec.~2.1.2]{DBLP:books/daglib/0023084}), another convention appears that only requires that, for $u \in L$, at least one computational run terminates and accepts, and that, for $u \notin L$, all computational runs terminate and reject.
+	For the notion of decidability, this makes no difference, since under both conventions a deterministic Turing machine deciding~$L$ can be constructed, and for deterministic Turing machines both conventions coincide.
+	Our definition, in which all computational runs must terminate, is also used in Sipser’s book~\cite[Def.~3.6]{sipser2012theory}.
+}
+
+A transducer computes a function $f \colon \Sigma^* \to \Sigma^*$
+if it produces, when supplied with the input~$u$ on the input tape, the value $f(u)$ on its output tape.
+\IN{deciding a language!Turing machine}
+\IN{accepts an input!Turing machine}
+
+\IN{$f(n)$-time bounded} \IN{$f(n)$-space bounded}
+Let $f \colon \mathbb N_0 \to \mathbb N_0$.
+Following the convention of~\cite[p.~288]{HopUll79},
+a Turing machine $M$ 
+is said to be \emph{$f(n)$-time bounded} (resp.~\emph{$f(n)$-space bounded}) 
+if all computational runs terminate and lie within the prescribed time (resp.~space) bounds.\footnote{Other definitions
+	of resource-bounded computations, and conditions for their equivalence,
+	are discussed in \cref{prelim:prelim:discussion}.}
+Similarly, a Turing transducer is $f(n)$-time (resp.~$f(n)$-space) bounded
+if it takes at most $f(n)$ steps (resp.~uses at most $f(n)$ work tape cells)
+to compute the output for an input of size $n$. 
+As a shorthand, we also say a Turing machine or transducer
+is log-space bounded if it is $f(n)$-spaced bounded for some $f \in O(\log)$.
+This notion transfers to classes of function. For example, we say
+that a Turing machine is polynomial-time bounded if it is $p(n)$-time bounded
+for some polynomial function $p(n)$.
+
+By the \emph{linear speed up} and \emph{tape compression} theorems (see~\cite[Sect.~12.2]{HopUll79}) 
+general claim on time or space requirements are only meaningful up to a multiplicative constant,
+which justifies using the $O$-notation in these contexts as well.
+
+As a shorthand, for $f = \log$ we also say log-space bounded for $\log(n)$-space bounded machines or transducers,
+and we say that a machine or transducer is polynomial time/space bounded
+if it is $p(n)$-time/-space bounded for some polynomial~$p$.
+
+\subsection{Circuits}
+\label{prelim:sec:circuits}
+
+\IN{Boolean circuit}
+\IN{fan-in}
+\IN{fan-out}
+\IN{depth of a circuit} 
+\IN{size of a circuit}
+
+A \emph{(Boolean) circuit} is a DAG with at least one vertex
+and the following additional conventions for its vertices:
+\begin{enumerate}
+\item each vertex of outdegree zero has indegree one and is called an \emph{output},
+
+\item each vertex with indegree zero is called an \emph{input},
+
+\item all other vertices with non-zero in- and outdegree are called \emph{gates} and are labeled 
+by a Boolean function $f \colon \{0,1\}^n \to \{0,1\}$ 
+such that each input bit of~$f$ corresponds to a definite incoming edge (and so 
+its indegree equals the arity~$n$ of~$f$).
+\end{enumerate}
+We also allow the constants $0$ or $1$ as inputs to input vertices.\footnote{This is also done in~\cite{DBLP:journals/siamcomp/Borodin77}. 
+	In~\cite[Def.~1.6]{Vollmer99} constants are modeled as $0$-ary Boolean function
+	with which input vertices can also be labeled.}
+The indegree (resp.~outdegree) of a vertex is also called its \emph{fan-in} (resp.~\emph{fan-out}).  
+There is no constraint on the fan-out of non-output vertices.
+The \emph{size} is the number of vertices in the circuit.
+The \emph{depth} of the circuit is the length of a longest path.
+
+Consider a circuit with $n$ input and $m$ output vertices, where we have a fixed order on the input 
+and on the output vertices. This circuit computes
+a vector-valued Boolean function $\{0,1\}^n \to \{0,1\}^m$
+by evaluating it for the input $(x_1, \ldots, x_n) \in \{0,1\}^n$
+in the following way:
+Assume some topological ordering of the vertices where the inputs appear first
+in their fixed order. The $i$-th input vertex is marked with the value of $x_i$.
+Then, going forward in the topological order,
+consider a non-input vertex $g$ where the source vertices 
+of the incoming edges are marked with $z_1, \ldots, z_l$, $l \ge 1$.
+If $g$ is a gate labeled with $f \colon \{0,1\}^l \to \{0,1\}$,
+where we assume $z_1, \ldots, z_l$ are ordered in accordance with the input bits to $f$,
+then mark $g$ with $f(z_1, \ldots, z_l)$.
+Otherwise,~$g$ is an output vertex.
+In this case, it is $l = 1$ and we mark $g$ with~$z_1$.
+Finally, the results of the output vertices
+$(y_1, \ldots, y_m)$ constitute the result of the evaluation 
+of the circuit for the input $(x_1, \ldots, x_n)$.
+
+\label{def:AC0circuitclass} 
+Let $k \ge 0$. We say that a family of circuits  $C_1, C_2, \ldots$ with strictly increasing number of input bits 
+is in
+\begin{description}
+\item[$\NC^k$] if there exists a number $c > 0$ such that each circuit $C_i$ with~$n$ input bits has size  $O(n^c)$,
+ depth $O(\log^k(n))$,
+ and each gate in $C_i$ is either a {\sc NOT} gate,
+ an {\sc AND} gate of fan-in two, or an {\sc OR} gate
+ of fan-in two,
+ 	
+\item[$\AC^k$]  if there exists a number $c > 0$ such that each circuit $C_i$ with~$n$ input bits has size  $O(n^c)$,
+depth $O(\log^k(n))$,
+and each gate in $C_i$ is either  a {\sc NOT} gate, an {\sc AND} gate of unbounded fan-in, 
+or an {\sc OR} gate of unbounded fan-in.
+\end{description}
+
+In the following, we will use the obvious identification of Boolean formulas
+with circuits and often specify a circuit by only giving a formula (but note 
+that in a circuit, the output of parts might be used several times, 
+so a circuit might be smaller than suggested by a specifying formula).
+
+\IN{computing a function!circuit}
+\IN{deciding a language!circuit}
+Let $g, h \colon \{1,2,3,\ldots\} \to \{1,2,3,\ldots\}$ 
+be such that~$g$ is monotone strictly increasing and $g \in O(n^c)$ for some constant~$c$.
+Let $C_1, C_2, \ldots$ be a family of circuits where $C_n$
+has $g(n)$ input vertices and $h(n)$ output vertices.
+
+Following the convention of~\cite{DBLP:conf/fct/Cook83,DBLP:journals/iandc/Cook85},
+we say the family of circuits \emph{computes} a 
+function $f \colon D \to \{0,1\}^+$ for $D = \bigcup_{n \ge 1} \{ 0,1 \}^{g(n)}$
+if the circuit $C_n$ for $n \ge 1$ computes
+the function $f_{|\{0,1\}^{g(n)}} \colon \{0,1\}^{g(n)} \to \{0,1\}^{h(n)}$.
+
+Suppose we have an appropriate binary encoding of the words in~$\Sigma^*$
+where each word is encoded by a some binary word of length $g(n)$
+for some $n \ge 1$. The circuit family \emph{decides} a language
+$L \subseteq \Sigma^*$ if $h(n) = 1$ for all $n \ge 1$ and for $u \in \Sigma^*$
+with binary encoding $x_1 \cdots x_{g(n)}$
+we have $u\in L$ if and only if $C_n$ evaluates to~$1$
+when its $i$-th input vertex is initialized with the $i$-bit $x_i$
+of the binary encoding of~$u$.
+
+In our applications and problems the existence of some encoding is evident.
+Thus, in the following, to simplify our discussions, we often abstract 
+away from the details of a specific encoding choice and accordingly omit~$g$ and~$h$
+when giving circuit families.
+
+\IN{$L$-uniform families of circuits}
+With these definitions, even languages not decidable
+by Turing machines are decidable by circuits.
+For example, let $L \subseteq \{a\}^+$
+be some unary language not decidable by Turing
+machines. Then $\{ w \in \{0,1\}^+ : |w| \in L \}$
+is not decidable by any Turing machine,
+but it is decidable by the family of circuits 
+$C_1, C_2, \ldots$ in~$\NC^0$~\cite[p.~142]{Straubing94}
+given by
+\[
+C_n = \begin{cases}
+	x_1 \lor \neg x_1  & \text{if } a^n \in L, \\
+	x_1 \land \neg x_1 & \text{otherwise.}
+\end{cases}
+\]
+
+To obtain only circuit families that compute functions, or decide languages,
+that are also computable, or decidable, by Turing machines,
+we incorporate a uniform computation mechanism for the construction of individual circuits
+into our circuit families.
+
+Let $C_1, C_2, \ldots$ be a circuit family where $C_n$ has $g(n)$ input bits.
+We call this family \emph{\LOGSPACE-uniform}~\cite{DBLP:conf/stoc/Cook79}
+if the function $1^{g(n)} \mapsto  \overline{C_n}$
+w.r.t.~some encoding scheme $\overline{C_n}$ for~$C_n$
+is computable by a deterministic log-space Turing transducer.
+Thus, the family is \LOGSPACE-uniform
+precisely if a deterministic log-space Turing transducer
+can produce each circuit of this family when supplied only with the size of the input
+to the circuit.
+With this computability condition, we obtain a computationally meaningful notion of decidability of languages and computability of functions by \LOGSPACE-uniform circuit families.
+
+\begin{example} \label{prelim:circuit:ex:AC0mtx}
+	Multiplication of a fixed number of Boolean matrices can be realized by a family of \LOGSPACE-uniform 
+	$\AC^0$ circuits.
+	Let $M_r = (m_{ij}^{(r)})_{i,j\in \{1,\ldots,n\}}$
+	for $r \in \{1,\ldots,k\}$ be $k$ input matrices
+	encoded with $kn^2$ bits.	
+	For $i,j \in \{1,\ldots,n\}$ and  $r \in \{1,\ldots,k\}$ 
+	we define variables~$z_{ij}^{(r)}$
+	by 
+	\[
+	z_{ij}^{(r)} = 
+	\begin{cases}
+		m_{ij}^{(k)} & \text{if } r = 1, \\
+		\bigvee_{l=1}^n \left( m_{il}^{(k - r + 1)} \land  z_{lj}^{(r-1)} \right) & \text{if } r \ge 2.
+	\end{cases}
+	\]
+	Then $\left( z_{ij}^{(k)} \right)_{i,j \in \{1,\ldots,n\}}$
+	equals $M_1 \cdots M_k$.
+	The formulas directly yield a circuit of depth $2(k-1)$ 
+	using $n^3 \cdot (k - 1)$ AND gates of fan-in two and $n^2 \cdot (k-1)$ OR gates of fan-in $n$. 	
+	We can encode the circuit (with the gates listed topologically sorted) 
+	by first listing~$n^2$~OR gates with $n$ inputs, each taking the result of $n$ AND gates
+	for $z_{ij}^{(r)} = \bigvee_{l=1}^n \left( m_{lj}^{(k - r + 1)} \land  z_{il}^{(r-1)} \right)$, $r = k$,
+	and continue with this encoding for $r$ going from $k$ to $2$.
+	The encoding can be generated in deterministic log-space by using counters to ensure we generate the correct number
+	of gates with the corresponding inputs.
+\end{example} 
+
+\begin{remark} \label{prelim:ex:uniformity}
+	It is natural to ask what share of computational
+	power of our \LOGSPACE-uniform circuit families is due to the uniformity mechanism
+	and what is genuinely due to circuitry.
+	Next, we give a class of functions for which most of the computation
+	is carried out by the log-space machine constructing the circuits
+	and the circuitry itself is not very complex.	
+	
+	It is known that transformations computable by \LOGSPACE-uniform $\NC^1$ circuits
+	are computable by deterministic log-space Turing transducers~\cite{DBLP:journals/siamcomp/Borodin77}.
+	
+	Next, let $f \colon \Sigma^+ \to \Sigma^+$
+	be such that, for some $\Gamma \subseteq \Sigma$,
+	we have
+	\begin{enumerate}
+		\item $f(u) = f(v)$ for all $u,v \in \Gamma^*$ with $|u| = |v|$, 	
+		
+		\item $f(u) = f(v)$ for all $u,v \in \Sigma^* \setminus \Gamma^*$ with $|u| = |v|$, and
+		
+		\item for $n \ge 1$ we have $f(\Sigma^n) \subseteq \Sigma^m$ for some $m \ge 1$.  
+	\end{enumerate}
+	Suppose~$f$ is computable by a deterministic log-space Turing transducer $M$.
+	We show that it can also be computed by a \LOGSPACE-uniform $\AC^0$ circuit family.
+	First, we assume $\Gamma$ is a proper and non-empty subset of~$\Sigma$.
+	Suppose the words from $\Sigma$ are encoded by bitstrings of fixed length $r \ge 1$.
+	
+	Next, we describe a \LOGSPACE-uniform circuit family $C_n$ in $\AC^0$ computing~$f$. 
+	We can assume the input has size~$n$.
+	Let~$M'$ be a Turing transducer operating in the following way 
+	for the input $1^n$: First compute $f(a^n)$ for some $a \in \Gamma$
+	and $f(b^n)$ for some $b \in \Sigma \setminus \Gamma$ by simulating~$M$.
+	Let $y_1 \cdots y_m$ and $z_1 \cdots z_m$ be the bits of the encoding of $f(a^n)$
+	and $f(b^n)$, respectively.
+	Then let~$M'$ output the description of the following circuit:
+	
+	\begin{enumerate}
+		\item There exists a fixed $\NC^0$ circuit $C$ detecting the encoding of a word
+		from $\Sigma \setminus \Gamma$.
+		We can assume the input length $n$ is a multiple of~$r$.
+		Consider the circuit that results from $n/r$ copies of~$C$
+		where the first copy reads the first~$r$ bits, the second the next~$r$
+		bits and so on until the last one reads the last~$r$ bits.
+		Then connect the outputs of these circuits
+		to a common {\sc OR}-gate and let $x$ be the output
+		of the resulting circuit.
+		We have $x = 1$ if and only if the input contains a letter from $\Sigma \setminus \Gamma$.
+		
+		\item Let $x_1$ be the first input bit to~$C_n$.
+		The $i$-th output bit of $C_n$ equals the following formulas,
+		from which a circuit can be derived:
+		\[
+		\begin{cases}
+			x_1 \lor \neg x_1       & \text{if } y_i = 1 \text{ and } z_i = 1, \\
+			x_1 \land \neg x_1      & \text{if } y_i = 0 \text{ and } z_i = 0, \\						
+			x       & \text{if } y_i = 0 \text{ and } z_i = 1, \\
+			\neg x  & \text{if } y_i = 1 \text{ and } z_i = 0. \\												
+		\end{cases}
+		\]
+	\end{enumerate}
+	
+	For $\Gamma = \Sigma$ or $\Gamma = \emptyset$,
+	we do not need the circuitry to detect letters from~$\Gamma$
+	or its complement. Thus, in this case, 
+	the value of~$f$ only depends on the length of the input
+	and we can even give a \LOGSPACE-uniform $\NC^0$ family
+	computing~$f$.
+	
+	The next claims follows from the above construction:
+	
+	\begin{enumerate}
+		\item Let $L \subseteq \{0,1\}^+$
+		be in \LOGSPACE	and suppose for $u,v \in \{0,1\}^+$ with $|u|=|v|$ we have $u \in L$
+		if and only if $v \in L$, i.e., membership depends only on the length of a word.
+		Then~$L$ is also decidable by a \LOGSPACE-uniform family of circuits $C_1, C_2, \ldots$ in $\NC^0$
+		
+		\item Let $L \subseteq 1^+$ over $\Sigma = \{0,1\}$ be \LOGSPACE.
+		Then $L$ is decidable by a \LOGSPACE-uniform circuit family $C_1,C_2,\ldots$ in $\AC^0$.
+		
+		\item Since the binary encoding of~$|u|$ from the input $u$ can be computed 
+		by a deterministic log-space Turing transducer, it can also be computed
+		by a \LOGSPACE-uniform circuit family in $\NC^0$.
+	\end{enumerate}
+\end{remark}
+
+\begin{proposition}\label{prelim:prop:AC0-composition}
+	The composition of two \LOGSPACE-uniform $\AC^0$ circuit families
+	is computable by a \LOGSPACE-uniform $\AC^0$ circuit family.	
+\end{proposition}
+\begin{proof}
+	Let $M$ and~$M'$ be deterministic log-space Turing transducers computing $\AC^0$-circuits.
+	Let $M''$ be a deterministic Turing transducer that parses the description
+	of a circuit and outputs $1^m$ where $m$ denotes the number of output 
+	vertices of the circuit. For an appropriate description, $M''$ can operate in deterministic log-space.
+	Since the description that~$M$ produces can be assumed to have size polynomial in the input to~$M$,
+	the machine~$M''$ runs in log-space w.r.t.~the input to~$M$.
+	Next, $M'$ can construct a circuit with input $1^m$.
+	Since $m$ is polynomial in the input to~$M$, $M'$ runs in log-space w.r.t.~the input of~$M$.
+	As shown in~\cite[p.~323]{HopUll79}, the composition of deterministic log-space Turing transducers
+	can be realized by a deterministic log-space Turing transducer.
+	Thus the composition of $M,M''$ and~$M'$ 
+	can be realized by a deterministic log-space Turing transducer.
+	Thus, we can compute the above circuits in deterministic log-space
+	from the input to~$M$. Then connecting the output of the first circuit to the inputs
+	of the second circuit can also be realized in deterministic log-space.
+	This yields that all these steps can be realized by a single deterministic log-space Turing transducer
+	that outputs a description of the circuit resulting by feeding the second circuit with the input
+	of the first, which is a simple modification to the outputs of~$M$ and of the composition of~$M, M''$ and~$M'$. 
+\end{proof}
+
+
+\subsection{Decision Problems}
+\label{prelim:sec:decision_problems}
+
+\IN{decision problem}
+\IN{membership problem}
+\IN{deciding a language!computational mechanism}
+A \emph{decision problem} classifies a set of inputs, encoded as a language (usually over $\{0,1\}$),
+into \rYES- and \rNO-instances.
+In \cref{prelim:sec:TM,prelim:sec:circuits} we already defined what
+it means for a Turing machine or a family of circuits to decide
+a language. More generally, a computational mechanism (e.g.,~a Turing machine
+or a family of uniform circuits) \emph{decides/solves/computes} a 
+decision problem if for each input it 
+terminates after a finite number of steps and returns
+\rYES (accepts the input) if the input encodes
+a \rYES-instance or \rNO (rejects the input)
+if it encodes a \rNO-instance.
+To every decision problem there corresponds a language encoding the \rYES-instances.
+Conversely, to every language $L \subseteq \Sigma^*$
+there corresponds a decision problem (called the
+\emph{membership problem}\footnote{In the literature, a more refined terminology
+	is used, where a distinction 
+	is drawn between the \emph{non-uniform/fixed} and the \emph{uniform/general
+	membership problem} for classes of languages~\cite{HolzerK11}.
+    In the former problem the language is fixed and the input is a single word, and
+    in the latter problem
+    a pair consisting of a language (from some class)
+    \emph{and} a word forms the input.
+    In this sense, the membership problem for $L$ as defined here
+    is the non-uniform membership problem.
+} \emph{of~$L$}) 
+where the \rYES-instances
+are precisely those words $w \in \Sigma^*$ for which $w \in L$,
+and the \rNO-instance those with $w \notin L$.
+So, languages realize and encode decision problems
+and often we identify a language with its decision problem
+and vice versa without special mention.
+
+We give a decision problem by listing its name, the possible inputs,
+and the property we want to check on the input,
+where we use a notational way
+introduced by Karp~\cite{Karp1972} 
+and popularized by Garey and Johnson~\cite{garey1979computers}.
+In each case, it is obvious that an appropriate encoding as a language is possible.
+In proofs, a specific input is written as a tuple 
+listing all the parameters and called an \emph{input instance} to the (decision) problem under consideration.
+\IN{input instance}
+
+Next, we list decision problems from the literature that are of relevance to the present study. 
+
+\index{satisfiability problem|see{{\sc SAT}}}
+\IN{literal}
+\IN{clause}
+\IN{assignment}
+\IN{satisfying assignment}
+Of importance is the satisfiability problem \SAT\ 
+for a set $X = \{x_1, \ldots, x_n\}$
+of \emph{Boolean variables} that we formalize 
+in the following way as in~\cite[p.~314]{GorKou95}: 
+a \emph{literal} is an element of $X \times \{0,1\}$,
+a subset of $X \times \{0,1\}$ is a \emph{clause} over~$X$
+and an \emph{assignment} (of values to the variables) 
+is a function $\alpha \colon X \to \{0,1\}$ (also written as 
+an $n$-tuple $(\alpha(x_1), \ldots, \alpha(x_n))$).
+We say that~$\alpha$ \emph{satisfies} a set of clauses~$C$
+if for each clause $c \in C$ there exists $x \in V$
+such that $(x, \alpha(x)) \in c$. Intuitively, see also~\cite[Sec.~2.6]{garey1979computers,HopUll79},
+literals can be seen as variables or their negations, 
+and we often write $x$ and $\neg x$ (or $\overline{x}$) 
+for $(x,1)$ and $(x,0)$, respectively,
+a clause as a disjunction
+of literals and a set of clauses as a conjunction of clauses.
+Then an assignment satisfies a set of clauses if and only if 
+if this formula evaluates to true for the assignment.
+For example, the formula $( x_1 \lor x_2 ) \land ( \neg x_2 \lor x_3 )$
+is represented by the set of clauses $\{ c_1, c_2\}$
+where $c_1 = \{ (x_1, 1), (x_2, 1)\}$ and $c_2 = \{ (x_2, 0), (x_3, 1) \}$.
+
+\IN{\SAT}
+\decisionproblem{{\sc SAT} (Cook~\cite{Cook71})}
+{A set $X$ of Boolean variables and a set $C$ clauses over $X$.}
+{Does there exist a satisfying assignment for the input?}
+
+\IN{\DAG} 
+\decisionproblem
+{\DAG (Jones~\cite{Jones75}, \emph{Directed Acyclic Graph Accessibility Problem})}
+{DAG $G = (V, E)$ and $s,t \in V$.}
+{Does there exist a path in $G$ from $s$ (start) to $t$ (target)?}
+
+\IN{\SCC}
+\decisionproblem{\SCC (Jones~\cite[Cor. 24]{Jones75})}
+{Digraph $G = (V,E)$.}
+{Is $G$ strongly connected?} 
+
+\IN{\SCP}
+\decisionproblem{\SCP (Cook and McKenzie~\cite{CookM87})}
+{Permutation presented pointwise.}
+{Does the permutation consist of a single cycle,\footnote{Note that having only a single cycle is not the same as being a cyclic permutation. A cyclic permutation has at most one
+			cycle of length greater than one, but might have many cycles of length one; we introduced the term cyclically
+			permuting its domain in \cref{prelim:sec:cycles} to express the fact that the permutation has a single cycle.}
+		i.e., cyclically permutes its domain?}
+
+\IN{\ORD}
+\decisionproblem{\ORD  (Etessami~\cite[Def.~4.1]{DBLP:journals/jcss/Etessami97})}
+{Digraph $G = (V, E)$ where $V = \{v_1, \ldots, v_n\}$ and $E = \{ (v_i, v_{i+1}) \mid i \in \{1,\ldots,n-1\}$ \} (encoded as a usual graph, without
+		additional information pertaining to the assumed total order of the vertices)\footnote{For example, encoding $v_i$ by the number $i$ would render the problem solvable in $\AC^0$
+			as we simply have to compare two positive integers in this case. Equivalently, we can think of the input
+			as a set together with a successor relation.} and two vertices $v_i, v_j \in V$.}
+{Is $i < j$?}
+
+We also need the following variants of the above problems. 
+\THREESAT is a well-known variant of \SAT~\cite{garey1979computers,Karp1972}.  Let $k \ge 1$.
+
+\IN{\THREESAT}
+\decisionproblem{\THREESAT (Karp~\cite{Karp1972})}
+{A set $X$ of Boolean variables and a set $C$ of clauses over $X$ each containing at most three literals.}
+{Does there exist a satisfying assignment for the input?}
+
+\IN{\KDAG} 
+\decisionproblem{\KDAG}
+{DAG $G = (V, E)$ where the outdegree of every vertex is at most~$k$ and $s,t \in V$.}
+{Does there exist a path in $G$ from $s$ to $t$?}
+
+
+\IN{\KDAGST}
+\decisionproblem{\KDAGST}
+{DAG $G = (V, E)$ and $s, t \in V$ where $s$ has no incoming edges and precisely one outgoing edge, $t$ has no outgoing edges and the outdegree of every other vertex is at most~$k$.}
+{Does there exist a path in $G$ from $s$ to $t$?}
+
+\subsection{Complexity Classes and Reductions}
+\label{prelim:sec:compl_classes}
+
+\IN{complexity class}
+A \emph{complexity class} is a class of decision problems, encoded by languages,
+which can be decided by some computational mechanism with imposed
+resource constraints.
+We will consider the following complexity classes (we list the resource bounded computational mechanism next to each class).
+
+\begin{description}[style=multiline,leftmargin=3cm,labelwidth=2.2cm,align=left]
+	
+	\item[\LOGSPACE-uniform $\NC^k$]\label{def:ACkNCk}
+	\LOGSPACE-uniform circuit families in $\NC^k$ for $k \ge 0$.
+	
+	\item[\LOGSPACE-uniform $\AC^k$]
+	\LOGSPACE-uniform circuit families in $\AC^k$ for $k \ge 0$.
+	
+	\item[\LOGSPACE]\label{def:L}
+	Log-space bounded deterministic Turing machines.
+	
+	\item[\NL]\label{def:NL}
+	Log-space bounded nondeterministic Turing machines.
+	
+	\item[\NC]\label{def:NC} 
+	$\NC = \bigcup_{k \ge 0} \text{\LOGSPACE-uniform $\NC^k$}$ (Nick's class~\cite{DBLP:journals/iandc/Cook85}).
+	
+	\item[\PTIME]\label{def:P}
+	Polynomial-time bounded deterministic Turing machines.
+	
+	\item[\NP]\label{def:NP}
+	Polynomial-time bounded nondeterministic Turing machines.
+	
+	\item[\PSPACE]\label{def:PSPACE}
+	Polynomial-space bounded deterministic Turing machines.
+	
+	\item[\NPSPACE]\label{def:NPSPACE}
+	Polynomial-space bounded nondeterministic Turing machines.	
+\end{description}
+ 
+\label{prelim:rem:circuit-uniform}
+In the following, we always understand that $\NC^k$ (resp.~$\AC^k$) means \LOGSPACE-uniform~$\NC^k$ (resp.~$\AC^k$) and omit this modifier. 
+
+\PTIME can equivalently be defined by polynomial time bounded RAMs,
+as we can simulate a RAM with a Turing machine and vice versa with 
+a polynomial overhead~\cite{DBLP:journals/jcss/CookR73}. 
+So, polynomial time bounds for RAMs imply containment in \PTIME.
+
+Intuitively, for \LOGSPACE and \NL, a machine can, on inputs of size $n$, use a finite number of counters storing binary encoded
+values that do not exceed~$O(n^c)$ for some fixed $c > 0$
+and memory cells with a logarithmic number of bits %(or Boolean flags) 
+to store intermediate results.
+
+By \cref{prelim:circuit:ex:AC0mtx}, the decision
+problem to decide whether the product
+of $k$ given matrices equals
+a given matrix is in $\AC^0$.
+
+
+%\footnote{
+%	That $\NC^1 \subseteq \LOGSPACE$
+%	is stated in~\cite[Cor.~4.4]{DBLP:series/eatcs/BalcazarDG90},
+%	and also a consequence of a result of Borodin~\cite[Thm.~4]{DBLP:journals/siamcomp/Borodin77}.
+%	The inclusion $\NL \subseteq \AC^1$ follows 
+%	from \cite[Cor.~4.4, Exercise 3.6.23 \& Exercise 4.7.2]{DBLP:series/eatcs/BalcazarDG90}.	
+%	Sipser~\cite[Thm.~10.4]{sipser2012theory} only proves $\NL \subseteq \NC^2$, but actually, by a similar argument via solving a reachability problem
+%	on a configuration graph. This actually also follows from the main result from~\cite[Thm.~2]{DBLP:journals/siamcomp/Borodin77},
+%	which also uses reachability in its proof. $\NL \subseteq \AC^1$ can be shown
+%	since a reachability problem is equivalent to computing $A^n$ for a given $n \times n$ matrix $A$,
+%	a problem doable by an $\AC^1$ circuit using a square-and-multiply scheme since matrix multiplication is in $\AC^0$ by \cref{prelim:circuit:ex:AC0mtx}).
+%	Later, we will see that solving graph reachability
+%	is actually \NL-complete.}
+
+
+Let $k \ge 1$. Most of the following inclusions are well-known (see for example~\cite{DBLP:series/eatcs/BalcazarDG90,DBLP:series/txtcs/BalcazarDG95,DBLP:journals/siamcomp/Borodin77,HopUll79,sipser2012theory,Vollmer99}):
+\begin{multline}\label{prelim:eqn:cc_inclusions}
+\AC^0 \subseteq \NC^1 \subseteq \LOGSPACE \subseteq \NL \subseteq \AC^k \subseteq \NC^{k+1} \subseteq \AC^{k+1} \\
+\subseteq \NC \subseteq \PTIME \subseteq \NP \subseteq \PSPACE = \NPSPACE.
+\end{multline}
+The equality $\PSPACE = \NPSPACE$ 
+follows from Savitch's theorem~\cite{DBLP:journals/jcss/Savitch70}.
+By the above inclusions we have $\NC = \bigcup_{k \ge 0} \AC^k$.
+
+\label{def:lelogm} 
+\label{def:lePm} 
+\label{def:leACZEROm} 
+\label{def:eqlogm} 
+\label{def:eqPm} 
+\label{def:eqACZEROm} 
+\label{def:leNCkm}
+\label{def:eqNCkm}
+\label{def:leNCkT}
+\label{def:eqNCkT}
+Next, we introduce several notions of reduction.
+An \emph{oracle gate} for a language $L \subseteq \Sigma^*$  in a circuit 
+is a gate that returns one if and only if the input encodes a word in $L$.
+Let $L, L' \subseteq \Sigma^*$. % and $k \ge 0$. 
+
+ \IN{many-one reducible!log-space}
+ \IN{many-one reducible!polynomial-time}
+ \IN{many-one reducible!$L$-uniform $\NC^1$}
+ \IN{many-one reducible!$L$-uniform $\AC^0$}
+\begin{enumerate} 
+\item
+We say $L$ is \emph{log-space} (resp.~\emph{polynomial-time, \LOGSPACE-uniform $\NC^1$, \LOGSPACE-uniform~$\AC^0$) many-one reducible} to $L'$, denoted by $L \lelogm L'$ (resp.~$L \lePm L'$, 
+$L \leNCkm{1} L'$, $L \leACkm{0} L'$),
+if there exists a log-space Turing transducer (resp.~polynomial-time bounded Turing transducer, \LOGSPACE-uniform circuit family in $\NC^1$, \LOGSPACE-uniform circuit family in $\AC^0$) 
+that, given input $u \in \Sigma^*$,
+produces an output $v \in \Sigma^*$ such that $v \in L'$ if and only if $u \in L$.
+For short, we call such a mapping
+a $\lelogm$- (resp.~$\lePm$-, $\leNCkm{1}$-, $\leACZEROm$-)reduction.
+
+ \IN{oracle reducible!$L$-uniform $\NC^1$}
+ \IN{Turing reducible!$L$-uniform $\NC^1$}
+\item 
+We say  $L$ is \emph{\LOGSPACE-uniform $\NC^1$ oracle} (or \emph{Turing}) \emph{reducible}
+to $L'$, denoted by $L \leNCkT{1} L'$, if
+there exists an \LOGSPACE-uniform  circuit family in $\NC^1$ deciding~$L$ that can
+additionally use oracle gates for $L'$ . We call such a family an~$\leNCkT{1}$-reduction.
+
+\IN{$L$-uniform $\NC^1$ oracle reducible}
+\index{$L$-uniform $\NC^1$ Turing reducible|see{$L$-uniform $\NC^1$ oracle reducible}}
+\end{enumerate} 
+
+\IN{$\leACZEROm$-reduction}
+\IN{$\lelogm$-reduction}
+\IN{$\lePm$-reduction}
+\IN{$\leNCkT{1}$-reduction}
+\IN{$\leNCkm{1}$-reduction}
+
+\IN{many-one equivalent!log-space}
+\IN{many-one equivalent!polynomial-time}
+\IN{many-one equivalent!$L$-uniform $\NC^1$}
+\IN{many-one equivalent!$L$-uniform $\AC^0$}
+\IN{oracle equivalent!$L$-uniform $\NC^1$}
+\IN{hard problem (or language)}
+\IN{complete problem (or language)}
+If we have $L \lelogm L'$ and $L' \lelogm L$, then we write $L \eqlogm L'$ and call both decision problems encoded by these languages
+\emph{$\eqlogm$-equivalent}. 
+
+The language $L$ is \emph{hard} for a complexity class w.r.t.~$\lelogm$-reductions 
+if for every language~$L''$ from the complexity class we have $L'' \lelogm L$. 
+It is \emph{complete} for a complexity class w.r.t.~$\lelogm$-reductions if it is hard w.r.t.~$\lelogm$-reductions
+and contained in the complexity class.
+The same definitions apply w.r.t.~$\lePm$-, $\leACkm{0}$-, $\leNCkm{1}$- and~$\leNCkT{1}$-reductions.
+
+\begin{theorem}\label{prelim:thm:reductions}
+	\begin{enumerate}
+	\item $\leACZEROm$, $\lelogm$, $\lePm$, $\leNCkT{1}$, and $\leNCkm{1}$
+	are quasiorders on languages.
+	
+	\item \label{prelim:thm:reductions:2}	Let $\mathcal X$ be any of the complexity classes $\LOGSPACE$, $\NL$, $\PTIME$, $\NP$, or $\PSPACE$
+	and $L'$ be a language in $\mathcal X$.
+	Suppose $L$ is $\leACZEROm$-/$\lelogm$-/$\leNCkT{1}$-/$\leNCkm{1}$-reducible
+	to $L'$. Then~$L$ is also in $\mathcal X$.
+	For $\lePm$ this hold for $\mathcal X$ equal to  $\PTIME$, $\NP$, or $\PSPACE$,
+	and for  $\leACZEROm$-reductions
+	this holds for all complexity classes introduced.
+	\end{enumerate}
+\end{theorem}
+\begin{proof}
+The first claim is shown in~\cite[Lem.~4.81]{Vollmer99}
+for $\lelogm$, $\leNCkT{1}$, and $\leNCkm{1}$,
+and in~\cite[p.~322 \& 323]{HopUll79}
+for $\lelogm$ and $\lePm$.
+For $\leACZEROm$, the first claim follows from \cref{prelim:prop:AC0-composition}.
+
+The second claim follows from the first claim
+and the inclusions given in \cref{prelim:eqn:cc_inclusions}.
+\end{proof}
+
+By \cref{prelim:thm:reductions},
+a complexity class equals an equivalence class for the induced equivalence relation w.r.t.~some notion of reduction,
+represented via complete problems.
+
+The following statement collects complexity-theoretical results from the literature for the problems introduced in~\cref{prelim:sec:decision_problems}.
+
+\begin{theorem} \label{prelim:thm:complexities} \label{prelim:thm:THREESAT}\label{prelim:compl:thm:ONEDAG}
+\begin{enumerate}
+\item The problems {\sc SAT}
+(Cook~\cite{Cook71})\footnote{
+	Originally, Cook~\cite{Cook71} used reductions
+	realized by deterministic polynomial-time
+	oracle Turing machines.
+	Later, Jones~\cite{Jones75}
+	and Meyer \& Stockmeyer~\cite{Stockmeyer73} introduced $\lelogm$-reductions
+	and noted that the reductions given by Cook	in~\cite{Cook71} 
+	can be realized to give $\lelogm$-reductions.
+}
+and \THREESAT~\cite{Karp1972} are \NP-complete for $\lelogm$-reductions.
+
+\item \DAG (Jones~\cite[Cor. 25]{Jones75}) and \SCC (\cite[Cor. 24]{Jones75})
+ are \NL-complete for $\lelogm$-reductions.\footnote{In~\cite{Jones75}
+ \NL-completeness is even shown for a finer notion of rudimentary reductions.}
+ 
+\item \label{prelim:thm:complexities:ORD} \SCP (Cook and McKenzie~\cite{CookM87}), \ORD (Etessami~\cite[Thm.~4.1]{DBLP:journals/jcss/Etessami97}),\footnote{Actually, for \ORD completeness was
+	established for a weak form of first order reducibility 
+	that implies $\AC^0$-reducibility.}
+ and \ONEDAG (Cook~\cite[p.~110]{Cook81} and Cook and McKenzie~\cite[p.~390]{CookM87}) are \LOGSPACE-complete for $\leNCkT{1}$-reductions.\footnote{ \LOGSPACE-completeness of \ONEDAG for other notions of reduction was shown 
+ in~\cite[Thm.~2.1]{DBLP:conf/focs/HartmanisIM78} 
+ and~\cite[Cor.~25]{Jones75}.}
+\end{enumerate}
+\end{theorem}
+
+For the variants of \KDAG, we have the following w.r.t.~$\leACZEROm$-reductions.
+
+\begin{proposition}
+	\label{compl:prop:k-DAG}
+	Let $k \ge 1$ be fixed. 
+	Then we have $\KDAG \eqACZEROm \KDAGST$.
+	Furthermore, for $k\ge 2$, both problems are also $\eqACZEROm$-equivalent to \DAG.
+\end{proposition}
+\begin{proof}
+	Clearly, $\KDAGST \leACZEROm \KDAG \le_m^{\AC^0} \DAG$.	
+	
+	Next, we show $\KDAG \leACZEROm \KDAGST$. Suppose $(G, s, t)$ with $G = (V, E)$ is an instance of \KDAG
+	and let $s' \notin V$.
+	Set 
+	\[
+	G' = (V \cup \{s'\}, ( E \setminus ( \{t\} \times V ) ) \cup \{ (s', s)\} ).
+	\]
+	Then~$G'$ is a valid input for \KDAGST
+	that admits a path from $s'$ to $t$ if and only if $G$ admits a path from~$s$ to~$t$.
+	
+	Lastly, we prove $\DAG \leACZEROm \KDAG$ for $k \ge 2$, which establishes all claims.
+	Intuitively, given an arbitrary DAG with outdegree at most~$l$,
+	we use $k$-ary branching together with auxiliary vertices
+	to simulate the edges of the input DAG
+	in a DAG whose outdegree is at most~$k$.	
+		
+	Let $G = (V, E)$ be some input DAG and $s,t \in V$.
+	Suppose $l$ is the largest outdegree of some node in~$G$.
+	Let $m \ge 1$ be the smallest integer such that $k^m \ge l$
+	and let $\Sigma = \{a_1, \ldots, a_k\}$ be an alphabet.	
+	
+	In the following, for $v \in V$
+	and $x \in \pref{\Sigma^{m-1}}$
+	we write $v_x$ for $(v,x)$.
+	Let $v \in V$. Set $T_v = \{ u_{\varepsilon} \mid (v, u) \in E\}$.
+	Since $k^m \ge l$, there exists a surjection
+	$f_v \colon \Sigma^m \to T_v$.
+	Let
+	\[
+	E_v = \{ (v_x, v_{xy}) \mid x \in \Sigma^{< m - 1} \land y \in \Sigma \} \cup 
+	\{ (v_x, f(xy)) \mid x \in \Sigma^{m-1} \land y \in \Sigma \}.
+	\]
+	Then $G' = (V \times \pref{\Sigma^{m-1}}, \bigcup_{v \in V} E_v)$
+	gives a DAG where every vertex has outdegree at most~$k$
+	and there exists a path from $s$ to $t$ in $G$
+	if and only if there exists a path from $s_{\varepsilon}$
+	to $t_{\varepsilon}$ in $G'$. 
+\end{proof}
+
+\begin{corollary}	\label{compl:cor:k-DAG}
+	Let $k \ge 2$. Then \KDAG
+	and \KDAGST 
+	are \NL-complete.
+\end{corollary}
+\begin{proof}
+	This follows from \cref{prelim:thm:complexities,compl:prop:k-DAG}.
+\end{proof}
+
+For reference, we state the following folklore fact.
+
+\begin{proposition}
+	\label{prelim:prop:coprime_in_L}
+	For two numbers given in unary encoding,
+	their greatest common divisor can be computed
+	in deterministic log-space.
+	As a consequence, testing coprimality
+	of two unary numbers is in \LOGSPACE.
+\end{proposition}
+\begin{proof}	
+	We use the classical Euclidean algorithm that stores two variables.
+	
+	Let $a,b$ be given in unary, so the input length is $N = a + b + 1$ (counting a
+	separator). Maintain two variables $x,y$, initialized to $a$ and $b$ and stored
+	in binary. Repeatedly test whether $y = 0$ and, while $y \neq 0$, replace the
+	pair $(x,y)$ by $(y,\; x \bmod y)$, i.e., overwrite $x$ with the old value of
+	$y$ and overwrite $y$ with the remainder of $x$ divided by~$y$. Comparison
+	against $0$ and division with remainder of two $O(\log N)$-bit numbers run in
+	$O(\log N)$ space (indeed in $\LOGSPACE$-uniform $\TC^0$~\cite{DBLP:journals/ita/ChiuDL01,DBLP:journals/jcss/HesseAB02,DBLP:journals/jcss/HesseAB14}).\footnote{$\TC^0$ refers to circuits of constant depth and polynomial size
+		that use only {\sc NOT} gates and majority, {\sc AND}, and {\sc OR} gates of unbounded fan-in.} 
+	The loop needs only
+	the registers $x,y$, one temporary of $O(\log N)$ bits to form the remainder,
+	plus $O(1)$ space for control. After every two iterations the larger operand
+	drops by at least a factor of $2$, so the loop makes $O(\log N)$ steps. When
+	$y = 0$, the remaining value $x$ is $\gcd(a,b)$. For coprimality, accept
+	precisely if this value is $1$.
+	
+	Throughout this procedure, we have $0 \le x,y \le \max(a,b) \le N$, since each
+	remainder $x \bmod y$ is strictly smaller than the current $y$. So each variable
+	occupies at most $\lceil \log_2(N+1)\rceil \in O(\log N)$ bits, and the total
+	work space is $O(\log N)$.
+%	Moreover, counting the $1$s converts unary to binary in $\TC^0$, after which
+%	testing every candidate divisor $d \le \min(a,b)$ in parallel places both
+%	problems in $\LOGSPACE$-uniform $\TC^0 \subseteq \LOGSPACE$.
+\end{proof}
+
+For two binary-encoded integers, we can compute their greatest common divisor
+in polynomial time via the Euclidean algorithm as given in the proof of~\cref{prelim:prop:coprime_in_L}.
+However, the precise computational complexity for binary-encoded inputs
+is unknown. This problem is not known to be either in \NC or \PTIME-complete~\cite{DBLP:journals/ipl/Sorenson10}.
+For testing coprimality, the preprint~\cite[Thm.~1]{DBLP:journals/eccc/ECCC-TR98-009} claimed this problem to be in \NC, but a fatal flaw was spotted in its proof later~\cite{DBLP:journals/eccc/ECCC-TR98-009-comment}.
+and the precise complexity of this problem remains open~\cite{DBLP:journals/endm/Sedjelmaci11}.
+
+We note that
+finding \LOGSPACE-uniform
+circuit families computing the division of two integers
+was an open problem for quite some time, see the survey~\cite{DBLP:journals/eatcs/Allender01}.
+
+Lastly, we show that testing  strong $\frac{3}{2}$-connectivity of digraphs is \NL-complete.
+
+\begin{proposition}\label{prelim:prop:strongly32-NL-c}
+	Deciding whether a given digraph is strongly $\frac{3}{2}$-connected
+	is \NL-complete.	
+\end{proposition}
+\begin{proof}
+	The problem is in \NL, as for a digraph $G = (V, E)$ and $u,v,w \in V$,
+	we can first guess whether a path should go from 
+	$u$ to $v$ or from $v$ to $u$
+	and then, successively and vertex-by-vertex, guess
+	a path  (of length at most~$|V|$) 
+	from the start to the end vertex
+	not using the vertex $w$.
+	If an appropriate path is found, 
+	we have a \rYES-instance; otherwise a \rNO-instance.
+		
+	Next, we give a reduction from \SCC, which is \NL-complete by \THM~\ref{prelim:thm:complexities}.
+	Let $G = (V, E)$ be a given digraph as input.
+	Set $G' = (V', E')$
+	with $V' = V \times \{0,1\}$ and edge set $E'$
+	equal to
+	\[
+	\{ ((u, i), (v, i)) \mid (u,v) \in E, i \in \{0,1\} \} \cup 
+	\{ ((u, 0), (u, 1)), ((u, 1), (u,0)) \mid u \in V\}.	
+	\]	
+	Next, we show that
+	the following properties are equivalent, where the equivalence between \ref{prelim:strongly32:SCC} and \ref{prelim:strongly32:32} 
+	implies that we obtain a valid reduction: 
+	\begin{enumerate}
+		\item \label{prelim:strongly32:SCC} $G$ is strongly connected,
+		
+		\item $G'$ is strongly $2$-connected,
+		
+		\item \label{prelim:strongly32:32}  $G'$ is strongly $\frac{3}{2}$-connected,
+		
+		\item  $G'$ is strongly connected.
+	\end{enumerate}
+	For the proof, suppose $G$ is strongly connected and let $(u, i), (v, j), (w, k) \in V'$.
+	Without loss of generality, suppose $j = 1$.
+	There exists a path $v_0, \ldots, v_n \in V$ from $u$ to $v$ in $G$.
+	Then, depending on the values of $i$ and $k$,
+	we obtain a path from $(u, i)$ to $(v, j)$
+	not traversing $(w, k)$ in the following way:
+	\[
+	\begin{cases}
+		(v_0, 0), (v_0, 1), (v_1, 1), \ldots, (v_n, 1) & \text{if } i = 0, k = 0, \\
+		(v_0, 1), (v_1, 1), \ldots, (v_n, 1)        & \text{if } i = 1, k = 0, \\
+		(v_0, 0), (v_1, 0), \ldots, (v_n, 0), (v,1) & \text{if } i = 0, k = 1, \\
+		(v_0, 1), (v_0, 0), (v_1, 0), \ldots, (v_n, 0), (v,1) & \text{if } i = 1, k = 1.  
+	\end{cases}
+	\]
+	So, we obtain that $G'$ is strongly $2$-connected.
+	This implies strong $\frac{3}{2}$-connectivity, which implies strong connectivity, see \cref{prelim:fig:connectivity-notions}.
+	Finally, suppose $G'$ is strongly connected
+	and let $u,v \in V$. Then, let $(v_0, 0), (v_1, i_1), \ldots, (v_{n-1}, i_{n-1}), (v_n, 0)$
+	be a path in $G'$ with $i_1, \ldots, i_{n-1} \in \{0,1\}$, $v_0 = u$, and $v_n = v$.
+	We obtain a path from~$u$ to~$v$ in~$G$
+	by considering the vertices $v_1, v_1, \ldots, v_{n-1}, v_n$
+	and replacing parts of the form $v_i, v_{i+1}, \ldots, v_j$, $i < j$,
+	with $v_i = v_j$ by $v_i$ (where the order in which these parts are selected does not matter)
+	until every vertex appears precisely once.\footnote{More precisely, for each $i \in \{0,1\}$,
+		there exists a path
+		from $u$ to $v$ in $G$ if and only if there
+		exists a path from $(u, i)$ to $(v, i)$ in $G'$ using only vertices in $V \times \{i\}$.}
+\end{proof}
+
+\subsection{Circuits and Encodings}
+%\subsection{Circuits and Encodings for Transformations and Automata}
+\label{prelim:sec:encodings}
+
+Here, we discuss how we encode numbers, transformations, and, lastly, automata
+as inputs for circuits.
+
+\subsubsection{Numbers}
+
+\IN{thermometer unary} \IN{one-hot unary}
+Besides the binary encoding of a number here we also consider
+two types of unary encodings.
+In the \emph{one-hot} (resp.~\emph{thermometer}) \emph{unary encoding}~\cite{DBLP:journals/trets/Mohajer0BL20} using~$n$ bits a number $0 \le m < n$
+is encoded by $0^{m} 1 0^{n - m - 1}$ (resp.~$1^{m+1} 0^{n - m - 1}$). In both representations, the value of the number increases 
+as the rightmost $1$ (when read from left to right) shifts further to the right.
+As a technicality, note that in both encodings, zero is represented by $10^{n-1}$ and not by $0^n$.
+
+\begin{proposition}
+\label{prelim:AC0converters-numbers}	
+\begin{enumerate}
+\item \label{prelim:AC0converters-numbers:item:onehotbin} There exists an \LOGSPACE-uniform circuit family $C_1, C_2, \ldots$ in  $\AC^0$ 
+ where $C_n$ converts a number in one-hot unary encoding using~$n$ bits
+ to the binary encoding with $k = \lfloor \log_2(n) \rfloor + 1$ bits.
+
+\item \label{prelim:AC0converters-numbers:item:onehottherm} There exists an \LOGSPACE-uniform circuit family $C_1, C_2, \ldots$ in  $\AC^0$ 
+where $C_n$ converts
+the thermometer unary encoding using~$n$ bits to the one-hot unary encoding using~$n$ bits and vice versa.		
+
+\item \label{prelim:AC0converters-numbers:item:binonehot} There exists an $\AC^0$ circuit of size $O(2^n)$ to convert an~$n$-bit binary number to a one-hot unary encoding using $2^n$ bits.
+
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+\ref{prelim:AC0converters-numbers:item:onehotbin}: 
+Let $x_0 x_1 \cdots x_n$ be the one-hot encoding of a number $x$.
+Then, for $i \in \{0,1,\ldots,n\}$, we have $x_i = 1$ if and only if~$i$ equals~$x$.
+Let $y_m \cdots y_1$ be the binary encoding of~$x$ with $m = \lfloor \log_2(n) \rfloor + 1$
+and where the least significant bit is the right-most bit $y_1$.
+Then, for $j \in \{1,\ldots,m\}$, we have $y_j = 1$
+if and only if
+\[
+k2^j + 2^{j-1} \le x < (k+1)2^j
+\]
+for some $k \ge 0$. Thus, for $j \in \{1,\ldots,m\}$, we obtain
+\[
+y_j = \bigvee_{\substack{\exists k \colon k2^j + 2^{j-1} \le i < (k+1)2^j}} x_i,
+\]
+i.e., $y_j$ is the {\sc OR} over all $x_i$ with $i \in \{0,1,\ldots,n\}$ where the $j$-th bit of~$i$ is one.
+These formulas can be translated into $\AC^0$ circuits that are computable
+by deterministic log-space Turing transducers.
+\footnote{This is called an $n$-to-$k$ binary encoder with
+	$k = \lfloor \log_2 n \rfloor + 1$.
+	A different circuit commonly used for this conversion
+	is the priority encoder described in~\cite[p.~117]{Kohavi70},
+	which also allows ``don't-cares''.}
+
+\ref{prelim:AC0converters-numbers:item:onehottherm}: 
+The one-hot encoding $x_0, x_1, \ldots, x_{n-1}$
+and the thermometer encoding $y_0, y_1, \ldots, y_{n-1}$
+of a number are related by 
+$y_i  = x_i \lor \cdots \lor x_{n-1}$
+and $x_i = y_i \land \neg y_{i+1}$ where we set $y_n = 0$
+for $i \in \{0,\ldots,n-1\}$.
+These formulas can be implemented by \LOGSPACE-uniform $\AC^0$ circuit families.
+
+\ref{prelim:AC0converters-numbers:item:binonehot}:  Suppose $x_{n-1}, \ldots, x_1, x_0$
+are the bits encoding a binary number with $x_0$ being the least significant bit. 
+Let $y_0, y_1, \ldots, y_{2^n - 1}$
+be the bits for the output in that order.
+Then, for $i \in \{0,1,\ldots,2^n-1\}$,
+we have $y_i = z_{i,n} \land \cdots \land z_{i,1}$ where, for $j \in \{1,\ldots,n\}$,
+\[
+z_{i,j} = \begin{cases}
+x_{j-1}        & \text{if the $j$-th bit of the binary encoding of $i$ is one,} \\	  	
+\neg x_{j-1}   & \text{if the $j$-th bit of the binary encoding of $i$ is zero.}
+\end{cases}
+\]
+Intuitively, the bit pattern $x_{n-1}, \ldots, x_1, x_0$ is matched against the binary encoding of~$i$ 
+via a minterm.\footnote{This is a conjunction
+of variables and negated variables that evaluates to one for precisely one specific assignment to the variables.}
+We have
+\[
+y_i = 1 \Leftrightarrow \text{the bit pattern $x_{n-1}, \ldots, x_1, x_0$ encodes $i$}.
+\]
+Now, each $y_i$ uses a single {\sc AND} gate of fan-in $n$
+and at most $n$ {\sc NOT} gates. So, this is an $\AC^0$ circuit
+of size $O(2^n)$.
+\end{proof}
+
+By \cref{prelim:prop:AC0-composition} and \cref{prelim:AC0converters-numbers:item:onehottherm} from \cref{prelim:AC0converters-numbers} 
+for the unary encoding we can chose the one-hot or thermometer encoding, whatever is more convenient,
+up to $\AC^0$-reductions.
+
+The input to our problems is often some numerical parameter together with other data.
+An additional parameter can be encoded in the input along with other data
+in the following ways.
+\begin{enumerate}
+\item Most of the time the parameter can be assumed to be bounded by some 
+monotone function $f(n)$ of the size of the data~$n$. 
+For example, if the parameter bounds a shortest synchronizing word of an input automaton,
+then it can be assumed to be bounded
+by a cubic polynomial, see \cref{tab:reset_length_bounds}.
+In this case,
+the total length of the input is the sum of~$n$ and $f(n)$ (or $\log_2(f(n))$
+for a binary encoding) and~$n$ can be extracted from the input length.
+Thus, the parameter is deducible from the total length of the input.
+If this is possible in deterministic log-space, then 
+for our \LOGSPACE-uniform circuit families we can assume the input
+is split into designated bits for the parameter and for the rest of the data.
+
+\item If the parameter can be arbitrarily large even if the remaining
+data is fixed, then the parameter cannot be encoded in the length
+of the input. In this case, it has to be encoded into the input in such a way
+that it can be separated from the remaining data. For example,
+by encoding the total input in the form $1^m0v$ where~$1^m$ encodes
+the parameter and~$v$ the rest of the input. Then the circuits
+have to use additional circuitry to parse the input and separate the
+parameter from the remaining data.
+\end{enumerate}
+
+In reductions, when we assume a unary encoding for a parameter we assume it to have
+the form $1^m$ for some $m \ge 0$.\footnote{However, when
+	the input is a single unary number without additional data,
+	this assumption makes no sense since then we always just feed $1^n$
+	as input to the circuits. This is precisely the input the Turing machine constructing
+	the circuit sees and thus for $\NC^1$ and below, the computation can already 
+	be performed by the Turing machine and the circuitry does not give more computational power.
+	So, in this case, the number of bits and the 
+	specific value encoded in the input bitstring must be distinguished.}
+
+\subsubsection{Transformations}
+
+\IN{point-wise representation}
+A transformation $t \colon [n]\to [n]$
+can be represented by a transformation matrix consisting of~$n^2$ binary values
+or by the  \emph{point-wise representation}, which  lists the values $\applyfunc{0}{t}, \applyfunc{1}{t}, 
+\ldots, \applyfunc{n-1}{t}$ where we assume each $t(i)$ uses the same number of bits.
+With this convention for the point-wise representation, the parameter~$n$ can be easily extracted solely
+from the length of the input, which has size $n^2$
+if we use a unary encoding for each $t(i)$ or $n \lfloor \log_2(n) + 1 \rfloor$
+if we use a binary encoding.
+
+For the transformation $t \colon [n] \to [n]$,
+for $i \in [n]$, $t(i)$ in one-hot encoding equals 
+the $i$-th row of the transition matrix of~$t$ w.r.t.~the natural order on~$[n]$.
+Thus, both representations are essentially the same,
+and we can also easily obtain the point-wise representation
+in terms of the thermometer unary encoding from this representation.
+
+Next, we show
+that we can also convert the point-wise representation
+using a binary encoding and the representation by transition matrices into each other
+by \LOGSPACE-uniform  $\AC^0$-circuits. 
+
+\begin{theorem}
+	\label{prelim:thm:point-wise-to-matrices-in-AC0}
+	There exists a family of \LOGSPACE-uniform~$\AC^0$ circuits computing
+	the conversion of the point-wise representation of a transformation with a binary encoding
+	into the representation by transition matrices and vice versa.
+\end{theorem}
+\begin{proof}	
+	Let $t \colon [n] \to [n]$. We can assume $n \ge 1$.
+	First, suppose~$t$ is given by a point-wise representation $t(0), \ldots, t(n-1)$
+	where $t(i)$ for $i \in [n]$
+	is encoded in binary. 
+	By our convention, 
+	each $t(i)$ for $i \in [n]$
+	uses $\lfloor \log_2(n) + 1 \rfloor$ bits,
+	so that the encoding uses $n \lfloor \log_2(n) + 1 \rfloor$
+	bits in total.
+		
+	The $\AC^0$ circuits for the conversion of the binary encoding of $t(i)$
+	to a one-hot unary encoding
+	from \crefitem{prelim:AC0converters-numbers}{prelim:AC0converters-numbers:item:binonehot} 
+	have size~$O(n)$
+	and they produce, for $t(i)$, 
+	the bits 
+	$
+	y_{i+1,0}$, $y_{i+1,1},\ldots, y_{i+1,2^m - 1}
+	$
+	storing the one-hot encoding of $t(i)$ as a word
+	$y_{i+1,0} y_{i+1,1} \cdots y_{i+1,2^m - 1} \in \{0,1\}^+$. 
+	We have $2^{m - 1} \le n \le 2^m - 1$.
+	Thus, since $t(i) \in [n]$,
+	we find $y_{i+11, n+1} = \cdots = y_{i+1,2^m - 1} = 0$.
+	Then the matrix $(y_{i,j})_{i,j \in \{1,\ldots,n\}}$
+	equals the transition matrix of~$t$.
+	Inspection of the proof of \crefitem{prelim:AC0converters-numbers}{prelim:AC0converters-numbers:item:binonehot} 
+	gives that the above circuits can be generated by a deterministic 
+	log-space Turing transducer on input~$1^{\lfloor \log_2(n) + 1 \rfloor}$
+	since it can easily 
+	compute~$n$ from the input length
+	and use this parameter in the construction of the circuit.	
+	
+	Conversely, suppose the transition matrix $y = (y_{ij})_{i,j \in \{1,\ldots,n\}}$ of~$t$ is given.
+	The $i$-th row $y_{i1}, \ldots, y_{in}$
+	corresponds to a unary one-hot encoding 
+	of $t(i-1)$. 
+	So, by \crefitem{prelim:AC0converters-numbers}{prelim:AC0converters-numbers:item:onehotbin},
+	we can compute binary encodings of $t(0), t(1), \ldots, t(n-1)$
+	by \LOGSPACE-uniform  $\AC^0$ circuits.
+\end{proof}
+
+\subsubsection{Automata}
+
+
+Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be an $n$-state automaton.
+A reasonable idea is to represent $\mathcal A$ as a list of transition matrices
+for each letter.
+
+A list of transition matrices can be specified by $|\Sigma|n^2$ bits
+where the first $n^2$ bits correspond
+to the first letter, the next $n^2$ bits to the next letter
+and so on for some ordering of the alphabet.
+
+For a fixed alphabet, 
+a deterministic log-space Turing machine
+can easily separate the input
+into the individual transition matrices, i.e., identify
+the first $n^2$ bits, then the next $n^2$ bits
+and so on, and it just needs the total length
+$|\Sigma|n^2$ of the input to perform this task.
+
+However, in our problems, the alphabet is also part of the input. In this case, the input length alone does not determine the size of the alphabet or the number of states, since multiple possibilities exist
+for each given length.
+
+Hence, a machine that constructs circuits
+using the length of the input as parameter
+cannot create a circuit with fixed input gates
+for each transition matrix. The circuit 
+must determine from the input
+which bits constitute the individual transition matrices.
+For the circuit to do this, 
+we need some way to supply this information
+in the input, for example, by separating
+the individual transition matrices.
+
+There are several schemes to achieve
+this. For example,
+we can encode every $0$ by~$00$, every~$1$ by~$11$
+and use $01$ and $10$ as separating sequences
+between transition matrices.
+There are also more clever schemes 
+using so-called self-delimiting
+descriptions
+that encode the length of the individual parts (here the transition matrices)
+into the input, for example, see~\cite[Sect.~1.4]{LiVitanyi2019} or~\cite[Sect.~2.2]{LiVitanyi1990}.
+However, it is not immediately evident
+how an $\AC^0$-circuit can parse 
+such inputs to identify the individual transition matrices.
+
+For this reason, we use another encoding that is easy for $\AC^0$ circuits to process, but uses $(n + |\Sigma|)^3$ bits (and therefore, uses more space than the schemes discussed above). 
+Let $R_{\delta}$  be the ternary relation
+over the universe $\Sigma \cup Q$ such that $R_{\delta}(x,y,z)$
+holds if and only if  $x$ represents a letter $a_x$, 
+$y$ represents a state $q_y$, $z$ represents a state $q_z$, and $\delta(q_y, a_x) = q_z$.
+Then an automaton is supplied to a circuit as the bitstring of length $(n+|\Sigma|)^3$ encoding $R_{\delta}$.
+
+It is well-known that properties that are testable by families of $\AC^0$ circuits
+are precisely those checkable by first order formulas~\cite[Thm.~5.22]{DBLP:books/daglib/0095988}.
+We use this equivalence by giving first order sentences to show containment
+in $\AC^0$. The only technicality left is to argue that this is also possible
+with our notion of \LOGSPACE-uniformity. We argue next that, given a first order formula,
+a deterministic log-space Turing transducer can construct an $\AC^0$ circuit family
+where each circuit evaluates to true on a given input of size $(n+|\Sigma|)^3$ if and only if 
+the first order formula holds for the automaton encoded in the input.
+
+Suppose a first order formula quantifying over the elements in $Q \cup \Sigma$
+and using only the predicate $R_{\delta}$ is given.
+A Turing transducer, given $1^{(n + |\Sigma|)^3}$ as input,
+can compute the size of the universe $n + |\Sigma|$.
+Furthermore, for numbers $i,j,k \in \{1,\ldots,n + |\Sigma|\}$
+it can also determine the bit that encodes $R_{\delta}(i,j,k)$.
+With this information, an all- or exists-quantifier can be translated
+into an unbounded {\sc AND} or {\sc OR}-gate for the input of size $(n+|\Sigma|)^3$, respectively.
+Using this, by induction over the structure of the formula,
+the transducer can construct an $\AC^0$-circuit.
+
+Next, we show that, when giving formulas to show containment in $\AC^0$,
+we can, without loss of generality, quantify only over letters or states,
+and can access entries of the transition matrices of~$\mathcal A$, thus
+giving us some ``syntactic sugar'' in comparison to our plain formulas
+where quantification is always over $Q \cup \Sigma$ and that only uses
+the relation $R_{\delta}$.
+
+Consider the two unary relations $R_Q$ and $R_{\Sigma}$
+where $R_Q(x)$ (resp.~$R_{\Sigma}(x)$) 
+is true precisely if~$x$ is a state (resp.~a letter).	
+The relations $R_{\Sigma}$ and $R_Q$ can be specified by the first order
+formulas $\bigvee_{z_1} \bigvee_{z_2} R_{\delta}(x, z_1, z_2)$
+and 
+$\bigwedge_{z_1} \bigwedge_{z_2} \neg R_{\delta}(x, z_1, z_2)$, respectively.
+Thus, they can be used in first order formulas.
+Furthermore, we can use them to quantify only over the letters
+or only the states. For example, the following formula, querying
+whether an automaton has a trap state,
+\[
+\bigvee_{a \in \Sigma}  \left( \bigwedge_{q \in Q} R_{\delta}(a, q, q) \right),
+\]
+can be translated into
+\[
+\bigvee_{x \in U} \left( R_{\Sigma}(x) \rightarrow \left( \bigwedge_{y \in U} R_Q(y) \rightarrow R_{\delta}(x,y,y) \right) \right).
+\]
+This gives us the mean to write simpler formulas. 
+Note that if $x$ represents a letter $a$ and $y,z$ states, then $R_{\delta}(x, y, z)$
+corresponds to an entry in the transition matrix of~$a$. Thus, we can directly
+reference entries of the transition matrices of a letter in first order formulas.
+We will often do so, but using a simpler notation, for example
+denoting the transition matrices by $(m_{i,j})_{i,j \in \{1,\ldots,n\}})$
+for $a \in \Sigma$ and using these expressions in first order formulas
+instead of $R_{\delta}$.
+
+\begin{remark}
+	All of the representations discussed above, 
+	and the representation by giving the transformation of the letters in point-wise representation in binary
+	with some mechanism of separation between the letters,
+	are readily convertible into each other by deterministic log-space Turing machines.
+	Thus, when using $\lelogm$-reductions, we may assume either of these representations.
+\end{remark}
+
+\begin{remark}
+	The representation of structures
+	by relations and constants over a finite universe, 
+	and their relation to logic and computation,
+	is explored in descriptive complexity,
+	see~\cite{DBLP:books/daglib/0095988}.
+	In~\cite[Def.~2.1]{DBLP:books/daglib/0095988}
+	the encoding of these structures by binary sequences is discussed.
+	Here, we encoded letters and states in a common universe.
+	In this respect, we also refer to the modeling of \SAT\  in~\cite[Ex.~2.18]{DBLP:books/daglib/0095988} 
+	where the elements of the universe each model variables and clauses.	
+\end{remark}

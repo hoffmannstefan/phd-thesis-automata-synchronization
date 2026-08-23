@@ -1,0 +1,101 @@
+%!TEX root = ./../../thesis-trier.tex
+
+\index{$m$-cycle|see{cycle}} 
+\IN{cycle} 
+\index{cyclic permutation|see {cycle}} 
+\IN{cyclically permuting a set}
+\IN{transposition}
+\IN{cycle notation} \label{def:cycle-notation}
+\IN{disjoint cycles}
+\IN{cycle induced by transformation}
+\IN{cycle contained in transformation!see {cycle induced by transformation}}
+\IN{permuted subset}
+\IN{point contained in cycle}
+Let $X$ be some set and $a_0, a_1, \ldots, a_{m-1} \in X$ be $m \ge 1$ distinct elements.
+Then the permutation $(a_0 ~ a_1 ~ \cdots ~ a_{m-1})_X \colon X \to X$ 
+given by 
+\[
+(a_0 ~ a_1 ~ \cdots ~ a_{m-1})_X(x) = 
+\begin{cases} 
+	a_{(j+1) \bmod m} & \text{if } x = a_j \text{ for some } j \in \{0,1,\ldots,m-1\}, \\
+	x & \text{otherwise,}
+\end{cases} 
+\]
+is called an \emph{$m$-cycle} or \emph{cycle} of length $m$.\footnote{Note that for $X \ne \{a_0,a_1, \ldots, a_m\}$
+	the cycle has fixpoints. Some authors exclude this possibility and 
+	stipulate $X = \{a_0,a_1, \ldots, a_m\}$.}
+
+Equivalently, $t \colon X \to X$ is an $m$-cycle if and only if
+$m \le 1$ and $t = \operatorname{id}_X$ 
+or $m = |\move{t}|$ and for $x,x' \in \move{t}$
+there exists $i \ge 0$
+such that $t^i(x) = x'$.
+When the context is clear, we often omit the index~$X$ and simply write $(a_0 ~ a_1 ~ \cdots ~ a_{m-1})$.
+We do not use commas in the cycle notation between points, 
+to distinguish it from an ordinary $m$-tuple.
+When writing a $1 \times n$ matrix as in \cref{prelim:sync_max:matrixscheme} 
+we obtain the same notation as for a cycle,
+but in each case the context should make it clear whether we refer to a cycle or a $1 \times n$ matrix.
+For each $a \in X$, we have $(a) = () = \operatorname{id}_X$.
+The following equations hold:
+\begingroup
+\allowdisplaybreaks 
+\begin{align}
+	(a_0 ~ a_1  ~\cdots~  a_{m-2} ~ a_{m-1}) & = (a_1 ~ a_2 ~ \cdots ~ a_{m-1} ~ a_0) \\
+	(a_0 ~ a_1  ~\cdots~  a_{m-1}) & = (a_1 ~\cdots~ a_{m-1})(a_0 ~ a_{m-1}) = (a_0 ~ a_2 ~ \cdots ~ a_{m-1}) (a_0 ~ a_1) \label{prelim:eqn:cycletrans1} \\
+	(a_0 ~ a_1  ~\cdots~  a_{m-1}) & = (a_{m-2} ~ a_{m-1})(a_0 ~ a_1  ~\cdots~  a_{m-3} ~ a_{m-1}) \label{prelim:eqn:cycletrans2} \\		
+	(a_0 ~ a_1  ~\cdots~  a_{m-1}) & = (a_0 ~ a_1)( a_1 ~\cdots~ a_{m-1}) \\		
+	(a_0 ~ a_1  ~\cdots~ a_{m-2} ~ a_{m-1}) & = \concat{\concat{(a_0 ~\cdots~ a_{m-3})}{(a_{m-2} ~ a_{m-1})}}{(a_{m-2} ~ a_0)} 
+\end{align}
+\endgroup%
+% einige oben nur spezialfälle davon
+And for $0 \le i < j < m$ we have:
+\begin{align*}
+	(a_0 ~ a_1 ~\cdots~ a_{m-1})(a_i ~ a_j)
+	& = (a_0 ~ a_1 ~\cdots~ a_{i} ~ a_{j+1} ~ a_{j+1} \cdots a_{m-1})(a_{i+1} ~\cdots ~ a_j) \\
+	(a_i ~ a_j)(a_0 ~ a_1 ~\cdots~ a_{m-1})
+	& = (a_0 ~ a_1 ~\cdots~ a_{i-1} ~ a_j ~ a_{j+1} ~\cdots~ a_m)(a_i ~ \cdots ~ a_{j-1})
+\end{align*}
+
+A \emph{transposition} is a $2$-cycle. Two cycles~$t,h \colon X \to X$ are \emph{disjoint} if $\move{t} \cap \move{h} = \emptyset$,
+in this case we have $th = ht$.  
+Let $t \colon X \to X$ be some transformation.
+For finite $S \subseteq X$, we say that $t$
+\emph{cyclically permutes $S$} if $t$ permutes $S$
+and $t_{|S}$ is an $|S|$-cycle. 
+Then $t^{|S|}(x) = x$ for all $x \in S$. A permutation on a set of size at least two cyclically permutes its domain
+if and only if it is a cycle with no fixpoints.
+If $t_{|S} = (a_0 ~ a_1 ~ \ldots ~ a_{m-1})$
+we also say that $t$ 
+\emph{induces the cycle}, or \emph{contains the cycle}, $(a_0 ~ a_1 ~ \cdots ~ a_{m-1})$.
+Equivalently, $t(a_j) = a_{(j+1) \bmod m}$ for all $j \in \{0,1,\ldots,m-1\}$, i.e.,
+$(x ~ t^2(x) ~ \cdots ~ t^{m-1}(x)) = (a_0 ~ a_1 ~ \ldots ~ a_{m-1})$.
+%Then, for each $x \in \{a_0, a_1, \ldots, a_{m-1}\}$,
+%we have $t^m(x) = x$. Conversely, 
+For $x \in X$ and $m \ge 1$, the points 
+$x, t(x), \ldots, t^{m-1}(x)$ form a cycle induced by $t$ if and only if~$m$ is minimal
+such that $t^m(x) = x$.
+Two distinct cycles induced by $t$ are disjoint.
+
+\begin{proposition} \label{prelim:fact:product_disjoint_cycles} 
+	A permutation on a finite set equals the composition (in any order) of its induced cycles.	
+\end{proposition}
+\begin{proof}
+	Let~$t \colon [n]\to [n]$ be a permutation
+	with induced cycles $t_1, \ldots, t_m$.
+	For $x \in [n]$, we have $t_i = (x ~ t(x) \cdots t^{k-1}(x))$
+	for some minimal $k \ge 1$ with $t^k(x) = x$ and 
+	unique $i \in \{1,\ldots,m\}$.
+	Furthermore, for $j \ne i$, we also have $t_j(x) = x$.
+	Thus, the result of any composition of
+	$t_1, \ldots, t_m$ maps $x$ to $t_i(x) = t(x)$,
+	and so this composition equals~$t$.
+\end{proof}
+
+\begin{corollary} \label{prelim:fact:transpositions_generate_Sn}
+	A permutation on a finite set can be written as
+	a composition of transpositions.
+\end{corollary}
+\begin{proof}
+	This follows from \cref{prelim:eqn:cycletrans1,prelim:fact:product_disjoint_cycles}.
+\end{proof}

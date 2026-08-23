@@ -1,0 +1,78 @@
+
+\IN{full transformation semigroup}
+\IN{domain!of transformation semigroup}
+\IN{transformation semigroup} 
+\IN{transformation monoid}
+\label{def:T_X}
+\label{def:T_n}
+The set of all transformations on a set~$X$
+with function composition as operation forms
+a semigroup $(X^X, \circ)$, called
+the \emph{full transformation semigroup on~$X$}.
+This set also forms a monoid with identity $\operatorname{id}_X$.
+We also denote $(X^X, \circ)$ by $\mathcal T_X$.
+For $X = [n]$, we set $\mathcal T_n = \mathcal T_X$. 
+A \emph{transformation semigroup} (resp.~\emph{transformation monoid}) on the \emph{domain}~$X$ 
+is a subsemigroup (resp.~submonoid) of $\mathcal T_X$.
+
+\IN{fixpoint!of transformation semigroup}
+\IN{$S$-congruence}
+\IN{congruence class}
+\IN{trivial congruences}
+\IN{congruent elements}
+Let $S \le_S \mathcal T_X$ be a transformation semigroup. 
+A \emph{fixpoint} of $S$ is a point fixed by all elements from $S$. 
+An \emph{$S$-congruence} is an equivalence relation~$\sim$ on~$X$ such that,
+for all $x,y \in X$ and $t \in S$, we have 
+\begin{equation}
+	\label{prelim:trans_semigrp_congruence} 
+	x \sim y \Rightarrow \applyfunc{x}{t} \sim \applyfunc{y}{t}.
+\end{equation} 
+We also say that $x$ and $y$ are \emph{congruent} if $x \sim y$. Equivalence classes of~$\sim$
+are also called \emph{congruence classes} in this case.
+The universal and equality relations on $X$ are $S$-congruences, called the \emph{trivial $S$-congruences}. 
+
+Recall from \cref{prelim:sec:fun} that the elements of $X$ are also called \emph{points} in the context
+of transformations.
+
+\begin{remark} \label{prelim:rem:monoid-to-transfmonoid}
+	Let $(M, \cdot, 1)$ be a monoid.
+	For $m \in M$ let $\hat{m} \colon M \to M$
+	be given by $\hat{m}(x) = xm$ for $x \in M$.
+	Then $\hat{M} = \{ \hat{m} \mid m \in M \}$ is a transformation monoid
+	on the domain~$M$.
+	The map  $m \mapsto \hat{m}$
+	is injective
+	since $\hat{m} = \hat{n}$ for $m,n \in M$ 
+	implies $m = \hat{m}(1) = \hat{n}(1) = n$,
+	and it is a monoid morphism.
+	Thus, $\hat{M}$ represents the monoid~$M$
+	as a transformation monoid on the domain~$M$.
+	The $M$-congruences of $\hat{M}$ are also called
+	right-congruences of~$M$ in the literature, see, for example, \cite{howie1995fundamentals}.
+\end{remark}
+
+\begin{remark} \label{prelim:rem:semigrp-to-transfsemigrp}
+	Let $S$ be a semigroup.
+	By adjoining an identity as in \cref{prelim:rem:semigroup-adjoin-identity} 	
+	we obtain a monoid $M = S \cup \{1\}$.
+	Consider the transformation monoid
+	constructed from it as in \cref{prelim:rem:monoid-to-transfmonoid}
+	via the map $m \mapsto \hat{m}$ for $m \in M$.
+	Then $\{ \hat{s} \mid s \in S\}$
+	is a transformation semigroup and the map $s \mapsto \hat{s}$ for $s \in S$
+	is an injective semigroup morphism.
+	Thus, the semigroup~$S$ is represented as a transformation semigroup.
+\end{remark}
+
+The embedding of an arbitrary semigroup 
+in a transformation semigroup as in \cref{prelim:rem:semigrp-to-transfsemigrp}
+is also known as Cayley's theorem, 
+for example, see~\cite[Thm.~2.4.3]{GanyushkinMazorchuk2008}.
+However, Cayley only gave it for groups~\cite{Cayley54a}.\footnote{Cayley did not give an 
+	explicit statement, but only implicitly assumed it, since the notion of an abstract group
+	was not yet invented. He investigated a formal calculus of operations with an identity element and satisfying associativity (implicitly assuming inverses) and used it to investigate
+	groups.}
+The extension to semigroups is due to Suschkewitsch~\cite{Suschkewitsch1926}.
+
+

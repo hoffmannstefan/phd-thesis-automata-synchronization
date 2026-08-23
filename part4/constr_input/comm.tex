@@ -1,0 +1,110 @@
+%!TEX root = ../../thesis-trier.tex
+
+Here, we show that for commutative $n$-state input automata
+and an arbitrary regular constraint language,
+the constrained synchronization problem is in \NL\ (\cref{thm:main_theorem_comm_input_NL})
+and solvable in time $O(|\Sigma|^2n^{|\Sigma|+2})$ (\cref{thm:main_theorem_comm_input}).
+For unary automata (which are commutative),
+by \cref{constr_sync:thm:infinite,constr_sync:thm:finite},
+the problem is \LOGSPACE-complete
+when the constraint language is infinite and in $\AC^0$ otherwise.
+
+\begin{theorem}
+\label{thm:main_theorem_comm_input_NL}
+ Fix a regular language $L \subseteq \Sigma^*$.
+ Then, for a commutative input $n$-state automaton~$\mathcal A = (Q, \Sigma, \delta)$,
+ the problem whether $\mathcal A$ admits a synchronizing
+ word in $L$ is in \NL.
+\end{theorem}
+\begin{proof}
+ Let $\Sigma = \{a_1, \ldots, a_k\}$ and $\automat{B}{P}{\Sigma}{\mu}{p_0}{F}$
+ be a PDFA such that $L = L(\mathcal B)$.
+ We give an algorithm that uses a memory cell to store a state from $\mathcal B$ initialized with~$p_0$
+ and $k$ counters $c_1, \ldots, c_k$.
+% The algorithm repeats the following passes for at most $|P| \cdot \binom{n}{2}$ steps, where 
+% in the $i$-th step a letter $x_i \in \Sigma$ is computed in the following way: 
+ The algorithm %iterates through $i \in \{1,2,\ldots,|P| \cdot \binom{n}{2}\}
+ repeats at most $|P| \cdot \binom{n}{2}$ times the following steps
+ to compute, in the $i$-th step, a letter $x_i \in \Sigma$:
+ \begin{enumerate}
+ \item  Guess the letter $x_i \in \Sigma$,
+ update the state $p$ stored in the memory cell with $\mu(p, x_i)$
+ and add one to the counter $c_j$ where $x_i = a_j$, $j \in \{1,\ldots,k\}$.
+% Then it is $c_r = |x_1 \cdots x_i|_{a_r}$
+% for all $r \in \{1,\ldots,k\}$.
+ 	
+ \item \label{constrinput:algo:parttwo} If $\mu(p, x_i) \in F$,
+ then iterate through the states $q \in Q$,
+% and the counters $c_j$, $j \in \{1,\ldots,k\}$, compute
+ compute the state
+ $
+ \applytrans{\delta}{q}{a_1^{c_1} \cdots a_k^{c_k}},
+ $
+ and check whether this always results
+ in the same state. 
+ If this is the case,
+ then $a_1^{c_1}\cdots a_k^{c_k}$
+ synchronizes $\mathcal A$.
+ We have %$\psi(x_1 \cdots x_i) = \psi(a_1^{c_1}\cdots a_k^{c_k})$
+ $|x_1 \cdots x_i|_{a_j} = c_j$ for each $j \in \{1,\ldots,k\}$
+ and, since $\mathcal A$ is commutative and so its set of synchronizing
+ words is commutative by 
+ \crefitem{prelim:classes:comm:prop:set-sync-words}{prelim:classes:comm:prop:set-sync-words:1},
+ $a_1^{c_1}\cdots a_k^{c_k}$
+ synchronizes $\mathcal A$ if and only if $x_1 \cdots x_i$ synchronizes~$\mathcal A$.
+ So, for $\mu(p, x_i) \in F$ and when $a_1^{c_1} \cdots a_k^{c_k}$
+ synchronizes $\mathcal A$, we can abort the procedure and return \rYES.
+ Otherwise, we continue with the next step or, for $i > |P| \cdot \binom{n}{2}$,
+ abort the procedure and return \rNO. 
+\end{enumerate}
+ 
+ Part~\ref{constrinput:algo:parttwo} of the above algorithm
+ can be realized by using a memory cell to compute $\applytrans{\delta}{q}{a_1^{c_1} \cdots a_k^{c_k}}$
+ on-the-fly, an additional memory cell
+ to store a resulting state $\applytrans{\delta}{q}{a_1^{c_1} \cdots a_k^{c_k}}$
+ for comparison between different passes,
+ a counter to iterate through the states $q \in Q$,
+ a counter to iterate through $c_1, \ldots, c_k$
+ and a counter to iterate from zero to $c_j$ for each $j \in \{1,\ldots,k\}$.
+ By using a binary encoding all counters can
+ be stored using logarithmic space.
+ 
+	By~\cref{constr_sync:prop:pto_comm_rho_automata},
+	a commutative automaton is a $\rho$-automaton.
+	So, by \cref{constr_input:prop:bound_rho}, 
+	if there exists a synchronizing word in~$L$,
+	then there exists one of length at most~$|P|\cdot \binom{n}{2}$.
+	Therefore, by nondeterminism, 
+	the above algorithm finds it, which shows its correctness.
+\end{proof}
+
+	\begin{theorem}
+		\label{thm:main_theorem_comm_input}
+		Fix a regular language $L \subseteq \Sigma^*$.
+		Then, for a commutative input automaton~$\mathcal A$
+		with $n$ states,
+		the problem whether $\mathcal A$ admits a synchronizing
+		word in $L$ is solvable in time $O(|\Sigma|^2 n^{|\Sigma|+2})$.
+	\end{theorem}
+	\begin{proof}
+		By Proposition~\ref{prop:aut_for_sync_words} we
+		can compute in time $O(n^{|\Sigma|+2})$ an
+		automaton~$\mathcal C$ of size $n^{|\Sigma|}$
+		recognizing the set
+		of synchronizing words of $\mathcal A$.
+		Let $\automat{B}{P}{\Sigma}{\mu}{p_0}{F}$
+		be an automaton such that $L = L(\mathcal B)$.
+		By \cref{prelim:eqn:product-intersection}, the product automaton of $\mathcal C$ and $\mathcal B$
+		accepts $L(\mathcal C) \cap L$.
+		and can be computed in time $O(|P| |\Sigma|^2 n^{|\Sigma|})$.
+		Then, checking that the resulting automaton
+		for the intersection accepts a non-empty
+		language can also be done in  
+		time $O(|P||\Sigma|^2n^{|\Sigma|})$ 
+		where $O(|P||\Sigma|^2n^{|\Sigma|}) = O(|\Sigma|^2n^{|\Sigma|})$ since $\mathcal B$ is fixed,
+		as we simply have to check whether there exists a path from the start state to a final state
+		which can be done by a breadth-first search algorithm~\cite{cormen01introduction}.
+	\end{proof}
+
+The degree of the polynomial measuring the running time depends on the alphabet size. But note that a fixed
+constraint automaton also fixes the alphabet, hence this parameter is not allowed to vary in the input semiautomata.

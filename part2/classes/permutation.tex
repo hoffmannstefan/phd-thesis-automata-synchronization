@@ -1,0 +1,161 @@
+%!TEX root = ../../springer-mono-format/book.tex
+%!TEX root = ../../thesis-trier.tex
+
+\IN{permutation-reset automaton}
+\IN{permutation automaton}
+\IN{reset automaton}
+Let $\semiautomat{A}{Q}{\Sigma}{\delta}$.
+We call $\mathcal A$ a
+\emph{permutation-reset automaton}  
+if 	$\delta(Q, a) \ne Q$ implies $|\delta(Q, a)| = 1$
+for every $a \in \Sigma$,
+a \emph{permutation automaton} if every letter is a permutational letter,
+and a \emph{reset automaton} if every letter synchronizes the automaton.
+The automaton~$\mathcal A$ is a permutation automaton if and only if~$\TS{\mathcal A}$ is a permutation group on~$Q$.
+Permutation automata are SI-automata
+without idempotent letters. Clearly, if $\mathcal A$ is a permutation-reset automaton, then
+we have
+\begin{equation} \label{prelim:perm:fact:synA}
+	\Syn(\mathcal A) = \Sigma^* \cdot \{ a \in \Sigma : |\delta(Q, a)| = 1 \} \cdot \Sigma^*
+\end{equation}
+
+
+\begin{proposition} \label{prelim:perm-reset-Rees-factor}
+Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ and $S \subseteq Q$ be an upper set.
+	Then the following are equivalent.
+\begin{enumerate}
+\item \label{prelim:perm-reset-Rees-factor:1} $\mathcal A / {\sim_S}$ is a permutation-reset automaton 
+
+\item \label{prelim:perm-reset-Rees-factor:2} $
+\delta(Q \setminus S, a) \ne Q \setminus S
+$
+implies
+$ 
+\delta(Q, a) \subseteq S
+$
+for each $a \in \Sigma$.
+
+\item \label{prelim:perm-reset-Rees-factor:3} $Q \setminus S$ is a block.
+	
+\item \label{prelim:perm-reset-Rees-factor:4} $\mathcal A_{|Q\setminus S, \Gamma}$ for $\Gamma = \{ a \in \Sigma \mid \applytrans{\delta}{Q \setminus S}{a} \subseteq Q \setminus S\}$ is a permutation automaton and $a \in \Sigma\setminus \Gamma$ implies $\applytrans{\delta}{Q \setminus S}{a} \subseteq S$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+$\ref{prelim:perm-reset-Rees-factor:1} \Rightarrow \ref{prelim:perm-reset-Rees-factor:2}$:
+By \cref{prelim:rem:Rees}, the state set~$Q / {\sim_S}$ is permuted by a letter~$a \in \Sigma$
+if and only if $\delta(Q \setminus S, a) = Q \setminus S$
+and $\delta_{\sim_S}(S, a) = S$.
+So, $\delta(Q \setminus S, a) \ne Q \setminus S$
+implies $| \delta_{\sim_S}(Q / {\sim_S}, a)| = 1$.
+Since~$S$ is a trap state in~$\mathcal A / {\sim_S}$,
+this yields $\delta_{\sim_S}(Q / {\sim_S}, a) = \{S\}$,
+which is equivalent to $\delta(Q, a) \subseteq S$.
+
+$\ref{prelim:perm-reset-Rees-factor:2} \Rightarrow \ref{prelim:perm-reset-Rees-factor:3}$:
+Since~$S$ is an upper set, $\delta(Q, a) \subseteq S$
+is equivalent to $\delta(Q \setminus S, a) \subseteq S$.
+So, by assumption,
+we have $\delta(Q \setminus S, a) = Q \setminus S$
+or $\delta(Q \setminus S, a) \subseteq S$,
+and the latter condition is equivalent to $\delta(Q \setminus S, a) \cap (Q \setminus S) = \emptyset$.
+Thus, $Q \setminus S$ is a block.
+
+$\ref{prelim:perm-reset-Rees-factor:3} \Rightarrow \ref{prelim:perm-reset-Rees-factor:4}$: 
+Since~$Q \setminus S$ is a block,
+$\applytrans{\delta}{Q \setminus S}{a} \subseteq Q \setminus S$
+implies $\applytrans{\delta}{Q \setminus S}{a} = Q \setminus S$, and so $\mathcal A_{|Q\setminus S, \Gamma}$
+is a permutation automaton. For $a \in \Sigma \setminus \Gamma$, we have $\delta(Q \setminus S, a) \cap (Q \setminus S) = \emptyset$,
+which implies $\delta(Q \setminus S, a) \subseteq S$.
+
+$\ref{prelim:perm-reset-Rees-factor:4} \Rightarrow \ref{prelim:perm-reset-Rees-factor:1}$: 
+The assumption yields that $\delta(Q \setminus S, a) = Q \setminus S$
+or $\delta(Q \setminus S, a) \subseteq S$ for each $a \in \Sigma$.
+Since~$S$ is an upper set, the latter condition
+is equivalent to $\delta(Q, a) \subseteq S$.
+From \cref{prelim:rem:Rees} we get that $\mathcal A / {\sim_S}$
+is a permutation-reset automaton.
+\end{proof}
+
+\begin{remark}
+	By \cref{prelim:perm-reset-Rees-factor},
+	a strongly connected component $S \subseteq Q$ in $\semiautomat{A}{Q}{\Sigma}{\delta}$
+	is a block if and only if $( \mathcal A_{|T} ) / {\sim_{T \setminus S}}$
+	for $T = \upperset{S}$ is a permutation-reset automaton.	
+\end{remark}
+
+By \cref{prelim:perm-reset-Rees-factor} in a permutation-reset automaton
+with a trap state $t$, by considering $S = \{t\}$, every non-permutational
+letter maps everything to the trap state.
+
+The equivalences from \cref{prelim:perm-reset-Rees-factor} 
+fail for $S = \emptyset$ in case of permutation-reset automata $\semiautomat{A}{Q}{\Sigma}{\delta}$
+with $|Q| \ge 2$ and a letter $a \in \Sigma$ such that $|\delta(Q, a)| = 1$.
+
+\begin{proposition} \label{prelim:subclasses:perm:reach} 
+	Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be a permutation automaton.
+	Then $\delta(q, u) \eqreach q$ for all $q \in Q$
+	and $u \in \Sigma^*$.		
+\end{proposition}
+\begin{proof}
+	This follows from \cref{prelim:autsyncw:lem:perm-each-letter-sink} 
+	since the whole state set is permuted by each letter.
+\end{proof}
+
+\begin{corollary} \label{prelim:subclasses:perm:reach:cor} 
+	In a permutation automaton each strongly connected component is a sink component.
+\end{corollary}
+
+By \cref{prelim:subclasses:perm:reach}, the strongly connected components in a permutation automaton are precisely 
+the orbits of the group $\TS{\mathcal A}$.
+Furthermore, for a permutation automaton 
+the following are equivalent: strong connectivity, transitivity of the group of units of the transformation monoid,
+univalent connectedness, and the property of being cyclic.
+
+
+Next, using \THM~\ref{prelim:thm:char_minaut}, we prove the following
+minimality condition for permutation automata (the special cases $|F| = 1$ or $|F| = |Q| - 1$
+were mentioned in~\cite[Cor.~3.8]{DBLP:journals/mst/Davies18}).
+
+\begin{proposition}
+	\label{prelim:subclasses:prop:perm:min}
+	Let $\automat{A}{Q}{\Sigma}{\delta}{q_0}{F}$ be a permutation automaton with $1 \le |F| < |Q|$
+	such that $\gcd(|F|, |Q|) = 1$.
+	Then $\mathcal A$ is minimal %for $L(\mathcal A)$
+	if and only if $\mathcal A$ is accessible.
+\end{proposition}
+\begin{proof}
+	A non-accessible automaton is not minimal by \cref{prelim:thm:char_minaut}.
+	Next, assume $\mathcal A$ is accessible.
+	Set $G = \TS{\mathcal A}$. 
+	We show that~$\mathcal A$ admits no non-trivial $G$-congruence
+	that saturates $F$, which gives minimality of~$\mathcal A$ 
+	by \crefitem{prelim:thm:char_minaut}{thm:minaut:item:congruence}.
+	Assume~$\sim$ is some $G$-congruence that saturates~$F$.
+	Then $F$ is a union of blocks. Let $\Delta \subseteq F$ be a block.
+	As $\mathcal A$ is accessible,~$G$ 
+	is transitive. Then, by \cref{prelim:ex:trans-block}, $F$
+	and $Q$ are unions of equal-sized sets of the form $g(\Delta)$ for $g \in G$. 
+	Thus $|\Delta|$ divides~$|F|$ and~$|Q|$, and so it divides $\gcd(|F|, |Q|)$.
+	By coprimality, we find $|\Delta| = 1$. So~$\Delta$ is a trivial block
+	and the only $G$-congruence saturating $F$ is the equality relation. 
+\end{proof}
+
+\begin{corollary}
+	Let $\automat{A}{Q}{\Sigma}{\delta}{q_0}{F}$ be a permutation automaton with $1 \le |F| < |Q|$
+	such that $\gcd(|F|, |Q|) = 1$.
+	If $\TS{\mathcal A}$ contains a transitive permutation group $G$,
+	then $\mathcal A$ is minimal.
+\end{corollary}
+\begin{proof}
+    Let $\Gamma = \{ x \in \Sigma \mid \text{$x$ is a permutational letter} \}$.
+    Since $G \subseteq \TS{\mathcal A_{|\Gamma}}$,
+    $\TS{\mathcal A_{|\Gamma}}$ is a transitive permutation group,
+    which yields that $\mathcal A_{|\Gamma}$
+    is an accessible permutation automaton.
+    So, by \cref{prelim:subclasses:prop:perm:min}, 
+    $\mathcal A_{|\Gamma}$ is minimal.
+    Since accessibility and distinguishability
+    of pairs of states extend
+    from~$\mathcal A_{|\Gamma}$ to $\mathcal A$,
+    also~$\mathcal A$ is minimal by \crefitem{prelim:thm:char_minaut}{thm:minaut:item:statesdist}.
+\end{proof}

@@ -1,0 +1,321 @@
+%!TEX root = ./../../springer-mono-format/book.tex
+%!TEX root = ./../../thesis-trier.tex
+
+The primary purpose of the present chapter was to fix notation and introduce results from the literature. 
+For more (well-known) properties of functions and compositions, the first chapter from~\cite{Pin2022}
+gives a nice overview.
+
+Our algebraic notions are standard.
+The textbooks by Clifford and Preston~\cite{clifford61,clifford1967algebraic} and Ljapin~\cite{ljapin1974semigroups}
+are two standard references from the early days of semigroup theory.
+More recent books are written by Howie~\cite{howie1995fundamentals} or Higgins~\cite{higgins1992techniques}.
+For more information on algebra in general, we refer to the textbook~\cite{lang02}.
+The book by Lallement discusses semigroup theory while pointing
+out connections to formal language theory~\cite{Lallement79}.
+Semirings find application in generalizations of automata theory and formal language theory
+to weighted automata and formal power series, see~\cite{KuichSalomaa1986_SemiringsAutomataLanguages,berstel1988rational}.
+Idempotent elements were introduced in~\cite{peirce1882linear} and 
+also appear widely throughout ring and module theory, for example, in the study of algebras~\cite{peirce1882linear,Lam2001,AnhBirkenmeierVanWyk2020},
+and in particular the proof of the Wedderburn-Artin classification theorem for semisimple 
+algebras~\cite{Artin1928Hyperkomplex,Lam2001,Wedderburn1908Hypercomplex},
+and in semigroup theory in connection with Green's relations, see~\cite{clifford61,clifford1967algebraic,howie1995fundamentals}.
+Idempotency is also studied in the context of analysis, see~\cite{KolokoltsovMaslov1997IdempotentAnalysis}. 
+In geometrical settings or linear algebra, idempotent linear transformations are also 
+called projections.
+
+The textbook by Ganyushkin \& Mazorchuk \cite{GanyushkinMazorchuk2008} is devoted to transformations semigroups.
+The first chapter of~\cite{Eilenberg1976} recaps some folklore results from transformation semigroup theory
+and develops this theory further. Clifford \& Preston~\cite{clifford61,clifford1967algebraic}
+also discuss transformation semigroups. 
+
+The textbooks~\cite{Eilenberg1974,HopUll79,DBLP:books/daglib/0088160,lothaire_1997,Pin2022,sipser2012theory} contain
+content on formal language theory. Classes of languages with effectively computable semilinear Parikh images,
+as for example context-free languages~\cite{chomsky1962context,DBLP:journals/jacm/Parikh66}
+or languages accepted by reversal-bounded multicounter machines~\cite{DBLP:journals/jacm/Ibarra78},
+have applications in formal verification and model checking
+since this property yields decidability of the emptiness problem
+for these languages. See the introduction of~\cite{Hoffmann2024b}
+for details. The earliest work that investigated commutative languages
+that we were able to trace back is~\cite{laingwright62}.
+
+An introduction to order theory is~\cite{davey1990introduction}.
+In \cref{prelim:ex:order:bijmorph} we gave a bijective order morphism that is not an isomorphism.
+Furthermore, not every bijective endomorphism is an automorphism, for example,
+see~\cite{Kukiela2009_ReversibleBijectivelyRelatedPosets}. (We note that this holds for finite sets,
+since then some power of the endomorphism yields the identity.)
+
+Our notions and results from graph theory are standard as can be found in any
+textbook, for example, as~\cite{diestel2017graph,harary1969graph}, 
+except the notion of strong $\frac{3}{2}$-connectivity, which is new.
+
+The systematic study of computational complexity was initiated in~\cite{HartmanisStearns1965}.
+Turing machines were introduced in~\cite{turing1936computable}, where also nondeterministic
+machines were mentioned (called choice machines therein), but not considered further. Nondeterminism
+as a computational mechanism was introduced later in~\cite{DBLP:journals/ibmrd/RabinS59}.
+There are a wealth of textbooks available on computational complexity theory,
+for example~\cite{DBLP:books/daglib/0023084,DBLP:series/eatcs/BalcazarDG90,DBLP:series/txtcs/BalcazarDG95,HopUll79,sipser2012theory,DBLP:books/daglib/0088160}.
+
+Below we discuss some more issues and literature related to computational complexity in more detail.
+By doing so, often new notions are mentioned in passing (for example, alternating Turing machines) without
+formally introducing them.
+In such instances, we always refer to appropriate literature where the interested reader can find definitions.
+
+\paragraph{Running Time, Complexity Theory, and Machine Models.} 
+We have introduced the following machine models: the random access machine (RAM), (sequential) Turing machines and transducers, and circuits. 
+In theoretical computer science, Turing machines and transducers
+are the most traditional model,
+circuits serve to classify problems with low complexity or to describe problems solvable by employing parallelism. 
+The RAM model is often used for claims about runtime and space that can be more directly translated
+to bounds for real-life implementations. The other two models
+are used for theoretical investigations into the inherent difficulty
+of problems and for a finer classification
+not possible with the RAM model by the, rather powerful, constant time assumption on the basic (arithmetic)
+operations. Clearly, the practical and theoretical perspectives are strongly related. We cannot 
+expect problems inherently difficult in the theoretical sense to have exact algorithms that run practically fast in all instances.
+For more discussion on the practical implications of 
+computational complexity theory, see~\cite{DBLP:books/ws/phaunRS01/Allender01}.
+RAMs and Turing machines can both be used to define \PTIME~\cite{DBLP:journals/jcss/CookR73}.
+Furthermore, there are also theoretical investigations on the RAM model, see~\cite{DBLP:journals/jcss/AngluinV79,DBLP:journals/mst/Hartmanis71,DBLP:journals/siamcomp/KatajainenLP88,DBLP:journals/mst/LouiL92,Penttonen-1999,DBLP:journals/jacm/ShepherdsonS63,DBLP:journals/siamcomp/SudboroughZ76} to name a few,
+and it has been adapted to capture low-level complexities~\cite{DBLP:journals/jcss/AngluinV79,DBLP:conf/ershov/GurevichS89,Kasai77}
+or investigated when it is universal, i.e., capable of executing other programs, called
+the Random Access Stored-Program Machine (RASP)~\cite{DBLP:journals/mst/Hartmanis71,DBLP:journals/jcss/CookR73}.
+Lastly, we note that there exist complexity classes that 
+appear reasonable, but are very sensitive to the machine model.
+For example, the class of problems solvable in linear time, i.e., $O(n)$-bounded time, see~\cite{DBLP:conf/ershov/GurevichS89}.
+Hence, runtime claims made for the RAM model do not necessarily
+translate into natural complexity classes. 
+ 
+In classical complexity theory, various types of reduction have been considered.
+To name a few more than the ones introduced in \cref{prelim:sec:compl_classes}:
+\begin{enumerate}
+\item Polynomial-time Turing reductions~\cite{Cook71}.
+ 
+\item Polynomial-time many-one reductions~\cite{Karp1972}.
+ 
+\item Log-space many-one reductions~\cite{Jones75,Stockmeyer73}, log-space linear many one reductions~\cite{Stockmeyer73},
+and rudimentary reductions~\cite{Jones75} (the latter notion has been used to characterize DLOGTIME-uniform $\AC^0$~\cite{DBLP:journals/ipl/AllenderG91}).
+ 
+\item One-way log-space reductions~\cite{DBLP:conf/focs/HartmanisIM78}.
+
+\item First-order reductions~\cite{immerman_1980,DBLP:conf/lam/Dahlhaus83} (these reductions equal DLOGTIME-uniform $\AC^0$-reductions, see~\cite{DBLP:books/daglib/0095988})
+ 
+\item Projections (non-uniform, each bit of the output depends on at most one bit of the input)~\cite{DBLP:journals/jacm/SkyumV85}.
+
+\item $\AC^0$ truth-table reductions~\cite{DBLP:journals/siamcomp/ChandraSV84,DBLP:journals/mst/FurstSS84}.
+ 
+\item $\NC^1$ Turing reductions~\cite{DBLP:journals/iandc/Cook85},
+
+\item First order translations/projections~\cite{DBLP:journals/siamcomp/Immerman87},
+which equal DLOGTIME-uniform $\NC^0$-reductions~\cite{DBLP:journals/jcss/AgrawalAR98}.
+\end{enumerate}
+More information on notions of reduction can be found in~\cite{DBLP:books/crc/99/AllenderLR99a}.
+
+
+\paragraph{Resource-Bounded Computations.} In \cref{prelim:sec:TM} we defined resource-bounded (time or space) Turing machines by demanding that all computational runs stay within the resource bounds.
+This convention is also used in~\cite[p.~288]{HopUll79}, \cite[Sec.2]{Jones75}, ~\cite[Def.~7.9]{sipser2012theory}, and~\cite[Sec.~2.1.2]{DBLP:books/daglib/0023084}.
+Following conventions for alternating Turing machines from~\cite{ChandraKozenStockmeyer1981_Alternation,LadnerLiptonStockmeyer1984_AltPushdownStack},
+in~\cite[p.~5]{Wehar2016},
+for resource-bounded computations it is only required that, for accepted inputs,
+at least one accepting computational run stays within the resource bounds, and no constraints are imposed
+on computational runs that do not accept.
+This convention is also used in~\cite[Def.~2.11]{DBLP:series/txtcs/BalcazarDG95}.
+We note that in~\cite{DBLP:journals/siamcomp/BermanH77}
+yet another convention was used,
+where for accepted inputs, at least one accepting computational runs 
+is required to stay within the resource bounds,
+and for not accepted inputs all terminating computational runs
+must stay within the resource bounds.
+
+It is well known that, for reasonable resource-bounding functions commonly considered in
+computational complexity theory, all of the above definitions of
+resource-bounded machines are equivalent. 
+Next, we will show this for multitape Turing machines and the classes
+of \emph{fully space-constructible}~\cite[p.~297]{HopUll79}) and \emph{fully time-constructible}~\cite[p.~299]{HopUll79}
+functions, which are functions $f \colon \mathbb N_0 \to \mathbb N_0$
+such that there exists a deterministic one-tape Turing machine that, for each input~$u$, visits 
+exactly $f(|u|)$ tape cell and makes exactly $f(|u|)$ moves, respectively.
+For example, the polynomial functions and the standard exponential
+functions are both fully time-constructible and fully space-constructible.
+Logarithms are not fully time-constructible since
+we need at least linear time to read the input,
+but they are fully space-constructible by using 
+the $b$-adic representation of numbers.\footnote{In~\cite[Def.~2.18]{DBLP:series/txtcs/BalcazarDG95},
+	these functions are simply called time- and space-constructible,
+	whereas in~\cite{HopUll79} the same terms refer to weaker notions.}
+
+Let $s \colon \mathbb N_0 \to \mathbb N_0$ with $s(n) \ge \log_2(n)$ be fully space-constructible 
+witnessed by a deterministic Turing machine $M_s$ that 
+uses exactly $s(n)$ tape cells for each input~$u$ with $n = |u|$.
+Let $M$ be a Turing machine that, for an accepted input $u$, has at least one accepting
+computational run that takes up at most~$s(n)$ space.
+Let $m$ and~$t$ be the number of states and tape symbols, respectively, of~$M$.
+If~$M$ accepts, it does so by a sequence of at most 
+$(n+2)ms(n)t^{s(n)}$ moves (input head position, state, working head
+position, tape content), since otherwise some configuration repeats.
+We construct a new Turing machine accepting precisely the same inputs
+and for which all computational runs terminate and stay within
+the space bounds given by~$s$ in the following way:
+\begin{enumerate}
+\item For an input~$u$, we mark out $s(n)$ tape cells by using $M_s$.
+ 
+\item We simulate~$M$ where we halt and reject when it leaves those marked cells.
+
+\item We maintain a counter on a separate tape that counts each step in base $4mt$. When
+this counter reaches $(4mt)^{s(n)}$ we halt and reject.
+\end{enumerate}
+Since $(4mt)^{s(n)} \ge (n+2)ms(n)t^{s(n)}$, if the counter
+is reached, a configuration of the machine repeats. Thus, the counter prevents
+that the machine gets stuck in a loop.
+The overhead created by the counter is logarithmic and inside the space bounds 
+demanded by~$s(n)$ since $s(n) \ge \log_2(n)$.\footnote{A related results
+	is similarly proved in~\cite[Lem.~12.1]{HopUll79}. However, 
+	in this book, resource-bounded machines are defined
+	to always stay within the bounds, not just in 
+	case of acceptance. With this assumption,
+	the proof from~\cite[Lem.~12.1]{HopUll79}
+	works for any space bounding function (not just the fully space-constructible ones).
+	The trick is the dynamically enlarge the space used for the counter
+	along with the number of cell~$i$ used by the simulated machine, and test
+	whether it reaches $(4mt)^i$.}
+The machine can also be simulated by a one-tape Turing machine
+without any additional space overhead~\cite[Proof of Thm.~7.2]{HopUll79}.
+
+Next, let $t \colon \mathbb N_0 \to \mathbb N_0$ be  fully time-constructible witnessed
+by a deterministic Turing machine~$M_t$.
+Consider a nondeterministic Turing machine $M$
+that has, for accepted words~$u$, at least one accepting computational
+run using at most~$t(|u|)$ moves.
+Construct a new Turing machine that simulates~$M$ and also performs one step of~$M_t$
+for each simulated time step of~$M$ using a separate work tape,
+and that rejects inputs on which~$M_t$ halts and~$M$ has not reached a final state.
+This gives a factor of two overhead in time. By the linear speed-up theorem~\cite[Thm.~12.3]{HopUll79},
+we obtain a multitape Turing machine deciding the language and halting on each computational run
+for input~$u$ in at most~$t(|u|)$ steps. From this, we can also obtain a one-tape Turing
+machine halting on each run in at most $t^2(|u|)$ steps~\cite[p.~292]{HopUll79}.
+
+We note that in the seminal paper~\cite{HartmanisStearns1965}
+that started the systematic study of the computational complexity of algorithms, 
+time and space measuring functions are only required to be computable.
+
+
+\paragraph{Circuits.} 
+Circuits and Boolean algebra entered into computing with Shannon's master thesis~\cite{Shannon:1937:SAR} (see also the paper~\cite{Shannon:1938:SAR} based on it) 
+where he showed how to use Boolean algebra for the synthesis and analysis of switching circuits and relays. One of the first papers investigating the relation of circuits to languages
+seems to be~\cite{DBLP:conf/stoc/Cook79}.
+Pippenger~\cite{DBLP:conf/focs/Pippenger79b} observed that size and\footnote{Both parameters have 
+	to be considered for circuits as, by the conjunctive or disjunctive normal forms, every Boolean function can be realized
+	by a logarithmic depth circuit using only gates of fan-in two. However, such a circuit might have
+	exponential size.}
+depth bounds for families of circuits correspond to resource bounds (see also~\cite{DBLP:journals/siamcomp/Borodin77,DBLP:journals/jcss/Ruzzo81,DBLP:journals/siamcomp/StockmeyerV84} 
+expanding these relations).
+He introduced the class~$\NC$ in~\cite{DBLP:conf/focs/Pippenger79b} 
+to formalize this observation (the name $\NC$ is due to Cook~\cite[p.~338]{DBLP:conf/stoc/Cook79}, see also~\cite{DBLP:journals/iandc/Cook85}, as an abbreviation for ``Nick's class'').
+
+Uniformity is imposed on circuit families in order to define classes of languages that correspond to machine-based classes. 
+\LOGSPACE-uniformity (also called log-space uniformity)
+was introduced by Cook~\cite[p.~338]{DBLP:conf/stoc/Cook79}
+(see also~\cite[p.~47]{Vollmer99} or~\cite[Def.~4.2]{DBLP:series/eatcs/BalcazarDG90}),
+based on a similar definition from \cite[p.~738]{DBLP:journals/siamcomp/Borodin77}  (see also some related discussion in~\cite{DBLP:conf/fct/Cook83,DBLP:journals/iandc/Cook85}).
+We defined \LOGSPACE-uniformity by demanding a machine that works in logarithmic space
+in the number of input bits.
+This was also done in~\cite[p.~338]{DBLP:conf/stoc/Cook79}
+and~\cite[p.~4]{DBLP:journals/eatcs/Allender01}.\footnote{Originally, 
+	in~\cite{DBLP:conf/stoc/Cook79} Cook demanded that the function $1^n \mapsto C_n$ 
+	for circuits of size $s(n)$
+	is computable by a transducer Turing machine in $O(\log s(n))$. 
+	(This is also called $U_{BC}$-uniformity in~\cite{DBLP:journals/jcss/Ruzzo81,Wegener87}.)
+	For circuits in $\NC$ this equals our notion of computability by a log-space transducer
+	measured in the number of input bits.}
+In~\cite[p.~47]{Vollmer99} and~\cite[Def.~4.2]{DBLP:series/eatcs/BalcazarDG90}
+it was demanded that the Turing transducer constructing the circuits
+works in logarithmic space in the size of the circuits, but this makes no difference
+for our circuit families in~$\NC$. We note that in~\cite{DBLP:journals/eatcs/Allender01,DBLP:conf/stoc/Cook79,Vollmer99,DBLP:series/eatcs/BalcazarDG90},
+for circuit families $C_1, C_2, \ldots$
+it was also assumed $C_n$ has $n$ input bits, where here we only demand
+the family to have a strictly increasing number of input bits.
+
+In the present work, we only use \LOGSPACE-uniformity as our form of uniformity,
+as it is easy to use and captures complexity classes
+below~\LOGSPACE. 
+Apart from \LOGSPACE-uniformity, other notions of uniformity have been studied in the literature, for example:
+\begin{enumerate}
+	\item Ruzzo~\cite{DBLP:journals/jcss/Ruzzo81} introduced $U_D$-uniformity,
+	$U_E$-uniformity, and $U_{E^*}$-uniformity for a circuit family
+	$C_1, C_2, \ldots$ by requiring not that the circuits $C_n$ itself are
+	computable, but that a circuit connection language is decidable
+	by, respectively, an $O(s_n)$-time deterministic Turing machine,
+	an $O(s_n)$-time and $O(\log s_n)$-space deterministic Turing machine,
+	and an $O(d_n)$-time and $O(\log s_n)$-space alternating Turing machine,
+	where $s_n$ and $d_n$ denote the size and depth of $C_n$.
+			
+	\item Barrington et al.~\cite{BarringtonIS90} introduced DLOGTIME-uniformity where a random-access\footnote{We have introduced Turing machines as sequential devices. However, when studying sublinear-time computation, as in~\cite{BarringtonIS90}, this model is inadequate as we cannot read the whole input. A random-access Turing machine is appropriate for studying sublinear time and consists of a read-only input tape, a fixed number of sequential read-write work tapes, and a special sequential read-write \emph{address tape}. At each computation step, the machine can read the input bit whose position is encoded (in binary) on the address tape, or determine that the encoded address exceeds the input length. 
+		
+		Sequential Turing machines can simulate these machines with only polynomial time overhead and logarithmic space overhead. Hence, for defining the classical complexity classes \LOGSPACE, \NL, \PTIME, \NP, and \PSPACE, it makes no difference whether one uses the sequential or the random-access model.}
+	deterministic Turing machine
+	can decide queries about $n$-bit encodings of 
+	circuits in time $O(\log n)$.
+	
+	\item $P$-uniformity~\cite{DBLP:journals/siamcomp/BeameCH86} requiring that $1^n \mapsto C_n$ ($n$ number of input bits here)
+	is computable by a deterministic polynomial time Turing machine (see also~\cite{DBLP:journals/jacm/Allender89}
+	for a systematic study). 
+		
+	\item Borodin~\cite{DBLP:journals/siamcomp/Borodin77} introduced uniformity in depth $S(n)$
+	that requires that there exists a deterministic $S(n)$-space Turing transducer computing $1^n \mapsto C_n$ ($n$ number of input bits here) and that the resulting circuit $C_n$ has depth $O(S(n))$ 
+	(This is also called $U_B$-uniformity in~\cite{DBLP:journals/jcss/Ruzzo81,Wegener87}).
+\end{enumerate} 
+
+Languages definable by first order formulas are precisely those decidable
+by nonuniform $\AC^0$ circuit families~\cite[Thm. 4]{DBLP:journals/mst/Barrington90}
+and~\cite[Thm.~6.2]{DBLP:journals/siamcomp/Immerman87}.
+DLOGTIME-uniform $\AC^0$ corresponds to 
+first order logic with a bit-query predicate, equality, and order~\cite{BarringtonIS90},
+\cite[Thm. 5]{DBLP:journals/mst/Barrington90}, \cite[Thm.~5.22]{DBLP:books/daglib/0095988}.
+More generally, for a class $\mathcal C$ 
+of functions containing the DLOGTIME-computable functions and closed under composition,
+$\mathcal C$-uniform $\AC^0$ has the same expressibility as first
+order logic using predicates computable by functions in $\mathcal C$~\cite[Cor. 6]{DBLP:journals/mst/Barrington90}.
+This yields that log-space uniformity 
+is equivalent to first order theory using only predicates computable by deterministic log-space Turing machines. 
+
+The nonuniform class $\AC^0$ was introduced in~\cite{DBLP:journals/mst/FurstSS84} and it was shown that the parity function
+is not computable by an $\AC^0$ circuit family. Furthermore, the same paper introduced $\AC^0$-Turing reductions
+and reduced 
+the computation of majority, multiplication and the transitive closure to the computation of the parity
+function. 
+In~\cite{DBLP:journals/apal/Ajtai89} it was shown that no first order formula with equality and
+a finite number of predicates evaluates to true precisely on an even subset
+of the universe. By the mentioned correspondence between $\AC^0$
+and first order formula this yields another proof that the parity function is not in $\AC^0$. 
+These results hold for non-uniform $\AC^0$.
+
+We remark that it is unknown whether the containment $\NC^1 \subseteq \LOGSPACE$ is strict,
+but this is generally believed. For example~\cite{DBLP:journals/tcs/DattaMRTV12} 
+investigates the complexity landscape between~$\NC^1$ and~$\LOGSPACE$.
+Also, it is not known whether the inclusion $\NL \subseteq \NC^2$ is strict,
+see also the discussion in~\cite{DBLP:journals/jcss/Ruzzo81}.
+
+A standard reference on circuits is the book by Wegener~\cite{Wegener87} (the ``blue book''). It also features an extensive chapter
+on the Parallel RAM (PRAM) machine model of parallel computation. 
+However, it contains very little material on complexity classes related to circuits and only a single short section (without proofs) mentioning uniformity notions and relations
+to alternating Turing machines.
+The book by Vollmer~\cite{Vollmer99} offers more on these topics and treats uniformity thoroughly.
+The PRAM is also described in~\cite{DBLP:conf/stoc/FortuneW78,JaJa1992_IntroductionToParallelAlgorithms}.
+Clote and Kranakis's book~\cite{DBLP:series/txtcs/CloteK02} covers circuit complexity classes but without much discussion on uniformity issues.
+But it offers additional material on randomness and proof systems.
+More advanced (and recent) material can be found in the book by Jukna~\cite{DBLP:books/daglib/0028687}.
+Greenlaw et al.~\cite{GreenlawHooverRuzzo95} have written a book on \PTIME-completeness that also contains
+much background material on \NC\  and parallel computation. Circuit complexity classes also have strong ties to logic and descriptive complexity.
+We refer to the book by Immerman~\cite{DBLP:books/daglib/0095988}, which is a standard reference for these topics,
+for more information on this connection.
+The book by Straubing~\cite{Straubing94} focuses on the relation between logic, circuits up to~$\NC^1$ and finite automata, but does not include material beyond that, e.g., on the whole of~$\NC$.
+The relation between automata and circuits from~$\NC^1$
+was first observed by Chandra et al.~\cite{ChandraFortuneLipton1985_UnboundedFanInAssociativeFunctions}
+and developed further by Barrington~\cite{DBLP:journals/jcss/Barrington89}, Barrington and Th\'erien~\cite{DBLP:journals/jacm/BarringtonT88}
+and Barrington et al.~\cite{DBLP:journals/jcss/BarringtonCST92}.
+The two volumes~\cite{DBLP:series/eatcs/BalcazarDG90,DBLP:series/txtcs/BalcazarDG95}
+by Balc{\'{a}}zar,
+D{\'{\i}}az, and Gabarr{\'{o}}
+give a good coverage of circuits in complexity theory, whereas the first volume
+covers the non-uniform setting and the second volume the uniform setting.
+A selection of several contributions to a symposium
+on Boolean function complexity can be found in Paterson's book~\cite{Paterson1992}.
