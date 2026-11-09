@@ -53,6 +53,38 @@
 
 \input{../macros}
 
+% ---------------------------------------------------------------------------
+% Fix for cleveref naming every theorem-like environment "Theorem"
+% ---------------------------------------------------------------------------
+% Problem: With the class option "envcountsame", SNmono.cls defines lemma,
+% proposition, corollary, definition, example, remark, ... via \spnewtheorem
+% so that they all share the counter "theorem" (see SNmono.cls, around
+% line 1665: \def\spn@wtheorem#1#2#3#4{\@spothm{#1}[theorem]{#2}{#3}{#4}}).
+% Each of these environments therefore executes \refstepcounter{theorem}.
+% cleveref determines the type of a label from the name of the counter that
+% was last stepped, so every such label is recorded as type "theorem" in the
+% .aux file and \cref/\Cref print "Theorem" -- e.g. \cref{intro:ex:automaton}
+% gives "Theorem 1.1" instead of "Example 1.1".
+% cleveref handles shared counters automatically for environments defined by
+% \newtheorem (as in thesis-format/main.tex), but not for Springer's
+% \spnewtheorem.
+%
+% Fix: \crefalias{theorem}{<type>} tells cleveref to record labels created by
+% the counter "theorem" with type <type>. \AtBeginEnvironment (etoolbox)
+% executes it at the start of each environment, inside the environment's
+% group and before the environment's own code steps the counter. So the alias
+% is only active within that environment, and numbering, hyperref anchors,
+% and equations/lists inside the environment are unaffected.
+% The matching \crefname definitions are in macros.tex.
+% If further theorem-like environments are used (e.g. conjecture, problem,
+% question), add a line for them here and a \crefname in macros.tex.
+\AtBeginEnvironment{proposition}{\crefalias{theorem}{proposition}}
+\AtBeginEnvironment{lemma}{\crefalias{theorem}{lemma}}
+\AtBeginEnvironment{corollary}{\crefalias{theorem}{corollary}}
+\AtBeginEnvironment{definition}{\crefalias{theorem}{definition}}
+\AtBeginEnvironment{example}{\crefalias{theorem}{example}}
+\AtBeginEnvironment{remark}{\crefalias{theorem}{remark}}
+
 % Package "complexity" gives nameing conflict
 % \mathrm{P} nutzen?
 \renewcommand{\PTIME}{\textup{\textsf{P}}\xspace}
