@@ -260,7 +260,6 @@ in unary or binary.
 %in the size of the alphabet and the number of states
 %without considering the space taken up by the length parameter in the input.
 
-
 \begin{proposition}
 	\label{prelim:compl:prop:unary-binary}
 	\DFASWS with length parameter encoded in thermometer or one-hot unary
@@ -269,32 +268,34 @@ in unary or binary.
 \end{proposition}
 \begin{proof}
 	Let $(\mathcal A, l)$ be an input to \DFASWS
-	with an $n$-state automaton $\mathcal A$.
-	Suppose~$l$ is encoded in unary together with an encoding of $\mathcal A$.
+	with an $n$-state automaton $\semiautomat{A}{Q}{\Sigma}{\delta}$.
+	In both directions, the encoding of~$\mathcal A$ is copied unchanged,
+	so we only have to convert the encoding of~$l$.
+	
+	First, suppose~$l$ is encoded in unary together with an encoding of $\mathcal A$.
 	Whether it is encoded as $1^l$, in one-hot, or thermometer
-	representation  with some delimiting bits
-	to the rest of the input, similarly as done in 
-	in the proof of \cref{prelim:AC0converters-numbers}
-	we can convert it to a binary encoding of $l$  by $\LOGSPACE$-uniform $\AC^0$-circuit families.
-	%By~\cref{prelim:AC0converters-numbers}, \ref{prelim:AC0converters-numbers:item:onehotbin} and~\ref{prelim:AC0converters-numbers:item:onehottherm}, 
-	%we can convert each unary encoding of $l$ to 
-	%the binary encoding by $\LOGSPACE$-uniform $\AC^0$-circuit families.
+	representation with some delimiting bits
+	to the rest of the input, similarly as in
+	the proof of \cref{prelim:AC0converters-numbers}
+	we can convert it to a binary encoding of $l$ by \LOGSPACE-uniform $\AC^0$ circuit families.
 	
 	Next, suppose $l$ is given in binary encoding.
 	If~$\mathcal A$ is synchronizing,
 	then a shortest synchronizing word has length at most
-	$\frac{n^3 - n}{6}$, see \cref{tab:reset_length_bounds} in \cref{intro:sec:cerny}.
-	Hence, it is sufficient to consider 
-	only $O(\log(n))$ least-significant bits
-	of the binary encoding of $l$.
-	Then, by~\crefitem{prelim:AC0converters-numbers}{prelim:AC0converters-numbers:item:binonehot}, 
-	there exists an~$\AC^0$ circuit of size $O(n)$
+	$\frac{n^3 - n}{6} < N^3$ with $N = n + |\Sigma|$,
+	see \cref{tab:reset_length_bounds} in \cref{intro:sec:cerny}.
+	Let $m = \lfloor \log_2(N^3) \rfloor + 1$.
+	If one of the bits of~$l$ beyond the $m$ least significant ones is set,
+	then $l > N^3$, and we may replace~$l$ by $2^m - 1$.
+	So, with $h$ denoting the {\sc OR} of these higher bits,
+	it is sufficient to consider the $m$ least significant bits $l_j$
+	after replacing each by $l_j \lor h$.
+	Then, by~\crefitem{prelim:AC0converters-numbers}{prelim:AC0converters-numbers:item:binonehot},
+	there exists a circuit of constant depth and size $O(2^m) = O(N^3)$,
+	constructible in space $O(m) = O(\log N)$,
 	computing the one-hot unary encoding of
 	the number encoded by these bits.
-	Inspection of the proof of~\crefitem{prelim:AC0converters-numbers}{prelim:AC0converters-numbers:item:binonehot}
-	yields that these circuits 
-	are constructible in deterministic log-space,
-	so that we obtain a \LOGSPACE-uniform circuit family in~$\AC^0$
+	So we obtain a \LOGSPACE-uniform circuit family in~$\AC^0$
 	converting the binary encoding to the one-hot unary encoding of~$l$.
 \end{proof}
 

@@ -889,6 +889,7 @@ Here, we discuss how we encode numbers, transformations, and, lastly, automata
 as inputs for circuits.
 
 \subsubsection{Numbers}
+\label{prelim:sec:enc-numbers}
 
 \IN{thermometer unary} \IN{one-hot unary}
 Besides the binary encoding of a number here we also consider
@@ -903,302 +904,382 @@ As a technicality, note that in both encodings, zero is represented by $10^{n-1}
 \begin{enumerate}
 \item \label{prelim:AC0converters-numbers:item:onehotbin} There exists an \LOGSPACE-uniform circuit family $C_1, C_2, \ldots$ in  $\AC^0$ 
  where $C_n$ converts a number in one-hot unary encoding using~$n$ bits
- to the binary encoding with $k = \lfloor \log_2(n) \rfloor + 1$ bits.
+ to the binary encoding with $k = \lfloor \log_2(n) \rfloor + 1$ bits.\footnote{For simplicity, we 
+ 	use $\lfloor \log_2(n) \rfloor + 1$, which exceeds the minimum
+ 	$\lceil \log_2(n) \rceil$ for a binary encoding of the numbers $0,1,\ldots,n-1$
+ 	represented by an $n$-bit one-hot unary encoding
+ 	by one when $n$ is a power of two.
+ 	With this convention, $C_1$ has a single output bit.}
 
-\item \label{prelim:AC0converters-numbers:item:onehottherm} There exists an \LOGSPACE-uniform circuit family $C_1, C_2, \ldots$ in  $\AC^0$ 
-where $C_n$ converts
+\item \label{prelim:AC0converters-numbers:item:onehottherm} There exists an \LOGSPACE-uniform 
+circuit family $C_1, C_2, \ldots$ in  $\AC^0$ where $C_n$ converts
 the thermometer unary encoding using~$n$ bits to the one-hot unary encoding using~$n$ bits and vice versa.		
 
-\item \label{prelim:AC0converters-numbers:item:binonehot} There exists an $\AC^0$ circuit of size $O(2^n)$ to convert an~$n$-bit binary number to a one-hot unary encoding using $2^n$ bits.
+\item \label{prelim:AC0converters-numbers:item:binonehot} There exists a circuit family $C_1, C_2, \ldots$,
+where $C_n$ has depth three and size $O(2^n)$ and converts an~$n$-bit binary number
+to the one-hot unary encoding using $2^n$ bits,
+such that $C_n$ is computable from $1^{2^n}$ by a deterministic log-space Turing transducer.
 
 \end{enumerate}
 \end{proposition}
-\begin{proof}
+\begin{proof}	
 \ref{prelim:AC0converters-numbers:item:onehotbin}: 
-Let $x_0 x_1 \cdots x_n$ be the one-hot encoding of a number $x$.
-Then, for $i \in \{0,1,\ldots,n\}$, we have $x_i = 1$ if and only if~$i$ equals~$x$.
-Let $y_m \cdots y_1$ be the binary encoding of~$x$ with $m = \lfloor \log_2(n) \rfloor + 1$
-and where the least significant bit is the right-most bit $y_1$.
-Then, for $j \in \{1,\ldots,m\}$, we have $y_j = 1$
-if and only if
+Let $x_0 x_1 \cdots x_{n-1}$ be the one-hot encoding of a number $x \in [n]$,
+i.e., for $i \in [n]$, we have $x_i = 1$ if and only if $i = x$.
+Let $y_k \cdots y_1$ be the binary encoding of~$x$ with $k = \lfloor \log_2(n) \rfloor + 1$,
+where the least significant bit is the right-most bit~$y_1$.
+These $k$ bits suffice since $x < n < 2^k$.
+For $j \in \{1,\ldots,k\}$, let
 \[
-k2^j + 2^{j-1} \le x < (k+1)2^j
+S_j = \{\, i \in [n] \mid \ell \cdot 2^j + 2^{j-1} \le i < (\ell+1) \cdot 2^j \text{ for some } \ell \ge 0 \,\}.
 \]
-for some $k \ge 0$. Thus, for $j \in \{1,\ldots,m\}$, we obtain
+Then $S_j$ consists of precisely those $i \in [n]$ whose $j$-th bit in binary is one.
+Indeed, write $i = \ell \cdot 2^j + r$ with $\ell = \lfloor i / 2^j \rfloor$ and $0 \le r < 2^j$.
+Then $r$ is the number represented by the $j$ least significant bits of~$i$.
+If the $j$-th bit of~$i$ is one, then $r \ge 2^{j-1}$.
+Otherwise, $r$ is represented by the bits at positions $1, \ldots, j-1$ alone,
+and so $r \le 2^{j-1} - 1$.
+Hence the $j$-th bit of~$i$ is one if and only if $r \ge 2^{j-1}$,
+i.e., if and only if $\ell \cdot 2^j + 2^{j-1} \le i < (\ell+1) \cdot 2^j$,
+where the upper bound holds by the choice of~$\ell$.
+As $\ell$ is the only integer with $\ell \cdot 2^j \le i < (\ell+1) \cdot 2^j$,
+this shows that $i \in S_j$ if and only if the $j$-th bit of~$i$ is one.
+
+Hence $y_j = 1$ if and only if $x \in S_j$.
+Since precisely one bit of the one-hot encoding is one, namely the bit at position~$x$, 
+we obtain
 \[
-y_j = \bigvee_{\substack{\exists k \colon k2^j + 2^{j-1} \le i < (k+1)2^j}} x_i,
+y_j = \bigvee_{i \in S_j} x_i \quad \text{for } j \in \{1,\ldots,k\}.
 \]
-i.e., $y_j$ is the {\sc OR} over all $x_i$ with $i \in \{0,1,\ldots,n\}$ where the $j$-th bit of~$i$ is one.
-These formulas can be translated into $\AC^0$ circuits that are computable
-by deterministic log-space Turing transducers.
-\footnote{This is called an $n$-to-$k$ binary encoder with
-	$k = \lfloor \log_2 n \rfloor + 1$.
-	A different circuit commonly used for this conversion
-	is the priority encoder described in~\cite[p.~117]{Kohavi70},
-	which also allows ``don't-cares''.}
+If $S_j \neq \emptyset$, then $y_j$ is computed by a single {\sc OR} gate with fan-in~$|S_j|$.
+The set $S_j$ is empty only if $j = k$ and $n$ is a power of two,
+since then $2^{k-1} = n$ and no $i \in [n]$ has its $k$-th bit set.
+In this case, $y_k$ is always zero and we connect it to a constant input~$0$
+(this is the additional bit mentioned in the footnote to the statement).
+So the circuit $C_n$ has depth at most two and size $O(n)$.
+
+Finally, a deterministic log-space Turing transducer
+given $1^n$ can compute~$k$ and, for all $j \in \{1,\ldots,k\}$ and $i \in [n]$,
+decide whether $i \in S_j$ by inspecting the $j$-th bit of~$i$.
+This yields that there exists a family $C_1, C_2, \ldots$ of $\AC^0$ circuits implementing the above formulas 
+that is \LOGSPACE-uniform.\footnote{Related circuits are the $2^r$-to-$r$ binary encoders,
+	which convert a one-hot unary encoded number with $2^r$ bits
+	into its binary representation with $r$ bits.
+	With our convention, we use $k = r + 1$ bits for the binary representation in this case.
+	A different circuit achieving the same, but with more complicated circuitry
+	since it also allows ``don't-cares'',
+	is the priority encoder described in~\cite[p.~117]{Kohavi70}.}
 
 \ref{prelim:AC0converters-numbers:item:onehottherm}: 
-The one-hot encoding $x_0, x_1, \ldots, x_{n-1}$
-and the thermometer encoding $y_0, y_1, \ldots, y_{n-1}$
-of a number are related by 
+Let $x_0, x_1, \ldots, x_{n-1}$
+and $y_0, y_1, \ldots, y_{n-1}$
+be the one-hot and thermometer encodings, respectively, of a number.
+Then they are related by 
 $y_i  = x_i \lor \cdots \lor x_{n-1}$
 and $x_i = y_i \land \neg y_{i+1}$ where we set $y_n = 0$
-for $i \in \{0,\ldots,n-1\}$.
+for all $i \in \{0,\ldots,n-1\}$.
 These formulas can be implemented by \LOGSPACE-uniform $\AC^0$ circuit families.
 
-\ref{prelim:AC0converters-numbers:item:binonehot}:  Suppose $x_{n-1}, \ldots, x_1, x_0$
-are the bits encoding a binary number with $x_0$ being the least significant bit. 
+\ref{prelim:AC0converters-numbers:item:binonehot}:
+Suppose $x_{n-1}, \ldots, x_1, x_0$
+are the bits encoding a binary number with $x_0$ being the least significant bit.
 Let $y_0, y_1, \ldots, y_{2^n - 1}$
 be the bits for the output in that order.
-Then, for $i \in \{0,1,\ldots,2^n-1\}$,
+Then, for $i \in [2^n]$,
 we have $y_i = z_{i,n} \land \cdots \land z_{i,1}$ where, for $j \in \{1,\ldots,n\}$,
 \[
 z_{i,j} = \begin{cases}
-x_{j-1}        & \text{if the $j$-th bit of the binary encoding of $i$ is one,} \\	  	
-\neg x_{j-1}   & \text{if the $j$-th bit of the binary encoding of $i$ is zero.}
+	x_{j-1}        & \text{if the $j$-th least significant bit of the binary encoding of $i$ is one,} \\
+	\neg x_{j-1}   & \text{otherwise.}
 \end{cases}
 \]
-Intuitively, the bit pattern $x_{n-1}, \ldots, x_1, x_0$ is matched against the binary encoding of~$i$ 
+Intuitively, the bit pattern $x_{n-1}, \ldots, x_1, x_0$ is matched against the binary encoding of~$i$
 via a minterm.\footnote{This is a conjunction
-of variables and negated variables that evaluates to one for precisely one specific assignment to the variables.}
-We have
-\[
-y_i = 1 \Leftrightarrow \text{the bit pattern $x_{n-1}, \ldots, x_1, x_0$ encodes $i$}.
-\]
-Now, each $y_i$ uses a single {\sc AND} gate of fan-in $n$
-and at most $n$ {\sc NOT} gates. So, this is an $\AC^0$ circuit
-of size $O(2^n)$.
+	of variables and negated variables that evaluates to one for precisely one specific assignment to the variables.}
+Hence, $y_i = 1$ if and only if the bit pattern $x_{n-1}, \ldots, x_1, x_0$ encodes~$i$.
+
+Each $y_i$ is computed by a single {\sc AND} gate of fan-in~$n$
+whose inputs are the $x_{j-1}$ or $\neg x_{j-1}$ according to the~$z_{i,j}$,
+where the $n$ {\sc NOT} gates computing $\neg x_0, \ldots, \neg x_{n-1}$
+are shared by all~$y_i$.
+So $C_n$ consists of $n$ inputs, $n$ {\sc NOT} gates, $2^n$ {\sc AND} gates, and $2^n$ outputs,
+i.e., it has size $O(2^n)$ and depth three.
+A deterministic Turing transducer given $1^{2^n}$ can output~$C_n$
+by iterating over all $i \in [2^n]$ and $j \in \{1,\ldots,n\}$,
+which only needs $O(n)$ space, i.e., space logarithmic in its input length.
 \end{proof}
 
 By \cref{prelim:prop:AC0-composition} and \cref{prelim:AC0converters-numbers:item:onehottherm} from \cref{prelim:AC0converters-numbers} 
-for the unary encoding we can chose the one-hot or thermometer encoding, whatever is more convenient,
+for the unary encoding we can choose the one-hot or thermometer encoding, whichever is more convenient,
 up to $\AC^0$-reductions.
 
 The input to our problems is often some numerical parameter together with other data.
 An additional parameter can be encoded in the input along with other data
 in the following ways.
 \begin{enumerate}
-\item Most of the time the parameter can be assumed to be bounded by some 
-monotone function $f(n)$ of the size of the data~$n$. 
-For example, if the parameter bounds a shortest synchronizing word of an input automaton,
-then it can be assumed to be bounded
-by a cubic polynomial, see \cref{tab:reset_length_bounds}.
-In this case,
-the total length of the input is the sum of~$n$ and $f(n)$ (or $\log_2(f(n))$
-for a binary encoding) and~$n$ can be extracted from the input length.
-Thus, the parameter is deducible from the total length of the input.
-If this is possible in deterministic log-space, then 
-for our \LOGSPACE-uniform circuit families we can assume the input
-is split into designated bits for the parameter and for the rest of the data.
-
-\item If the parameter can be arbitrarily large even if the remaining
-data is fixed, then the parameter cannot be encoded in the length
-of the input. In this case, it has to be encoded into the input in such a way
-that it can be separated from the remaining data. For example,
-by encoding the total input in the form $1^m0v$ where~$1^m$ encodes
-the parameter and~$v$ the rest of the input. Then the circuits
-have to use additional circuitry to parse the input and separate the
-parameter from the remaining data.
+	\item Most of the time the parameter can be assumed to be smaller than some
+	monotone function $f(n)$ of the size of the data~$n$.
+	For example, if the parameter bounds a shortest synchronizing word of an input automaton,
+	then it can be assumed to be smaller
+	than a cubic polynomial, see \cref{tab:reset_length_bounds}.
+	In this case, we encode the parameter using a fixed number of bits,
+	namely $f(n)$ bits for a unary encoding
+	and $\lfloor \log_2(f(n)) \rfloor + 1$ bits for the binary encoding.
+	Then the total length of the input is
+	$n + f(n)$ (resp.~$n + \lfloor \log_2(f(n)) \rfloor + 1$),
+	which is strictly increasing in~$n$,
+	and so~$n$ can be extracted from the input length.
+	Thus, the positions of the bits encoding the parameter, but not its value,
+	are deducible from the total length of the input.
+	If~$n$ and $f(n)$ can be computed from the input length in deterministic log-space, then
+	for our \LOGSPACE-uniform circuit families we can assume the input
+	is split into designated bits for the parameter and for the rest of the data.
+	
+	\item If the parameter can be arbitrarily large even if the remaining
+	data is fixed, then the parameter cannot be encoded using a number of bits
+	that only depends on~$n$.
+	In this case, it has to be encoded into the input in such a way
+	that it can be separated from the remaining data. For example,
+	by encoding the total input in the form $1^m0v$, where the prefix~$1^m$ encodes
+	the parameter~$m$ in unary and~$v$ is the rest of the input. Then the circuits
+	have to use additional circuitry to parse the input and separate the
+	parameter from the remaining data.
 \end{enumerate}
 
-In reductions, when we assume a unary encoding for a parameter we assume it to have
-the form $1^m$ for some $m \ge 0$.\footnote{However, when
+In reductions, when we assume a unary encoding for a parameter,
+we always assume it to have the form $1^m$ for some $m \ge 0$,
+also when a one-hot or thermometer encoding is used,
+where, if the parameter has a fixed number of bits as in the first case above,
+it is padded with zeros to this number of bits, i.e.,
+it has the form $1^m 0^{f(n)-m}$.
+This is no restriction, since, up to an additional leading one,
+this is the thermometer unary encoding,
+which by \crefitem{prelim:AC0converters-numbers}{prelim:AC0converters-numbers:item:onehottherm}
+can easily be converted into the one-hot unary encoding and vice versa.\footnote{However, when
 	the input is a single unary number without additional data,
 	this assumption makes no sense since then we always just feed $1^n$
-	as input to the circuits. This is precisely the input the Turing machine constructing
-	the circuit sees and thus for $\NC^1$ and below, the computation can already 
-	be performed by the Turing machine and the circuitry does not give more computational power.
-	So, in this case, the number of bits and the 
+	as input to the circuits. This is precisely the input the Turing transducer constructing
+	the circuit sees and thus, for $\NC^1$ and below, which are contained in \LOGSPACE,
+	the computation can already be performed by the transducer
+	and the circuitry does not give more computational power.
+	So, in this case, the number of bits and the
 	specific value encoded in the input bitstring must be distinguished.}
 
 \subsubsection{Transformations}
 
 \IN{point-wise representation}
 A transformation $t \colon [n]\to [n]$
-can be represented by a transformation matrix consisting of~$n^2$ binary values
-or by the  \emph{point-wise representation}, which  lists the values $\applyfunc{0}{t}, \applyfunc{1}{t}, 
+can be represented by its transition matrix, given row by row by~$n^2$ binary values,
+or by the \emph{point-wise representation}, which lists the values $\applyfunc{0}{t}, \applyfunc{1}{t},
 \ldots, \applyfunc{n-1}{t}$ where we assume each $t(i)$ uses the same number of bits.
 With this convention for the point-wise representation, the parameter~$n$ can be easily extracted solely
 from the length of the input, which has size $n^2$
-if we use a unary encoding for each $t(i)$ or $n \lfloor \log_2(n) + 1 \rfloor$
-if we use a binary encoding.
+if we use a unary encoding for each $t(i)$, and size $nk$
+if we use a binary encoding with $k = \lfloor \log_2(n) \rfloor + 1$ bits
+as in \crefitem{prelim:AC0converters-numbers}{prelim:AC0converters-numbers:item:onehotbin}.
 
-For the transformation $t \colon [n] \to [n]$,
-for $i \in [n]$, $t(i)$ in one-hot encoding equals 
-the $i$-th row of the transition matrix of~$t$ w.r.t.~the natural order on~$[n]$.
+For $i \in [n]$, $t(i)$ in one-hot encoding equals
+the $(i+1)$-th row of the transition matrix of~$t$ w.r.t.~the natural order on~$[n]$.
 Thus, both representations are essentially the same,
-and we can also easily obtain the point-wise representation
+and by \crefitem{prelim:AC0converters-numbers}{prelim:AC0converters-numbers:item:onehottherm}
+we can also easily obtain the point-wise representation
 in terms of the thermometer unary encoding from this representation.
 
 Next, we show
 that we can also convert the point-wise representation
 using a binary encoding and the representation by transition matrices into each other
-by \LOGSPACE-uniform  $\AC^0$-circuits. 
+by \LOGSPACE-uniform  $\AC^0$-circuits.
 
-\begin{theorem}
+\begin{proposition}
 	\label{prelim:thm:point-wise-to-matrices-in-AC0}
 	There exists a family of \LOGSPACE-uniform~$\AC^0$ circuits computing
 	the conversion of the point-wise representation of a transformation with a binary encoding
 	into the representation by transition matrices and vice versa.
-\end{theorem}
-\begin{proof}	
-	Let $t \colon [n] \to [n]$. We can assume $n \ge 1$.
-	First, suppose~$t$ is given by a point-wise representation $t(0), \ldots, t(n-1)$
-	where $t(i)$ for $i \in [n]$
-	is encoded in binary. 
-	By our convention, 
-	each $t(i)$ for $i \in [n]$
-	uses $\lfloor \log_2(n) + 1 \rfloor$ bits,
-	so that the encoding uses $n \lfloor \log_2(n) + 1 \rfloor$
-	bits in total.
-		
-	The $\AC^0$ circuits for the conversion of the binary encoding of $t(i)$
-	to a one-hot unary encoding
-	from \crefitem{prelim:AC0converters-numbers}{prelim:AC0converters-numbers:item:binonehot} 
-	have size~$O(n)$
-	and they produce, for $t(i)$, 
-	the bits 
-	$
-	y_{i+1,0}$, $y_{i+1,1},\ldots, y_{i+1,2^m - 1}
-	$
-	storing the one-hot encoding of $t(i)$ as a word
-	$y_{i+1,0} y_{i+1,1} \cdots y_{i+1,2^m - 1} \in \{0,1\}^+$. 
-	We have $2^{m - 1} \le n \le 2^m - 1$.
-	Thus, since $t(i) \in [n]$,
-	we find $y_{i+11, n+1} = \cdots = y_{i+1,2^m - 1} = 0$.
-	Then the matrix $(y_{i,j})_{i,j \in \{1,\ldots,n\}}$
-	equals the transition matrix of~$t$.
-	Inspection of the proof of \crefitem{prelim:AC0converters-numbers}{prelim:AC0converters-numbers:item:binonehot} 
-	gives that the above circuits can be generated by a deterministic 
-	log-space Turing transducer on input~$1^{\lfloor \log_2(n) + 1 \rfloor}$
-	since it can easily 
-	compute~$n$ from the input length
-	and use this parameter in the construction of the circuit.	
+\end{proposition}
+\begin{proof}
+	Let $t \colon [n] \to [n]$ with $n \ge 1$,
+	and let $k = \lfloor \log_2(n) \rfloor + 1$ as above, so that $2^{k-1} \le n \le 2^k - 1$.
+	Recall that the transition matrix $A = (a_{ij})_{i,j \in \{1,\ldots,n\}}$ of~$t$
+	is given by $a_{ij} = 1$ if and only if $t(i-1) = j-1$.
 	
-	Conversely, suppose the transition matrix $y = (y_{ij})_{i,j \in \{1,\ldots,n\}}$ of~$t$ is given.
-	The $i$-th row $y_{i1}, \ldots, y_{in}$
-	corresponds to a unary one-hot encoding 
-	of $t(i-1)$. 
-	So, by \crefitem{prelim:AC0converters-numbers}{prelim:AC0converters-numbers:item:onehotbin},
-	we can compute binary encodings of $t(0), t(1), \ldots, t(n-1)$
-	by \LOGSPACE-uniform  $\AC^0$ circuits.
+	First, suppose~$t$ is given by its point-wise representation
+	$t(0), \ldots, t(n-1)$ in binary, using $nk$ bits in total.
+	For each $i \in [n]$, we apply the circuit
+	from \crefitem{prelim:AC0converters-numbers}{prelim:AC0converters-numbers:item:binonehot}
+	to the $k$ bits encoding $t(i)$.
+	It has size $O(2^k) = O(n)$ and yields the one-hot encoding
+	$y_{i,0} y_{i,1} \cdots y_{i,2^k - 1}$ of $t(i)$,
+	i.e., $y_{i,j} = 1$ if and only if $t(i) = j$.
+	Since $t(i) \in [n]$, we have $y_{i,j} = 0$ for $j \in \{n, \ldots, 2^k - 1\}$,
+	so we omit the gates for these bits.
+	Then $a_{ij} = y_{i-1,j-1}$ for all $i,j \in \{1,\ldots,n\}$,
+	and the $n$ circuits, placed side by side, compute~$A$
+	with constant depth and size $O(n^2)$.
+	As $n \mapsto n(\lfloor \log_2(n) \rfloor + 1)$ is strictly increasing,
+	a deterministic log-space Turing transducer given $1^{nk}$
+	can determine~$n$ and~$k$ by trying $n' = 1, 2, \ldots$
+	until $n'(\lfloor \log_2(n') \rfloor + 1)$ equals the input length.
+	As in the proof of \crefitem{prelim:AC0converters-numbers}{prelim:AC0converters-numbers:item:binonehot},
+	it can then output the circuits by iterating over all $i, j \in [n]$ and the $k$ bit positions,
+	which needs only $O(\log n)$ space.
+	
+	Conversely, suppose~$A$ is given.
+	For $i \in \{1,\ldots,n\}$, the $i$-th row $a_{i1} \cdots a_{in}$
+	is the one-hot encoding of $t(i-1)$ with $n$~bits.
+	Applying the circuit~$C_n$
+	from \crefitem{prelim:AC0converters-numbers}{prelim:AC0converters-numbers:item:onehotbin}
+	to each row yields the binary encodings of $t(0), \ldots, t(n-1)$
+	with $k$~bits each.
+	A deterministic log-space Turing transducer given $1^{n^2}$
+	can compute~$n$ and output $n$~copies of~$C_n$,
+	as $C_n$ is constructible in logarithmic space.
+	Hence, this conversion is also computable by a \LOGSPACE-uniform $\AC^0$ circuit family.
 \end{proof}
 
 \subsubsection{Automata}
 
-
 Let $\semiautomat{A}{Q}{\Sigma}{\delta}$ be an $n$-state automaton.
-A reasonable idea is to represent $\mathcal A$ as a list of transition matrices
-for each letter.
+A natural idea is to represent~$\mathcal A$ by the list of the transition matrices of its letters,
+using $|\Sigma| n^2$ bits.
+For a fixed alphabet, the input length determines~$n$,
+so the transducer constructing the circuits knows which input bits belong to which matrix.
+However, in our problems, the alphabet is part of the input,
+and the input length no longer determines~$n$ and~$|\Sigma|$.
+Then the circuit itself has to find the individual matrices,
+which requires some separation mechanism and additional circuitry to parse it,
+for example, encoding $0$ by~$00$, $1$ by~$11$, and using $01$ and $10$ as separators,
+or self-delimiting descriptions~\cite[Sect.~1.4]{LiVitanyi2019}, \cite[Sect.~2.2]{LiVitanyi1990}.
 
-A list of transition matrices can be specified by $|\Sigma|n^2$ bits
-where the first $n^2$ bits correspond
-to the first letter, the next $n^2$ bits to the next letter
-and so on for some ordering of the alphabet.
-
-For a fixed alphabet, 
-a deterministic log-space Turing machine
-can easily separate the input
-into the individual transition matrices, i.e., identify
-the first $n^2$ bits, then the next $n^2$ bits
-and so on, and it just needs the total length
-$|\Sigma|n^2$ of the input to perform this task.
-
-However, in our problems, the alphabet is also part of the input. In this case, the input length alone does not determine the size of the alphabet or the number of states, since multiple possibilities exist
-for each given length.
-
-Hence, a machine that constructs circuits
-using the length of the input as parameter
-cannot create a circuit with fixed input gates
-for each transition matrix. The circuit 
-must determine from the input
-which bits constitute the individual transition matrices.
-For the circuit to do this, 
-we need some way to supply this information
-in the input, for example, by separating
-the individual transition matrices.
-
-There are several schemes to achieve
-this. For example,
-we can encode every $0$ by~$00$, every~$1$ by~$11$
-and use $01$ and $10$ as separating sequences
-between transition matrices.
-There are also more clever schemes 
-using so-called self-delimiting
-descriptions
-that encode the length of the individual parts (here the transition matrices)
-into the input, for example, see~\cite[Sect.~1.4]{LiVitanyi2019} or~\cite[Sect.~2.2]{LiVitanyi1990}.
-However, it is not immediately evident
-how an $\AC^0$-circuit can parse 
-such inputs to identify the individual transition matrices.
-
-For this reason, we use another encoding that is easy for $\AC^0$ circuits to process, but uses $(n + |\Sigma|)^3$ bits (and therefore, uses more space than the schemes discussed above). 
-Let $R_{\delta}$  be the ternary relation
-over the universe $\Sigma \cup Q$ such that $R_{\delta}(x,y,z)$
-holds if and only if  $x$ represents a letter $a_x$, 
+We avoid this by an encoding whose length only depends on $N = n + |\Sigma|$.
+Let $R_{\delta}$ be the ternary relation
+over the universe $U = \Sigma \cup Q$
+such that $R_{\delta}(x,y,z)$ holds if and only if $x$ represents a letter $a_x$,
 $y$ represents a state $q_y$, $z$ represents a state $q_z$, and $\delta(q_y, a_x) = q_z$.
-Then an automaton is supplied to a circuit as the bitstring of length $(n+|\Sigma|)^3$ encoding $R_{\delta}$.
+Then an automaton is supplied to a circuit as the bitstring of length $N^3$ encoding $R_{\delta}$.
+This uses more bits than the schemes above, but still polynomially many.
+In return, the position of each bit $R_{\delta}(x,y,z)$ only depends on~$N$,
+and which elements of~$U$ are letters and which are states
+can be recovered from $R_{\delta}$ by first order formulas, see below.
+Moreover, this encoding allows us to show containment in~$\AC^0$
+by giving first order sentences.
 
-It is well-known that properties that are testable by families of $\AC^0$ circuits
-are precisely those checkable by first order formulas~\cite[Thm.~5.22]{DBLP:books/daglib/0095988}.
-We use this equivalence by giving first order sentences to show containment
-in $\AC^0$. The only technicality left is to argue that this is also possible
-with our notion of \LOGSPACE-uniformity. We argue next that, given a first order formula,
+First order logic and $\AC^0$ are closely related:
+the languages definable by first order formulas
+using order and a bit-query predicate
+are precisely those decidable by DLOGTIME-uniform $\AC^0$ circuit families~\cite{BarringtonIS90},
+\cite[Thm.~5.22]{DBLP:books/daglib/0095988};
+see \cref{prelim:prelim:discussion} for further details.
+We only need the easy direction of this correspondence,
+and only for formulas using $R_{\delta}$, equality, and unary predicates for additional inputs.
+We use it to show containment in $\AC^0$ by giving first order sentences.
+Instead of relying on the above result,
+we give a direct argument for this direction
+that yields \LOGSPACE-uniformity, the notion of uniformity used here.
+Namely, given a first order sentence~$\varphi$,
 a deterministic log-space Turing transducer can construct an $\AC^0$ circuit family
-where each circuit evaluates to true on a given input of size $(n+|\Sigma|)^3$ if and only if 
-the first order formula holds for the automaton encoded in the input.
+where each circuit evaluates to true on a given input of size $N^3$ if and only if
+$\varphi$ holds for the automaton encoded in the input.
 
-Suppose a first order formula quantifying over the elements in $Q \cup \Sigma$
-and using only the predicate $R_{\delta}$ is given.
-A Turing transducer, given $1^{(n + |\Sigma|)^3}$ as input,
-can compute the size of the universe $n + |\Sigma|$.
-Furthermore, for numbers $i,j,k \in \{1,\ldots,n + |\Sigma|\}$
-it can also determine the bit that encodes $R_{\delta}(i,j,k)$.
+Suppose a first order sentence~$\varphi$ quantifying over the elements in $U$
+and using only $R_{\delta}$, equality, and unary predicates for additional inputs (see below) is given.
+Identify the elements of the universe with the numbers $1, \ldots, N$.
+A deterministic log-space Turing transducer, given $1^{N^3}$ as input,
+can compute~$N$.
+Furthermore, for $x, y, z \in \{1,\ldots,N\}$,
+it can determine the input bit that encodes $R_{\delta}(x,y,z)$
+and decide whether $x = y$.
 With this information, an all- or exists-quantifier can be translated
-into an unbounded {\sc AND} or {\sc OR}-gate for the input of size $(n+|\Sigma|)^3$, respectively.
-Using this, by induction over the structure of the formula,
-the transducer can construct an $\AC^0$-circuit.
+into an unbounded {\sc AND} or {\sc OR} gate, respectively,
+with one input for each element of the universe,
+an atomic formula $R_{\delta}(x,y,z)$ into the corresponding input bit,
+and an atomic formula $x = y$, which does not depend on the input,
+into a constant input~$0$ or~$1$.
+Reflecting this, in first order formulas we write $\bigwedge_{x \in U} \psi$ and $\bigvee_{x \in U} \psi$
+instead of $\forall x \colon \psi$ and $\exists x \colon \psi$,
+and similarly $\bigwedge_{q \in Q}$, $\bigvee_{a \in \Sigma}$, etc.\ for quantification
+restricted to states or letters, as introduced below.
+Using this, by induction over the structure of~$\varphi$,
+the transducer can construct the circuit,
+where it only needs to store the current values of the constantly many variables of~$\varphi$,
+each using $O(\log N)$ bits.
+Each quantifier creates $N$~copies of the circuit for the subformula below it.
+So, if $d$ denotes the maximal nesting depth of quantifiers in~$\varphi$,
+the resulting circuit has size $O(N^{\max(d,3)})$, where $N^3$ accounts for the input bits,
+and its depth only depends on~$\varphi$.
+As $\varphi$ is fixed, the size is polynomial in the input length~$N^3$,
+and we obtain a \LOGSPACE-uniform circuit family in~$\AC^0$.
 
 Next, we show that, when giving formulas to show containment in $\AC^0$,
 we can, without loss of generality, quantify only over letters or states,
 and can access entries of the transition matrices of~$\mathcal A$, thus
 giving us some ``syntactic sugar'' in comparison to our plain formulas
-where quantification is always over $Q \cup \Sigma$ and that only uses
+where quantification is always over $U$ and that only uses
 the relation $R_{\delta}$.
 
 Consider the two unary relations $R_Q$ and $R_{\Sigma}$
 where $R_Q(x)$ (resp.~$R_{\Sigma}(x)$) 
 is true precisely if~$x$ is a state (resp.~a letter).	
 The relations $R_{\Sigma}$ and $R_Q$ can be specified by the first order
-formulas $\bigvee_{z_1} \bigvee_{z_2} R_{\delta}(x, z_1, z_2)$
+formulas $\bigvee_{z_1 \in U} \bigvee_{z_2 \in U} R_{\delta}(x, z_1, z_2)$
 and 
-$\bigwedge_{z_1} \bigwedge_{z_2} \neg R_{\delta}(x, z_1, z_2)$, respectively.
+$\bigwedge_{z_1 \in U} \bigwedge_{z_2 \in U} \neg R_{\delta}(x, z_1, z_2)$, respectively.
 Thus, they can be used in first order formulas.
 Furthermore, we can use them to quantify only over the letters
 or only the states. For example, the following formula, querying
 whether an automaton has a trap state,
 \[
-\bigvee_{a \in \Sigma}  \left( \bigwedge_{q \in Q} R_{\delta}(a, q, q) \right),
+\bigvee_{q \in Q}  \left( \bigwedge_{a \in \Sigma} R_{\delta}(a, q, q) \right),
 \]
 can be translated into
 \[
-\bigvee_{x \in U} \left( R_{\Sigma}(x) \rightarrow \left( \bigwedge_{y \in U} R_Q(y) \rightarrow R_{\delta}(x,y,y) \right) \right).
+\bigvee_{x \in U} \left( R_{Q}(x) \land \left( \bigwedge_{y \in U} ( R_{\Sigma}(y) \rightarrow R_{\delta}(y,x,x) ) \right) \right).
 \]
-This gives us the mean to write simpler formulas. 
+This gives us the means to write simpler formulas. 
 Note that if $x$ represents a letter $a$ and $y,z$ states, then $R_{\delta}(x, y, z)$
 corresponds to an entry in the transition matrix of~$a$. Thus, we can directly
 reference entries of the transition matrices of a letter in first order formulas.
 We will often do so, but using a simpler notation, for example
-denoting the transition matrices by $(m_{i,j})_{i,j \in \{1,\ldots,n\}})$
-for $a \in \Sigma$ and using these expressions in first order formulas
+denoting the transition matrix of $a \in \Sigma$ by $(m^{(a)}_{i,j})_{i,j \in \{1,\ldots,n\}}$
+and using these expressions in first order formulas
 instead of $R_{\delta}$.
+
+Not every bitstring of length $N^3$ encodes an automaton.
+It does if and only if
+\begin{align*}
+	& \bigwedge_{x,y,z \in U} \bigl( R_{\delta}(x,y,z) \rightarrow R_Q(y) \land R_Q(z) \bigr) \\
+	\land \; & \bigwedge_{a \in \Sigma} \bigwedge_{q \in Q} \bigvee_{p \in Q} \bigwedge_{p' \in Q}
+	\bigl( R_{\delta}(a,q,p') \leftrightarrow p = p' \bigr)
+\end{align*}
+holds, i.e., letters only relate states and $\delta$ is totally defined.
+As equality is allowed in the above construction,
+this can be checked by \LOGSPACE-uniform $\AC^0$ circuit families,
+and we may assume that our circuits reject inputs not encoding an automaton.
+Other input lengths need not be considered,
+as our circuit families only have circuits for the lengths of encodings,
+i.e., with $N^3$ input bits, or $N^3 + cN$ with additional inputs as below,
+see \cref{prelim:sec:circuits}.
+
+Some of our problems have additional inputs besides the automaton.
+A subset $S \subseteq Q$ is encoded by its characteristic vector over~$U$,
+i.e., by $N$ additional bits, and a single state~$q$ by the subset~$\{q\}$.
+We use $N$ and not $n$ bits, as only~$N$ is determined by the input length.
+With $c$ such subsets, the input length $N^3 + cN$ is strictly increasing in~$N$,
+so each part of the input has designated bits.
+In first order formulas, $S$ is used as a unary predicate,
+where, as for~$R_{\delta}$, each atomic formula $S(x)$ is translated into the corresponding input bit,
+and the conditions $S \subseteq Q$ and $|S| = 1$ are expressed by
+$\bigwedge_{x \in U} ( S(x) \rightarrow R_Q(x) )$
+and $\bigvee_{x \in U} \bigwedge_{y \in U} ( S(y) \leftrightarrow x = y )$.
+A numerical parameter is encoded as in \cref{prelim:sec:enc-numbers}.
+Inputs of unbounded size, such as lists of words, require a scheme that separates the parts; we do not discuss this in detail.
+
 
 \begin{remark}
 	All of the representations discussed above, 
 	and the representation by giving the transformation of the letters in point-wise representation in binary
 	with some mechanism of separation between the letters,
-	are readily convertible into each other by deterministic log-space Turing machines.
-	Thus, when using $\lelogm$-reductions, we may assume either of these representations.
+	are readily convertible into each other by deterministic log-space Turing transducers.
+	Thus, when using $\lelogm$-reductions, we may assume any of these representations.
 \end{remark}
 
 \begin{remark}

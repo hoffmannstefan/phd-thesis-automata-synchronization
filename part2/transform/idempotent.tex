@@ -12,12 +12,14 @@ to idempotency, and \cref{prelim:cor:idempotent} collects some consequences.
 Then \cref{prelim:prop:compositionidempt} characterizes idempotency of the
 composition, and
 \cref{prelim:cor:compositionidempt-one,prelim:cor:comp-idempotents-idempotent,prelim:cor:comp-idempotents-idempotent2}
-give characterizations under additional assumptions concerning the idempotency of the
-given functions.
-\Cref{prelim:trans:idemp:prop:inv-dupl} gives a formula for the inverse image
-of the duplicate set of the composition involving at least one idempotent,
-stating that it equals a union of inverse images of the individual
-transformations.
+give characterizations and sufficient conditions under additional assumptions
+concerning the idempotency of the given functions.
+\Cref{prelim:trans:idemp:prop:tX-in-fixh} characterizes when composing with an
+idempotent does not change a transformation.
+Finally, \cref{prelim:trans:idemp:prop:inv-dupl} gives a formula for the inverse image
+of the duplicate set of a composition whose first transformation is idempotent,
+expressing it as a union of inverse images under the individual transformations.
+
 
 \begin{proposition}\label{prelim:prop:idempotent}
 	Let $t \colon X \to X$. Then the following are equivalent.
@@ -207,7 +209,7 @@ idempotent transformation.
 			\cup (\fix{t} \cap h(t(X))) \\
 			&= (\move{t} \cap h(\move{h} \cap t(X))) \\
 			&\quad \cup (\move{t} \cap (\fix{h} \cap t(X))) \\
-			&\quad \cup (\fix{t} \cap h(t(X))).
+			&\quad \cup (\fix{t} \cap h(t(X))),
 		\end{aligned}
 	\end{equation*}
 	where we used $h(\fix{h}\cap t(X)) = \fix{h}\cap t(X)$.
@@ -246,7 +248,7 @@ idempotent transformation.
 \end{proof}
 
 \begin{proposition} \label{prelim:trans:idemp:prop:tX-in-fixh}
-	Let $t, h \colon X \to X$ be idempotent.
+	Let $h \colon X \to X$ be idempotent and $t \colon X \to X$.
 	Then the following are equivalent.
 	\begin{enumerate}
 		\item \label{prelim:trans:idemp:prop:tX-in-fixh:1} $\concat{t}{h} = t$.
